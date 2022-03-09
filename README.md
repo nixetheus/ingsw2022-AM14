@@ -1,2 +1,2 @@
-# ing-sw-2022-Amadori-Arbasino-Cassenti
+# ingsw2022-AM14
 Project for Software Engineering Course - Polimi
