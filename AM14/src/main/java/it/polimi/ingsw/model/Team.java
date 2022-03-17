@@ -1,12 +1,16 @@
 package it.polimi.ingsw.model;
 
-import java.util.Vector;
-import it.polimi.ingsw.exceptions.*;
+import it.polimi.ingsw.exceptions.InvalidGameObjectException;
+import it.polimi.ingsw.exceptions.InvalidMoveException;
 import it.polimi.ingsw.helpers.Constants;
 import it.polimi.ingsw.model.player.Player;
+import java.util.Vector;
 
 /**
- * Team is the entity used to... TODO
+ * The Team is the entity used to model the behaviour of those playing the game. For two or three
+ * players' games the entity acts as a capsule for a single player giving it a more complete
+ * behaviour. In case of four players' game it acts as a grouping mechanism for each of the couple
+ * of players.
  */
 public class Team {
 
@@ -17,13 +21,13 @@ public class Team {
   Vector<Player> players = new Vector<Player>();
 
   /**
-   * TODO
+   * Constructor method for the Team class
    *
-   * @param teamId Unique identifier for each team
-   * @param towerColor Unique color of each team's tower
+   * @param teamId      Unique identifier for each team
+   * @param towerColor  Unique color of each team's tower
    * @param firstPlayer First player of each team
-   * @throws InvalidGameObjectException Throws InvalidGameObjectException if Player parameter
-   *    has invalid attributes
+   * @throws InvalidGameObjectException Throws InvalidGameObjectException if Player parameter has
+   *                                    invalid attributes
    */
   public Team(int teamId, int towerColor, Player firstPlayer) throws InvalidGameObjectException {
     id = teamId;
@@ -33,11 +37,11 @@ public class Team {
   }
 
   /**
-   * Adds a new Player to the Team
+   * This method adds a new Player to the Team
    *
    * @param playerToAdd New player to be added to the team
-   * @throws java.security.InvalidParameterException
-   * Throws InvalidParameterException if Player parameter has invalid attributes
+   * @throws java.security.InvalidParameterException Throws InvalidParameterException if Player
+   *                                                 parameter has invalid attributes
    */
   public void addPlayer(Player playerToAdd) throws InvalidGameObjectException {
 
@@ -50,11 +54,11 @@ public class Team {
   }
 
   /**
-   * Gives numberOfTowers towers to the Team
+   * This method gives numberOfTowers towers to the Team
    *
    * @param numberOfTowers Number of towers to give
    * @throws InvalidMoveException Throws InvalidMoveException if the number of towers would be
-   *    greater than the maximum allowed by rules
+   *                              greater than the maximum allowed by rules
    */
   public void addTowers(int numberOfTowers) throws InvalidMoveException {
     if (availableTowers + numberOfTowers <= Constants.getMaxTowers()) {
@@ -65,11 +69,11 @@ public class Team {
   }
 
   /**
-   * Removes numberOfTowers towers from the Team
+   * This method removes numberOfTowers towers from the Team
    *
    * @param numberOfTowers Number of towers to remove
-   * @throws InvalidMoveException Throws InvalidMoveException if the number of towers would be
-   *    less than zero
+   * @throws InvalidMoveException Throws InvalidMoveException if the number of towers would be less
+   *                              than zero
    */
   public void removeTowers(int numberOfTowers) throws InvalidMoveException {
     if (availableTowers - numberOfTowers >= 0) {
@@ -96,7 +100,7 @@ public class Team {
   }
 
   /**
-   * TODO
+   * This method makes sure that each of the player's attributes
    *
    * @param playerToCheck Player objects to be checked for integrity
    * @return Returns true if Player is within rules, false otherwise
