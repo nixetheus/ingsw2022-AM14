@@ -15,10 +15,10 @@ import java.util.Vector;
 public class Team {
 
   // Attributes
-  int id;
-  int towersColor;
-  int availableTowers;
-  Vector<Player> players = new Vector<Player>();
+  private int id;
+  private int towersColor;
+  private int availableTowers;
+  private Vector<Player> players = new Vector<Player>();
 
   /**
    * Constructor method for the Team class

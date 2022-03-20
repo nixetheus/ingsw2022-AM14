@@ -3,7 +3,7 @@ package it.polimi.ingsw.helpers;
 /**
  * TODO
  */
-public enum Colors {
+public enum Color {
   YELLOW,
   BLUE,
   GREEN,
