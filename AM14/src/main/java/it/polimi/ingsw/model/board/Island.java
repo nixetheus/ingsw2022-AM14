@@ -9,7 +9,7 @@ public class Island {
 
   private int ownerId;
   private final int[] students;
-  private final int numberOfTowers;
+  private int numberOfTowers;
 
   /**
    *
@@ -25,16 +25,17 @@ public class Island {
    * @param color TODO
    */
   public void addStudent(int color) {
-    // TODO: checks?
     students[color]++;
   }
 
   /**
    *
    */
-  public int[] withdrawStudents() {
-    // TODO
-    return new int[5];
+  public void addIsland(Island island) {
+    numberOfTowers += island.getNumberOfTowers();
+    for (int color = 0; color < Constants.getNColors(); color++) {
+      students[color] += island.getStudents()[color];
+    }
   }
 
   /**

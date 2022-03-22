@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.player;
 
-import com.sun.org.apache.bcel.internal.Const;
 import it.polimi.ingsw.exceptions.InvalidMoveException;
 import it.polimi.ingsw.helpers.Constants;
 import java.util.Arrays;

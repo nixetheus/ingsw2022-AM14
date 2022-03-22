@@ -1,7 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.exceptions.InvalidGameObjectException;
-import it.polimi.ingsw.exceptions.InvalidMoveException;
 import it.polimi.ingsw.helpers.Constants;
 import it.polimi.ingsw.model.player.Player;
 import java.util.Vector;
@@ -40,7 +38,6 @@ public class Team {
    * @param playerToAdd New player to be added to the team
    */
   public void addPlayer(Player playerToAdd){
-    // Check player integrity
     players.add(playerToAdd);
   }
 
@@ -48,30 +45,18 @@ public class Team {
    * This method gives numberOfTowers towers to the Team
    *
    * @param numberOfTowers Number of towers to give
-   * @throws InvalidMoveException Throws InvalidMoveException if the number of towers would be
-   *                              greater than the maximum allowed by rules
    */
-  public void addTowers(int numberOfTowers) throws InvalidMoveException {
-    if (availableTowers + numberOfTowers <= Constants.getMaxTowers()) {
-      availableTowers += numberOfTowers;
-    } else {
-      throw new InvalidMoveException("N. of towers can't exceed " + Constants.getMaxTowers());
-    }
+  public void addTowers(int numberOfTowers) {
+    availableTowers += numberOfTowers;
   }
 
   /**
    * This method removes numberOfTowers towers from the Team
    *
    * @param numberOfTowers Number of towers to remove
-   * @throws InvalidMoveException Throws InvalidMoveException if the number of towers would be less
-   *                              than zero
    */
-  public void removeTowers(int numberOfTowers) throws InvalidMoveException {
-    if (availableTowers - numberOfTowers >= 0) {
-      availableTowers -= numberOfTowers;
-    } else {
-      throw new InvalidMoveException("N. of towers can't be less than 0!");
-    }
+  public void removeTowers(int numberOfTowers) {
+    availableTowers -= numberOfTowers;
   }
 
   public int getId() {
