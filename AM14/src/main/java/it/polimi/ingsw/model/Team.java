@@ -15,8 +15,8 @@ public class Team {
   // Attributes
   private final int id;
   private final int towersColor;
-  private int availableTowers;
   private final Vector<Player> players = new Vector<Player>();
+  private int availableTowers;
 
   /**
    * Constructor method for the Team class
@@ -37,7 +37,7 @@ public class Team {
    *
    * @param playerToAdd New player to be added to the team
    */
-  public void addPlayer(Player playerToAdd){
+  public void addPlayer(Player playerToAdd) {
     players.add(playerToAdd);
   }
 
