@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model.player;
 
+import com.sun.org.apache.bcel.internal.Const;
+import it.polimi.ingsw.exceptions.InvalidMoveException;
+import it.polimi.ingsw.helpers.Constants;
 import java.util.Arrays;
 
 /**
@@ -15,18 +18,20 @@ public class DiningRoom {
    * Constructor method for the DiningRoom class
    */
   public DiningRoom() {
-    students = new int[]{0, 0, 0, 0, 0};
+    students = new int[Constants.getNColors()];
   }
 
   /**
    * This method adds a new Student to the entrance
    *
    * @param color The color of the student that will be added to the dining room
+   * @throws InvalidMoveException TODO
    */
-  public void addStudent(int color) {
-    students[color]++;
-    if(students[color]>10){
-      students[color]=10;
+  public void addStudent(int color) throws InvalidMoveException {
+    if(students[color] + 1 > Constants.getMaxStudentsDiningRoom()){
+      students[color]++;
+    } else {
+      throw new InvalidMoveException("TODO");
     }
   }
 
@@ -35,10 +40,11 @@ public class DiningRoom {
    *
    * @param color The color of the student that will be removed from the dining room
    */
-  public void removeStudent(int color) {
-    students[color]--;
-    if (students[color] < 0) {
-      students[color] = 0;
+  public void removeStudent(int color) throws InvalidMoveException {
+    if(students[color] - 1 > 0){
+      students[color]--;
+    } else {
+      throw new InvalidMoveException("TODO");
     }
   }
 

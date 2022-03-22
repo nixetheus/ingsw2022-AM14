@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.exceptions.InvalidMoveException;
+
 /**
  * This class is used to model the board that each player have composed by: ProfessorTable Entrance
  * DiningRoom
@@ -26,7 +28,12 @@ public class PlayerBoard {
    * @param color The color of the student to move into the dining room
    */
   public void moveToDiningRoom(int color) {
-    diningRoom.addStudent(color);
+    try {
+      diningRoom.addStudent(color);
+    } catch (InvalidMoveException e) {
+      System.out.println(e.getMessage());
+      // TODO
+    }
   }
 
   /**

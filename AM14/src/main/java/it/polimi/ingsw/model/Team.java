@@ -15,10 +15,10 @@ import java.util.Vector;
 public class Team {
 
   // Attributes
-  private int id;
-  private int towersColor;
+  private final int id;
+  private final int towersColor;
   private int availableTowers;
-  private Vector<Player> players = new Vector<Player>();
+  private final Vector<Player> players = new Vector<Player>();
 
   /**
    * Constructor method for the Team class
@@ -26,10 +26,8 @@ public class Team {
    * @param teamId      Unique identifier for each team
    * @param towerColor  Unique color of each team's tower
    * @param firstPlayer First player of each team
-   * @throws InvalidGameObjectException Throws InvalidGameObjectException if Player parameter has
-   *                                    invalid attributes
    */
-  public Team(int teamId, int towerColor, Player firstPlayer) throws InvalidGameObjectException {
+  public Team(int teamId, int towerColor, Player firstPlayer) {
     id = teamId;
     towersColor = towerColor;
     availableTowers = Constants.getMaxTowers();
@@ -40,17 +38,10 @@ public class Team {
    * This method adds a new Player to the Team
    *
    * @param playerToAdd New player to be added to the team
-   * @throws java.security.InvalidParameterException Throws InvalidParameterException if Player
-   *                                                 parameter has invalid attributes
    */
-  public void addPlayer(Player playerToAdd) throws InvalidGameObjectException {
-
+  public void addPlayer(Player playerToAdd){
     // Check player integrity
-    if (isPlayerOkay(playerToAdd)) {
-      players.add(playerToAdd);
-    } else {
-      throw new InvalidGameObjectException("Player object is corrupted!");
-    }
+    players.add(playerToAdd);
   }
 
   /**
@@ -99,14 +90,4 @@ public class Team {
     return players;
   }
 
-  /**
-   * This method makes sure that each of the player's attributes
-   *
-   * @param playerToCheck Player objects to be checked for integrity
-   * @return Returns true if Player is within rules, false otherwise
-   */
-  private boolean isPlayerOkay(Player playerToCheck) {
-    // TODO
-    return true;
-  }
 }

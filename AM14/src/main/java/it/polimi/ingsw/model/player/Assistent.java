@@ -15,9 +15,9 @@ public class Assistent {
   /**
    * Constructor method for the Assistent class
    *
-   * @param moves       used to indicate the moximum moves that mother natur can do this turn
-   * @param speed       usen to indicate the value for the iniziative
-   * @param assistantId used to indicate which assistant is been played
+   * @param moves       used to indicate the moximum moves that mother nature can do this turn
+   * @param speed       used to indicate the value for the iniziative
+   * @param assistantId used to indicate which assistant has been played
    */
   public Assistent(int moves, int speed, int assistantId) {
     this.moves = moves;
