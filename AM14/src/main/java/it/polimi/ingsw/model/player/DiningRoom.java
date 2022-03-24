@@ -27,7 +27,7 @@ public class DiningRoom {
    * @throws InvalidMoveException TODO
    */
   public void addStudent(int color) throws InvalidMoveException {
-    if(students[color] + 1 > Constants.getMaxStudentsDiningRoom()){
+    if(students[color] + 1 <= Constants.getMaxStudentsDiningRoom()){
       students[color]++;
     } else {
       throw new InvalidMoveException("TODO");
