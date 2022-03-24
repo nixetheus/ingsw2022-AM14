@@ -14,10 +14,10 @@ public class MotherNature {
 
   /**
    * Constructor method for the MotherNature Class
-   *
+   * @param position The initial position of MotherNature
    */
-  public MotherNature() {
-    this.position = (int)(Math.random() * Constants.getInitialNumIslands());
+  public MotherNature(int position) {
+    this.position = position;
   }
 
   /**
