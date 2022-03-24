@@ -5,7 +5,7 @@ package it.polimi.ingsw.exceptions;
  */
 public class InvalidMoveException extends Exception {
 
-  String errorMessage;
+  public String errorMessage;
 
   public InvalidMoveException(String errorMsg) {
     errorMessage = errorMsg;
@@ -14,7 +14,6 @@ public class InvalidMoveException extends Exception {
   /**
    * TODO
    */
-  @Override
   public String getMessage() {
     return "Error: " + errorMessage;
   }
