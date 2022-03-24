@@ -14,7 +14,7 @@ public class TeamTest {
    */
   @Test
   public void testAddPlayer() {
-    Player testPlayer = new Player();
+    Player testPlayer = new Player(1,"ale");
     Team testTeam = new Team(0, Towers.WHITE.ordinal(), testPlayer);
 
     assert (!testTeam.getPlayers().isEmpty());
@@ -26,8 +26,8 @@ public class TeamTest {
    */
   @Test
   public void testAddPlayerTwice() {
-    Player testPlayer = new Player();
-    Player testPlayerTwo = new Player();
+    Player testPlayer = new Player(1,"Luca");
+    Player testPlayerTwo = new Player(2,"Dario");
 
     Team testTeam = new Team(0, Towers.WHITE.ordinal(), testPlayer);
     testTeam.addPlayer(testPlayerTwo);
