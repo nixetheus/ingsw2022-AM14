@@ -1,7 +1,13 @@
 package it.polimi.ingsw.model.player;
 
-import java.util.NoSuchElementException;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import it.polimi.ingsw.exceptions.InvalidMoveException;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.Vector;
+
 
 /**
  * The Player is the entity used to model the behaviour and action a person might do in the game.
@@ -11,8 +17,8 @@ public class Player {
   private final int playerId;
   private final String playerNickname;
   private final PlayerBoard playerBoard;
-  private final Vector<Assistent> playableAssistent;
-  private Assistent assistent;
+  private final Vector<Assistant> playableAssistant;
+  private Assistant assistant;
   private int coins;
 
   /**
@@ -22,24 +28,28 @@ public class Player {
    * @param playerNickname Unique name chosen by each player
    */
 
-  public Player(int playerId, String playerNickname) {
+  public Player(int playerId, String playerNickname) throws FileNotFoundException {
     this.playerId = playerId;
     this.playerNickname = playerNickname;
     this.coins = 0;
-    this.assistent = null;
+    this.assistant = null;
     this.playerBoard = new PlayerBoard();
-    this.playableAssistent = new Vector<>();
-    this.playableAssistent.add(new Assistent(1,2,1));
-    this.playableAssistent.add(new Assistent(1,2,2));
-    this.playableAssistent.add(new Assistent(1,2,3));
-    this.playableAssistent.add(new Assistent(1,2,4));
-
+    this.playableAssistant = new Vector<>();
+    JsonArray array = JsonParser
+        .parseReader(new FileReader("src/main/resources/json/assistants.json")).getAsJsonArray();
+    for (Object o : array) {
+      JsonObject object = (JsonObject) o;
+      int moves = object.get("MOVES").getAsInt();
+      int speed = object.get("SPEED").getAsInt();
+      int assistantId = object.get("ASSISTANT_ID").getAsInt();
+      playableAssistant.add(new Assistant(moves, speed, assistantId));
+    }
 
 
   }
 
-  public Vector<Assistent> getPlayableAssistent() {
-    return playableAssistent;
+  public Vector<Assistant> getPlayableAssistant() {
+    return playableAssistant;
   }
 
   /**
@@ -48,11 +58,17 @@ public class Player {
    *
    * @param assistantId used to identify which assistant is been played
    */
-  public void playAssistent(int assistantId) throws NoSuchElementException {
-    Assistent returnAssistant = playableAssistent.stream()
-        .filter(assistent1 -> assistent1.getAssistantId() == assistantId).findFirst().get();
-    this.assistent = returnAssistant;
-    this.playableAssistent.remove(returnAssistant);
+  public void playAssistant(int assistantId) throws InvalidMoveException {
+    Assistant returnAssistant;
+    if (playableAssistant.stream()
+        .anyMatch(assistant1 -> assistant1.getAssistantId() == assistantId)) {
+      returnAssistant = playableAssistant.stream()
+          .filter(assistant1 -> assistant1.getAssistantId() == assistantId).findFirst().get();
+    } else {
+      throw new InvalidMoveException("TODO");
+    }
+    this.assistant = returnAssistant;
+    this.playableAssistant.remove(returnAssistant);
   }
 
   /**
@@ -89,8 +105,8 @@ public class Player {
     return playerNickname;
   }
 
-  public Assistent getAssistent() {
-    return assistent;
+  public Assistant getAssistant() {
+    return assistant;
   }
 
   public PlayerBoard getPlayerBoard() {
