@@ -1,23 +1,59 @@
 package it.polimi.ingsw.model.board;
 
-import com.sun.org.apache.bcel.internal.generic.ANEWARRAY;
 import it.polimi.ingsw.helpers.Constants;
 import java.util.ArrayList;
 
 public class MainBoard {
   //Attributes
-  private ArrayList<Island> islands = new ArrayList<>(Constants.getInitialNumIslands());
-  private MotherNature motherNature;
+  private final ArrayList<Island> islands;
+  private final MotherNature motherNature;
+
   /**
-   *Constructor method: it creates Islands array, and it places on each of them one student
+   * Constructor method: it creates Islands array,
+   * and it places on each of them one student
    */
   public MainBoard() {
-    /*int randomPosMotherNature = (int)(Math.random() * Constants.getInitialNumIslands());
-    MotherNature motherNature = new MotherNature(randomPosMotherNature);
+    motherNature = new MotherNature(MainBoard.pickRandomIntForMotherNature());
+    islands = new ArrayList<>();
     for(int i = 0; i < Constants.getInitialNumIslands(); i++) {
-      if(i != randomPosMotherNature)
-        islands.add(new Island().addStudent());
+      islands.add(new Island());
+      //pick random Student
     }
-     */
+  }
+
+  /**
+   * Method to calculate the team with the greatest influence
+   *
+   * @return the integer that represents the team
+   */
+  public int calculateInfluence() {
+    return 42;
+  }
+
+  /**
+   * addToIsland: method to add a student on an island
+   *
+   * @param color  the color of the student
+   * @param numIsland  number of island to place the student
+   */
+  public void addToIsland(int color, int numIsland){
+    islands.get(numIsland).addStudent(color);
+  }
+
+  /**
+   *
+   * @param numIsland  number that identifies the island
+   */
+  public void joinIsland(int numIsland) {
+
+  }
+
+  /**
+   * Static method to make a random int
+   *
+   * @return a random integer from 0 to initial number of islands - 1
+   */
+  static public int pickRandomIntForMotherNature(){
+    return (int)(Math.random() * Constants.getInitialNumIslands());
   }
 }
