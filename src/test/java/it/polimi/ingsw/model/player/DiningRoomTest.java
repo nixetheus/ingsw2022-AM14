@@ -30,11 +30,15 @@ public class DiningRoomTest {
    * Test for assure that the number of students never becomes less than zero
    */
   @Test
-  public void testRemoveStudentIfZero() throws InvalidMoveException {
+  public void testRemoveStudentIfZero()  {
     testDiningRoom = new DiningRoom();
-    int[] arrayTest = new int[]{0, 0, 0, 0, 0};
-    testDiningRoom.removeStudent(0);
-    Assert.assertEquals(Arrays.toString(testDiningRoom.getStudents()), Arrays.toString(arrayTest));
+    InvalidMoveException exception= null;
+    try{
+      testDiningRoom.removeStudent(0);
+    }catch (InvalidMoveException e){
+      exception=e;
+    }
+    Assert.assertNotNull(exception);
   }
 
   /**
@@ -56,11 +60,16 @@ public class DiningRoomTest {
   @Test
   public void testFullDiningRoom() throws InvalidMoveException {
     testDiningRoom = new DiningRoom();
+    InvalidMoveException exception= null;
     int i;
-    int[] arrayTest = new int[]{0, 0, 10, 0, 0};
-    for (i = 0; i < 11; i++) {
+    for (i = 0; i < 10; i++) {
       testDiningRoom.addStudent(2);
     }
-    Assert.assertEquals(Arrays.toString(testDiningRoom.getStudents()), Arrays.toString(arrayTest));
+    try{
+      testDiningRoom.addStudent(2);
+    }catch (InvalidMoveException e){
+      exception=e;
+    }
+    Assert.assertNotNull(exception);
   }
 }

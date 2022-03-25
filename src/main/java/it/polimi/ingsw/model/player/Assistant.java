@@ -1,11 +1,11 @@
 package it.polimi.ingsw.model.player;
 
 /**
- * This class is used to model the assistent card that each player is supposed to play inorder to
- * establish his/her iniziative
+ * This class is used to model the assistant card that each player is supposed to play inorder to
+ * establish his/her initiative
  */
 
-public class Assistent {
+public class Assistant {
 
   //Attributes
   private final int moves;
@@ -13,13 +13,13 @@ public class Assistent {
   private final int assistantId;
 
   /**
-   * Constructor method for the Assistent class
+   * Constructor method for the Assistant class
    *
-   * @param moves       used to indicate the moximum moves that mother nature can do this turn
-   * @param speed       used to indicate the value for the iniziative
+   * @param moves       used to indicate the maximum moves that mother nature can do this turn
+   * @param speed       used to indicate the value for the initiative
    * @param assistantId used to indicate which assistant has been played
    */
-  public Assistent(int moves, int speed, int assistantId) {
+  public Assistant(int moves, int speed, int assistantId) {
     this.moves = moves;
     this.speed = speed;
     this.assistantId = assistantId;

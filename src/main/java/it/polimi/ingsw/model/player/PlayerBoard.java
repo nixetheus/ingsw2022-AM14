@@ -23,7 +23,7 @@ public class PlayerBoard {
   }
 
   /**
-   * This method allows to move a student drom the entrance to the dining room
+   * This method allows to move a studentRoom the entrance to the dining room
    *
    * @param color The color of the student to move into the dining room
    */
@@ -37,7 +37,7 @@ public class PlayerBoard {
   }
 
   /**
-   * This method allows to move a student drom the entrance to the entrance
+   * This method allows to move a studentRoom the entrance to the entrance
    *
    * @param color The color of the student to move into entrance
    */

@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.player;
 
 import java.util.Arrays;
 import junit.framework.TestCase;
-import org.junit.Test;
 
 /**
  * PlayerBoardTest class tests PlayerBoard class
@@ -15,7 +14,7 @@ public class PlayerBoardTest extends TestCase {
   /**
    * testMoveToDiningRoom tests moveToDiningRoom method
    */
-  @Test
+
   public void testMoveToDiningRoom() {
     testPlayerBoard = new PlayerBoard();
     arrayTest = new int[]{0, 0, 0, 0, 1};
@@ -27,7 +26,7 @@ public class PlayerBoardTest extends TestCase {
   /**
    * testMoveToEntrance tests moveToEntrance method
    */
-  @Test
+
   public void testMoveToEntrance() {
     testPlayerBoard = new PlayerBoard();
     arrayTest = new int[]{0, 0, 0, 1, 0};
