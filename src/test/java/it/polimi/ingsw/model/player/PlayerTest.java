@@ -1,9 +1,11 @@
 package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.exceptions.InvalidMoveException;
+import java.io.FileNotFoundException;
 import java.util.Arrays;
 import junit.framework.TestCase;
-import org.junit.Test;
+import org.junit.Assert;
+
 
 /**
  * Test for Player class
@@ -16,25 +18,42 @@ public class PlayerTest extends TestCase {
   Entrance testEntrance;
 
   /**
-   * test for the playAssistant method to ensure that the played assistant is correct and that is no
+   * Test for the playAssistant method to ensure that the played assistant is correct and that is no
    * longer available into the playableAssistants
    */
 
-  @Test
-  public void testPlayAssistent() {
-    testPlayer = new Player(1, "ale");
-    Assistent assistent1 = new Assistent(1, 2, 2);
 
-    testPlayer.playAssistent(2);
-    assertEquals(testPlayer.getAssistent().getAssistantId(), assistent1.getAssistantId());
-    assertFalse(testPlayer.getPlayableAssistent().contains(testPlayer.getAssistent()));
+  public void testPlayAssistant() throws FileNotFoundException, InvalidMoveException {
+    testPlayer = new Player(1, "ale");
+    Assistant assistant1 = new Assistant(1, 2, 2);
+
+    testPlayer.playAssistant(2);
+    assertEquals(testPlayer.getAssistant().getAssistantId(), assistant1.getAssistantId());
+    assertFalse(testPlayer.getPlayableAssistant().contains(testPlayer.getAssistant()));
+  }
+
+  /**
+   * Test for the playAssistant method testing the case of an assistant already played
+   *
+   * @throws InvalidMoveException If the assistant is already played
+   */
+  public void testPlayAssistantAlreadyPlayed() throws FileNotFoundException, InvalidMoveException {
+    testPlayer = new Player(1, "ale");
+    InvalidMoveException exception = null;
+    testPlayer.playAssistant(2);
+    try {
+      testPlayer.playAssistant(2);
+    } catch (InvalidMoveException e) {
+      exception = e;
+    }
+    Assert.assertNotNull(exception);
   }
 
   /**
    * Test for the moveTo playerBoard method in case of a student put into the entrance
    */
-  @Test
-  public void testMoveToPlayerBoardEntranceCase() {
+
+  public void testMoveToPlayerBoardEntranceCase() throws FileNotFoundException {
     testPlayer = new Player(2, "ale");
     testEntrance = new Entrance();
     testPlayer.moveToPlayerBoard(0, 3);
@@ -48,8 +67,8 @@ public class PlayerTest extends TestCase {
    *
    * @throws InvalidMoveException if the dining room is full
    */
-  @Test
-  public void testMoveToPlayerBoardDiningCase() throws InvalidMoveException {
+
+  public void testMoveToPlayerBoardDiningCase() throws InvalidMoveException, FileNotFoundException {
     testPlayer = new Player(2, "ale");
     testDiningRoom = new DiningRoom();
     testPlayer.moveToPlayerBoard(1, 2);
@@ -61,8 +80,8 @@ public class PlayerTest extends TestCase {
   /**
    * Test for the addCoin method
    */
-  @Test
-  public void testaddCoin() {
+
+  public void testAddCoin() throws FileNotFoundException {
     testPlayer = new Player(1, "marco");
     testPlayer.addCoin();
     assertEquals(testPlayer.getCoins(), 1);
