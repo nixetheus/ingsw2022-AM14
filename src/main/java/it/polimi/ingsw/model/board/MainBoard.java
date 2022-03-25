@@ -27,6 +27,7 @@ public class MainBoard {
    * @return the integer that represents the team
    */
   public int calculateInfluence() {
+    //TODO
     return 42;
   }
 
@@ -45,7 +46,7 @@ public class MainBoard {
    * @param numIsland  number that identifies the island
    */
   public void joinIsland(int numIsland) {
-
+    //TODO
   }
 
   /**
@@ -55,5 +56,13 @@ public class MainBoard {
    */
   static public int pickRandomIntForMotherNature(){
     return (int)(Math.random() * Constants.getInitialNumIslands());
+  }
+
+  public ArrayList<Island> getIslands() {
+    return islands;
+  }
+
+  public MotherNature getMotherNature() {
+    return motherNature;
   }
 }
