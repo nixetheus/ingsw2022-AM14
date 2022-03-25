@@ -12,7 +12,12 @@ public class CloudTileTest {
   @Test
   public void testEmptyCloud(){
     CloudTile cloudTest = new CloudTile(0);
-    CloudTile clouTest1 = new CloudTile(1);
-    assertEquals(Arrays.toString(cloudTest.getStudents()), "0,0,0,0,0");
+    assertEquals(Arrays.toString(cloudTest.getStudents()), "[0, 0, 0, 0, 0]");
+    cloudTest.addStudent(0);
+    cloudTest.addStudent(0);
+    cloudTest.addStudent(1);
+    assertEquals(Arrays.toString(cloudTest.getStudents()), "[2, 1, 0, 0, 0]");
+    cloudTest.emptyCloud();
+    assertEquals(Arrays.toString(cloudTest.getStudents()), "[0, 0, 0, 0, 0]");
   }
 }
