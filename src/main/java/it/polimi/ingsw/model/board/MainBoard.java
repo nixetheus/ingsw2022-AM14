@@ -4,21 +4,30 @@ import it.polimi.ingsw.helpers.Constants;
 import java.util.ArrayList;
 
 public class MainBoard {
+
   //Attributes
   private final ArrayList<Island> islands;
   private final MotherNature motherNature;
 
   /**
-   * Constructor method: it creates Islands array,
-   * and it places on each of them one student
+   * Constructor method: it creates Islands array, and it places on each of them one student
    */
   public MainBoard() {
-    motherNature = new MotherNature(MainBoard.pickRandomIntForMotherNature());
+    motherNature = new MotherNature(MainBoard.pickStartPlaceMotherNature());
     islands = new ArrayList<>();
-    for(int i = 0; i < Constants.getInitialNumIslands(); i++) {
+    for (int i = 0; i < Constants.getInitialNumIslands(); i++) {
       islands.add(new Island());
       //pick random Student
     }
+  }
+
+  /**
+   * Static method to make a random int
+   *
+   * @return a random integer from 0 to initial number of islands - 1
+   */
+  static public int pickStartPlaceMotherNature() {
+    return (int) (Math.random() * Constants.getInitialNumIslands());
   }
 
   /**
@@ -34,28 +43,18 @@ public class MainBoard {
   /**
    * addToIsland: method to add a student on an island
    *
-   * @param color  the color of the student
-   * @param numIsland  number of island to place the student
+   * @param color     the color of the student
+   * @param numIsland number of island to place the student
    */
-  public void addToIsland(int color, int numIsland){
+  public void addToIsland(int color, int numIsland) {
     islands.get(numIsland).addStudent(color);
   }
 
   /**
-   *
-   * @param numIsland  number that identifies the island
+   * @param numIsland number that identifies the island
    */
   public void joinIsland(int numIsland) {
     //TODO
-  }
-
-  /**
-   * Static method to make a random int
-   *
-   * @return a random integer from 0 to initial number of islands - 1
-   */
-  static public int pickRandomIntForMotherNature(){
-    return (int)(Math.random() * Constants.getInitialNumIslands());
   }
 
   public ArrayList<Island> getIslands() {

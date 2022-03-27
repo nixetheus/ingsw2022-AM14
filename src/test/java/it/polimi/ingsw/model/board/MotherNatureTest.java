@@ -8,7 +8,7 @@ import org.junit.Test;
  */
 public class MotherNatureTest {
 
-  private final int x = MainBoard.pickRandomIntForMotherNature();
+  private final int x = MainBoard.pickStartPlaceMotherNature();
 
   /**
    * Testing the move Method

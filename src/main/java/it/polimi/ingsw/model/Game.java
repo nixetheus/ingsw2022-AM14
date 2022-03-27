@@ -7,6 +7,6 @@ public class Game {
   //private CharacterCard[] purchasableCharacter;
 
   //public CharacterCard[] getPurchasableCharacter() {
-    //return purchasableCharacter;
+  //return purchasableCharacter;
   //}
 }

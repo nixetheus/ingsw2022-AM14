@@ -17,7 +17,7 @@ public class Player {
   private final int playerId;
   private final String playerNickname;
   private final PlayerBoard playerBoard;
-  private final Vector<Assistant> playableAssistant;
+  private final Vector<Assistant> playableAssistants;
   private Assistant assistant;
   private int coins;
 
@@ -34,7 +34,7 @@ public class Player {
     this.coins = 0;
     this.assistant = null;
     this.playerBoard = new PlayerBoard();
-    this.playableAssistant = new Vector<>();
+    this.playableAssistants = new Vector<>();
     JsonArray array = JsonParser
         .parseReader(new FileReader("src/main/resources/json/assistants.json")).getAsJsonArray();
     for (Object o : array) {
@@ -42,14 +42,14 @@ public class Player {
       int moves = object.get("MOVES").getAsInt();
       int speed = object.get("SPEED").getAsInt();
       int assistantId = object.get("ASSISTANT_ID").getAsInt();
-      playableAssistant.add(new Assistant(moves, speed, assistantId));
+      playableAssistants.add(new Assistant(moves, speed, assistantId));
     }
 
 
   }
 
   public Vector<Assistant> getPlayableAssistant() {
-    return playableAssistant;
+    return playableAssistants;
   }
 
   /**
@@ -60,15 +60,15 @@ public class Player {
    */
   public void playAssistant(int assistantId) throws InvalidMoveException {
     Assistant returnAssistant;
-    if (playableAssistant.stream()
+    if (playableAssistants.stream()
         .anyMatch(assistant1 -> assistant1.getAssistantId() == assistantId)) {
-      returnAssistant = playableAssistant.stream()
+      returnAssistant = playableAssistants.stream()
           .filter(assistant1 -> assistant1.getAssistantId() == assistantId).findFirst().get();
     } else {
       throw new InvalidMoveException("TODO");
     }
     this.assistant = returnAssistant;
-    this.playableAssistant.remove(returnAssistant);
+    this.playableAssistants.remove(returnAssistant);
   }
 
   /**

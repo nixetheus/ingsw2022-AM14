@@ -24,7 +24,7 @@ public class Entrance {
    * @param color The color of the student that will be added to the entrance
    */
   public void addStudent(int color) {
-    students[color] = students[color]+1;
+    students[color] = students[color] + 1;
   }
 
   /**

@@ -9,17 +9,15 @@ import it.polimi.ingsw.exceptions.InvalidMoveException;
 public class PlayerBoard {
 
   //Attributes
-  private final DiningRoom diningRoom;
   private final Entrance entrance;
-  //private ProfessorTable professorTable;
+  private final DiningRoom diningRoom;
 
   /**
    * Constructor method for the PlayerBoard class
    */
   public PlayerBoard() {
-    this.diningRoom = new DiningRoom();
-    this.entrance = new Entrance();
-    // this.professorTable = new ProfessorTable();
+    entrance = new Entrance();
+    diningRoom = new DiningRoom();
   }
 
   /**

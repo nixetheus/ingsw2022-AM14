@@ -12,7 +12,6 @@ public class DiningRoom {
   //Attributes
   private final int[] students;
 
-
   /**
    * Constructor method for the DiningRoom class
    */
@@ -27,7 +26,7 @@ public class DiningRoom {
    * @throws InvalidMoveException TODO
    */
   public void addStudent(int color) throws InvalidMoveException {
-    if(students[color] + 1 <= Constants.getMaxStudentsDiningRoom()){
+    if (students[color] + 1 <= Constants.getMaxStudentsDiningRoom()) {
       students[color]++;
     } else {
       throw new InvalidMoveException("TODO");
@@ -40,7 +39,7 @@ public class DiningRoom {
    * @param color The color of the student that will be removed from the dining room
    */
   public void removeStudent(int color) throws InvalidMoveException {
-    if(students[color] - 1 > 0){
+    if (students[color] - 1 > 0) {
       students[color]--;
     } else {
       throw new InvalidMoveException("TODO");
