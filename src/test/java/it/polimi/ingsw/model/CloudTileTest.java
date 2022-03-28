@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import static org.junit.Assert.assertEquals;
 
+import it.polimi.ingsw.helpers.Constants;
 import java.util.Arrays;
 import org.junit.Test;
 
@@ -31,5 +32,8 @@ public class CloudTileTest {
   public void testEmptyCloud() {
     cloudTest.emptyCloud();
     assertEquals(Arrays.toString(cloudTest.getStudents()), "[0, 0, 0, 0, 0]");
+    cloudTest.addStudent(0);
+    int[] test = cloudTest.emptyCloud();
+    assertEquals(Arrays.toString(test), "[1, 0, 0, 0, 0]");
   }
 }

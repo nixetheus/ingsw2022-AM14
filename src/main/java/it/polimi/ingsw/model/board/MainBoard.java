@@ -1,12 +1,12 @@
 package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.helpers.Constants;
-import java.util.ArrayList;
+import java.util.Vector;
 
 public class MainBoard {
 
   //Attributes
-  private final ArrayList<Island> islands;
+  private final Vector<Island> islands;
   private final MotherNature motherNature;
 
   /**
@@ -14,7 +14,7 @@ public class MainBoard {
    */
   public MainBoard() {
     motherNature = new MotherNature(MainBoard.pickStartPlaceMotherNature());
-    islands = new ArrayList<>();
+    islands = new Vector<>();
     for (int i = 0; i < Constants.getInitialNumIslands(); i++) {
       islands.add(new Island());
       //pick random Student
@@ -57,7 +57,7 @@ public class MainBoard {
     //TODO
   }
 
-  public ArrayList<Island> getIslands() {
+  public Vector<Island> getIslands() {
     return islands;
   }
 

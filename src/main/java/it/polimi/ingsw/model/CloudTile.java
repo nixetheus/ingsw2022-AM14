@@ -37,7 +37,7 @@ public class CloudTile {
    * @return an array of students
    */
   public int[] emptyCloud() {
-    int[] studentsToReturn = students;
+    int[] studentsToReturn = students.clone();
     for (Color color : Color.values()) {
       students[color.ordinal()] = 0;
     }
