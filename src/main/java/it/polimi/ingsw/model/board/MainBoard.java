@@ -18,6 +18,7 @@ public class MainBoard {
     for (int i = 0; i < Constants.getInitialNumIslands(); i++) {
       islands.add(new Island());
       //pick random Student
+      //TODO
     }
   }
 
@@ -51,10 +52,36 @@ public class MainBoard {
   }
 
   /**
-   * @param numIsland number that identifies the island
+   * it checks that the owners of the islands adjacent to the one in
+   * position "numIslandConquered" are equal and if they are,
+   * it joins them into a single island, and removes the other
+   *
+   * @param numIslandConquered number that identifies the island
    */
-  public void joinIsland(int numIsland) {
-    //TODO
+  public void joinIsland(int numIslandConquered) {
+    numIslandConquered = numIslandConquered % islands.size();
+    int owner = islands.get(numIslandConquered).getOwnerId();
+    int islandToJoin;
+    //check right
+    if (numIslandConquered == islands.size() - 1) {
+      islandToJoin = 0;
+    } else {
+      islandToJoin = numIslandConquered + 1;
+    }
+    if (owner == islands.get(islandToJoin).getOwnerId()) {
+      islands.get(numIslandConquered).addIsland(islands.get(islandToJoin));
+      islands.remove(islandToJoin);
+    }
+    //check left
+    if (numIslandConquered == 0) {
+      islandToJoin = islands.size() - 1;
+    } else {
+      islandToJoin = numIslandConquered - 1;
+    }
+    if (owner == islands.get(islandToJoin).getOwnerId()) {
+      islands.get(numIslandConquered).addIsland(islands.get(islandToJoin));
+      islands.remove(islandToJoin);
+    }
   }
 
   public Vector<Island> getIslands() {
