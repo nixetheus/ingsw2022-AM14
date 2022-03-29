@@ -10,16 +10,15 @@ import org.junit.Test;
 public class CloudTileTest {
 
   private final CloudTile cloudTest = new CloudTile(0);
+  private final int[] testArr = {0, 0 ,1};
 
   /**
    * Test the addStudent Method
    */
   @Test
-  public void testAddStudent(){
+  public void testFillCloud(){
     Assert.assertEquals(Arrays.toString(cloudTest.getStudents()), "[0, 0, 0, 0, 0]");
-    cloudTest.addStudent(0);
-    cloudTest.addStudent(0);
-    cloudTest.addStudent(1);
+    cloudTest.fillCloud(testArr);
     Assert.assertEquals(Arrays.toString(cloudTest.getStudents()), "[2, 1, 0, 0, 0]");
   }
 
@@ -30,8 +29,8 @@ public class CloudTileTest {
   public void testEmptyCloud() {
     cloudTest.emptyCloud();
     Assert.assertEquals(Arrays.toString(cloudTest.getStudents()), "[0, 0, 0, 0, 0]");
-    cloudTest.addStudent(0);
+    cloudTest.fillCloud(testArr);
     int[] test = cloudTest.emptyCloud();
-    Assert.assertEquals(Arrays.toString(test), "[1, 0, 0, 0, 0]");
+    Assert.assertEquals(Arrays.toString(test), "[2, 1, 0, 0, 0]");
   }
 }

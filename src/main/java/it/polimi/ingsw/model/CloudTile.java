@@ -11,7 +11,7 @@ public class CloudTile {
 
   //Attributes
   private final int id;
-  private final int[] students = new int[Constants.getNColors()];
+  private int[] students = new int[Constants.getNColors()];
 
   /**
    * Constructor method:
@@ -23,12 +23,14 @@ public class CloudTile {
   }
 
   /**
-   * addStudent method add ONE student on the CloudTile
+   * addStudent method fills cloud tile
    *
-   * @param color identify the array position to add a student
+   * @param colors identify the array of the students to put in the cloudTile
    */
-  public void addStudent(int color) {
-    students[color]++;
+  public void fillCloud(int[] colors) {
+    for(int x : colors) {
+      students[x]++;
+    }
   }
 
   /**
