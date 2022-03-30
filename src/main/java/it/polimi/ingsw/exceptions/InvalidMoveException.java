@@ -1,7 +1,8 @@
 package it.polimi.ingsw.exceptions;
 
 /**
- * TODO
+ * InvalidMoveException class is thrown when a player do an invalid action that is not  allowed in
+ * the game
  */
 public class InvalidMoveException extends Exception {
 
@@ -12,7 +13,7 @@ public class InvalidMoveException extends Exception {
   }
 
   /**
-   * TODO
+   * This method is used to know which error is happened and send to the client
    */
   public String getMessage() {
     return "Error: " + errorMessage;

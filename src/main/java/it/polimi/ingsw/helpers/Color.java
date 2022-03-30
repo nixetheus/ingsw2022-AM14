@@ -1,7 +1,7 @@
 package it.polimi.ingsw.helpers;
 
 /**
- * TODO
+ * Color enumeration used for the students possible colors
  */
 public enum Color {
   YELLOW,

@@ -23,7 +23,7 @@ public class DiningRoom {
    * This method adds a new Student to the entrance
    *
    * @param color The color of the student that will be added to the dining room
-   * @throws InvalidMoveException TODO
+   * @throws InvalidMoveException If the dining room for that color is already full
    */
   public void addStudent(int color) throws InvalidMoveException {
     if (students[color] + 1 <= Constants.getMaxStudentsDiningRoom()) {

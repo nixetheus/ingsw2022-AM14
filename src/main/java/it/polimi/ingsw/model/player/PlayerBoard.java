@@ -29,7 +29,6 @@ public class PlayerBoard {
     try {
       diningRoom.addStudent(color);
     } catch (InvalidMoveException e) {
-      System.out.println(e.getMessage());
       // TODO
     }
   }
