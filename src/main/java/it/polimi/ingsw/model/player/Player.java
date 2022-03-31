@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import it.polimi.ingsw.exceptions.InvalidMoveException;
+import it.polimi.ingsw.helpers.Places;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Vector;
@@ -74,14 +75,13 @@ public class Player {
   /**
    * This method is used to move a student to the entrance or to the dining room
    *
-   * @param location used to identify where the student will be put in (0 for the entrance 1 for
-   *                 dining room)
+   * @param place used to identify where the student will be put in
    * @param color    used to identify the color of the student
    */
-  public void moveToPlayerBoard(int location, int color) {
-    if (location == 0) {
+  public void moveToPlayerBoard(Places place, int color) {
+    if ( place==Places.ENTRANCE) {
       playerBoard.moveToEntrance(color);
-    } else {
+    } else if (place==Places.DINING_ROOM){
       playerBoard.moveToDiningRoom(color);
     }
   }

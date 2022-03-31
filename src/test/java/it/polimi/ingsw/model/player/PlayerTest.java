@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.exceptions.InvalidMoveException;
+import it.polimi.ingsw.helpers.Places;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
 import junit.framework.TestCase;
@@ -56,7 +57,7 @@ public class PlayerTest extends TestCase {
   public void testMoveToPlayerBoardEntranceCase() throws FileNotFoundException {
     testPlayer = new Player(2, "ale");
     testEntrance = new Entrance();
-    testPlayer.moveToPlayerBoard(0, 3);
+    testPlayer.moveToPlayerBoard(Places.ENTRANCE, 3);
     testEntrance.addStudent(3);
     assertEquals(Arrays.toString(testPlayer.getPlayerBoard().getEntrance().getStudents()),
         Arrays.toString(testEntrance.getStudents()));
@@ -71,7 +72,7 @@ public class PlayerTest extends TestCase {
   public void testMoveToPlayerBoardDiningCase() throws InvalidMoveException, FileNotFoundException {
     testPlayer = new Player(2, "ale");
     testDiningRoom = new DiningRoom();
-    testPlayer.moveToPlayerBoard(1, 2);
+    testPlayer.moveToPlayerBoard(Places.DINING_ROOM, 2);
     testDiningRoom.addStudent(2);
     assertEquals(Arrays.toString(testPlayer.getPlayerBoard().getDiningRoom().getStudents()),
         Arrays.toString(testDiningRoom.getStudents()));
