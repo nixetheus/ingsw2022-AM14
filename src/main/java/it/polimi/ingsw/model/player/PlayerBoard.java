@@ -14,9 +14,11 @@ public class PlayerBoard {
 
   /**
    * Constructor method for the PlayerBoard class
+   *
+   * @param studentAtEntrance Students put at the entrance
    */
-  public PlayerBoard() {
-    entrance = new Entrance();
+  public PlayerBoard(int[] studentAtEntrance) {
+    entrance = new Entrance(studentAtEntrance);
     diningRoom = new DiningRoom();
   }
 

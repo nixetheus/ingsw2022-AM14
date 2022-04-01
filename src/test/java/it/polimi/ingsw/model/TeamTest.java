@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.helpers.Towers;
+import it.polimi.ingsw.model.board.StudentsBag;
 import it.polimi.ingsw.model.player.Player;
 import java.io.FileNotFoundException;
 import org.junit.Test;
@@ -10,12 +11,15 @@ import org.junit.Test;
  */
 public class TeamTest {
 
+  private final StudentsBag studentsBag = new StudentsBag();
+  private final int studentAtEntrance = 0;
+
   /**
    * testAddPlayer method tests the initialization of the Team class with one player
    */
   @Test
   public void testAddPlayer() throws FileNotFoundException {
-    Player testPlayer = new Player(1,"Ale");
+    Player testPlayer = new Player(1, "Ale", studentsBag, studentAtEntrance);
     Team testTeam = new Team(0, Towers.WHITE.ordinal(), testPlayer);
 
     assert (!testTeam.getPlayers().isEmpty());
@@ -27,8 +31,8 @@ public class TeamTest {
    */
   @Test
   public void testAddPlayerTwice() throws FileNotFoundException {
-    Player testPlayer = new Player(1,"Luca");
-    Player testPlayerTwo = new Player(2,"Dario");
+    Player testPlayer = new Player(1, "Luca", studentsBag, studentAtEntrance);
+    Player testPlayerTwo = new Player(2, "Dario", studentsBag, studentAtEntrance);
 
     Team testTeam = new Team(0, Towers.WHITE.ordinal(), testPlayer);
     testTeam.addPlayer(testPlayerTwo);

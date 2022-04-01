@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.helpers.Constants;
 import java.util.Arrays;
 
 /**
@@ -9,13 +10,17 @@ import java.util.Arrays;
 public class Entrance {
 
   //Attributes
-  private final int[] students;
+  private final int[] students = new int[Constants.getNColors()];
 
   /**
    * Constructor method for the Entrance class
+   *
+   * @param studentsRandomlyChosen Students put at the entrance at the beginning of the game
    */
-  public Entrance() {
-    students = new int[]{0, 0, 0, 0, 0};
+  public Entrance(int[] studentsRandomlyChosen) {
+    for (int j : studentsRandomlyChosen) {
+      this.students[j]++;
+    }
   }
 
   /**

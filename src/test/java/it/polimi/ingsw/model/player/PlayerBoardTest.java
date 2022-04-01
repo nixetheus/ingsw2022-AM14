@@ -12,11 +12,12 @@ public class PlayerBoardTest extends TestCase {
   int[] arrayTest;
 
   /**
-   * testMoveToDiningRoom tests moveToDiningRoom method
+   * testMoveToDiningRoom tests moveToDiningRoom method,creating a new  playerBoard and adding a
+   * student to it and assuming it equals to an array calculated by hand
    */
 
   public void testMoveToDiningRoom() {
-    testPlayerBoard = new PlayerBoard();
+    testPlayerBoard = new PlayerBoard(new int[]{0, 0, 0, 0, 0});
     arrayTest = new int[]{0, 0, 0, 0, 1};
     testPlayerBoard.moveToDiningRoom(4);
     assertEquals(Arrays.toString(testPlayerBoard.getDiningRoom().getStudents()),
@@ -24,12 +25,13 @@ public class PlayerBoardTest extends TestCase {
   }
 
   /**
-   * testMoveToEntrance tests moveToEntrance method
+   * testMoveToEntrance tests moveToEntrance method,creating a new playerBoard followed by a
+   * moveToEntrance and it would be equals to an array calculated by hand
    */
 
   public void testMoveToEntrance() {
-    testPlayerBoard = new PlayerBoard();
-    arrayTest = new int[]{0, 0, 0, 1, 0};
+    testPlayerBoard = new PlayerBoard(new int[]{0, 0, 0, 0, 0});
+    arrayTest = new int[]{5, 0, 0, 1, 0};
     testPlayerBoard.moveToEntrance(3);
     assertEquals(Arrays.toString(testPlayerBoard.getEntrance().getStudents()),
         Arrays.toString(arrayTest));

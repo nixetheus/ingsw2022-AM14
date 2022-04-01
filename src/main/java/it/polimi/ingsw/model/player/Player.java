@@ -4,6 +4,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import it.polimi.ingsw.exceptions.InvalidMoveException;
+import it.polimi.ingsw.helpers.Places;
+import it.polimi.ingsw.model.board.StudentsBag;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Vector;
@@ -26,14 +28,16 @@ public class Player {
    *
    * @param playerId       Unique identifier for each player
    * @param playerNickname Unique name chosen by each player
+   * @param studentsBag    Students put at the entrance
    */
 
-  public Player(int playerId, String playerNickname) throws FileNotFoundException {
+  public Player(int playerId, String playerNickname, StudentsBag studentsBag,
+      int numberOfStudentAtEntrance) throws FileNotFoundException {
     this.playerId = playerId;
     this.playerNickname = playerNickname;
     this.coins = 0;
     this.assistant = null;
-    this.playerBoard = new PlayerBoard();
+    this.playerBoard = new PlayerBoard(studentsBag.pickRandomStudents(numberOfStudentAtEntrance));
     this.playableAssistants = new Vector<>();
     JsonArray array = JsonParser
         .parseReader(new FileReader("src/main/resources/json/assistants.json")).getAsJsonArray();
@@ -74,20 +78,19 @@ public class Player {
   /**
    * This method is used to move a student to the entrance or to the dining room
    *
-   * @param location used to identify where the student will be put in (0 for the entrance 1 for
-   *                 dining room)
-   * @param color    used to identify the color of the student
+   * @param place used to identify where the student will be put in
+   * @param color used to identify the color of the student
    */
-  public void moveToPlayerBoard(int location, int color) {
-    if (location == 0) {
+  public void moveToPlayerBoard(Places place, int color) {
+    if (place == Places.ENTRANCE) {
       playerBoard.moveToEntrance(color);
-    } else {
+    } else if (place == Places.DINING_ROOM) {
       playerBoard.moveToDiningRoom(color);
     }
   }
 
   /**
-   * This method add a coin to the player "wallet"
+   * This method adds a coin to the player "wallet"
    */
   public void addCoin() {
     this.coins++;
