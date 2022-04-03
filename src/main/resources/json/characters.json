@@ -1,6 +1,6 @@
 [
   {
-    "ID": 1,
+    "ID": 0,
     "COST": 1,
     "CARDS_STUDENT": 4,
     "EFFECT_NUMBER": 0,
@@ -9,7 +9,7 @@
     "REPLACE_STUDENTS": false
   },
   {
-    "ID": 2,
+    "ID": 1,
     "COST": 2,
     "CARDS_STUDENT": 0,
     "EFFECT_NUMBER": 0,
@@ -18,7 +18,7 @@
     "REPLACE_STUDENTS": false
   },
   {
-    "ID": 3,
+    "ID": 2,
     "COST": 3,
     "CARDS_STUDENT": 0,
     "EFFECT_NUMBER": 1,
@@ -27,7 +27,7 @@
     "REPLACE_STUDENTS": false
   },
   {
-    "ID": 4,
+    "ID": 3,
     "COST": 1,
     "CARDS_STUDENT": 0,
     "EFFECT_NUMBER": 0,
@@ -36,7 +36,7 @@
     "REPLACE_STUDENTS": false
   },
   {
-    "ID": 5,
+    "ID": 4,
     "COST": 2,
     "CARDS_STUDENT": 0,
     "EFFECT_NUMBER": 2,
@@ -45,7 +45,7 @@
     "REPLACE_STUDENTS": false
   },
   {
-    "ID": 6,
+    "ID": 5,
     "COST": 3,
     "CARDS_STUDENT": 0,
     "EFFECT_NUMBER": 3,
@@ -54,7 +54,7 @@
     "REPLACE_STUDENTS": false
   },
   {
-    "ID": 7,
+    "ID": 6,
     "COST": 1,
     "CARDS_STUDENT": 6,
     "EFFECT_NUMBER": 1,
@@ -63,7 +63,7 @@
     "REPLACE_STUDENTS": true
   },
   {
-    "ID": 8,
+    "ID": 7,
     "COST": 2,
     "CARDS_STUDENT": 0,
     "EFFECT_NUMBER": 4,
@@ -72,7 +72,7 @@
     "REPLACE_STUDENTS": false
   },
   {
-    "ID": 9,
+    "ID": 8,
     "COST": 3,
     "CARDS_STUDENT": 0,
     "EFFECT_NUMBER": 5,
@@ -81,7 +81,7 @@
     "REPLACE_STUDENTS": false
   },
   {
-    "ID": 10,
+    "ID": 9,
     "COST": 1,
     "CARDS_STUDENT": 0,
     "EFFECT_NUMBER": 2,
@@ -90,7 +90,7 @@
     "REPLACE_STUDENTS": false
   },
   {
-    "ID": 11,
+    "ID": 10,
     "COST": 2,
     "CARDS_STUDENT": 4,
     "EFFECT_NUMBER": 3,
@@ -99,7 +99,7 @@
     "REPLACE_STUDENTS": false
   },
   {
-    "ID": 12,
+    "ID": 11,
     "COST": 3,
     "CARDS_STUDENT": 0,
     "EFFECT_NUMBER": 4,

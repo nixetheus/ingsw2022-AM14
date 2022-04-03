@@ -1,12 +1,21 @@
 package it.polimi.ingsw.model;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import it.polimi.ingsw.helpers.Constants;
+import it.polimi.ingsw.helpers.Places;
 import it.polimi.ingsw.model.board.Island;
 import it.polimi.ingsw.model.board.MainBoard;
 import it.polimi.ingsw.model.board.StudentsBag;
 import it.polimi.ingsw.model.player.Player;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.List;
 import java.util.Random;
 import java.util.Vector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Game class is TODO
@@ -20,9 +29,13 @@ public class Game {
   private final int gamePhase;
   private final int[] professorControlPlayer;
   private final Vector<CloudTile> cloudTiles;
-  private final int idFirstPlayer;
+  private int idFirstPlayer;
   private int turnNumber;
-  private CharacterCard[] purchasableCharacter;
+  private final CharacterCard[] purchasableCharacter;
+  private int playerNumber;
+  private int playerTowerNumber;
+  private int studentAtEntrance;
+  private int studentOnCloudTiles;
 
   /**
    * Constructor por Game class
@@ -34,23 +47,22 @@ public class Game {
     this.teams = teams;
     this.gamePhase = 0;
     this.professorControlPlayer = new int[Constants.getNColors()];
-    //this.purchasableCharacter=
     this.studentsBag = new StudentsBag();
     this.mainBoard = new MainBoard();
     this.cloudTiles = new Vector<>();
     this.mode = mode;
-    this.idFirstPlayer = new Random().nextInt(1, 4);
+    this.purchasableCharacter = new CharacterCard[3];
   }
 
   /**
    * CreateClouds is a method that create and fill the clouds for the beginning of the game
    */
-  public void createClouds() {
+  public void createCloudsAndFill() {
     int i;
-    for (i = 0; i > mode; i++) {
+    for (i = 0; i < playerNumber; i++) {
       CloudTile cloudTile = new CloudTile(i);
-      cloudTile.fillCloud(studentsBag.pickRandomStudents(3));
-      cloudTiles.add(cloudTile);
+      cloudTile.fillCloud(studentsBag.pickRandomStudents(studentOnCloudTiles));
+      this.cloudTiles.add(cloudTile);
     }
   }
 
@@ -80,10 +92,87 @@ public class Game {
     int[] students = cloudTile.getStudents();
     for (int i = 0; i < Constants.getNColors(); i++) {
       for (; students[i] > 0; students[i]--) {
-        activePlayer.moveToPlayerBoard(0, i);
+        activePlayer.moveToPlayerBoard(Places.ENTRANCE, i);
       }
     }
     cloudTile.emptyCloud();
+  }
+
+  /**
+   * Method used to create and set the character available fore this match
+   */
+  public void setPurchasableCharacter() throws FileNotFoundException {
+    Vector<CharacterCard> characterCards = new Vector<>();
+    JsonArray character = JsonParser
+        .parseReader(new FileReader("src/main/resources/json/characters.json")).getAsJsonArray();
+    for (Object o1 : character) {
+      JsonObject object1 = (JsonObject) o1;
+      int idCharacter = object1.get("ID").getAsInt();
+      int characterCost = object1.get("COST").getAsInt();
+      int studentOnCard = object1.get("CARDS_STUDENT").getAsInt();
+      int effectNumber = object1.get("EFFECT_NUMBER").getAsInt();
+      int effectClass = object1.get("EFFECT_CLASS").getAsInt();
+      int noEntryTiles = object1.get("NO_ENTRY_TILE").getAsInt();
+      boolean replaceStudent = object1.get("REPLACE_STUDENTS").getAsBoolean();
+      CharacterCard characterCard = new CharacterCard(idCharacter, characterCost, studentOnCard,
+          studentsBag, effectNumber, effectClass, noEntryTiles, replaceStudent);
+      characterCards.add(characterCard);
+    }
+
+    Random random = new Random();
+    List<Integer> randomNumbers = random.ints(0, 12).distinct().limit(3).boxed()
+        .collect(Collectors.toList());
+    for (int i = 0; i < 3; i++) {
+      int finalI = i;
+      Stream<CharacterCard> characterToAdd = characterCards.stream()
+          .filter(characterCard -> characterCard.getId() == randomNumbers.get(finalI));
+      this.purchasableCharacter[i] = characterToAdd.findAny().get();
+    }
+  }
+
+
+  /**
+   * This method reads the json and set them into the class attributes
+   */
+  public void setGameParameter() throws FileNotFoundException {
+    int i = 1;
+    JsonArray gameParameter = JsonParser
+        .parseReader(new FileReader("src/main/resources/json/gameParameters.json"))
+        .getAsJsonArray();
+    for (Object o : gameParameter) {
+      if (mode == i) {
+        JsonObject object = (JsonObject) o;
+        this.playerNumber = object.get("PLAYER_NUMBER").getAsInt();
+        this.playerTowerNumber = object.get("NUMBER_OF_TOWER_FOR_A_TEAM").getAsInt();
+        this.studentAtEntrance = object.get("STUDENT_AT_THE_ENTRANCE").getAsInt();
+        this.studentOnCloudTiles = object.get("STUDENTS_ON_EACH_CLOUD_TILE").getAsInt();
+      }
+      i++;
+    }
+    this.idFirstPlayer = new Random().nextInt(playerNumber);
+  }
+
+  /**
+   * Method used to move student from one place to another
+   *
+   * @param activePlayer To know which is the current player
+   * @param placeToTake  Where the student is taken from
+   * @param placeToAdd   Where the student is put int
+   * @param color        Which is the color of the student
+   * @param islandNumber To know on which island put the student, if is not an island this value is
+   *                     -1
+   */
+  public void moveStudent(Player activePlayer, Places placeToTake, Places placeToAdd, int color,
+      int islandNumber) {
+    if (placeToAdd == Places.DINING_ROOM && placeToTake == Places.ENTRANCE) {
+      activePlayer.moveToPlayerBoard(Places.DINING_ROOM, color);
+      activePlayer.getPlayerBoard().getEntrance().removeStudent(color);
+    } else if (placeToAdd == Places.CLOUD_TILE && placeToTake == Places.ENTRANCE) {
+      mainBoard.addToIsland(color, islandNumber);
+      activePlayer.getPlayerBoard().getEntrance().removeStudent(color);
+    }
+    //TODO
+    //for the character part
   }
 
   public Vector<CloudTile> getCloudTiles() {
@@ -92,6 +181,46 @@ public class Game {
 
   public MainBoard getMainBoard() {
     return mainBoard;
+  }
+
+  public Vector<Team> getTeams() {
+    return teams;
+  }
+
+  public int getMode() {
+    return mode;
+  }
+
+  public int getGamePhase() {
+    return gamePhase;
+  }
+
+  public int[] getProfessorControlPlayer() {
+    return professorControlPlayer;
+  }
+
+  public CharacterCard[] getPurchasableCharacter() {
+    return purchasableCharacter;
+  }
+
+  public int getPlayerTowerNumber() {
+    return playerTowerNumber;
+  }
+
+  public int getStudentAtEntrance() {
+    return studentAtEntrance;
+  }
+
+  public int getStudentOnCloudTiles() {
+    return studentOnCloudTiles;
+  }
+
+  public int getPlayerNumber() {
+    return playerNumber;
+  }
+
+  public StudentsBag getStudentsBag() {
+    return studentsBag;
   }
 
 }
