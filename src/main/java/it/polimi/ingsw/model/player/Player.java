@@ -33,14 +33,17 @@ public class Player {
 
   public Player(int playerId, String playerNickname, StudentsBag studentsBag,
       int numberOfStudentAtEntrance) throws FileNotFoundException {
+
     this.playerId = playerId;
     this.playerNickname = playerNickname;
     this.coins = 0;
     this.assistant = null;
     this.playerBoard = new PlayerBoard(studentsBag.pickRandomStudents(numberOfStudentAtEntrance));
     this.playableAssistants = new Vector<>();
-    JsonArray array = JsonParser
-        .parseReader(new FileReader("src/main/resources/json/assistants.json")).getAsJsonArray();
+
+    String jsonFile = "src/main/resources/json/assistants.json";
+    JsonArray array = JsonParser.parseReader(new FileReader(jsonFile)).getAsJsonArray();
+
     for (Object o : array) {
       JsonObject object = (JsonObject) o;
       int moves = object.get("MOVES").getAsInt();
@@ -48,7 +51,6 @@ public class Player {
       int assistantId = object.get("ASSISTANT_ID").getAsInt();
       playableAssistants.add(new Assistant(moves, speed, assistantId));
     }
-
 
   }
 

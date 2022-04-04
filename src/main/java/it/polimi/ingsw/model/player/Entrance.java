@@ -15,11 +15,11 @@ public class Entrance {
   /**
    * Constructor method for the Entrance class
    *
-   * @param studentsRandomlyChosen Students put at the entrance at the beginning of the game
+   * @param studentsRandomlyChosenColors Students put at the entrance at the beginning of the game
    */
-  public Entrance(int[] studentsRandomlyChosen) {
-    for (int j : studentsRandomlyChosen) {
-      this.students[j]++;
+  public Entrance(int[] studentsRandomlyChosenColors) {
+    for (int color : studentsRandomlyChosenColors) {
+      this.students[color]++;
     }
   }
 

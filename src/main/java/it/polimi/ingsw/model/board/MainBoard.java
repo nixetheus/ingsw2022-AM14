@@ -52,9 +52,8 @@ public class MainBoard {
   }
 
   /**
-   * it checks that the owners of the islands adjacent to the one in
-   * position "numIslandConquered" are equal and if they are,
-   * it joins them into a single island, and removes the other
+   * it checks that the owners of the islands adjacent to the one in position "numIslandConquered"
+   * are equal and if they are, it joins them into a single island, and removes the other
    *
    * @param numIslandConquered number that identifies the island
    */

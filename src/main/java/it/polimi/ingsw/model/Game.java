@@ -29,9 +29,8 @@ public class Game {
   private final int gamePhase;
   private final int[] professorControlPlayer;
   private final Vector<CloudTile> cloudTiles;
-  private int idFirstPlayer;
-  private int turnNumber;
   private final CharacterCard[] purchasableCharacter;
+  private int turnNumber;
   private int playerNumber;
   private int playerTowerNumber;
   private int studentAtEntrance;
@@ -67,7 +66,7 @@ public class Game {
   }
 
   /**
-   * Method to move mother nature and it calculate the influence to realize the join between the
+   * Method to move mother nature, and it calculates the influence to realize the join between the
    * islands
    *
    * @param movement The exact number of steps that motherNature does
@@ -77,14 +76,14 @@ public class Game {
     Island islandMotherNatureIN = mainBoard.getIslands()
         .get(mainBoard.getMotherNature().getPosition());
     islandMotherNatureIN.setOwner(mainBoard
-        .calculateInfluence());//make calculateInfluence return the player id that has the influence and takes the number of towers in the island to add for the influence
+        .calculateInfluence());//make calculateInfluence return the player id that has the influence and takes the number of towers on the island to add for the influence
     mainBoard.joinIsland(mainBoard.getMotherNature().getPosition());
   }
 
   /**
    * Method used to take a cloud and add the students at the active player entrance
    *
-   * @param activePlayer  To know the who is the active player
+   * @param activePlayer  To know who is the active player
    * @param idCloudToTake To know which cloud to take
    */
   public void takeCloud(Player activePlayer, int idCloudToTake) {
@@ -149,7 +148,7 @@ public class Game {
       }
       i++;
     }
-    this.idFirstPlayer = new Random().nextInt(playerNumber);
+    int idFirstPlayer = new Random().nextInt(playerNumber);
   }
 
   /**
