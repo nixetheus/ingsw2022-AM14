@@ -1,24 +1,37 @@
 package it.polimi.ingsw.model.board;
 
+import it.polimi.ingsw.helpers.Color;
 import it.polimi.ingsw.helpers.Constants;
+import it.polimi.ingsw.model.Team;
+import it.polimi.ingsw.model.player.Player;
 import java.util.Vector;
 
 public class MainBoard {
 
   //Attributes
+  private final StudentsBag studentsBag;
   private final Vector<Island> islands;
   private final MotherNature motherNature;
 
   /**
    * Constructor method: it creates Islands array, and it places on each of them one student
    */
-  public MainBoard() {
-    motherNature = new MotherNature(MainBoard.pickStartPlaceMotherNature());
+  public MainBoard(StudentsBag gameStudentsBag) {
+
     islands = new Vector<>();
-    for (int i = 0; i < Constants.getInitialNumIslands(); i++) {
-      islands.add(new Island());
-      //pick random Student
-      //TODO
+    studentsBag = gameStudentsBag;
+    motherNature = new MotherNature(MainBoard.pickStartPlaceMotherNature());
+
+    for (int islandIndex = 0; islandIndex < Constants.getInitialNumIslands(); islandIndex++) {
+
+      Island newIsland = new Island();
+      if (islandIndex != motherNature.getPosition() ||
+          islandIndex != ((motherNature.getPosition()
+              + Constants.getInitialNumIslands() / 2)
+              % Constants.getInitialNumIslands())) {
+        newIsland.addStudent(studentsBag.pickRandomStudents(1)[0]);
+      }
+      islands.add(newIsland);
     }
   }
 
@@ -36,9 +49,25 @@ public class MainBoard {
    *
    * @return the integer that represents the team
    */
-  public int calculateInfluence() {
-    //TODO
-    return 42;
+  public int calculateInfluence(Player[] professors, Vector<Team> teams, Island island) {
+    int[] influences = new int[teams.size()];
+    for (Color color : Color.values()) {
+      Player playerHasProfessor = professors[color.ordinal()];
+
+      Team teamHasProfessor = null;
+      for (Team team : teams) {
+        if (team.getPlayers().contains(playerHasProfessor)) {
+          teamHasProfessor = team;
+        }
+      }
+
+      if (teamHasProfessor != null) {
+        influences[teamHasProfessor.getId()] += island.getStudents()[color.ordinal()];
+      }
+    }
+
+    // TODO LUCA: return id/team con più influenza
+    return 0;
   }
 
   /**
@@ -58,28 +87,19 @@ public class MainBoard {
    * @param numIslandConquered number that identifies the island
    */
   public void joinIsland(int numIslandConquered) {
-    numIslandConquered = numIslandConquered % islands.size();
-    int owner = islands.get(numIslandConquered).getOwnerId();
-    int islandToJoin;
-    //check right
-    if (numIslandConquered == islands.size() - 1) {
-      islandToJoin = 0;
-    } else {
-      islandToJoin = numIslandConquered + 1;
+
+    // NEXT
+    int nextIsland = (numIslandConquered + 1) % islands.size();
+    if (islands.get(numIslandConquered).getOwnerId() == islands.get(nextIsland).getOwnerId()) {
+      islands.get(numIslandConquered).addIsland(islands.get(nextIsland));
+      islands.remove(islands.get(nextIsland));
     }
-    if (owner == islands.get(islandToJoin).getOwnerId()) {
-      islands.get(numIslandConquered).addIsland(islands.get(islandToJoin));
-      islands.remove(islandToJoin);
-    }
-    //check left
-    if (numIslandConquered == 0) {
-      islandToJoin = islands.size() - 1;
-    } else {
-      islandToJoin = numIslandConquered - 1;
-    }
-    if (owner == islands.get(islandToJoin).getOwnerId()) {
-      islands.get(numIslandConquered).addIsland(islands.get(islandToJoin));
-      islands.remove(islandToJoin);
+
+    // PREVIOUS
+    int previousIsland = (numIslandConquered - 1) < 0 ? islands.size() - 1 : numIslandConquered - 1;
+    if (islands.get(numIslandConquered).getOwnerId() == islands.get(previousIsland).getOwnerId()) {
+      islands.get(numIslandConquered).addIsland(islands.get(previousIsland));
+      islands.remove(islands.get(previousIsland));
     }
   }
 

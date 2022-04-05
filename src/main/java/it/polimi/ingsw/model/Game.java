@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import it.polimi.ingsw.helpers.Color;
 import it.polimi.ingsw.helpers.Constants;
 import it.polimi.ingsw.helpers.Places;
 import it.polimi.ingsw.model.board.Island;
@@ -22,12 +23,12 @@ import java.util.stream.Stream;
  */
 public class Game {
 
-  private final Vector<Team> teams;
+  private final Vector<Team> teams = new Vector<>();
   private final StudentsBag studentsBag;
   private final MainBoard mainBoard;
   private final int mode;
   private final int gamePhase;
-  private final int[] professorControlPlayer;
+  private final Player[] professorControlPlayer;
   private final Vector<CloudTile> cloudTiles;
   private final CharacterCard[] purchasableCharacter;
   private int turnNumber;
@@ -39,29 +40,27 @@ public class Game {
   /**
    * Constructor por Game class
    *
-   * @param teams to know the number of teams for this match
-   * @param mode  To know how many player will play
+   * @param mode To know how many player will play
    */
-  public Game(Vector<Team> teams, int mode) {
-    this.teams = teams;
+  public Game(int mode) {
     this.gamePhase = 0;
-    this.professorControlPlayer = new int[Constants.getNColors()];
+    this.professorControlPlayer = new Player[Constants.getNColors()];
     this.studentsBag = new StudentsBag();
-    this.mainBoard = new MainBoard();
+    this.mainBoard = new MainBoard(this.studentsBag);
     this.cloudTiles = new Vector<>();
     this.mode = mode;
     this.purchasableCharacter = new CharacterCard[3];
+    // TODO LUCA: 3 = MAGIC NUMBER, metterlo in costanti
   }
 
   /**
-   * CreateClouds is a method that create and fill the clouds for the beginning of the game
+   * CreateClouds is a method that creates and fill the clouds for the beginning of the game
    */
   public void createCloudsAndFill() {
-    int i;
-    for (i = 0; i < playerNumber; i++) {
-      CloudTile cloudTile = new CloudTile(i);
+    for (int cloudIndex = 0; cloudIndex < playerNumber; cloudIndex++) {
+      CloudTile cloudTile = new CloudTile(cloudIndex);
       cloudTile.fillCloud(studentsBag.pickRandomStudents(studentOnCloudTiles));
-      this.cloudTiles.add(cloudTile);
+      cloudTiles.add(cloudTile);
     }
   }
 
@@ -72,11 +71,15 @@ public class Game {
    * @param movement The exact number of steps that motherNature does
    */
   public void moveNature(int movement) {
-    mainBoard.getMotherNature().move(movement, mainBoard.getIslands().size());
-    Island islandMotherNatureIN = mainBoard.getIslands()
+    mainBoard.getMotherNature()
+        .move(movement, mainBoard.getIslands().size()); // TODO LUCA: Interface needed
+
+    Island islandMotherNatureIn = mainBoard.getIslands()
         .get(mainBoard.getMotherNature().getPosition());
-    islandMotherNatureIN.setOwner(mainBoard
-        .calculateInfluence());//make calculateInfluence return the player id that has the influence and takes the number of towers on the island to add for the influence
+
+    islandMotherNatureIn.setOwner(
+        mainBoard.calculateInfluence(professorControlPlayer, teams, islandMotherNatureIn));
+
     mainBoard.joinIsland(mainBoard.getMotherNature().getPosition());
   }
 
@@ -87,14 +90,13 @@ public class Game {
    * @param idCloudToTake To know which cloud to take
    */
   public void takeCloud(Player activePlayer, int idCloudToTake) {
+
     CloudTile cloudTile = cloudTiles.get(idCloudToTake);
-    int[] students = cloudTile.getStudents();
-    for (int i = 0; i < Constants.getNColors(); i++) {
-      for (; students[i] > 0; students[i]--) {
-        activePlayer.moveToPlayerBoard(Places.ENTRANCE, i);
-      }
+    int[] students = cloudTile.emptyCloud();
+
+    for (int color : students) {
+      activePlayer.moveToPlayerBoard(Places.ENTRANCE, color);
     }
-    cloudTile.emptyCloud();
   }
 
   /**
@@ -127,6 +129,7 @@ public class Game {
           .filter(characterCard -> characterCard.getId() == randomNumbers.get(finalI));
       this.purchasableCharacter[i] = characterToAdd.findAny().get();
     }
+    // TODO LUCA: metodo troppo incasinato
   }
 
 
@@ -148,6 +151,8 @@ public class Game {
       }
       i++;
     }
+    // TODO LUCA: i non è un bel nome
+    // TODO LUCA: idFirstPlayer non viene usata
     int idFirstPlayer = new Random().nextInt(playerNumber);
   }
 
@@ -163,6 +168,7 @@ public class Game {
    */
   public void moveStudent(Player activePlayer, Places placeToTake, Places placeToAdd, int color,
       int islandNumber) {
+
     if (placeToAdd == Places.DINING_ROOM && placeToTake == Places.ENTRANCE) {
       activePlayer.moveToPlayerBoard(Places.DINING_ROOM, color);
       activePlayer.getPlayerBoard().getEntrance().removeStudent(color);
@@ -194,7 +200,7 @@ public class Game {
     return gamePhase;
   }
 
-  public int[] getProfessorControlPlayer() {
+  public Player[] getProfessorControlPlayer() {
     return professorControlPlayer;
   }
 

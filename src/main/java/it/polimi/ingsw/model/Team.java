@@ -15,7 +15,7 @@ public class Team {
   // Attributes
   private final int id;
   private final int towersColor;
-  private final Vector<Player> players = new Vector<Player>();
+  private final Vector<Player> players;
   private int availableTowers;
 
   /**
@@ -27,6 +27,7 @@ public class Team {
    */
   public Team(int teamId, int towerColor, Player firstPlayer) {
     id = teamId;
+    players = new Vector<>();
     towersColor = towerColor;
     availableTowers = Constants.getMaxTowers();
     addPlayer(firstPlayer);

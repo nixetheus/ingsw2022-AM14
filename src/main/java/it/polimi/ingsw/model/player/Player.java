@@ -3,7 +3,6 @@ package it.polimi.ingsw.model.player;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import it.polimi.ingsw.exceptions.InvalidMoveException;
 import it.polimi.ingsw.helpers.Places;
 import it.polimi.ingsw.model.board.StudentsBag;
 import java.io.FileNotFoundException;
@@ -31,48 +30,43 @@ public class Player {
    * @param studentsBag    Students put at the entrance
    */
 
-  public Player(int playerId, String playerNickname, StudentsBag studentsBag,
+  public Player(
+      int playerId,
+      String playerNickname,
+      StudentsBag studentsBag,
       int numberOfStudentAtEntrance) throws FileNotFoundException {
 
-    this.playerId = playerId;
-    this.playerNickname = playerNickname;
     this.coins = 0;
     this.assistant = null;
-    this.playerBoard = new PlayerBoard(studentsBag.pickRandomStudents(numberOfStudentAtEntrance));
+    this.playerId = playerId;
+    this.playerNickname = playerNickname;
     this.playableAssistants = new Vector<>();
+    this.playerBoard = new PlayerBoard(studentsBag.pickRandomStudents(numberOfStudentAtEntrance));
 
     String jsonFile = "src/main/resources/json/assistants.json";
-    JsonArray array = JsonParser.parseReader(new FileReader(jsonFile)).getAsJsonArray();
+    JsonArray assistants = JsonParser.parseReader(new FileReader(jsonFile)).getAsJsonArray();
 
-    for (Object o : array) {
-      JsonObject object = (JsonObject) o;
+    for (Object assistant : assistants) {
+      JsonObject object = (JsonObject) assistant;
       int moves = object.get("MOVES").getAsInt();
       int speed = object.get("SPEED").getAsInt();
       int assistantId = object.get("ASSISTANT_ID").getAsInt();
       playableAssistants.add(new Assistant(moves, speed, assistantId));
     }
-
-  }
-
-  public Vector<Assistant> getPlayableAssistant() {
-    return playableAssistants;
   }
 
   /**
-   * This method allows a player to play an Assistant and it removes that assistant form the
+   * This method allows a player to play an Assistant, and it removes that assistant form the
    * playable ones
    *
-   * @param assistantId used to identify which assistant is been played
+   * @param assistantId used to identify which assistant has been played
    */
-  public void playAssistant(int assistantId) throws InvalidMoveException {
+  public void playAssistant(int assistantId) {
+
     Assistant returnAssistant;
-    if (playableAssistants.stream()
-        .anyMatch(assistant1 -> assistant1.getAssistantId() == assistantId)) {
-      returnAssistant = playableAssistants.stream()
-          .filter(assistant1 -> assistant1.getAssistantId() == assistantId).findFirst().get();
-    } else {
-      throw new InvalidMoveException("TODO");
-    }
+    returnAssistant = playableAssistants.stream()
+        .filter(assistant -> assistant.getAssistantId() == assistantId).findFirst().get();
+
     this.assistant = returnAssistant;
     this.playableAssistants.remove(returnAssistant);
   }
@@ -116,6 +110,10 @@ public class Player {
 
   public PlayerBoard getPlayerBoard() {
     return playerBoard;
+  }
+
+  public Vector<Assistant> getPlayableAssistant() {
+    return playableAssistants;
   }
 
 }

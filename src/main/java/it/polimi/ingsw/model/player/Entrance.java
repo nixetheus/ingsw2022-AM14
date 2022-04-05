@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.helpers.Constants;
-import java.util.Arrays;
 
 /**
  * This class is used to model the entrance in witch you can add students to bring them either to
@@ -29,7 +28,7 @@ public class Entrance {
    * @param color The color of the student that will be added to the entrance
    */
   public void addStudent(int color) {
-    students[color] = students[color] + 1;
+    students[color]++;
   }
 
   /**
@@ -39,12 +38,9 @@ public class Entrance {
    */
   public void removeStudent(int color) {
     students[color]--;
-    if (students[color] < 0) {
-      students[color] = 0;
-    }
   }
 
   public int[] getStudents() {
-    return Arrays.copyOf(students, students.length);
+    return students.clone();
   }
 }
