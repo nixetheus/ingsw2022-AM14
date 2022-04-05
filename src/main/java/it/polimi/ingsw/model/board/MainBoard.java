@@ -4,22 +4,25 @@ import it.polimi.ingsw.helpers.Color;
 import it.polimi.ingsw.helpers.Constants;
 import it.polimi.ingsw.model.Team;
 import it.polimi.ingsw.model.player.Player;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Vector;
 
 public class MainBoard {
 
-  //Attributes
-  private final StudentsBag studentsBag;
   private final Vector<Island> islands;
   private final MotherNature motherNature;
 
   /**
-   * Constructor method: it creates Islands array, and it places on each of them one student
+   * Constructor method: it creates Islands array, it places the mother nature on a random island,
+   * and it places on the other islands one student with pickRandomStudent method,
+   * except the island in front of the mother nature
    */
   public MainBoard(StudentsBag gameStudentsBag) {
 
     islands = new Vector<>();
-    studentsBag = gameStudentsBag;
+    //Attributes
     motherNature = new MotherNature(MainBoard.pickStartPlaceMotherNature());
 
     for (int islandIndex = 0; islandIndex < Constants.getInitialNumIslands(); islandIndex++) {
@@ -29,7 +32,7 @@ public class MainBoard {
           islandIndex != ((motherNature.getPosition()
               + Constants.getInitialNumIslands() / 2)
               % Constants.getInitialNumIslands())) {
-        newIsland.addStudent(studentsBag.pickRandomStudents(1)[0]);
+        newIsland.addStudent(gameStudentsBag.pickRandomStudents(1)[0]);
       }
       islands.add(newIsland);
     }
@@ -46,8 +49,17 @@ public class MainBoard {
 
   /**
    * Method to calculate the team with the greatest influence
+   * It creates an array that represents the influence of each team of the passed island
+   * For each color it calculates the influences of the team
+   * Add extra influences points for the towers
+   * Return the index of the team with the greatest influence
    *
-   * @return the integer that represents the team
+   * @param professors array representing the players that control the respective professors
+   * @param teams vector of the teams
+   * @param island island on which to calculate the influence
+   *
+   * @return the integer that represents the team, if it is equal to -1 it is not possible to
+   * conquer or control the island, because two or more team have the same influence
    */
   public int calculateInfluence(Player[] professors, Vector<Team> teams, Island island) {
     int[] influences = new int[teams.size()];
@@ -66,8 +78,17 @@ public class MainBoard {
       }
     }
 
-    // TODO LUCA: return id/team con più influenza
-    return 0;
+    //add the influences points of the tower
+    if(island.getOwnerId() != -1)
+      influences[island.getOwnerId()] += island.getNumberOfTowers();
+
+    //return the index of the team with the max influences
+    int indexTeamMaxInfluence = -1;
+    int maxInfluence = -1;
+    for(int indexTeam = 0; indexTeam < influences.length; indexTeam++)
+      indexTeamMaxInfluence = (influences[indexTeam] > maxInfluence) ? indexTeam : maxInfluence;
+
+    return indexTeamMaxInfluence;
   }
 
   /**
@@ -81,21 +102,22 @@ public class MainBoard {
   }
 
   /**
-   * it checks that the owners of the islands adjacent to the one in position "numIslandConquered"
-   * are equal and if they are, it joins them into a single island, and removes the other
+   * This method checks that the owners of the islands adjacent to the one
+   * in position "numIslandConquered" are equal and if they are,
+   * it joins them into a single island, and removes the other from the islands vector
    *
    * @param numIslandConquered number that identifies the island
    */
   public void joinIsland(int numIslandConquered) {
 
-    // NEXT
+    //check next island
     int nextIsland = (numIslandConquered + 1) % islands.size();
     if (islands.get(numIslandConquered).getOwnerId() == islands.get(nextIsland).getOwnerId()) {
       islands.get(numIslandConquered).addIsland(islands.get(nextIsland));
       islands.remove(islands.get(nextIsland));
     }
 
-    // PREVIOUS
+    //check previous island
     int previousIsland = (numIslandConquered - 1) < 0 ? islands.size() - 1 : numIslandConquered - 1;
     if (islands.get(numIslandConquered).getOwnerId() == islands.get(previousIsland).getOwnerId()) {
       islands.get(numIslandConquered).addIsland(islands.get(previousIsland));
