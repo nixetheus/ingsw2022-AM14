@@ -48,7 +48,7 @@ public class Game {
     this.professorControlPlayer = new int[Constants.getNColors()];
     this.studentsBag = new StudentsBag();
     this.mainBoard = new MainBoard();
-    this.cloudTiles = new Vector<>();
+    this.cloudTiles = new Vector<CloudTile>();
     this.mode = mode;
     this.purchasableCharacter = new CharacterCard[3];
   }
