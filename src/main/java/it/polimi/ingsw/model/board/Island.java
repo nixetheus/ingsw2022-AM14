@@ -60,6 +60,15 @@ public class Island {
     ownerId = newOwnerId;
   }
 
+  /**
+   * Method to add towers to the island
+   *
+   * @param numTowersToAdd the number of towers to add
+   */
+  public void addTower(int numTowersToAdd) {
+    numberOfTowers += numTowersToAdd;
+  }
+
   public int getOwnerId() {
     return ownerId;
   }

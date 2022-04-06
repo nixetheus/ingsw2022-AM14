@@ -4,9 +4,6 @@ import it.polimi.ingsw.helpers.Color;
 import it.polimi.ingsw.helpers.Constants;
 import it.polimi.ingsw.model.Team;
 import it.polimi.ingsw.model.player.Player;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Vector;
 
 public class MainBoard {
@@ -85,8 +82,12 @@ public class MainBoard {
     //return the index of the team with the max influences
     int indexTeamMaxInfluence = -1;
     int maxInfluence = -1;
+
     for(int indexTeam = 0; indexTeam < influences.length; indexTeam++)
-      indexTeamMaxInfluence = (influences[indexTeam] > maxInfluence) ? indexTeam : maxInfluence;
+      if(influences[indexTeam] > maxInfluence){
+        maxInfluence = influences[indexTeam];
+        indexTeamMaxInfluence = indexTeam;
+      }
 
     return indexTeamMaxInfluence;
   }

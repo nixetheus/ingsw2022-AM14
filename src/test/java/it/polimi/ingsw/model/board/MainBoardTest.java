@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.helpers.Color;
 import it.polimi.ingsw.helpers.Constants;
+import it.polimi.ingsw.model.Team;
+import it.polimi.ingsw.model.player.Player;
+import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.Vector;
 import org.junit.Assert;
@@ -11,6 +14,56 @@ import org.junit.Test;
  * MainBoardTest class tests MainBoard class
  */
 public class MainBoardTest {
+
+  /**
+   * This method tests the calculateInfluence method.
+   * It creates professors array, vector team and a main board, and it fills them
+   * It creates the teams and add students to them
+   * Then calculate the influences and compare with the correct value
+   *
+   * @throws FileNotFoundException exception
+   */
+  @Test
+  public void testCalculateInfluence() throws FileNotFoundException {
+    StudentsBag testStudBag = new StudentsBag();
+    MainBoard mainBoardTest = new MainBoard(testStudBag);
+
+    //create professors array, vector team and island to calculate influence
+    Player[] profTest = new Player[Constants.getNColors()];
+    Vector<Team> teamsTest = new Vector<>();
+
+    //add students to the island and towers
+    mainBoardTest.getIslands().get(3).addStudent(0);
+    mainBoardTest.getIslands().get(3).addStudent(0);
+    mainBoardTest.getIslands().get(3).addStudent(0);
+    mainBoardTest.getIslands().get(3).addStudent(1);
+    mainBoardTest.getIslands().get(3).addStudent(2);
+    mainBoardTest.getIslands().get(3).addStudent(3);
+    mainBoardTest.getIslands().get(3).addStudent(3);
+    mainBoardTest.getIslands().get(3).addStudent(3);
+    mainBoardTest.getIslands().get(3).setOwner(0);
+    mainBoardTest.getIslands().get(3).addTower(1);
+
+    //create the team
+    StudentsBag testStudBag2 = new StudentsBag();
+    Player player1 = new Player(0, "Jeff", testStudBag2, 0);
+    teamsTest.add(new Team(0, 0, player1));
+    StudentsBag testStudBag3 = new StudentsBag();
+    Player player2 = new Player(1, "Tony", testStudBag3, 0);
+    teamsTest.add(new Team(1, 1, player2));
+
+    //fill the professors arr
+    profTest[0] = player1;
+    profTest[1] = player1;
+    profTest[3] = player2;
+    profTest[4] = player2;
+    //player1 controls 0, 1. influence = 4 + 1(tower) [+1 (pickRandomStudent mainBoard constructor)]
+    //player2 controls 3, 4. influence = 3 [+1 (pickRandomStudent mainBoard constructor]
+
+    Assert.assertEquals(0, mainBoardTest.calculateInfluence(profTest, teamsTest,
+        mainBoardTest.getIslands().get(3)));
+
+  }
 
   /**
    * Testing the addToIsland Method
@@ -60,6 +113,22 @@ public class MainBoardTest {
 
     StudentsBag test = new StudentsBag();
     MainBoard mainBoard = new MainBoard(test);
+
+    //find the color of the students added in the constructor of Main board
+    int[] positionOfRandomColors = new int[Constants.getInitialNumIslands()];
+
+    for(int island = 0; island < mainBoard.getIslands().size(); island++) {
+
+      int[] initialVector = mainBoard.getIslands().get(island).getStudents();
+      int colorStudentToFind = -1;
+
+      for(Color color : Color.values())
+        colorStudentToFind = (initialVector[color.ordinal()] == 1) ? color.ordinal() : colorStudentToFind;
+
+      positionOfRandomColors[island] = colorStudentToFind;
+    }
+
+    //add students to the islands in positions 0, 1, n-1
     mainBoard.getIslands().get(0).addStudent(0);
     mainBoard.getIslands().get(0).addStudent(0);
     mainBoard.getIslands().get(0).setOwner(2);
@@ -72,10 +141,11 @@ public class MainBoardTest {
 
     mainBoard.joinIsland(0);
 
+    //Create correct vector to compare in to assert
     Vector<Island> islandsTest = new Vector<>();
-    for (int i = 0; i < Constants.getInitialNumIslands() - 2; i++) {
+    for (int island = 0; island < Constants.getInitialNumIslands() - 2; island++)
       islandsTest.add(new Island());
-    }
+
     islandsTest.get(0).addStudent(0);
     islandsTest.get(0).addStudent(0);
     islandsTest.get(0).addStudent(0);
@@ -83,10 +153,21 @@ public class MainBoardTest {
     islandsTest.get(0).addStudent(2);
     islandsTest.get(0).addStudent(3);
 
-    /*for(int i = 0; i < mainBoard.getIslands().size(); i++) {
-      Assert.assertEquals(Arrays.toString(islandsTest.get(i).getStudents()),
-          Arrays.toString(mainBoard.getIslands().get(i).getStudents()));
-    }*/
-    // TODO LUCA: broken
+    //add to the correct vector the random students
+    int islandIndexForCorrectVec = 0;
+    for(int islandIndex = 0; islandIndex < Constants.getInitialNumIslands(); islandIndex++) {
+      if(islandIndex == 1 || islandIndex == 11) {
+        islandsTest.get(0).addStudent(positionOfRandomColors[islandIndex]);
+      } else {
+        islandsTest.get(islandIndexForCorrectVec).addStudent(positionOfRandomColors[islandIndex]);
+        islandIndexForCorrectVec++;
+      }
+    }
+
+    for(int island = 0; island < mainBoard.getIslands().size(); island++) {
+
+      Assert.assertEquals(Arrays.toString(islandsTest.get(island).getStudents()),
+          Arrays.toString(mainBoard.getIslands().get(island).getStudents()));
+    }
   }
 }
