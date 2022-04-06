@@ -69,7 +69,7 @@ public class MainBoardTest {
    * This method is equal to testCalculateInfluence but test the case when
    * two team have the same influences, we expect it returns -1
    *
-   * @throws FileNotFoundException exception 
+   * @throws FileNotFoundException exception
    */
   @Test
   public void testCalculateInfluenceDuplicate() throws FileNotFoundException {
@@ -222,4 +222,38 @@ public class MainBoardTest {
           Arrays.toString(mainBoard.getIslands().get(island).getStudents()));
     }
   }
+
+  /**
+   * This method test the method moveMotherNature
+   * it tries to move mother nature in some limit cases
+   */
+  @Test
+  public void testMoveMotherNature() {
+    StudentsBag studentBagTest = new StudentsBag();
+    MainBoard mainBoardTest = new MainBoard(studentBagTest);
+
+    int motherNatureInitialPos = mainBoardTest.getMotherNature().getPosition();
+    int numberOfMoves = 143252;
+
+    mainBoardTest.moveMotherNature(numberOfMoves);
+
+    Assert.assertEquals(
+        (motherNatureInitialPos + numberOfMoves) % mainBoardTest.getIslands().size(),
+        mainBoardTest.getMotherNature().getPosition());
+  }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

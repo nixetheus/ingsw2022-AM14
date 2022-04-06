@@ -5,7 +5,6 @@ import it.polimi.ingsw.helpers.Constants;
 import it.polimi.ingsw.model.Team;
 import it.polimi.ingsw.model.player.Player;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Vector;
 
 public class MainBoard {
@@ -131,6 +130,15 @@ public class MainBoard {
       islands.get(numIslandConquered).addIsland(islands.get(previousIsland));
       islands.remove(islands.get(previousIsland));
     }
+  }
+
+  /**
+   * Method to move mother nature
+   *
+   * @param numMoves number of jumps of mother nature
+   */
+  public void moveMotherNature(int numMoves) {
+    motherNature.move(numMoves, islands.size());
   }
 
   public Vector<Island> getIslands() {
