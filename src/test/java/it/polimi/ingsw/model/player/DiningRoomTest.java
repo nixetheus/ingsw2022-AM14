@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.player;
 
-import it.polimi.ingsw.exceptions.InvalidMoveException;
+
 import java.util.Arrays;
 import org.junit.Assert;
 import org.junit.Test;
@@ -14,10 +14,11 @@ public class DiningRoomTest {
   DiningRoom testDiningRoom;
 
   /**
-   * Testing the addStudent method
+   * Testing the addStudent method, it ensures that the right student will be correctly added thanks
+   * a test case calculated by hand
    */
   @Test
-  public void testAddStudent() throws InvalidMoveException {
+  public void testAddStudent() {
     testDiningRoom = new DiningRoom();
     int[] arrayTest = new int[]{1, 0, 1, 0, 0};
     testDiningRoom.addStudent(2);
@@ -27,22 +28,11 @@ public class DiningRoomTest {
   }
 
   /**
-   * Test for assure that the number of students never becomes less than zero
+   * Testing the removeStudent method, it ensures that the right student will be correctly removed
+   * thanks a test case calculated by hand
    */
   @Test
-  public void testRemoveStudentIfZero()  {
-    testDiningRoom = new DiningRoom();
-    InvalidMoveException exception= null;
-    testDiningRoom.removeStudent(0);
-    //Assert.assertNotNull(exception);
-    // TODO LUCA: broken
-  }
-
-  /**
-   * Testing the removeStudent method
-   */
-  @Test
-  public void testRemoveStudent() throws InvalidMoveException {
+  public void testRemoveStudent() {
     testDiningRoom = new DiningRoom();
     int[] arrayTest = new int[]{1, 0, 0, 0, 0};
     testDiningRoom.addStudent(0);
@@ -51,19 +41,4 @@ public class DiningRoomTest {
     Assert.assertEquals(Arrays.toString(testDiningRoom.getStudents()), Arrays.toString(arrayTest));
   }
 
-  /**
-   * Test for assure that the number of student will never exceed the maximum
-   */
-  @Test
-  public void testFullDiningRoom() throws InvalidMoveException {
-    testDiningRoom = new DiningRoom();
-    InvalidMoveException exception= null;
-    int i;
-    for (i = 0; i < 10; i++) {
-      testDiningRoom.addStudent(2);
-    }
-    testDiningRoom.addStudent(2);
-    //Assert.assertNotNull(exception);// TODO LUCA: broken
-
-  }
 }

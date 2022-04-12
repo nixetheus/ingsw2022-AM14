@@ -36,4 +36,29 @@ public class PlayerBoardTest extends TestCase {
     assertEquals(Arrays.toString(testPlayerBoard.getEntrance().getStudents()),
         Arrays.toString(arrayTest));
   }
+
+  /**
+   * testRemoveFromDiningRoom tests removeFromDiningRoom method,creating a new playerBoard followed
+   * by a removeFromDiningRoom and it would be equals to an array calculated by hand
+   */
+  public void testRemoveFromDiningRoom() {
+    testPlayerBoard = new PlayerBoard(new int[]{0, 0, 0, 0, 0});
+    arrayTest = new int[]{0, 0, 0, 0, 0};
+    testPlayerBoard.moveToDiningRoom(4);
+    testPlayerBoard.removeFromDiningRoom(4);
+    assertEquals(Arrays.toString(testPlayerBoard.getDiningRoom().getStudents()),
+        Arrays.toString(arrayTest));
+  }
+
+  /**
+   * testRemoveFromEntrance tests removeFromEntrance method,creating a new playerBoard followed by a
+   * removeFromEntrance and it would be equals to an array calculated by hand
+   */
+  public void testRemoveFromEntrance() {
+    testPlayerBoard = new PlayerBoard(new int[]{0, 0, 0, 0, 0});
+    arrayTest = new int[]{4, 0, 0, 0, 0};
+    testPlayerBoard.removeFromEntrance(0);
+    assertEquals(Arrays.toString(testPlayerBoard.getEntrance().getStudents()),
+        Arrays.toString(arrayTest));
+  }
 }

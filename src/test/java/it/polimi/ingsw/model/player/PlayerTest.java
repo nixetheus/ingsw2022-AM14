@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.player;
 
-import it.polimi.ingsw.exceptions.InvalidMoveException;
 import it.polimi.ingsw.helpers.Places;
 import it.polimi.ingsw.model.board.StudentsBag;
 import java.io.FileNotFoundException;
@@ -25,7 +24,7 @@ public class PlayerTest {
    */
 
   @Test
-  public void testPlayAssistant() throws FileNotFoundException, InvalidMoveException {
+  public void testPlayAssistant() throws FileNotFoundException {
     testPlayer = new Player(1, "ale", studentsBag, 2);
     Assistant assistant1 = new Assistant(1, 2, 2);
 
@@ -34,20 +33,6 @@ public class PlayerTest {
     Assert.assertFalse(testPlayer.getPlayableAssistant().contains(testPlayer.getAssistant()));
   }
 
-  /**
-   * Test for the playAssistant method testing the case of an assistant already played
-   *
-   * @throws InvalidMoveException If the assistant is already played
-   */
-  @Test
-  public void testPlayAssistantAlreadyPlayed() throws FileNotFoundException, InvalidMoveException {
-    /*testPlayer = new Player(1, "ale", studentsBag, 2);
-    InvalidMoveException exception = null;
-    testPlayer.playAssistant(2);
-    testPlayer.playAssistant(2);
-    Assert.assertNotNull(exception);*/
-    // TODO LUCA: broken
-  }
 
   /**
    * Test for the moveTo playerBoard method in case of a student put into the entrance,that ensures
@@ -65,11 +50,9 @@ public class PlayerTest {
   /**
    * Test for the moveTo playerBoard method in case of a student put into the diningRoom,that
    * ensures the student will be correctly added in the right place
-   *
-   * @throws InvalidMoveException if the dining room is full
    */
   @Test
-  public void testMoveToPlayerBoardDiningCase() throws InvalidMoveException, FileNotFoundException {
+  public void testMoveToPlayerBoardDiningCase() throws FileNotFoundException {
     testPlayer = new Player(2, "ale", studentsBag, 2);
     testDiningRoom = new DiningRoom();
     testPlayer.moveToPlayerBoard(Places.DINING_ROOM, 2);
@@ -86,5 +69,33 @@ public class PlayerTest {
     testPlayer = new Player(1, "marco", studentsBag, 2);
     testPlayer.addCoin();
     Assert.assertEquals(testPlayer.getCoins(), 1);
+  }
+
+  /**
+   * Test for the removeStudent method in a diningRoom case,that ensures the student will be
+   * correctly removed from the right place
+   */
+  @Test
+  public void testRemoveStudentDiningRoomCase() throws FileNotFoundException {
+    testPlayer = new Player(2, "ale", studentsBag, 2);
+    int[] arrayTest = new int[]{0, 0, 0, 0, 0};
+    testPlayer.moveToPlayerBoard(Places.DINING_ROOM, 4);
+    testPlayer.removeStudent(Places.DINING_ROOM, 4);
+    Assert.assertEquals(Arrays.toString(testPlayer.getPlayerBoard().getDiningRoom().getStudents()),
+        Arrays.toString(arrayTest));
+  }
+
+  /**
+   * Test for the removeStudent method in a entrance case,that ensures the student will be correctly
+   * removed from the right place
+   */
+  @Test
+  public void testRemoveStudentEntranceCase() throws FileNotFoundException {
+    testPlayer = new Player(2, "ale", studentsBag, 2);
+    testPlayer.moveToPlayerBoard(Places.ENTRANCE, 1);
+    testPlayer.removeStudent(Places.ENTRANCE, 1);
+    Assert
+        .assertEquals(Arrays.stream(testPlayer.getPlayerBoard().getEntrance().getStudents()).sum(),
+            2);
   }
 }
