@@ -3,12 +3,13 @@ package it.polimi.ingsw.model;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import it.polimi.ingsw.helpers.Color;
 import it.polimi.ingsw.helpers.Constants;
+import it.polimi.ingsw.helpers.Effects;
 import it.polimi.ingsw.helpers.Places;
 import it.polimi.ingsw.model.board.Island;
 import it.polimi.ingsw.model.board.MainBoard;
 import it.polimi.ingsw.model.board.StudentsBag;
+import it.polimi.ingsw.model.characters.CharacterCard;
 import it.polimi.ingsw.model.player.Player;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -102,34 +103,8 @@ public class Game {
   /**
    * Method used to create and set the character available fore this match
    */
-  public void setPurchasableCharacter() throws FileNotFoundException {
-    Vector<CharacterCard> characterCards = new Vector<>();
-    JsonArray character = JsonParser
-        .parseReader(new FileReader("src/main/resources/json/characters.json")).getAsJsonArray();
-    for (Object o1 : character) {
-      JsonObject object1 = (JsonObject) o1;
-      int idCharacter = object1.get("ID").getAsInt();
-      int characterCost = object1.get("COST").getAsInt();
-      int studentOnCard = object1.get("CARDS_STUDENT").getAsInt();
-      int effectNumber = object1.get("EFFECT_NUMBER").getAsInt();
-      int effectClass = object1.get("EFFECT_CLASS").getAsInt();
-      int noEntryTiles = object1.get("NO_ENTRY_TILE").getAsInt();
-      boolean replaceStudent = object1.get("REPLACE_STUDENTS").getAsBoolean();
-      CharacterCard characterCard = new CharacterCard(idCharacter, characterCost, studentOnCard,
-          studentsBag, effectNumber, effectClass, noEntryTiles, replaceStudent);
-      characterCards.add(characterCard);
-    }
+  public void setPurchasableCharacter() {
 
-    Random random = new Random();
-    List<Integer> randomNumbers = random.ints(0, 12).distinct().limit(3).boxed()
-        .collect(Collectors.toList());
-    for (int i = 0; i < 3; i++) {
-      int finalI = i;
-      Stream<CharacterCard> characterToAdd = characterCards.stream()
-          .filter(characterCard -> characterCard.getId() == randomNumbers.get(finalI));
-      this.purchasableCharacter[i] = characterToAdd.findAny().get();
-    }
-    // TODO LUCA: metodo troppo incasinato
   }
 
 

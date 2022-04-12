@@ -14,9 +14,9 @@ public class Team {
 
   // Attributes
   private final int id;
+  private int availableTowers;
   private final int towersColor;
   private final Vector<Player> players;
-  private int availableTowers;
 
   /**
    * Constructor method for the Team class
