@@ -9,24 +9,28 @@ import org.junit.Test;
  */
 public class CloudTileTest {
 
-  private final CloudTile cloudTest = new CloudTile(0);
-  private final int[] testArr = {0, 0 ,1};
+  private final int[] testArr = {0, 0, 1};
 
   /**
-   * Test the addStudent Method
+   * Test the addStudent Method with normal behaviour
    */
   @Test
-  public void testFillCloud(){
+  public void testFillCloud() {
+
+    CloudTile cloudTest = new CloudTile(0);
     Assert.assertEquals(Arrays.toString(cloudTest.getStudents()), "[0, 0, 0, 0, 0]");
     cloudTest.fillCloud(testArr);
     Assert.assertEquals(Arrays.toString(cloudTest.getStudents()), "[2, 1, 0, 0, 0]");
   }
 
   /**
-   * Test the emptyCloud Method
+   * Test the emptyCloud Method by removing current students both when Cloud empty and not
    */
   @Test
   public void testEmptyCloud() {
+
+    CloudTile cloudTest = new CloudTile(0);
+
     cloudTest.emptyCloud();
     Assert.assertEquals(Arrays.toString(cloudTest.getStudents()), "[0, 0, 0, 0, 0]");
     cloudTest.fillCloud(testArr);

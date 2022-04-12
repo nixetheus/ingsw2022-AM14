@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.helpers.Constants;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * The Island entity is used to simulate one of the island present in the game board where player
@@ -32,12 +33,21 @@ public class Island {
   }
 
   /**
+   * Removes a student of the required color to the island
+   *
+   * @param color The color of the student to remove from the island
+   */
+  public void removeStudent(int color) {
+    students[color]--;
+  }
+
+  /**
    * Merges two islands together combining their parameters (number of towers and students) into the
    * first one.
    *
    * @param island Island whose parameters have to be combined
    */
-  public void addIsland(Island island) {
+  public void addIsland(@NotNull Island island) {
     numberOfTowers += island.getNumberOfTowers();
     for (int color = 0; color < Constants.getNColors(); color++) {
       students[color] += island.getStudents()[color];

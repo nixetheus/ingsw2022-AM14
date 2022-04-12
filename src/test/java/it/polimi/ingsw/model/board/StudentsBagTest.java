@@ -10,7 +10,8 @@ import org.junit.Test;
 public class StudentsBagTest {
 
   /**
-   * testPickStudents method tests pickRandomStudents method of StudentsBag class (normal behaviour)
+   * testPickStudents method tests pickRandomStudents method of StudentsBag class (normal
+   * behaviour)
    */
   @Test
   public void testPickStudents() {
@@ -19,8 +20,8 @@ public class StudentsBagTest {
     StudentsBag bag = new StudentsBag();
     testNormalBehaviour = bag.pickRandomStudents(1);
 
-    assert(testNormalBehaviour.length == 1);
-    assert(testNormalBehaviour[0] >= 0 && testNormalBehaviour[0] <= 4);
+    assert (testNormalBehaviour.length == 1);
+    assert (testNormalBehaviour[0] >= 0 && testNormalBehaviour[0] <= 4);
   }
 
   /**
@@ -35,10 +36,10 @@ public class StudentsBagTest {
     testMax = bag.pickRandomStudents(
         Constants.getStudentsForColor() * Constants.getNColors());
 
-    assert(testMax.length == Constants.getStudentsForColor() * Constants.getNColors());
-    assert(Arrays.stream(testMax).min().orElse(-1) == 0
+    assert (testMax.length == Constants.getStudentsForColor() * Constants.getNColors());
+    assert (Arrays.stream(testMax).min().orElse(-1) == 0
         && Arrays.stream(testMax).max().orElse(-1) == 4);
-    assert(Arrays.stream(bag.getStudents()).sum() == 0);
+    assert (Arrays.stream(bag.getStudents()).sum() == 0);
   }
 
   /**
@@ -52,9 +53,10 @@ public class StudentsBagTest {
     try {
       bag.pickRandomStudents(Constants.getStudentsForColor() * Constants.getNColors() + 1);
     } catch (Exception e) {
-      assert(true); return;
+      assert (true);
+      return;
     }
-    assert(false);
+    assert (false);
   }
 
 }

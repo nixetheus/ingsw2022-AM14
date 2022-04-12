@@ -86,11 +86,13 @@ public class Player {
   }
 
   /**
-   * This method allows a player (using the character) to remove students from the dining room and the entrance
+   * This method allows a player (using the character) to remove students from the dining room and
+   * the entrance
+   *
    * @param place where the student is taken
    * @param color which student is removed
    */
-  public void removeStudent(Places place,int color){
+  public void removeStudent(Places place, int color) {
     if (place == Places.ENTRANCE) {
       playerBoard.removeFromEntrance(color);
     } else if (place == Places.DINING_ROOM) {

@@ -1,12 +1,7 @@
 package it.polimi.ingsw.model;
 
 
-import it.polimi.ingsw.helpers.Places;
-import it.polimi.ingsw.model.player.Player;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
-import java.util.Vector;
-import org.junit.Assert;
 import org.junit.Test;
 
 public class GameTest {

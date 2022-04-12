@@ -53,6 +53,15 @@ public class StudentsBag {
     return returnStudents;
   }
 
+  /**
+   * Adds a student to the StudentsBag
+   *
+   * @param color The color of the student to add
+   */
+  public void addStudent(int color) {
+    students[color]++;
+  }
+
   public int[] getStudents() {
     return students;
   }

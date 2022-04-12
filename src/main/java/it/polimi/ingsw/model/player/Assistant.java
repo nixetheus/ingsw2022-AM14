@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.player;
 
 /**
- * This class is used to model the assistant card that each player is supposed to play inorder to
- * establish his/her initiative
+ * This class is used to model the assistant card that each player is supposed to play in order to
+ * establish their initiative and Mother Nature's movements
  */
 
 public class Assistant {

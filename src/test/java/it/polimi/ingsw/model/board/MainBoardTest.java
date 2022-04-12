@@ -16,10 +16,9 @@ import org.junit.Test;
 public class MainBoardTest {
 
   /**
-   * This method tests the calculateInfluence method.
-   * It creates professors array, vector team and a main board, and it fills them
-   * It creates the teams and add students to them
-   * Then calculate the influences and compare with the correct value
+   * This method tests the calculateInfluence method. It creates professors array, vector team and a
+   * main board, and it fills them It creates the teams and add students to them Then calculate the
+   * influences and compare with the correct value
    *
    * @throws FileNotFoundException exception
    */
@@ -66,8 +65,8 @@ public class MainBoardTest {
   }
 
   /**
-   * This method is equal to testCalculateInfluence but test the case when
-   * two team have the same influences, we expect it returns -1
+   * This method is equal to testCalculateInfluence but test the case when two team have the same
+   * influences, we expect it returns -1
    *
    * @throws FileNotFoundException exception
    */
@@ -79,11 +78,14 @@ public class MainBoardTest {
     //find the color of the student added in the constructor of Main board and remove it
     int[] initialVector = mainBoardTest.getIslands().get(3).getStudents();
     int colorStudentToFind = -1;
-    for(Color color : Color.values())
-      colorStudentToFind = (initialVector[color.ordinal()] == 1) ? color.ordinal() : colorStudentToFind;
+    for (Color color : Color.values()) {
+      colorStudentToFind =
+          (initialVector[color.ordinal()] == 1) ? color.ordinal() : colorStudentToFind;
+    }
 
-    if(colorStudentToFind != -1)
+    if (colorStudentToFind != -1) {
       mainBoardTest.getIslands().get(3).getStudents()[colorStudentToFind]--;
+    }
 
     //create professors array, vector team and island to calculate influence
     Player[] profTest = new Player[Constants.getNColors()];
@@ -116,10 +118,9 @@ public class MainBoardTest {
   }
 
   /**
-   * Testing the addToIsland Method
-   * It checks that the size of islands vector is equal to the initial numbers of Islands
-   * It tries to add 3 students on the third island and
-   * sum the student added in the MainBoard constructor
+   * Testing the addToIsland Method It checks that the size of islands vector is equal to the
+   * initial numbers of Islands It tries to add 3 students on the third island and sum the student
+   * added in the MainBoard constructor
    */
   @Test
   public void testAddToIsland() {
@@ -130,8 +131,10 @@ public class MainBoardTest {
     //find the color of the student added in the constructor of Main board
     int[] initialVector = mainBoard.getIslands().get(3).getStudents();
     int colorStudentToFind = -1;
-    for(Color color : Color.values())
-      colorStudentToFind = (initialVector[color.ordinal()] == 1) ? color.ordinal() : colorStudentToFind;
+    for (Color color : Color.values()) {
+      colorStudentToFind =
+          (initialVector[color.ordinal()] == 1) ? color.ordinal() : colorStudentToFind;
+    }
 
     //Add 3 students in the third island
     mainBoard.addToIsland(0, 3);
@@ -142,23 +145,22 @@ public class MainBoardTest {
     //Create the correct array to compare
     int[] correctArr = {2, 0, 0, 1, 0};
     //if colorStudentToFind == -1 then there is mother nature, or we are on the opposite island
-    if(colorStudentToFind != -1)
+    if (colorStudentToFind != -1) {
       correctArr[colorStudentToFind]++;
+    }
 
     Assert.assertEquals(Arrays.toString(correctArr), Arrays.toString(test.get(3).getStudents()));
   }
 
   /**
-   * Testing the joinIsland Method
-   * This method tests the borderline case where joinIsland is called at position 0
-   *
-   * Initial disposition of the islands:  00 002 ... 3
-   * Expected disposition of the islands: 000023 ...
-   * It starts to add 2 students in first (0) position of the islands vector
-   * 3 students in the second position (1) and 1 student in the last position (n-1)
-   * Set the same owner (color = 2) for each island
-   * Create a islandTests vector with the expected values inside
-   * and then call the joinIslandMethod
+   * Testing the joinIsland Method This method tests the borderline case where joinIsland is called
+   * at position 0
+   * <p>
+   * Initial disposition of the islands:  00 002 ... 3 Expected disposition of the islands: 000023
+   * ... It starts to add 2 students in first (0) position of the islands vector 3 students in the
+   * second position (1) and 1 student in the last position (n-1) Set the same owner (color = 2) for
+   * each island Create a islandTests vector with the expected values inside and then call the
+   * joinIslandMethod
    */
   @Test
   public void testJoinIsland() {
@@ -169,13 +171,15 @@ public class MainBoardTest {
     //find the color of the students added in the constructor of Main board
     int[] positionOfRandomColors = new int[Constants.getInitialNumIslands()];
 
-    for(int island = 0; island < mainBoard.getIslands().size(); island++) {
+    for (int island = 0; island < mainBoard.getIslands().size(); island++) {
 
       int[] initialVector = mainBoard.getIslands().get(island).getStudents();
       int colorStudentToFind = -1;
 
-      for(Color color : Color.values())
-        colorStudentToFind = (initialVector[color.ordinal()] == 1) ? color.ordinal() : colorStudentToFind;
+      for (Color color : Color.values()) {
+        colorStudentToFind =
+            (initialVector[color.ordinal()] == 1) ? color.ordinal() : colorStudentToFind;
+      }
 
       positionOfRandomColors[island] = colorStudentToFind;
     }
@@ -195,8 +199,9 @@ public class MainBoardTest {
 
     //Create correct vector to compare in to assert
     Vector<Island> islandsTest = new Vector<>();
-    for (int island = 0; island < Constants.getInitialNumIslands() - 2; island++)
+    for (int island = 0; island < Constants.getInitialNumIslands() - 2; island++) {
       islandsTest.add(new Island());
+    }
 
     islandsTest.get(0).addStudent(0);
     islandsTest.get(0).addStudent(0);
@@ -207,8 +212,8 @@ public class MainBoardTest {
 
     //add to the correct vector the random students
     int islandIndexForCorrectVec = 0;
-    for(int islandIndex = 0; islandIndex < Constants.getInitialNumIslands(); islandIndex++) {
-      if(islandIndex == 1 || islandIndex == 11) {
+    for (int islandIndex = 0; islandIndex < Constants.getInitialNumIslands(); islandIndex++) {
+      if (islandIndex == 1 || islandIndex == 11) {
         islandsTest.get(0).addStudent(positionOfRandomColors[islandIndex]);
       } else {
         islandsTest.get(islandIndexForCorrectVec).addStudent(positionOfRandomColors[islandIndex]);
@@ -216,7 +221,7 @@ public class MainBoardTest {
       }
     }
 
-    for(int island = 0; island < mainBoard.getIslands().size(); island++) {
+    for (int island = 0; island < mainBoard.getIslands().size(); island++) {
 
       Assert.assertEquals(Arrays.toString(islandsTest.get(island).getStudents()),
           Arrays.toString(mainBoard.getIslands().get(island).getStudents()));
@@ -224,8 +229,8 @@ public class MainBoardTest {
   }
 
   /**
-   * This method test the method moveMotherNature
-   * it tries to move mother nature in some limit cases
+   * This method test the method moveMotherNature it tries to move mother nature in some limit
+   * cases
    */
   @Test
   public void testMoveMotherNature() {
