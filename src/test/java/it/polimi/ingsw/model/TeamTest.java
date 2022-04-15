@@ -20,7 +20,8 @@ public class TeamTest {
   @Test
   public void testAddPlayer() throws FileNotFoundException {
     Player testPlayer = new Player(1, "Ale", studentsBag, studentAtEntrance);
-    Team testTeam = new Team(0, Towers.WHITE.ordinal(), testPlayer);
+    Team testTeam = new Team(0, Towers.WHITE);
+    testTeam.addPlayer(testPlayer);
 
     assert (!testTeam.getPlayers().isEmpty());
     assert (testTeam.getPlayers().contains(testPlayer));
@@ -34,7 +35,8 @@ public class TeamTest {
     Player testPlayer = new Player(1, "Luca", studentsBag, studentAtEntrance);
     Player testPlayerTwo = new Player(2, "Dario", studentsBag, studentAtEntrance);
 
-    Team testTeam = new Team(0, Towers.WHITE.ordinal(), testPlayer);
+    Team testTeam = new Team(0, Towers.WHITE);
+    testTeam.addPlayer(testPlayer);
     testTeam.addPlayer(testPlayerTwo);
 
     assert (!testTeam.getPlayers().isEmpty());

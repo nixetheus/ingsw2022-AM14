@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.helpers.Constants;
+import it.polimi.ingsw.helpers.Towers;
 import it.polimi.ingsw.model.player.Player;
 import java.util.Vector;
 
@@ -14,23 +15,21 @@ public class Team {
 
   // Attributes
   private final int id;
-  private int availableTowers;
-  private final int towersColor;
+  private final Towers towersColor;
   private final Vector<Player> players;
+  private int availableTowers;
 
   /**
    * Constructor method for the Team class
    *
-   * @param teamId      Unique identifier for each team
-   * @param towerColor  Unique color of each team's tower
-   * @param firstPlayer First player of each team
+   * @param teamId     Unique identifier for each team
+   * @param towerColor Unique color of each team's tower
    */
-  public Team(int teamId, int towerColor, Player firstPlayer) {
+  public Team(int teamId, Towers towerColor) {
     id = teamId;
     players = new Vector<>();
     towersColor = towerColor;
     availableTowers = Constants.getMaxTowers();
-    addPlayer(firstPlayer);
   }
 
   /**
@@ -64,7 +63,7 @@ public class Team {
     return id;
   }
 
-  public int getTowersColor() {
+  public Towers getTowersColor() {
     return towersColor;
   }
 
