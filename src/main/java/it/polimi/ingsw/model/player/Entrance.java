@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.helpers.Color;
 import it.polimi.ingsw.helpers.Constants;
 
 /**
@@ -14,11 +15,11 @@ public class Entrance {
   /**
    * Constructor method for the Entrance class
    *
-   * @param studentsRandomlyChosenColors Students put at the entrance at the beginning of the game
+   * @param studentsRandomlyChosen Students put at the entrance at the beginning of the game
    */
-  public Entrance(int[] studentsRandomlyChosenColors) {
-    for (int color : studentsRandomlyChosenColors) {
-      this.students[color]++;
+  public Entrance(int[] studentsRandomlyChosen) {
+    for (Color color : Color.values()) {
+      this.students[color.ordinal()] += studentsRandomlyChosen[color.ordinal()];
     }
   }
 

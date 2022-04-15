@@ -28,6 +28,8 @@ public class Player {
    * @param playerId       Unique identifier for each player
    * @param playerNickname Unique name chosen by each player
    * @param studentsBag    Students put at the entrance
+   * @throws FileNotFoundException Throws FileNotFoundException if file containing all the
+   *                               assistants is not found
    */
 
   public Player(
@@ -42,8 +44,17 @@ public class Player {
     this.playerNickname = playerNickname;
     this.playableAssistants = new Vector<>();
     this.playerBoard = new PlayerBoard(studentsBag.pickRandomStudents(numberOfStudentAtEntrance));
+    initializeAssistants("src/main/resources/json/assistants.json");
+  }
 
-    String jsonFile = "src/main/resources/json/assistants.json";
+  /**
+   * Initializer for the player's assistants
+   *
+   * @param jsonFile File containing the assistants' information
+   * @throws FileNotFoundException Throws FileNotFoundException if file containing all the
+   *                               assistants is not found
+   */
+  private void initializeAssistants(String jsonFile) throws FileNotFoundException {
     JsonArray assistants = JsonParser.parseReader(new FileReader(jsonFile)).getAsJsonArray();
 
     for (Object assistant : assistants) {
@@ -92,7 +103,7 @@ public class Player {
    * @param place where the student is taken
    * @param color which student is removed
    */
-  public void removeStudent(Places place, int color) {
+  public void removeFromPlayerBoard(Places place, int color) {
     if (place == Places.ENTRANCE) {
       playerBoard.removeFromEntrance(color);
     } else if (place == Places.DINING_ROOM) {
@@ -108,16 +119,17 @@ public class Player {
   }
 
   /**
+   * This method adds additional moves to the assistant as a result of a Character Card effect
    *
-   * TODO
+   * @param nOfMoves Number of moves to be added
    */
   public void additionalMovesAssistant(int nOfMoves) {
     assistant.setAdditionalMoves(nOfMoves);
   }
 
   /**
-   *
-   * TODO
+   * This method removes the additional moves given to the assistant as a result of a Character Card
+   * effect
    */
   public void removeAdditionalMovesAssistant() {
     assistant.setAdditionalMoves(0);

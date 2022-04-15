@@ -28,6 +28,7 @@ public class StudentsBag {
    * Creates and array of students out of the remaining ones in the bag
    *
    * @param numberOfStudents Number of students to get from the Students Bag
+   * @return Returns an array containing how many students of each color were picked
    */
   public int[] pickRandomStudents(int numberOfStudents) {
 
@@ -36,7 +37,7 @@ public class StudentsBag {
       return new int[0];
     }
 
-    int[] returnStudents = new int[numberOfStudents];
+    int[] returnStudents = new int[Constants.getNColors()];
 
     for (int student = 0; student < numberOfStudents; student++) {
 
@@ -46,7 +47,7 @@ public class StudentsBag {
 
       // Add student to return, remove it from bag
       int randomColor = availableColors[random.nextInt(availableColors.length)];
-      returnStudents[student] = randomColor;
+      returnStudents[randomColor]++;
       students[randomColor]--;
 
     }

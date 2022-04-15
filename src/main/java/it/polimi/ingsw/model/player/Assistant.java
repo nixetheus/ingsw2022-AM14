@@ -8,7 +8,7 @@ package it.polimi.ingsw.model.player;
 public class Assistant {
 
   //Attributes
-  private int moves;
+  private final int moves;
   private final int speed;
   private final int assistantId;private int additionalMoves;
 

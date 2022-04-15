@@ -121,7 +121,7 @@ public class PlayerCharacters extends CharacterCard {
       }
 
       for (int colorInFrom = 0; colorInFrom < studentsCard[color.ordinal()]; colorInFrom++) {
-        currentPlayer.removeStudent(Places.ENTRANCE, color.ordinal());
+        currentPlayer.removeFromPlayerBoard(Places.ENTRANCE, color.ordinal());
       }
     }
 
@@ -142,12 +142,12 @@ public class PlayerCharacters extends CharacterCard {
 
       for (int studentE = 0; studentE < studentsEntrance[color.ordinal()]; studentE++) {
         currentPlayer.moveToPlayerBoard(Places.DINING_ROOM, color.ordinal());
-        currentPlayer.removeStudent(Places.ENTRANCE, color.ordinal());
+        currentPlayer.removeFromPlayerBoard(Places.ENTRANCE, color.ordinal());
       }
 
       for (int studentDR = 0; studentDR < studentsDining[color.ordinal()]; studentDR++) {
         currentPlayer.moveToPlayerBoard(Places.ENTRANCE, color.ordinal());
-        currentPlayer.removeStudent(Places.DINING_ROOM, color.ordinal());
+        currentPlayer.removeFromPlayerBoard(Places.DINING_ROOM, color.ordinal());
       }
     }
 
@@ -180,7 +180,7 @@ public class PlayerCharacters extends CharacterCard {
             Math.min(player.getPlayerBoard().getDiningRoom().getStudents()[color.ordinal()], 3);
 
         for (int studentIndex = 0; studentIndex < numberToRemove; studentIndex++) {
-          player.removeStudent(Places.DINING_ROOM, color.ordinal());
+          player.removeFromPlayerBoard(Places.DINING_ROOM, color.ordinal());
           studentsBag.addStudent(color.ordinal());
         }
       }

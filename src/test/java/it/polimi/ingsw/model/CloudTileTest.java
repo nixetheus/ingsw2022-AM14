@@ -9,7 +9,7 @@ import org.junit.Test;
  */
 public class CloudTileTest {
 
-  private final int[] testArr = {0, 0, 1};
+  private final int[] testArr = {2, 1, 0, 0, 0};
 
   /**
    * Test the addStudent Method with normal behaviour

@@ -18,7 +18,7 @@ public class EntranceTest extends TestCase {
    */
 
   public void testAddStudent() {
-    testEntrance = new Entrance(new int[]{0, 0, 0, 0, 0});
+    testEntrance = new Entrance(new int[]{5, 0, 0, 0, 0});
     arrayTest = new int[]{6, 0, 1, 0, 0};
     testEntrance.addStudent(2);
     testEntrance.addStudent(0);
@@ -33,7 +33,7 @@ public class EntranceTest extends TestCase {
    */
 
   public void testRemoveStudent() {
-    testEntrance = new Entrance(new int[]{0, 0, 0, 0, 0});
+    testEntrance = new Entrance(new int[]{5, 0, 0, 0, 0});
     arrayTest = new int[]{6, 0, 0, 0, 0};
     testEntrance.addStudent(0);
     testEntrance.addStudent(0);

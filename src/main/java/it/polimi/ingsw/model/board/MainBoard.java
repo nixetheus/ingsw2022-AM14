@@ -30,11 +30,15 @@ public class MainBoard {
     for (int islandIndex = 0; islandIndex < Constants.getInitialNumIslands(); islandIndex++) {
 
       Island newIsland = new Island();
+      int[] randomStudent = gameStudentsBag.pickRandomStudents(1);
+      int color = Arrays.stream(new int[]{0, 1, 2, 3, 4})
+          .filter(c -> randomStudent[c] > 0).toArray()[0];
+
       if (islandIndex != motherNature.getPosition() ||
           islandIndex != ((motherNature.getPosition()
               + Constants.getInitialNumIslands() / 2)
               % Constants.getInitialNumIslands())) {
-        newIsland.addStudent(gameStudentsBag.pickRandomStudents(1)[0]);
+        newIsland.addStudent(color);
       }
       islands.add(newIsland);
     }

@@ -30,7 +30,7 @@ public class PlayerBoardTest extends TestCase {
    */
 
   public void testMoveToEntrance() {
-    testPlayerBoard = new PlayerBoard(new int[]{0, 0, 0, 0, 0});
+    testPlayerBoard = new PlayerBoard(new int[]{5, 0, 0, 0, 0});
     arrayTest = new int[]{5, 0, 0, 1, 0};
     testPlayerBoard.moveToEntrance(3);
     assertEquals(Arrays.toString(testPlayerBoard.getEntrance().getStudents()),
@@ -55,7 +55,7 @@ public class PlayerBoardTest extends TestCase {
    * removeFromEntrance and it would be equals to an array calculated by hand
    */
   public void testRemoveFromEntrance() {
-    testPlayerBoard = new PlayerBoard(new int[]{0, 0, 0, 0, 0});
+    testPlayerBoard = new PlayerBoard(new int[]{5, 0, 0, 0, 0});
     arrayTest = new int[]{4, 0, 0, 0, 0};
     testPlayerBoard.removeFromEntrance(0);
     assertEquals(Arrays.toString(testPlayerBoard.getEntrance().getStudents()),

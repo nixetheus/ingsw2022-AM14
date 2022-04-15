@@ -25,11 +25,11 @@ public class CloudTile {
   /**
    * addStudent method fills cloud tile
    *
-   * @param colors identify the array of the students to put in the cloudTile
+   * @param students identify the array of the students to put in the cloudTile
    */
-  public void fillCloud(int[] colors) {
-    for (int color : colors) {
-      students[color]++;
+  public void fillCloud(int[] students) {
+    for (Color color : Color.values()) {
+      this.students[color.ordinal()] += students[color.ordinal()];
     }
   }
 

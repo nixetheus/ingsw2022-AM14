@@ -20,7 +20,7 @@ public class StudentsBagTest {
     StudentsBag bag = new StudentsBag();
     testNormalBehaviour = bag.pickRandomStudents(1);
 
-    assert (testNormalBehaviour.length == 1);
+    assert (testNormalBehaviour.length == 5);
     assert (testNormalBehaviour[0] >= 0 && testNormalBehaviour[0] <= 4);
   }
 
@@ -36,9 +36,7 @@ public class StudentsBagTest {
     testMax = bag.pickRandomStudents(
         Constants.getStudentsForColor() * Constants.getNColors());
 
-    assert (testMax.length == Constants.getStudentsForColor() * Constants.getNColors());
-    assert (Arrays.stream(testMax).min().orElse(-1) == 0
-        && Arrays.stream(testMax).max().orElse(-1) == 4);
+    assert (Arrays.stream(testMax).sum() == Constants.getStudentsForColor() * Constants.getNColors());
     assert (Arrays.stream(bag.getStudents()).sum() == 0);
   }
 

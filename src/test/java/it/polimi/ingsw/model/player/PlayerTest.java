@@ -80,7 +80,7 @@ public class PlayerTest {
     testPlayer = new Player(2, "ale", studentsBag, 2);
     int[] arrayTest = new int[]{0, 0, 0, 0, 0};
     testPlayer.moveToPlayerBoard(Places.DINING_ROOM, 4);
-    testPlayer.removeStudent(Places.DINING_ROOM, 4);
+    testPlayer.removeFromPlayerBoard(Places.DINING_ROOM, 4);
     Assert.assertEquals(Arrays.toString(testPlayer.getPlayerBoard().getDiningRoom().getStudents()),
         Arrays.toString(arrayTest));
   }
@@ -93,7 +93,7 @@ public class PlayerTest {
   public void testRemoveStudentEntranceCase() throws FileNotFoundException {
     testPlayer = new Player(2, "ale", studentsBag, 2);
     testPlayer.moveToPlayerBoard(Places.ENTRANCE, 1);
-    testPlayer.removeStudent(Places.ENTRANCE, 1);
+    testPlayer.removeFromPlayerBoard(Places.ENTRANCE, 1);
     Assert
         .assertEquals(Arrays.stream(testPlayer.getPlayerBoard().getEntrance().getStudents()).sum(),
             2);

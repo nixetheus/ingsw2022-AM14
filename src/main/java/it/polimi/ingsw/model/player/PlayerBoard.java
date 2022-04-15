@@ -13,7 +13,7 @@ public class PlayerBoard {
   /**
    * Constructor method for the PlayerBoard class
    *
-   * @param studentInEntrance Students put at the entrance
+   * @param studentInEntrance Students to be put at the entrance
    */
   public PlayerBoard(int[] studentInEntrance) {
     diningRoom = new DiningRoom();
