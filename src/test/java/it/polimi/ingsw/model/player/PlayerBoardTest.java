@@ -26,7 +26,7 @@ public class PlayerBoardTest extends TestCase {
 
   /**
    * testMoveToEntrance tests moveToEntrance method,creating a new playerBoard followed by a
-   * moveToEntrance and it would be equals to an array calculated by hand
+   * moveToEntrance and, it would be equals to an array calculated by hand
    */
 
   public void testMoveToEntrance() {
@@ -39,7 +39,7 @@ public class PlayerBoardTest extends TestCase {
 
   /**
    * testRemoveFromDiningRoom tests removeFromDiningRoom method,creating a new playerBoard followed
-   * by a removeFromDiningRoom and it would be equals to an array calculated by hand
+   * by a removeFromDiningRoom, and it would be equals to an array calculated by hand
    */
   public void testRemoveFromDiningRoom() {
     testPlayerBoard = new PlayerBoard(new int[]{0, 0, 0, 0, 0});
@@ -52,7 +52,7 @@ public class PlayerBoardTest extends TestCase {
 
   /**
    * testRemoveFromEntrance tests removeFromEntrance method,creating a new playerBoard followed by a
-   * removeFromEntrance and it would be equals to an array calculated by hand
+   * removeFromEntrance and, it would be equals to an array calculated by hand
    */
   public void testRemoveFromEntrance() {
     testPlayerBoard = new PlayerBoard(new int[]{5, 0, 0, 0, 0});

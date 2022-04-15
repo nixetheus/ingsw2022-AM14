@@ -12,7 +12,6 @@ public class Island {
   private final int[] students;
   private int ownerId;
   private int numberOfTowers;
-
   private boolean noEntry;
 
   /**
@@ -95,5 +94,9 @@ public class Island {
 
   public void setNoEntry(boolean noEntry) {
     this.noEntry = noEntry;
+  }
+
+  public boolean isNoEntry() {
+    return noEntry;
   }
 }

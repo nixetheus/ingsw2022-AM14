@@ -10,7 +10,8 @@ public class Assistant {
   //Attributes
   private final int moves;
   private final int speed;
-  private final int assistantId;private int additionalMoves;
+  private final int assistantId;
+  private int additionalMoves;
 
   /**
    * Constructor method for the Assistant class
@@ -41,4 +42,9 @@ public class Assistant {
   public void setAdditionalMoves(int additionalMoves) {
     this.additionalMoves = additionalMoves;
   }
+
+  public int getAdditionalMoves() {
+    return additionalMoves;
+  }
+
 }

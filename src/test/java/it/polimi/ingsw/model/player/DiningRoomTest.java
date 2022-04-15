@@ -29,7 +29,7 @@ public class DiningRoomTest {
 
   /**
    * Testing the removeStudent method, it ensures that the right student will be correctly removed
-   * thanks a test case calculated by hand
+   * with a test case calculated by hand
    */
   @Test
   public void testRemoveStudent() {

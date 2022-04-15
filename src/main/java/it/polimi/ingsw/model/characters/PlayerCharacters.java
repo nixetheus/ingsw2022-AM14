@@ -31,12 +31,12 @@ public class PlayerCharacters extends CharacterCard {
         increaseMovementTwoEffect(params.currentPlayer);
         break;
       case REPLACE_STUDENT_ENTRANCE:
-        replaceStudentEntranceEffect(params.currentPlayer, params.studentsOpFrom,
-            params.studentsOpTo);
+        replaceStudentEntranceEffect(params.currentPlayer, params.studentsFrom,
+            params.studentsTo);
         break;
       case EXCHANGE_TWO_ENTRANCE_DINING:
-        exchangeTwoEntranceDiningEffect(params.currentPlayer, params.studentsOpFrom,
-            params.studentsOpTo);
+        exchangeTwoEntranceDiningEffect(params.currentPlayer, params.studentsFrom,
+            params.studentsTo);
         break;
       case PUT_ONE_DINING_ROOM:
         putOneDiningRoomEffect(params.currentPlayer, params.color);
@@ -113,14 +113,14 @@ public class PlayerCharacters extends CharacterCard {
     for (Color color : Color.values()) {
 
       // Remove students from card, add students from entrance
-      students[color.ordinal()] += studentsCard[color.ordinal()];
-      students[color.ordinal()] -= studentsEntrance[color.ordinal()];
+      students[color.ordinal()] -= studentsCard[color.ordinal()];
+      students[color.ordinal()] += studentsEntrance[color.ordinal()];
 
-      for (int colorInFrom = 0; colorInFrom < studentsEntrance[color.ordinal()]; colorInFrom++) {
+      for (int colorInFrom = 0; colorInFrom < studentsCard[color.ordinal()]; colorInFrom++) {
         currentPlayer.moveToPlayerBoard(Places.ENTRANCE, color.ordinal());
       }
 
-      for (int colorInFrom = 0; colorInFrom < studentsCard[color.ordinal()]; colorInFrom++) {
+      for (int colorInFrom = 0; colorInFrom < studentsEntrance[color.ordinal()]; colorInFrom++) {
         currentPlayer.removeFromPlayerBoard(Places.ENTRANCE, color.ordinal());
       }
     }

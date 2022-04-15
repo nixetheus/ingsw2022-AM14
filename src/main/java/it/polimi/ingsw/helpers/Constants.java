@@ -14,9 +14,9 @@ public class Constants {
   private static final int MAX_NUMBER_OF_PLAYER_EFFECTS = 5;
   private static final int MAX_NUMBER_OF_MAIN_BOARD_EFFECTS = 6;
   private static final int MAX_PURCHASABLE_CHARACTER=3;
-  private static final int TWO_PLAYER_MODE=1;
-  private static final int  THREE_PLAYER_MODE=2;
-  private static final int FOUR_PLAYER_MODE=3;
+  private static final int TWO_PLAYER_MODE = 1;
+  private static final int THREE_PLAYER_MODE = 2;
+  private static final int FOUR_PLAYER_MODE = 3;
 
   private Constants() {
   }

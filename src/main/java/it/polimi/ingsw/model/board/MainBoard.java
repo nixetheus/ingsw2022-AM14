@@ -156,16 +156,18 @@ public class MainBoard {
   }
 
   /**
-   * TODO
-   * @return
+   * This method sets an island as NoEntry meaning Mother Nature can't move here
+   *
+   * @param numIsland The index of the island to set as NoEntry
    */
   public void setIslandsNoEntry(int numIsland) {
     islands.get(numIsland).setNoEntry(true);
   }
 
   /**
-   * TODO
-   * @return
+   * This method resets an island as NoEntry meaning Mother Nature can enter again
+   *
+   * @param numIsland The index of the island to reset
    */
   public void resetIslandsNoEntry(int numIsland) {
     islands.get(numIsland).setNoEntry(false);
@@ -194,5 +196,19 @@ public class MainBoard {
   public void setForbiddenColor(Color forbiddenColor) {
     this.forbiddenColor = forbiddenColor;
   }
+
+  public int getInfluencePlus() {
+    return influencePlus;
+  }
+
+  public Color getForbiddenColor() {
+    return forbiddenColor;
+  }
+
+  public boolean areTowersCounted() {
+    return areTowersCounted;
+  }
+
+
 
 }

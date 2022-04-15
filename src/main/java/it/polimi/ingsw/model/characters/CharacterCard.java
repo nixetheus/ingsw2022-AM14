@@ -20,11 +20,9 @@ public class CharacterCard {
   }
 
   public void applyEffect(CharacterStruct params) {
-    System.out.println("This line should never get printed");
   }
 
   public void removeEffect(CharacterStruct params) {
-    System.out.println("Neither should this");
   }
 
   public int getCost() {

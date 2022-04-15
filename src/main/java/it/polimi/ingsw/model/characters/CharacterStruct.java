@@ -13,9 +13,9 @@ public class CharacterStruct {
   public int numIsland;
   public Game currentGame;
   public Vector<Team> teams;
-  public int[] studentsOpTo;
+  public int[] studentsTo;
   public MainBoard mainBoard;
-  public int[] studentsOpFrom;
+  public int[] studentsFrom;
   public Player currentPlayer;
   public int motherNatureMoves;
   public Color color;
