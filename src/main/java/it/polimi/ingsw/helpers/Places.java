@@ -4,5 +4,6 @@ public enum Places {
   ENTRANCE,
   DINING_ROOM,
   CHARACTER,
-  CLOUD_TILE
+  CLOUD_TILE,
+  ISLAND
 }

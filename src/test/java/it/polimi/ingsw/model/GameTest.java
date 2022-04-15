@@ -1,162 +1,131 @@
 package it.polimi.ingsw.model;
 
 
-import java.io.FileNotFoundException;
+import it.polimi.ingsw.helpers.Constants;
+import it.polimi.ingsw.helpers.Places;
+import it.polimi.ingsw.model.board.Island;
+import it.polimi.ingsw.model.player.Player;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.Vector;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 public class GameTest {
 
+  Game expertGame;
+  Game noExpertGame;
+  Player activePlayer;
+
+  @Before
+  public void setUp() throws Exception {
+
+    this.expertGame = new Game(Constants.getTwoPlayerMode(), true);
+    this.noExpertGame = new Game(Constants.getThreePlayerMode(), false);
+
+    expertGame.addPlayerToTeam(expertGame.addTeam(), 0, "ale");
+    expertGame.addPlayerToTeam(expertGame.addTeam(), 1, "dario");
+
+    this.activePlayer = expertGame.getTeams().get(0).getPlayers().get(0);
+  }
 
   /**
-   * *Test for the createCloud and fill method, it controls if the clouds will be created and filled
-   * in the right way at the beginning of the game
-   *
-   * @throws FileNotFoundException If a json file will not be found
+   * Test for the createCloud method, it controls if the clouds will be created in the right way at
+   * the beginning of the game
    */
   @Test
-  public void testCreateCloudsAndFill() throws FileNotFoundException {
+  public void testCreateCloudTiles() {
+    Assert.assertEquals(expertGame.getCloudTiles().size(), expertGame.getPlayerNumber());
+  }
 
-    /*Vector<Team> teams = new Vector<>();
-    Game game = new Game(teams, 1);
-    Team activePlayer = new Team(1, 2, new Player(1, "ale", game.getStudentsBag(),
-        game.getStudentAtEntrance()));
-    Team nonActivePlayer = new Team(2, 1, new Player(2, "luca", game.getStudentsBag(),
-        game.getStudentAtEntrance()));
-    teams.add(activePlayer);
-    teams.add(nonActivePlayer);
-    game.setGameParameter();
-    game.createCloudsAndFill();
-    Assert.assertEquals(game.getCloudTiles().size(), game.getTeams().size());
-    for (CloudTile cloudTile : game.getCloudTiles()) {
-      Assert.assertEquals(Arrays.stream(cloudTile.getStudents()).sum(),
-          game.getStudentOnCloudTiles());
-    }*/
-
-    // TODO LUCA: broken
+  /**
+   * test for the fillCloud methode, it controls if the cloudTiles will be filled correctly by
+   * checking the number of student on each tile if it is equal to the expected number
+   */
+  @Test
+  public void testFillCloudTiles() {
+    Vector<CloudTile> testClouds = expertGame.getCloudTiles();
+    for (CloudTile cloudTile : testClouds) {
+      Assert.assertEquals(Arrays.stream(testClouds.get(cloudTile.getId())
+              .getStudents()).sum(),
+          expertGame.getStudentOnCloudTiles());
+    }
   }
 
   /**
    * Testing the moveNature method and it ensures that, independently from the original position of
    * motherNature, she will be moved by the correct number of steps chosen by the player according
    * to the played assistant
-   *
-   * @throws FileNotFoundException If a json file will not be found
    */
   @Test
-  public void testMoveNature() throws FileNotFoundException {
-    /*Vector<Team> teams = new Vector<>();
-    Game game = new Game(teams, 1);
-    Team activePlayer = new Team(1, 2, new Player(1, "ale", game.getStudentsBag(),
-        game.getStudentAtEntrance()));
-    Team nonActivePlayer = new Team(2, 1, new Player(2, "luca", game.getStudentsBag(),
-        game.getStudentAtEntrance()));
-    teams.add(activePlayer);
-    teams.add(nonActivePlayer);
-    int randomPosition = game.getMainBoard().getMotherNature().getPosition();
-    game.moveNature(3);
-    Assert.assertEquals((randomPosition + 3) % 12,
-        game.getMainBoard().getMotherNature().getPosition());*/
-    // TODO LUCA: broken
+  public void testMoveNature() {
+    int motherNatureInitialPosition;
+    int motherNatureFinalPosition;
+    motherNatureInitialPosition = expertGame.getMainBoard().getMotherNature().getPosition();
+    expertGame.moveNature(5);
+    motherNatureFinalPosition = expertGame.getMainBoard().getMotherNature().getPosition();
+
+    Assert.assertEquals(motherNatureFinalPosition,
+        (motherNatureInitialPosition + 5) % (expertGame.getMainBoard().getIslands().size()));
   }
 
   /**
    * Testing the takeCloud method ensuring that the chosen cloudTile students will be correctly
    * added to the active player entrance removing them from the cloudTile
-   *
-   * @throws FileNotFoundException If a json file will not be found
    */
   @Test
-  public void testTakeCloud() throws FileNotFoundException {
-    /*Vector<Team> teams = new Vector<>();
-    Game game = new Game(teams, 1);
-    game.setGameParameter();
-    game.getPurchasableCharacter();
-    Team activeTeam = new Team(1, 2, new Player(1, "ale", game.getStudentsBag(),
-        game.getStudentAtEntrance()));
-    Team nonActiveTeam = new Team(2, 1, new Player(2, "luca", game.getStudentsBag(),
-        game.getStudentAtEntrance()));
-    teams.add(activeTeam);
-    teams.add(nonActiveTeam);
-    game.createCloudsAndFill();
-    game.takeCloud(activeTeam.getPlayers().get(0), 0);
+  public void testTakeCloud() {
+    expertGame.takeCloud(activePlayer, 1);
     Assert.assertEquals(
-        Arrays.stream(activeTeam.getPlayers().get(0).getPlayerBoard().getEntrance().getStudents())
-            .sum(),
-        game.getStudentAtEntrance() + game
-            .getStudentOnCloudTiles());*/
-    // TODO LUCA: broken
+        Arrays.stream(activePlayer.getPlayerBoard().getEntrance().getStudents()).sum(),
+        expertGame.getStudentAtEntrance() + expertGame.getStudentOnCloudTiles());
   }
 
   /**
-   * Testing the purchasableCharacter method ensuring that the purchasableCharacter attributes will
-   * be correctly created and filled
-   *
-   * @throws FileNotFoundException If a json file will not be found
+   * Testing the setPurchasableCharacter method in the nonExpert match, if fact the
+   * purchasableCharacter vector must be null
    */
   @Test
-  public void testSetPurchasableCharacter() throws FileNotFoundException {
-    /*Vector<Team> teams = new Vector<>();
-    Game game = new Game(teams, 1);
-    game.setGameParameter();
-    Team activePlayer = new Team(1, 2, new Player(1, "ale", game.getStudentsBag(),
-        game.getStudentAtEntrance()));
-    Team nonActivePlayer = new Team(2, 1, new Player(2, "luca", game.getStudentsBag(),
-        game.getStudentAtEntrance()));
-    teams.add(activePlayer);
-    teams.add(nonActivePlayer);
-    game.setPurchasableCharacter();
-    Assert.assertEquals(game.getPurchasableCharacter().length, 3);
-    Assert.assertNotNull(game.getPurchasableCharacter()[0]);
-    Assert.assertNotNull(game.getPurchasableCharacter()[1]);
-    Assert.assertNotNull(game.getPurchasableCharacter()[2]);
-    */
+  public void testSetPurchasableCharacterNoExpertMode() {
+    Assert.assertNull(noExpertGame.getPurchasableCharacter());
+  }
+
+  /**
+   * Testing the setPurchasableCharacter method assuming a expert game, ensuring that the
+   * purchasableCharacter attributes will be correctly created and filled
+   */
+  @Test
+  public void testSetPurchasableCharacterExpertMode() {
   }
 
   /**
    * testing the setGameParameter method ensuring that the parameters in the gameParameter.json file
    * will be correctly read and set
-   *
-   * @throws FileNotFoundException If a json file will not be found
    */
   @Test
-  public void testSetGameParameter() throws FileNotFoundException {
-    /*Vector<Team> teams = new Vector<>();
-    Game game = new Game(teams, 2);
-    Team activePlayer = new Team(1, 2, new Player(1, "ale", game.getStudentsBag(),
-        game.getStudentAtEntrance()));
-    Team nonActivePlayer = new Team(2, 1, new Player(2, "luca", game.getStudentsBag(),
-        game.getStudentAtEntrance()));
-    teams.add(activePlayer);
-    teams.add(nonActivePlayer);
-    game.setGameParameter();
-    Assert.assertEquals(game.getPlayerNumber(), 3);
-    Assert.assertEquals(game.getPlayerTowerNumber(), 6);
-    Assert.assertEquals(game.getStudentAtEntrance(), 9);
-    Assert.assertEquals(game.getStudentOnCloudTiles(), 4);
-    */
-    // TODO LUCA: broken
+  public void testSetGameParameter() {
+    Assert.assertEquals(expertGame.getPlayerNumber(), 2);
+    Assert.assertEquals(expertGame.getPlayerTowerNumber(), 8);
+    Assert.assertEquals(expertGame.getStudentAtEntrance(), 7);
+    Assert.assertEquals(expertGame.getStudentOnCloudTiles(), 3);
+
+
   }
 
   /**
    * testing the moveStudent method(during a diningRoom case) and it ensures that the student will
    * be removed from the entrance and added to the diningRoom
-   *
-   * @throws FileNotFoundException If a json file will not be found
    */
   @Test
-  public void testMoveStudentDiningRoomCase() throws FileNotFoundException {
-    /*Vector<Team> teams = new Vector<>();
-    Game game = new Game(teams, 2);
-    game.setGameParameter();
-    Team activePlayer = new Team(1, 2, new Player(1, "ale", game.getStudentsBag(),
-        game.getStudentAtEntrance()));
-    Team nonActivePlayer = new Team(2, 1, new Player(2, "luca", game.getStudentsBag(),
-        game.getStudentAtEntrance()));
-    teams.add(activePlayer);
-    teams.add(nonActivePlayer);
-    game.setGameParameter();
-    game.moveStudent(activePlayer.getPlayers().get(0), Places.ENTRANCE, Places.DINING_ROOM, 1, -1);*/
-    // TODO LUCA: broken
+  public void testMoveStudentDiningRoomCase() {
+    expertGame.moveStudent(activePlayer, Places.ENTRANCE, Places.DINING_ROOM, 2,
+        Optional.empty());
+    Assert.assertEquals(
+        Arrays.stream(activePlayer.getPlayerBoard().getDiningRoom().getStudents()).sum(), 1);
+    Assert.assertEquals(
+        Arrays.stream(activePlayer.getPlayerBoard().getEntrance().getStudents()).sum(),
+        expertGame.getStudentAtEntrance() - 1);
   }
 
   /**
@@ -164,32 +133,17 @@ public class GameTest {
    * removed from the entrance and added to the selected island To avoid a possible side effect due
    * to the random color of students into the entrance this test also add a student with the same
    * color of the one added to the island
-   *
-   * @throws FileNotFoundException If a json file will not be found
    */
   @Test
-  public void testMoveStudentCloudCase() throws FileNotFoundException {
-
-    /*Vector<Team> teams = new Vector<>();
-    Game game = new Game(teams, 1);
-    game.setGameParameter();
-
-    Team activePlayer = new Team(1, 2, new Player(1, "ale", game.getStudentsBag(),
-        game.getStudentAtEntrance()));
-    Team nonActivePlayer = new Team(2, 1, new Player(2, "luca", game.getStudentsBag(),
-        game.getStudentAtEntrance()));
-    teams.add(activePlayer);
-    teams.add(nonActivePlayer);
-
-    activePlayer.getPlayers().get(0).getPlayerBoard().moveToEntrance(1);
-    game.moveStudent(activePlayer.getPlayers().get(0), Places.ENTRANCE, Places.CLOUD_TILE, 1, 5);
-
-    Assert.assertEquals(Arrays.stream(game.getMainBoard().getIslands().get(5).getStudents()).sum(),
-        1);
+  public void testMoveStudentCloudCase() {
+    activePlayer.getPlayerBoard().getEntrance().addStudent(3);
+    expertGame.moveStudent(activePlayer, Places.ENTRANCE, Places.ISLAND, 3, Optional.of(5));
+    Island chosenIsland = expertGame.getMainBoard().getIslands().get(5);
+    Assert.assertEquals(Arrays.stream(chosenIsland.getStudents()).sum(), 2);
     Assert.assertEquals(
-        Arrays.stream(activePlayer.getPlayers().get(0).getPlayerBoard().getEntrance().getStudents())
-            .sum(), (game.getStudentAtEntrance()) - 1);*/
-    // TODO LUCA: broken
+        Arrays.stream(activePlayer.getPlayerBoard().getEntrance().getStudents()).sum(),
+        expertGame.getStudentAtEntrance());
   }
 }
+
 
