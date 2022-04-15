@@ -107,6 +107,22 @@ public class Player {
     this.coins++;
   }
 
+  /**
+   *
+   * TODO
+   */
+  public void additionalMovesAssistant(int nOfMoves) {
+    assistant.setAdditionalMoves(nOfMoves);
+  }
+
+  /**
+   *
+   * TODO
+   */
+  public void removeAdditionalMovesAssistant() {
+    assistant.setAdditionalMoves(0);
+  }
+
   public int getCoins() {
     return coins;
   }

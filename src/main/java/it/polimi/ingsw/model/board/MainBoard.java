@@ -12,6 +12,10 @@ public class MainBoard {
   // Attributes
   private final Vector<Island> islands;
   private final MotherNature motherNature;
+  private int influencePlus = 0;
+  private int influenceEqualProfessors = 0;
+  private Color forbiddenColor = null;
+  private boolean areTowersCounted = true;
 
   /**
    * Constructor method: it creates Islands array, it places the mother nature on a random island,
@@ -68,15 +72,19 @@ public class MainBoard {
         if (team.getPlayers().contains(playerHasProfessor)) {
           teamHasProfessor = team;
         }
+        /*
+        if (team.getPlayers().contains(cu)) {
+          influences[team.getId()] += influencePlus + influenceEqualProfessors;
+        }*/
       }
 
-      if (teamHasProfessor != null) {
+      if (teamHasProfessor != null && color != forbiddenColor) {
         influences[teamHasProfessor.getId()] += island.getStudents()[color.ordinal()];
       }
     }
 
     // Add the influences points of the tower
-    if (island.getOwnerId() != -1) {
+    if (island.getOwnerId() != -1 && areTowersCounted) {
       influences[island.getOwnerId()] += island.getNumberOfTowers();
     }
 
@@ -143,6 +151,22 @@ public class MainBoard {
     motherNature.move(numMoves, islands.size());
   }
 
+  /**
+   * TODO
+   * @return
+   */
+  public void setIslandsNoEntry(int numIsland) {
+    islands.get(numIsland).setNoEntry(true);
+  }
+
+  /**
+   * TODO
+   * @return
+   */
+  public void resetIslandsNoEntry(int numIsland) {
+    islands.get(numIsland).setNoEntry(false);
+  }
+
   public Vector<Island> getIslands() {
     return islands;
   }
@@ -150,4 +174,21 @@ public class MainBoard {
   public MotherNature getMotherNature() {
     return motherNature;
   }
+
+  public void setInfluencePlus(int influencePlus) {
+    this.influencePlus = influencePlus;
+  }
+
+  public void setInfluenceEqualProfessors(int influenceEqualProfessors) {
+    this.influenceEqualProfessors = influenceEqualProfessors;
+  }
+
+  public void setAreTowersCounted(boolean areTowersCounted) {
+    this.areTowersCounted = areTowersCounted;
+  }
+
+  public void setForbiddenColor(Color forbiddenColor) {
+    this.forbiddenColor = forbiddenColor;
+  }
+
 }

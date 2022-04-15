@@ -2,31 +2,69 @@ package it.polimi.ingsw.model.characters;
 
 import it.polimi.ingsw.helpers.Effects;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.board.MainBoard;
 
 public class GameCharacters extends CharacterCard {
 
-  public GameCharacters(Effects effect, int neededCoins) {
-    super(effect, neededCoins);
+  public GameCharacters(Effects effect, int neededCoins, int[] students) {
+    super(effect, neededCoins, students);
   }
 
   /**
-   * TODO
+   * This method overrides the standard behaviour of the CharacterCard class, parent of
+   * GameCharacters, by implementing all the game effects concerning the change of state of the
+   * current game
+   *
+   * @param params A struct containing all the object modifiable by any effect. This makes the
+   *               applyEffect method in all the different child class have the same signature, thus
+   *               making it interchangeable
    */
-  public void applyEffect(Game currentGame) {
+  @Override
+  public void applyEffect(CharacterStruct params) {
+
     switch (cardEffect) {
-      case TAKE_PROFESSOR_EQUAL:
-        takeProfessorEqualEffect(currentGame);
+      case FALSE_NATURE_MOVEMENT:
+        falseNatureMovementEffect(params.currentGame, params.motherNatureMoves, params.mainBoard);
         break;
       default:
         throw new IllegalStateException("Unexpected value: " + cardEffect);
     }
+
   }
 
   /**
-   * @param currentGame
+   * This method overrides the standard behaviour of the CharacterCard class, parent of
+   * GameCharacters, by removing all the game effects concerning the change of state of the current
+   * game. It removes only those effects that need it but still has a case for each possible effect
+   * to ensure complete interchangeability
+   *
+   * @param params A struct containing all the object modifiable by any effect. This makes the
+   *               removeEffect method in all the different child class have the same signature,
+   *               thus making it interchangeable
    */
-  private void takeProfessorEqualEffect(Game currentGame) {
-    // TODO: add one to currentPlayer influence (same effect)
-    // TODO: Needs variable in game
+  @Override
+  public void removeEffect(CharacterStruct params) {
+
+    switch (cardEffect) {
+      case FALSE_NATURE_MOVEMENT:
+        break;
+      default:
+        throw new IllegalStateException("Unexpected value: " + cardEffect);
+    }
+
+  }
+
+  /**
+   * This method implements the Character Card used to simulate the movement of Mother Nature and
+   * thus the possible conquering of an island
+   *
+   * @param currentGame       The current Game object
+   * @param motherNatureMoves The number of moves Mother Nature has to take
+   * @param board             The game's main board object
+   */
+  private void falseNatureMovementEffect(Game currentGame, int motherNatureMoves, MainBoard board) {
+    currentGame.moveNature(motherNatureMoves);
+    board.moveMotherNature(-motherNatureMoves);  // TODO: could break something?
   }
 }
+

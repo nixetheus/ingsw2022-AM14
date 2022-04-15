@@ -13,6 +13,8 @@ public class Island {
   private int ownerId;
   private int numberOfTowers;
 
+  private boolean noEntry;
+
   /**
    * Constructor method for the Island class. Defaults ownerId to null (or -1), students to an empty
    * array and numberOfTowers to zero
@@ -89,5 +91,9 @@ public class Island {
 
   public int getNumberOfTowers() {
     return numberOfTowers;
+  }
+
+  public void setNoEntry(boolean noEntry) {
+    this.noEntry = noEntry;
   }
 }

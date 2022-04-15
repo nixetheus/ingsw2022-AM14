@@ -8,9 +8,9 @@ package it.polimi.ingsw.model.player;
 public class Assistant {
 
   //Attributes
-  private final int moves;
+  private int moves;
   private final int speed;
-  private final int assistantId;
+  private final int assistantId;private int additionalMoves;
 
   /**
    * Constructor method for the Assistant class
@@ -23,10 +23,11 @@ public class Assistant {
     this.moves = moves;
     this.speed = speed;
     this.assistantId = assistantId;
+    this.additionalMoves = 0;
   }
 
   public int getMoves() {
-    return moves;
+    return moves + additionalMoves;
   }
 
   public int getSpeed() {
@@ -35,5 +36,9 @@ public class Assistant {
 
   public int getAssistantId() {
     return assistantId;
+  }
+
+  public void setAdditionalMoves(int additionalMoves) {
+    this.additionalMoves = additionalMoves;
   }
 }

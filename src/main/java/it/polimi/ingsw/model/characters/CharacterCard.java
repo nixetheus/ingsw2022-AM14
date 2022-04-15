@@ -10,14 +10,21 @@ public class CharacterCard {
 
   final Effects cardEffect;
   int cost;
+  int[] students;
 
-  public CharacterCard(Effects effect, int neededCoins) {
+  public CharacterCard(Effects effect, int neededCoins, int[] cardStudents) {
+
     cost = neededCoins;
     cardEffect = effect;
+    students = cardStudents;
   }
 
-  public void applyEffect() {
+  public void applyEffect(CharacterStruct params) {
     System.out.println("This line should never get printed");
+  }
+
+  public void removeEffect(CharacterStruct params) {
+    System.out.println("Neither should this");
   }
 
   public int getCost() {
@@ -27,7 +34,5 @@ public class CharacterCard {
   public void increaseCost() {
     cost++;
   }
-
-  // TODO: RESET EFFECTS METHOD
 
 }

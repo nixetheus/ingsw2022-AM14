@@ -1,36 +1,82 @@
 package it.polimi.ingsw.model.characters;
 
+import it.polimi.ingsw.helpers.Color;
 import it.polimi.ingsw.helpers.Effects;
 import it.polimi.ingsw.model.board.MainBoard;
 
 public class MainBoardCharacters extends CharacterCard {
 
-  public MainBoardCharacters(Effects effect, int neededCoins) {
-    super(effect, neededCoins);
+  public MainBoardCharacters(Effects effect, int neededCoins, int[] students) {
+    super(effect, neededCoins, students);
   }
 
   /**
-   * TODO
+   * This method overrides the standard behaviour of the CharacterCard class, parent of
+   * MainBoardCharacters, by implementing all the game effects concerning the change of state of the
+   * game's main board
+   *
+   * @param params A struct containing all the object modifiable by any effect. This makes the
+   *               applyEffect method in all the different child class have the same signature, thus
+   *               making it interchangeable
    */
-  public void applyEffect(MainBoard mainBoard) {
+  @Override
+  public void applyEffect(CharacterStruct params) {
+
     switch (cardEffect) {
       case TAKE_STUDENT_PUT_ISLAND:
-        takeStudentPutIslandEffect(mainBoard);
-        break;
-      case FALSE_NATURE_MOVEMENT:
-        falseNatureMovementEffect(mainBoard);
+        takeStudentPutIslandEffect(params.mainBoard, params.numIsland, params.color);
         break;
       case NO_ENTRY_NATURE:
-        noEntryNatureEffect(mainBoard);
+        noEntryNatureEffect(params.mainBoard, params.numIsland);
         break;
       case NO_TOWERS_INFLUENCE:
-        noTowersInfluenceEffect(mainBoard);
+        noTowersInfluenceEffect(params.mainBoard);
         break;
       case ADD_TWO_INFLUENCE:
-        addTwoInfluenceEffect(mainBoard);
+        addTwoInfluenceEffect(params.mainBoard);
         break;
       case NO_INFLUENCE_COLOR:
-        noInfluenceColorEffect(mainBoard);
+        noInfluenceColorEffect(params.mainBoard, params.color);
+        break;
+      case TAKE_PROFESSOR_EQUAL:
+        takeProfessorEqualEffect(params.mainBoard);
+        break;
+      default:
+        throw new IllegalStateException("Unexpected value: " + cardEffect);
+    }
+
+  }
+
+  /**
+   * This method overrides the standard behaviour of the CharacterCard class, parent of
+   * MainBoardCharacters, by removing all the game effects concerning the change of state of the
+   * game's main board. It removes only those effects that need it but still has a case for each
+   * possible effect to ensure complete interchangeability
+   *
+   * @param params A struct containing all the object modifiable by any effect. This makes the
+   *               removeEffect method in all the different child class have the same signature,
+   *               thus making it interchangeable
+   */
+  @Override
+  public void removeEffect(CharacterStruct params) {
+
+    switch (cardEffect) {
+      case TAKE_STUDENT_PUT_ISLAND:
+        break;
+      case NO_ENTRY_NATURE:
+        yesEntryNatureEffect(params.mainBoard, params.numIsland);
+        break;
+      case NO_TOWERS_INFLUENCE:
+        yesTowersInfluenceEffect(params.mainBoard);
+        break;
+      case ADD_TWO_INFLUENCE:
+        removeTwoInfluenceEffect(params.mainBoard);
+        break;
+      case NO_INFLUENCE_COLOR:
+        allInfluenceColorEffect(params.mainBoard);
+        break;
+      case TAKE_PROFESSOR_EQUAL:
+        noTakeProfessorEqualEffect(params.mainBoard);
         break;
       default:
         throw new IllegalStateException("Unexpected value: " + cardEffect);
@@ -38,45 +84,118 @@ public class MainBoardCharacters extends CharacterCard {
   }
 
   /**
-   * @param mainBoard
+   * This method implements the Character Card used to take one student from this card and put it in
+   * one island
+   *
+   * @param mainBoard The game's main board object
+   * @param numIsland The number of the affected island
+   * @param color     Color of the student to be moved
    */
-  private void takeStudentPutIslandEffect(MainBoard mainBoard) {
-    // TODO: needs number of island
+  private void takeStudentPutIslandEffect(MainBoard mainBoard, int numIsland, Color color) {
+    mainBoard.addToIsland(color.ordinal(), numIsland);
   }
 
   /**
-   * @param mainBoard
+   * This method implements the Character Card used to block the movement of Mother Nature on one
+   * island
+   *
+   * @param mainBoard The game's main board object
+   * @param numIsland The number of the affected island that can't be used by mother nature this
+   *                  turn
    */
-  private void falseNatureMovementEffect(MainBoard mainBoard) {
-    // TODO: needs another param that says which island, also needs Game (could be moved to Game too)
-    mainBoard.moveMotherNature(500);
+  private void noEntryNatureEffect(MainBoard mainBoard, int numIsland) {
+    mainBoard.setIslandsNoEntry(numIsland);
   }
 
   /**
-   * @param mainBoard
+   * This method removes the effect of the Character Card used to block the movement of Mother
+   * Nature on one island
+   *
+   * @param mainBoard The game's main board object
+   * @param numIsland The number of the affected island that has to be reverted
    */
-  private void noEntryNatureEffect(MainBoard mainBoard) {
-    // TODO: Needs to set variable in Island number x to negate access
+  private void yesEntryNatureEffect(MainBoard mainBoard, int numIsland) {
+    mainBoard.resetIslandsNoEntry(numIsland);
   }
 
   /**
-   * @param mainBoard
+   * This method implements the Character Card used to remove the counting of towers during the
+   * calculation of influences
+   *
+   * @param mainBoard The game's main board object
    */
   private void noTowersInfluenceEffect(MainBoard mainBoard) {
-    // TODO: Needs variable to check whether or not to use towers for influence
+    mainBoard.setAreTowersCounted(false);
   }
 
   /**
-   * @param mainBoard
+   * This method removes the effect of the Character Card used to remove the counting of towers
+   * during the calculation of influences
+   *
+   * @param mainBoard The game's main board object
+   */
+  private void yesTowersInfluenceEffect(MainBoard mainBoard) {
+    mainBoard.setAreTowersCounted(true);
+  }
+
+  /**
+   * This method implements the Character Card used to add two points to the current player's
+   * influence total
+   *
+   * @param mainBoard The game's main board object
    */
   private void addTwoInfluenceEffect(MainBoard mainBoard) {
-    // TODO: Needs variable to check whether or not to add two
+    mainBoard.setInfluencePlus(2);
   }
 
   /**
-   * @param mainBoard
+   * This method removes the effect of the Character Card used to add two points to the current
+   * player's influence total
+   *
+   * @param mainBoard The game's main board object
    */
-  private void noInfluenceColorEffect(MainBoard mainBoard) {
-    // TODO: Needs variable
+  private void removeTwoInfluenceEffect(MainBoard mainBoard) {
+    mainBoard.setInfluencePlus(0);
+  }
+
+  /**
+   * This method implements the Character Card used to remove one color from the calculation of
+   * influences
+   *
+   * @param mainBoard The game's main board object
+   * @param color     The color whose influence will not be counted
+   */
+  private void noInfluenceColorEffect(MainBoard mainBoard, Color color) {
+    mainBoard.setForbiddenColor(color);
+  }
+
+  /**
+   * This method removes the effect of the Character Card used to remove one color from the
+   * calculation of influences
+   *
+   * @param mainBoard The game's main board object
+   */
+  private void allInfluenceColorEffect(MainBoard mainBoard) {
+    mainBoard.setForbiddenColor(null);
+  }
+
+  /**
+   * This method implements the Character Card used to take control of a professor even when the
+   * players have the same number of students in the dining room of one color
+   *
+   * @param mainBoard The game's main board object
+   */
+  private void takeProfessorEqualEffect(MainBoard mainBoard) {
+    mainBoard.setInfluenceEqualProfessors(1);
+  }
+
+  /**
+   * This method removes the effect of the Character Card used to take control of a professor even
+   * when the players have the same number of students in the dining room of one color
+   *
+   * @param mainBoard The game's main board object
+   */
+  private void noTakeProfessorEqualEffect(MainBoard mainBoard) {
+    mainBoard.setInfluenceEqualProfessors(0);
   }
 }
