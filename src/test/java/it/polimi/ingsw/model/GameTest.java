@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 
+import it.polimi.ingsw.helpers.Color;
 import it.polimi.ingsw.helpers.Constants;
 import it.polimi.ingsw.helpers.Places;
 import it.polimi.ingsw.model.board.Island;
@@ -17,6 +18,7 @@ public class GameTest {
   Game expertGame;
   Game noExpertGame;
   Player activePlayer;
+  Player otherPlayer;
 
   @Before
   public void setUp() throws Exception {
@@ -28,6 +30,7 @@ public class GameTest {
     expertGame.addPlayerToTeam(expertGame.addTeam(), 1, "dario");
 
     this.activePlayer = expertGame.getTeams().get(0).getPlayers().get(0);
+    this.otherPlayer = expertGame.getTeams().get(1).getPlayers().get(0);
   }
 
   /**
@@ -143,6 +146,54 @@ public class GameTest {
     Assert.assertEquals(
         Arrays.stream(activePlayer.getPlayerBoard().getEntrance().getStudents()).sum(),
         expertGame.getStudentAtEntrance());
+  }
+
+  /**
+   * Testing the give professor method, it ensures that the professor will be correctly given to the
+   * right player
+   */
+  @Test
+  public void testGiveProfessorToPlayer() {
+    Player[] testProfessorArray = new Player[]{null, null, activePlayer, null, null};
+    activePlayer.moveToPlayerBoard(Places.DINING_ROOM, Color.GREEN.ordinal());
+    expertGame.giveProfessorToPlayer(Color.GREEN.ordinal());
+
+    Assert.assertEquals(expertGame.getProfessorControlPlayer()[Color.GREEN.ordinal()].toString(),
+        testProfessorArray[Color.GREEN.ordinal()].toString());
+  }
+
+  /**
+   * Testing the give professor method, it ensures that in case of the same number of students the
+   * professor remains to the player that controls it before the last movement
+   */
+
+  @Test
+  public void testGiveProfessorToPlayerSameNumberOfStudent() {
+    Player[] testProfessorArray = new Player[]{null, null, activePlayer, null, null};
+    Assert.assertNull(expertGame.getProfessorControlPlayer()[Color.GREEN.ordinal()]);
+    activePlayer.moveToPlayerBoard(Places.DINING_ROOM, Color.GREEN.ordinal());
+    otherPlayer.moveToPlayerBoard(Places.DINING_ROOM, Color.GREEN.ordinal());
+    expertGame.giveProfessorToPlayer(Color.GREEN.ordinal());
+    Assert.assertEquals(expertGame.getProfessorControlPlayer()[Color.GREEN.ordinal()].toString(),
+        testProfessorArray[Color.GREEN.ordinal()].toString());
+  }
+
+  /**
+   * Testing the give professor method, it ensures that the professor will be correctly given to the
+   * right player even if the controller change during the game
+   */
+
+
+  @Test
+  public void testGiveProfessorToAnotherPlayer() {
+    Player[] testProfessorArray = new Player[]{null, null, otherPlayer, null, null};
+    activePlayer.moveToPlayerBoard(Places.DINING_ROOM, Color.GREEN.ordinal());
+    expertGame.giveProfessorToPlayer(Color.GREEN.ordinal());
+    otherPlayer.moveToPlayerBoard(Places.DINING_ROOM, Color.GREEN.ordinal());
+    otherPlayer.moveToPlayerBoard(Places.DINING_ROOM, Color.GREEN.ordinal());
+    expertGame.giveProfessorToPlayer(Color.GREEN.ordinal());
+    Assert.assertEquals(expertGame.getProfessorControlPlayer()[Color.GREEN.ordinal()].toString(),
+        testProfessorArray[Color.GREEN.ordinal()].toString());
   }
 }
 

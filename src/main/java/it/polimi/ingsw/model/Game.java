@@ -226,6 +226,38 @@ public class Game {
 
   }
 
+  /**
+   * This method give the control of a professor to the player with the max number of students of
+   * that color in his dining room
+   *
+   * @param color The color of the student added to a player dining room
+   */
+  public void giveProfessorToPlayer(int color) {
+    int studentPerColor;
+    int maxStudentColor = 0;
+    Player playerTakesProfessor = null;
+
+    if (professorControlPlayer[color] != null) {
+      maxStudentColor = professorControlPlayer[color].getPlayerBoard().getDiningRoom()
+          .getStudents()[color];
+      playerTakesProfessor = professorControlPlayer[color];
+    }
+
+    for (Team team : teams) {
+      for (Player player : team.getPlayers()) {
+        studentPerColor = player.getPlayerBoard().getDiningRoom().getStudents()[color];
+
+        if (studentPerColor > maxStudentColor) {
+          playerTakesProfessor = player;
+          maxStudentColor = studentPerColor;
+        }
+
+      }
+    }
+
+    this.professorControlPlayer[color] = playerTakesProfessor;
+  }
+
   public Vector<CloudTile> getCloudTiles() {
     return cloudTiles;
   }
