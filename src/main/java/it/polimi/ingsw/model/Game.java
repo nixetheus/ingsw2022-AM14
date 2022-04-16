@@ -164,6 +164,7 @@ public class Game {
     if (placeToAdd == Places.DINING_ROOM && placeToTake == Places.ENTRANCE) {
       activePlayer.moveToPlayerBoard(Places.DINING_ROOM, color);
       activePlayer.getPlayerBoard().getEntrance().removeStudent(color);
+      giveProfessorToPlayer(color);
     } else if (placeToAdd == Places.ISLAND && placeToTake == Places.ENTRANCE) {
       mainBoard.addToIsland(color, islandNumber.get());
       activePlayer.getPlayerBoard().getEntrance().removeStudent(color);
