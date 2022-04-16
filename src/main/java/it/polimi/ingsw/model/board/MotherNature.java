@@ -21,7 +21,7 @@ public class MotherNature {
   /**
    * This method moves MotherNature, it takes the total number of islands to avoid overflow
    *
-   * @param moves Number of movements of motherNature
+   * @param moves        Number of movements of motherNature
    * @param numOfIslands Total number of islands
    */
   public void move(int moves, int numOfIslands) {

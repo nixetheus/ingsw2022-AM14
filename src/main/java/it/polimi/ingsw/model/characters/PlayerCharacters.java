@@ -31,12 +31,12 @@ public class PlayerCharacters extends CharacterCard {
         increaseMovementTwoEffect(params.currentPlayer);
         break;
       case REPLACE_STUDENT_ENTRANCE:
-        replaceStudentEntranceEffect(params.currentPlayer, params.studentsFrom,
-            params.studentsTo);
+        replaceStudentEntranceEffect(params.currentPlayer, params.studentsCard,
+            params.studentsEntrance);
         break;
       case EXCHANGE_TWO_ENTRANCE_DINING:
-        exchangeTwoEntranceDiningEffect(params.currentPlayer, params.studentsFrom,
-            params.studentsTo);
+        exchangeTwoEntranceDiningEffect(params.currentPlayer, params.studentsEntrance,
+            params.studentsDiningRoom);
         break;
       case PUT_ONE_DINING_ROOM:
         putOneDiningRoomEffect(params.currentPlayer, params.color);

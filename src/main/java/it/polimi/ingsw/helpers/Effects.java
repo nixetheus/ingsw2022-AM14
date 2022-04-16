@@ -15,7 +15,9 @@ public enum Effects {
   TAKE_PROFESSOR_EQUAL(2, 0),
   NO_TOWERS_INFLUENCE(3, 0),
   ADD_TWO_INFLUENCE(2, 0),
-  NO_INFLUENCE_COLOR(3, 0);
+  NO_INFLUENCE_COLOR(3, 0),
+
+  DEFAULT_EFFECT(0, 0);
 
   private final int initialCost;
   private final int nOfStudents;

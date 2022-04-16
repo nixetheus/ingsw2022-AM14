@@ -181,10 +181,6 @@ public class MainBoard {
     return motherNature;
   }
 
-  public void setInfluencePlus(int influencePlus) {
-    this.influencePlus = influencePlus;
-  }
-
   public void setInfluenceEqualProfessors(int influenceEqualProfessors) {
     this.influenceEqualProfessors = influenceEqualProfessors;
   }
@@ -193,22 +189,25 @@ public class MainBoard {
     this.areTowersCounted = areTowersCounted;
   }
 
-  public void setForbiddenColor(Color forbiddenColor) {
-    this.forbiddenColor = forbiddenColor;
-  }
-
   public int getInfluencePlus() {
     return influencePlus;
+  }
+
+  public void setInfluencePlus(int influencePlus) {
+    this.influencePlus = influencePlus;
   }
 
   public Color getForbiddenColor() {
     return forbiddenColor;
   }
 
+  public void setForbiddenColor(Color forbiddenColor) {
+    this.forbiddenColor = forbiddenColor;
+  }
+
   public boolean areTowersCounted() {
     return areTowersCounted;
   }
-
 
 
 }

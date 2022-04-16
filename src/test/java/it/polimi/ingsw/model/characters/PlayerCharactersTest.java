@@ -49,12 +49,12 @@ public class PlayerCharactersTest {
     CharacterCard replaceStudentEntrance = new PlayerCharacters(Effects.REPLACE_STUDENT_ENTRANCE,
         Effects.REPLACE_STUDENT_ENTRANCE.getCost(), new int[5]);
 
-    params.studentsFrom = studentsBagTest.pickRandomStudents(3);
-    params.studentsTo = params.currentPlayer.getPlayerBoard().getEntrance().getStudents();
+    params.studentsCard = studentsBagTest.pickRandomStudents(3);
+    params.studentsEntrance = params.currentPlayer.getPlayerBoard().getEntrance().getStudents();
 
     replaceStudentEntrance.applyEffect(params);
     Assert.assertEquals(
-        Arrays.toString(params.studentsFrom),
+        Arrays.toString(params.studentsCard),
         Arrays.toString(params.currentPlayer.getPlayerBoard().getEntrance().getStudents()));
   }
 
@@ -79,15 +79,15 @@ public class PlayerCharactersTest {
       }
     }
 
-    params.studentsFrom = params.currentPlayer.getPlayerBoard().getEntrance().getStudents();
-    params.studentsTo = params.currentPlayer.getPlayerBoard().getDiningRoom().getStudents();
+    params.studentsEntrance = params.currentPlayer.getPlayerBoard().getEntrance().getStudents();
+    params.studentsDiningRoom = params.currentPlayer.getPlayerBoard().getDiningRoom().getStudents();
 
     exchangeTwoEntranceDining.applyEffect(params);
     Assert.assertEquals(
-        Arrays.toString(params.studentsTo),
+        Arrays.toString(params.studentsDiningRoom),
         Arrays.toString(params.currentPlayer.getPlayerBoard().getEntrance().getStudents()));
     Assert.assertEquals(
-        Arrays.toString(params.studentsFrom),
+        Arrays.toString(params.studentsEntrance),
         Arrays.toString(params.currentPlayer.getPlayerBoard().getDiningRoom().getStudents()));
   }
 
@@ -168,5 +168,23 @@ public class PlayerCharactersTest {
     int leftovers2 = Math.min(diningRoomTest2[params.color.ordinal()], 3);
     Assert.assertEquals(studentBagTestColorN + leftovers1 + leftovers2,
         studentsBagTest.getStudents()[params.color.ordinal()]);
+  }
+
+  /**
+   * Test for default effect (exception thrown)
+   */
+  @Test(expected = IllegalStateException.class)
+  public void defaultPlayerEffectTest() {
+    CharacterCard defaultPlayerEffect = new PlayerCharacters(Effects.DEFAULT_EFFECT, 0, new int[5]);
+    defaultPlayerEffect.applyEffect(new CharacterStruct());
+  }
+
+  /**
+   * Test for default remove effect (exception thrown)
+   */
+  @Test(expected = IllegalStateException.class)
+  public void defaultRemovePlayerEffectTest() {
+    CharacterCard defaultRemovePlayerEffect = new PlayerCharacters(Effects.DEFAULT_EFFECT, 0, new int[5]);
+    defaultRemovePlayerEffect.removeEffect(new CharacterStruct());
   }
 }

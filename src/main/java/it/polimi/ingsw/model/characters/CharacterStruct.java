@@ -13,11 +13,13 @@ public class CharacterStruct {
   public int numIsland;
   public Game currentGame;
   public Vector<Team> teams;
-  public int[] studentsTo;
   public MainBoard mainBoard;
-  public int[] studentsFrom;
   public Player currentPlayer;
   public int motherNatureMoves;
   public Color color;
   public StudentsBag studentsBag;
+
+  public int[] studentsCard;
+  public int[] studentsEntrance;
+  public int[] studentsDiningRoom;
 }

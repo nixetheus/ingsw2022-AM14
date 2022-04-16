@@ -39,12 +39,12 @@ public class Assistant {
     return assistantId;
   }
 
-  public void setAdditionalMoves(int additionalMoves) {
-    this.additionalMoves = additionalMoves;
-  }
-
   public int getAdditionalMoves() {
     return additionalMoves;
+  }
+
+  public void setAdditionalMoves(int additionalMoves) {
+    this.additionalMoves = additionalMoves;
   }
 
 }

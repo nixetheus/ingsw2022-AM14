@@ -20,9 +20,11 @@ public class CharacterCard {
   }
 
   public void applyEffect(CharacterStruct params) {
+    throw new IllegalStateException("Unexpected value: " + cardEffect);
   }
 
   public void removeEffect(CharacterStruct params) {
+    throw new IllegalStateException("Unexpected value: " + cardEffect);
   }
 
   public int getCost() {

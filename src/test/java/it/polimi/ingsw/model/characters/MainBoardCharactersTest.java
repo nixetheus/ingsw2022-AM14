@@ -109,4 +109,22 @@ public class MainBoardCharactersTest {
     // TODO
   }
 
+  /**
+   * Test for default effect (exception thrown)
+   */
+  @Test(expected = IllegalStateException.class)
+  public void defaultMBEffectTest() {
+    CharacterCard defaultMBEffect = new MainBoardCharacters(Effects.DEFAULT_EFFECT, 0, new int[5]);
+    defaultMBEffect.applyEffect(new CharacterStruct());
+  }
+
+  /**
+   * Test for default remove effect (exception thrown)
+   */
+  @Test(expected = IllegalStateException.class)
+  public void defaultRemoveMBEffectTest() {
+    CharacterCard defaultRemoveMBEffect = new MainBoardCharacters(Effects.DEFAULT_EFFECT, 0, new int[5]);
+    defaultRemoveMBEffect.removeEffect(new CharacterStruct());
+  }
+
 }

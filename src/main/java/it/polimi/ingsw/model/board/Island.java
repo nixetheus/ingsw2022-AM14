@@ -92,11 +92,11 @@ public class Island {
     return numberOfTowers;
   }
 
-  public void setNoEntry(boolean noEntry) {
-    this.noEntry = noEntry;
-  }
-
   public boolean isNoEntry() {
     return noEntry;
+  }
+
+  public void setNoEntry(boolean noEntry) {
+    this.noEntry = noEntry;
   }
 }

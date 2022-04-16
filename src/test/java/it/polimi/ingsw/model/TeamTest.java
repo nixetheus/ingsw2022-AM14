@@ -1,9 +1,11 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.helpers.Constants;
 import it.polimi.ingsw.helpers.Towers;
 import it.polimi.ingsw.model.board.StudentsBag;
 import it.polimi.ingsw.model.player.Player;
 import java.io.FileNotFoundException;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -43,6 +45,25 @@ public class TeamTest {
     assert (testTeam.getPlayers().contains(testPlayer));
     assert (testTeam.getPlayers().contains(testPlayerTwo));
     assert (testTeam.getPlayers().size() == 2);
+  }
+
+  /**
+   * testAddPlayerTwice method tests the addition and removal of towers from a team
+   */
+  @Test
+  public void  addTowersTest() {
+
+    int toAdd = (int)(Math.random() * 100);
+    int toRemove = Math.min((int)(Math.random() * 100), Constants.getMaxTowers() + toAdd);
+
+    Team testTeam = new Team(0, Towers.WHITE);
+    Assert.assertEquals(Constants.getMaxTowers(), testTeam.getAvailableTowers());
+    testTeam.addTowers(toAdd);
+    Assert.assertEquals(Constants.getMaxTowers() + toAdd, testTeam.getAvailableTowers());
+    testTeam.removeTowers(toRemove);
+    Assert.assertEquals(
+        Constants.getMaxTowers() + toAdd - toRemove,
+        testTeam.getAvailableTowers());
   }
 
 }
