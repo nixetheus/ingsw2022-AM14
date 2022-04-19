@@ -169,7 +169,7 @@ public class MainControllerTest {
         .playCard(activePlayer.getPlayerId(), GamePhases.PLANNING, CardTypes.ASSISTANT, 3);
     Assert.assertNotNull(activePlayer.getAssistant());
     Assert.assertEquals(activePlayer.getAssistant().getAssistantId(), 3);
-    Assert.assertEquals(activePlayer.getAssistant().getSpeed(), 3);
+    Assert.assertEquals(activePlayer.getAssistant().getSpeed(), 4);
     Assert.assertEquals(activePlayer.getAssistant().getMoves(), 2);
   }
 

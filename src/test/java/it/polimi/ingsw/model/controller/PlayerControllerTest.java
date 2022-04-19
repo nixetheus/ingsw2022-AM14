@@ -99,7 +99,7 @@ public class PlayerControllerTest {
     playerController.playCard(activePlayer, 3, CardTypes.ASSISTANT);
     Assert.assertNotNull(activePlayer.getAssistant());
     Assert.assertEquals(activePlayer.getAssistant().getAssistantId(), 3);
-    Assert.assertEquals(activePlayer.getAssistant().getSpeed(), 3);
+    Assert.assertEquals(activePlayer.getAssistant().getSpeed(), 4);
     Assert.assertEquals(activePlayer.getAssistant().getMoves(), 2);
   }
 

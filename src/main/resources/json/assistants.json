@@ -2,51 +2,51 @@
   {
     "MOVES": 1,
     "SPEED": 1,
-    "ASSISTANT_ID": 1
+    "ASSISTANT_ID": 0
   },
   {
     "MOVES": 1,
     "SPEED": 2,
-    "ASSISTANT_ID": 2
+    "ASSISTANT_ID": 1
   },
   {
     "MOVES": 2,
     "SPEED": 3,
-    "ASSISTANT_ID": 3
+    "ASSISTANT_ID": 2
   },
   {
     "MOVES": 2,
     "SPEED": 4,
-    "ASSISTANT_ID": 4
+    "ASSISTANT_ID": 3
   },
   {
     "MOVES": 3,
     "SPEED": 5,
-    "ASSISTANT_ID": 5
+    "ASSISTANT_ID": 4
   },
   {
     "MOVES": 3,
     "SPEED": 6,
-    "ASSISTANT_ID": 6
+    "ASSISTANT_ID": 5
   },
   {
     "MOVES": 4,
     "SPEED": 7,
-    "ASSISTANT_ID": 7
+    "ASSISTANT_ID": 6
   },
   {
     "MOVES": 4,
     "SPEED": 8,
-    "ASSISTANT_ID": 8
+    "ASSISTANT_ID": 7
   },
   {
     "MOVES": 5,
     "SPEED": 9,
-    "ASSISTANT_ID": 9
+    "ASSISTANT_ID": 8
   },
   {
     "MOVES": 5,
     "SPEED": 10,
-    "ASSISTANT_ID": 10
+    "ASSISTANT_ID": 9
   }
 ]

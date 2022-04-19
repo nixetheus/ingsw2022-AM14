@@ -24,7 +24,7 @@ public class PlayerCharactersTest {
     StudentsBag studentsBagTest = new StudentsBag();
     CharacterStruct params = new CharacterStruct();
     params.currentPlayer = new Player(0, "testPlayer", studentsBagTest, 0);
-    params.currentPlayer.playAssistant((int) (Math.random() * 10));
+    params.currentPlayer.playAssistant((int) (Math.random() * 9));
 
     CharacterCard increaseMovementTwo = new PlayerCharacters(Effects.INCREASE_MOVEMENT_TWO,
         Effects.INCREASE_MOVEMENT_TWO.getCost(), new int[5]);
