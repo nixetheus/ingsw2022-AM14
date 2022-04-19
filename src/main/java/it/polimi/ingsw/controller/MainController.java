@@ -20,11 +20,11 @@ public class MainController {
   private final PlayerController playerController;
   private final GameController gameController;
   private final TurnManager turnManager;
+  private final Vector<Integer> playerOrderId;
   private Game currentGame;
   private int activePlayerId;
   private GamePhases currentPhase;
-  private final Vector<Integer> playerOrderId;
-  private int studentsMoved = 0;
+ private int studentsMoved = 0;
 
   /**
    * Constructor for the MainController Class
@@ -97,9 +97,14 @@ public class MainController {
    */
   public void moveMotherNature(int actionPlayerId, GamePhases messagePhase, int moves) {
     if (legitActionCheck(actionPlayerId, messagePhase)) {
-      playerController.moveMotherNature(moves);
-      nextPhase();
-      //check if he can do that number of jumps
+
+      if (moves <= findCurrentPlayer(actionPlayerId).getAssistant().getMoves()) {
+        playerController.moveMotherNature(moves);
+        nextPhase();
+      } else {
+        //too many jumps error message
+      }
+
     } else {
       //send error message
     }
@@ -162,9 +167,12 @@ public class MainController {
    */
   public void takeCloudTile(int actionPlayerId, GamePhases messagePhase, int idCloudTile) {
     if (legitActionCheck(actionPlayerId, messagePhase)) {
-      playerController.takeCloudTile(findCurrentPlayer(activePlayerId), idCloudTile);
-      nextTurn();
-      this.currentPhase = GamePhases.MOVE_STUDENTS;
+      if (idCloudTile < currentGame.getPlayerNumber() - 1) {
+        playerController.takeCloudTile(findCurrentPlayer(activePlayerId), idCloudTile);
+        nextTurn();
+      } else {
+        //invalid argument message
+      }
     } else {
       // send error message
     }
@@ -183,6 +191,7 @@ public class MainController {
   public void nextTurn() {
     if (activePlayerId != playerOrderId.lastElement()) {
       this.activePlayerId = turnManager.nextTurn(playerOrderId, activePlayerId);
+      this.currentPhase = GamePhases.MOVE_STUDENTS;
 
     } else {
       this.currentPhase = turnManager.nextRound();
@@ -219,7 +228,19 @@ public class MainController {
     return currentPhase;
   }
 
+  public void setCurrentPhase(GamePhases currentPhase) {
+    this.currentPhase = currentPhase;
+  }
+
   public Vector<Integer> getPlayerOrderId() {
     return playerOrderId;
   }
+
+
+  public int getStudentsMoved() {
+    return studentsMoved;
+  }
+
+
+
 }

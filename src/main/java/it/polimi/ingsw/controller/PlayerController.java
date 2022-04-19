@@ -74,9 +74,11 @@ public class PlayerController {
       //check if already played
       for (Team team : currentGame.getTeams()) {
         for (Player player : team.getPlayers()) {
-          if (player.getAssistant().getAssistantId() == idCard) {
-            //error message
-            return;
+          if (player.getAssistant() != null) {
+            if (player.getAssistant().getAssistantId() == idCard) {
+              //error message
+              return;
+            }
           }
         }
       }
