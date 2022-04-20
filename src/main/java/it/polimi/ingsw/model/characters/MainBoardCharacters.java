@@ -38,9 +38,6 @@ public class MainBoardCharacters extends CharacterCard {
       case NO_INFLUENCE_COLOR:
         noInfluenceColorEffect(params.mainBoard, params.color);
         break;
-      case TAKE_PROFESSOR_EQUAL:
-        takeProfessorEqualEffect(params.mainBoard);
-        break;
       default:
         throw new IllegalStateException("Unexpected value: " + cardEffect);
     }
@@ -74,9 +71,6 @@ public class MainBoardCharacters extends CharacterCard {
         break;
       case NO_INFLUENCE_COLOR:
         allInfluenceColorEffect(params.mainBoard);
-        break;
-      case TAKE_PROFESSOR_EQUAL:
-        noTakeProfessorEqualEffect(params.mainBoard);
         break;
       default:
         throw new IllegalStateException("Unexpected value: " + cardEffect);
@@ -177,25 +171,5 @@ public class MainBoardCharacters extends CharacterCard {
    */
   private void allInfluenceColorEffect(MainBoard mainBoard) {
     mainBoard.setForbiddenColor(null);
-  }
-
-  /**
-   * This method implements the Character Card used to take control of a professor even when the
-   * players have the same number of students in the dining room of one color
-   *
-   * @param mainBoard The game's main board object
-   */
-  private void takeProfessorEqualEffect(MainBoard mainBoard) {
-    mainBoard.setInfluenceEqualProfessors(1);
-  }
-
-  /**
-   * This method removes the effect of the Character Card used to take control of a professor even
-   * when the players have the same number of students in the dining room of one color
-   *
-   * @param mainBoard The game's main board object
-   */
-  private void noTakeProfessorEqualEffect(MainBoard mainBoard) {
-    mainBoard.setInfluenceEqualProfessors(0);
   }
 }

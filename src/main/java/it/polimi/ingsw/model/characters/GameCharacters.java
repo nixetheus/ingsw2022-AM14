@@ -26,6 +26,9 @@ public class GameCharacters extends CharacterCard {
       case FALSE_NATURE_MOVEMENT:
         falseNatureMovementEffect(params.currentGame, params.motherNatureMoves, params.mainBoard);
         break;
+      case TAKE_PROFESSOR_EQUAL:
+        takeProfessorEqualEffect(params.currentGame);
+        break;
       default:
         throw new IllegalStateException("Unexpected value: " + cardEffect);
     }
@@ -48,6 +51,9 @@ public class GameCharacters extends CharacterCard {
     switch (cardEffect) {
       case FALSE_NATURE_MOVEMENT:
         break;
+      case TAKE_PROFESSOR_EQUAL:
+        noTakeProfessorEqualEffect(params.currentGame);
+        break;
       default:
         throw new IllegalStateException("Unexpected value: " + cardEffect);
     }
@@ -65,6 +71,26 @@ public class GameCharacters extends CharacterCard {
   private void falseNatureMovementEffect(Game currentGame, int motherNatureMoves, MainBoard board) {
     currentGame.moveNature(motherNatureMoves);
     board.moveMotherNature(-motherNatureMoves);  // TODO: could break something?
+  }
+
+  /**
+   * This method implements the Character Card used to take control of a professor even when the
+   * players have the same number of students in the dining room of one color
+   *
+   * @param currentGame The current game object
+   */
+  private void takeProfessorEqualEffect(Game currentGame) {
+    currentGame.setInfluenceEqualProfessors(1);
+  }
+
+  /**
+   * This method removes the effect of the Character Card used to take control of a professor even
+   * when the players have the same number of students in the dining room of one color
+   *
+   * @param currentGame The current game object
+   */
+  private void noTakeProfessorEqualEffect(Game currentGame) {
+    currentGame.setInfluenceEqualProfessors(0);
   }
 }
 

@@ -13,7 +13,6 @@ public class MainBoard {
   private final Vector<Island> islands;
   private final MotherNature motherNature;
   private int influencePlus = 0;
-  private int influenceEqualProfessors = 0;
   private Color forbiddenColor = null;
   private boolean areTowersCounted = true;
 
@@ -181,14 +180,6 @@ public class MainBoard {
     return motherNature;
   }
 
-  public void setInfluenceEqualProfessors(int influenceEqualProfessors) {
-    this.influenceEqualProfessors = influenceEqualProfessors;
-  }
-
-  public void setAreTowersCounted(boolean areTowersCounted) {
-    this.areTowersCounted = areTowersCounted;
-  }
-
   public int getInfluencePlus() {
     return influencePlus;
   }
@@ -207,6 +198,10 @@ public class MainBoard {
 
   public boolean areTowersCounted() {
     return areTowersCounted;
+  }
+
+  public void setAreTowersCounted(boolean areTowersCounted) {
+    this.areTowersCounted = areTowersCounted;
   }
 
 

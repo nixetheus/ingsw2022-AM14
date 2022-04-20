@@ -124,6 +124,13 @@ public class Player {
   }
 
   /**
+   * This method removes coins to the player's "wallet"
+   */
+  public void removeCoins(int nOfCoins) {
+    this.coins -= nOfCoins;
+  }
+
+  /**
    * This method adds additional moves to the assistant as a result of a Character Card effect
    *
    * @param nOfMoves Number of moves to be added

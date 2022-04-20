@@ -4,18 +4,23 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import it.polimi.ingsw.helpers.Constants;
+import it.polimi.ingsw.helpers.Effects;
 import it.polimi.ingsw.helpers.Places;
 import it.polimi.ingsw.helpers.Towers;
 import it.polimi.ingsw.model.board.Island;
 import it.polimi.ingsw.model.board.MainBoard;
 import it.polimi.ingsw.model.board.StudentsBag;
 import it.polimi.ingsw.model.characters.CharacterCard;
+import it.polimi.ingsw.model.characters.GameCharacters;
+import it.polimi.ingsw.model.characters.MainBoardCharacters;
+import it.polimi.ingsw.model.characters.PlayerCharacters;
 import it.polimi.ingsw.model.player.Assistant;
 import it.polimi.ingsw.model.player.Player;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Vector;
 
 /**
@@ -32,11 +37,12 @@ public class Game {
   private final Vector<CloudTile> cloudTiles;
   private final boolean isExpert;
   private final HashMap<Integer, Towers> teamTowerColorMap;
-  private CharacterCard[] purchasableCharacter = null;
+  private Vector<CharacterCard> purchasableCharacter = new Vector<>();
   private int playerNumber;
   private int playerTowerNumber;
   private int studentAtEntrance;
   private int studentOnCloudTiles;
+  private int influenceEqualProfessors = 0;
 
   /**
    * Constructor por Game class
@@ -61,7 +67,6 @@ public class Game {
     fillCloud();
 
     if (isExpert) {
-      this.purchasableCharacter = new CharacterCard[Constants.getMaxPurchasableCharacter()];
       initializePurchasableCharacter();
     }
   }
@@ -100,8 +105,6 @@ public class Game {
 
     islandMotherNatureIn.setOwner(
         mainBoard.calculateInfluence(professorControlPlayer, teams, islandMotherNatureIn));
-    //wrong
-    // mainBoard.joinIsland(mainBoard.getMotherNature().getPosition());
   }
 
   /**
@@ -126,6 +129,31 @@ public class Game {
    * Method used to create and set the character available fore this match
    */
   public void initializePurchasableCharacter() {
+
+    Random random = new Random();
+    Vector<Effects> cardEffects = new Vector<>();
+    while (cardEffects.size() < 3) {
+      Effects effect = Effects.values()[random.nextInt(Effects.values().length)];
+      if (!cardEffects.contains(effect))
+        cardEffects.add(effect);
+    }
+
+    for (Effects effect : cardEffects) {
+      int[] cardStudents = studentsBag.pickRandomStudents(effect.getNOfStudents());
+      switch (effect.getType()) {
+        case GAME:
+          purchasableCharacter.add(new GameCharacters(effect, effect.getCost(), cardStudents));
+          break;
+        case PLAYER:
+          purchasableCharacter.add(new PlayerCharacters(effect, effect.getCost(), cardStudents));
+          break;
+        case MAINBOARD:
+          purchasableCharacter.add(new MainBoardCharacters(effect, effect.getCost(), cardStudents));
+          break;
+        default:
+          break;
+      }
+    }
   }
 
 
@@ -221,10 +249,11 @@ public class Game {
    * This method allows to play a certain character card
    *
    * @param activePlayer The player that is playing the card
-   * @param idCharacter  The id of the character that is played
+   * @param characterIndex The index of the character that is played
    */
-  public void playCharacter(Player activePlayer, int idCharacter) {
-
+  public void playCharacter(Player activePlayer, int characterIndex) {
+    activePlayer.removeCoins(purchasableCharacter.elementAt(characterIndex).getCost());
+    purchasableCharacter.elementAt(characterIndex).increaseCost();
   }
 
   /**
@@ -246,7 +275,12 @@ public class Game {
 
     for (Team team : teams) {
       for (Player player : team.getPlayers()) {
+
         studentPerColor = player.getPlayerBoard().getDiningRoom().getStudents()[color];
+        // TODO: current player?
+        // if (player.equals(this.pla)) {
+        // studentPerColor += this.influenceEqualProfessors;
+        //}
 
         if (studentPerColor > maxStudentColor) {
           playerTakesProfessor = player;
@@ -283,7 +317,7 @@ public class Game {
     return professorControlPlayer;
   }
 
-  public CharacterCard[] getPurchasableCharacter() {
+  public Vector<CharacterCard> getPurchasableCharacter() {
     return purchasableCharacter;
   }
 
@@ -305,6 +339,14 @@ public class Game {
 
   public StudentsBag getStudentsBag() {
     return studentsBag;
+  }
+
+  public void setInfluenceEqualProfessors(int influenceEqualProfessors) {
+    this.influenceEqualProfessors = influenceEqualProfessors;
+  }
+
+  public int getInfluenceEqualProfessors() {
+    return this.influenceEqualProfessors;
   }
 
 }
