@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.helpers.Constants;
 import it.polimi.ingsw.helpers.Places;
 import it.polimi.ingsw.model.board.StudentsBag;
 import java.io.FileNotFoundException;
@@ -62,13 +63,40 @@ public class PlayerTest {
   }
 
   /**
+   * testAddCoinMovingToPlayerBoard tests if the coin will be correctly added to the player if the
+   * he/she puts the right student into the dining room
+   */
+  @Test
+  public void testAddCoinMovingToPlayerBoard() throws FileNotFoundException {
+    testPlayer = new Player(2, "ale", studentsBag, 2);
+    testPlayer.moveToPlayerBoard(Places.DINING_ROOM, 2);
+    testPlayer.moveToPlayerBoard(Places.DINING_ROOM, 2);
+    testPlayer.moveToPlayerBoard(Places.DINING_ROOM, 2);
+
+    Assert.assertEquals(testPlayer.getCoins(), 2);
+
+    testPlayer.moveToPlayerBoard(Places.DINING_ROOM, 2);
+    testPlayer.moveToPlayerBoard(Places.DINING_ROOM, 2);
+    testPlayer.moveToPlayerBoard(Places.DINING_ROOM, 2);
+
+    Assert.assertEquals(testPlayer.getCoins(), 3);
+
+    testPlayer.moveToPlayerBoard(Places.DINING_ROOM, 1);
+    testPlayer.moveToPlayerBoard(Places.DINING_ROOM, 1);
+    testPlayer.moveToPlayerBoard(Places.DINING_ROOM, 1);
+
+    Assert.assertEquals(testPlayer.getCoins(), 4);
+
+  }
+
+  /**
    * Test for the addCoin method, it ensures that a player will receive a coin in the right way
    */
   @Test
   public void testAddCoin() throws FileNotFoundException {
     testPlayer = new Player(1, "marco", studentsBag, 2);
     testPlayer.addCoin();
-    Assert.assertEquals(testPlayer.getCoins(), 1);
+    Assert.assertEquals(testPlayer.getCoins(), Constants.getInitialCoinNumber() + 1);
   }
 
   /**

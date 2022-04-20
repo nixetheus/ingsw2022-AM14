@@ -178,7 +178,7 @@ public class MainControllerTest {
    */
   @Test
   public void testPlayCardCharacterCase() {
-
+    mainController.playCard(activePlayer.getPlayerId(), GamePhases.ACTION, CardTypes.CHARACTER, 2);
   }
 
   /**

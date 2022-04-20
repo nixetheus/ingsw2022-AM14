@@ -24,7 +24,7 @@ public class MainController {
   private Game currentGame;
   private int activePlayerId;
   private GamePhases currentPhase;
- private int studentsMoved = 0;
+  private int studentsMoved = 0;
 
   /**
    * Constructor for the MainController Class
@@ -66,7 +66,8 @@ public class MainController {
    * @return true the player and the phase are correct false otherwise
    */
   public boolean legitActionCheck(int actionPlayerId, GamePhases messagePhase) {
-    return actionPlayerId == activePlayerId && messagePhase == currentPhase;
+    return actionPlayerId == activePlayerId && messagePhase == currentPhase || (
+        messagePhase == GamePhases.ACTION && currentPhase != GamePhases.PLANNING);
   }
 
   /**
@@ -240,7 +241,6 @@ public class MainController {
   public int getStudentsMoved() {
     return studentsMoved;
   }
-
 
 
 }

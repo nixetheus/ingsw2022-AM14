@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.player;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import it.polimi.ingsw.helpers.Constants;
 import it.polimi.ingsw.helpers.Places;
 import it.polimi.ingsw.model.board.StudentsBag;
 import java.io.FileNotFoundException;
@@ -38,7 +39,7 @@ public class Player {
       StudentsBag studentsBag,
       int numberOfStudentAtEntrance) throws FileNotFoundException {
 
-    this.coins = 0;
+    this.coins = Constants.getInitialCoinNumber();
     this.assistant = null;
     this.playerId = playerId;
     this.playerNickname = playerNickname;
@@ -93,6 +94,10 @@ public class Player {
       playerBoard.moveToEntrance(color);
     } else if (place == Places.DINING_ROOM) {
       playerBoard.moveToDiningRoom(color);
+      if (this.playerBoard.getDiningRoom().getStudents()[color] % Constants.getNumberStudentToCoin()
+          == 0) {
+        addCoin();
+      }
     }
   }
 

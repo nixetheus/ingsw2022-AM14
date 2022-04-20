@@ -13,10 +13,12 @@ public class Constants {
   private static final int INITIAL_NUM_ISLANDS = 12;
   private static final int MAX_NUMBER_OF_PLAYER_EFFECTS = 5;
   private static final int MAX_NUMBER_OF_MAIN_BOARD_EFFECTS = 6;
-  private static final int MAX_PURCHASABLE_CHARACTER=3;
+  private static final int MAX_PURCHASABLE_CHARACTER = 3;
   private static final int TWO_PLAYER_MODE = 1;
   private static final int THREE_PLAYER_MODE = 2;
   private static final int FOUR_PLAYER_MODE = 3;
+  private static final int NUMBER_STUDENT_TO_COIN = 3;
+  private static final int INITIAL_COIN_NUMBER = 1;
 
   private Constants() {
   }
@@ -66,6 +68,14 @@ public class Constants {
   }
 
 
+  public static int getNumberStudentToCoin() {
+    return NUMBER_STUDENT_TO_COIN;
+  }
+
+
+  public static int getInitialCoinNumber() {
+    return INITIAL_COIN_NUMBER;
+  }
 
 
 }
