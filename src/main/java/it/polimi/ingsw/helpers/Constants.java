@@ -19,6 +19,8 @@ public class Constants {
   private static final int FOUR_PLAYER_MODE = 3;
   private static final int NUMBER_STUDENT_TO_COIN = 3;
   private static final int INITIAL_COIN_NUMBER = 1;
+  private static final int DEFAULT_PORT = 1234;
+  private static final String DEFAULT_HOST = "127.0.0.1";
 
   private Constants() {
   }
@@ -67,15 +69,16 @@ public class Constants {
     return FOUR_PLAYER_MODE;
   }
 
-
   public static int getNumberStudentToCoin() {
     return NUMBER_STUDENT_TO_COIN;
   }
-
 
   public static int getInitialCoinNumber() {
     return INITIAL_COIN_NUMBER;
   }
 
+  public static int getDefaultPort() { return DEFAULT_PORT; }
+
+  public static String getDefaultHost() { return DEFAULT_HOST; }
 
 }
