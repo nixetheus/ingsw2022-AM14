@@ -2,7 +2,9 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.helpers.CardTypes;
 import it.polimi.ingsw.helpers.GamePhases;
+import it.polimi.ingsw.helpers.MessageMain;
 import it.polimi.ingsw.helpers.Places;
+import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Team;
 import it.polimi.ingsw.model.player.Player;
@@ -35,6 +37,33 @@ public class MainController {
     this.playerController = new PlayerController();
     this.gameController = new GameController(this.loginController);
     this.playerOrderId = new Vector<>();
+  }
+
+  /**
+   * TODO
+   */
+  public void elaborateMessage(Message msg) {
+
+    if (msg.getMessageMain() == MessageMain.INFO) {
+      // TODO : delegate control to InfoController
+    } else {
+      // TODO: check player
+      // TODO: check phase
+      // TODO: Delegate control
+      switch (msg.getMessageMain()) {
+        case MOVE:
+          // TODO: moveController.elaborateMessage(msg);
+          break;
+        case PLAY:
+          // TODO: playController.elaborateMessage(msg);
+          break;
+        case LOGIN:
+          // TODO: LoginController.elaborateMessage(msg);
+          break;
+        default:
+          break;
+      }
+    }
   }
 
   /**

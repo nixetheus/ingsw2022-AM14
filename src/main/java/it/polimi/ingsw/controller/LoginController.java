@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.messages.LoginMessage;
 import java.util.HashMap;
 
 /**
@@ -7,7 +8,8 @@ import java.util.HashMap;
  */
 public class LoginController {
 
-
+  private boolean gameMode;
+  private int numberOfPlayers;
   private final HashMap<Integer, String> playerIdNicknameMap;
 
   /**
@@ -15,6 +17,28 @@ public class LoginController {
    */
   public LoginController() {
     this.playerIdNicknameMap = new HashMap<>();
+  }
+
+  /**
+   *
+   */
+  public void elaborateMessage(LoginMessage msg) {
+    switch (msg.getMessageSecondary()) {
+      case GAME_PARAMS:
+        setGameParameters(msg);
+        break;
+      case PLAYER_PARAMS:
+        // TODO
+        break;
+      default:
+        break;
+    }
+  }
+
+  private void setGameParameters(LoginMessage msg) {
+    // TODO get from message game mode
+    // TODO: this.gameMode = ^
+    // TODO: ecc
   }
 
   /**
