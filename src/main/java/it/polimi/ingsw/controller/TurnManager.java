@@ -1,10 +1,7 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.helpers.GamePhases;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Team;
-import it.polimi.ingsw.model.player.Player;
-import java.util.Vector;
+import it.polimi.ingsw.helpers.MessageMain;
+import it.polimi.ingsw.helpers.MessageSecondary;
 
 
 /**
@@ -12,88 +9,151 @@ import java.util.Vector;
  */
 public class TurnManager {
 
+  private int currentState;
+  private MessageMain mainGamePhase;
+  private MessageSecondary secondaryPhase;
+
+  // Game variables
+  private int numberOfUsers;
+  private int numberStudentsFromEntrance;
+
+  // Progress trackers
+  private int currentNumberOfUsers;
+  private int currentNumberOfPlayedAssistants;
+  private int currentNumberOfStudentsFromEntrance;
+  private int currentNumberOfUsersPlayedActionPhase;
 
   /**
    * Constructor method for TurnManager class
    */
   public TurnManager() {
+
+    currentState = 0;
+    mainGamePhase = MessageMain.LOGIN;
+    secondaryPhase = MessageSecondary.GAME_PARAMS;
+
+    currentNumberOfUsers = 0;
+    currentNumberOfPlayedAssistants = 0;
+    currentNumberOfStudentsFromEntrance = 0;
+    currentNumberOfUsersPlayedActionPhase = 0;
   }
 
+  public void changeState() {
 
-  /**
-   * This method change the current turn phase
-   */
-  public GamePhases nextPhase(GamePhases currentPhase) {
-    if (currentPhase.equals(GamePhases.PLANNING)) {
-      currentPhase = GamePhases.MOVE_STUDENTS;
-    } else if (currentPhase.equals(GamePhases.MOVE_STUDENTS)) {
-      currentPhase = GamePhases.MOVE_MOTHER_NATURE;
-    } else if (currentPhase.equals(GamePhases.MOVE_MOTHER_NATURE)) {
-      currentPhase = GamePhases.CLOUD_TILE_PHASE;
-    }
-    return currentPhase;
-  }
-
-  /**
-   * This method sets the gameOrder from the maximum speed to the minimum one
-   *
-   * @return The gameOrder calculated
-   */
-  public Vector<Integer> setGameOrder(Game currentGame) {
-    Vector<Integer> playerOrderId = new Vector<>();
-    int maxSpeed;
-    int idPlayerMaxSpeed = 0;
-    int speed;
-    while (playerOrderId.size() != currentGame.getPlayerNumber()) {
-      maxSpeed = 0;
-
-      for (Team team : currentGame.getTeams()) {
-        for (Player player : team.getPlayers()) {
-
-          if (!playerOrderId.contains(player.getPlayerId())) {
-            speed = player.getAssistant().getSpeed();
-
-            if (speed > maxSpeed) {
-              maxSpeed = speed;
-              idPlayerMaxSpeed = player.getPlayerId();
-
-            }
-          }
-
+    int nextState = currentState;
+    switch (currentState) {
+      case 0:
+        nextState++;
+        break;
+      case 1:
+        if (currentNumberOfUsers == numberOfUsers) {
+          nextState++;
         }
-      }
-
-      playerOrderId.add(idPlayerMaxSpeed);
-
+        break;
+      case 2:
+        if (currentNumberOfPlayedAssistants == numberOfUsers) {
+          nextState++;
+        }
+        break;
+      case 3:
+        if (currentNumberOfStudentsFromEntrance == numberStudentsFromEntrance) {
+          nextState++;
+        }
+        break;
+      case 4:
+        nextState++;
+        break;
+      case 5:
+        if (currentNumberOfUsersPlayedActionPhase == numberOfUsers) {
+          nextState = 2;
+        } else {
+          nextState = 3;
+        }
+        break;
+      default:
+        break;
     }
-    return playerOrderId;
+    currentState = nextState;
+    setStateParameters();
   }
 
   /**
-   * This method changes the active player
    *
-   * @param playerOrderId  The current round order
-   * @param activePlayerId The current active player
-   * @return the new active player
    */
-  public int nextTurn(Vector<Integer> playerOrderId, int activePlayerId) {
-    int previousIndexActivePlayer = playerOrderId.indexOf(activePlayerId);
-    if (activePlayerId == playerOrderId.lastElement()) {
-      this.nextRound();
-      return -1;
-    } else {
-      activePlayerId = playerOrderId.elementAt(previousIndexActivePlayer + 1);
+  public void updateCounters() {
+    switch (currentState) {
+      case 0:
+        break;
+      case 1:
+        currentNumberOfUsers++;
+        break;
+      case 2:
+        currentNumberOfPlayedAssistants++;
+        break;
+      case 3:
+        currentNumberOfStudentsFromEntrance++;
+        break;
+      case 4:
+        break;
+      case 5:
+        currentNumberOfUsersPlayedActionPhase++;
+        break;
+      default:
+        break;
     }
-    return activePlayerId;
   }
 
   /**
-   * This method set the current phase to the first one and creates the played assistant vector
+   *
    */
-  public GamePhases nextRound() {
-    //send message to the first player in order to play the first assistant
-    return GamePhases.PLANNING;
+  private void setStateParameters() {
+    switch (currentState) {
+      case 0:
+        currentNumberOfUsers = 0;
+        mainGamePhase = MessageMain.LOGIN;
+        secondaryPhase = MessageSecondary.GAME_PARAMS;
+        break;
+      case 1:
+        mainGamePhase = MessageMain.LOGIN;
+        secondaryPhase = MessageSecondary.PLAYER_PARAMS;
+        break;
+      case 2:
+        currentNumberOfUsersPlayedActionPhase = 0;
+        mainGamePhase = MessageMain.PLAY;
+        secondaryPhase = MessageSecondary.ASSISTANT;
+        break;
+      case 3:
+        currentNumberOfPlayedAssistants = 0;
+        mainGamePhase = MessageMain.MOVE;
+        secondaryPhase = MessageSecondary.ENTRANCE;
+        break;
+      case 4:
+        currentNumberOfStudentsFromEntrance = 0;
+        mainGamePhase = MessageMain.MOVE;
+        secondaryPhase = MessageSecondary.MOTHER_NATURE;
+        break;
+      case 5:
+        mainGamePhase = MessageMain.MOVE;
+        secondaryPhase = MessageSecondary.CLOUD_TILE;
+        break;
+      default:
+        break;
+    }
   }
 
+  public void setNumberOfUsers(int numberOfUsers) {
+    this.numberOfUsers = numberOfUsers;
+  }
 
+  public void setNumberStudentsFromEntrance(int numberStudentsFromEntrance) {
+    this.numberStudentsFromEntrance = numberStudentsFromEntrance;
+  }
+
+  public MessageMain getMainGamePhase() {
+    return mainGamePhase;
+  }
+
+  public MessageSecondary getSecondaryPhase() {
+    return secondaryPhase;
+  }
 }

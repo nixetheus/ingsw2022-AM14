@@ -1,15 +1,15 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.helpers.CardTypes;
-import it.polimi.ingsw.helpers.GamePhases;
 import it.polimi.ingsw.helpers.MessageMain;
-import it.polimi.ingsw.helpers.Places;
+import it.polimi.ingsw.helpers.Towers;
+import it.polimi.ingsw.messages.InfoMessage;
+import it.polimi.ingsw.messages.LoginMessage;
 import it.polimi.ingsw.messages.Message;
+import it.polimi.ingsw.messages.PlayMessage;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Team;
 import it.polimi.ingsw.model.player.Player;
 import java.io.FileNotFoundException;
-import java.util.Optional;
 import java.util.Vector;
 
 /**
@@ -18,48 +18,106 @@ import java.util.Vector;
  */
 public class MainController {
 
-  private final LoginController loginController;
-  private final PlayerController playerController;
-  private final GameController gameController;
+  // Controllers
   private final TurnManager turnManager;
-  private final Vector<Integer> playerOrderId;
-  private Game currentGame;
-  private int activePlayerId;
-  private GamePhases currentPhase;
-  private int studentsMoved = 0;
+  private final InfoController infoController;
+  private final PlayController playController;
+  // Attributes
+  private Game game;
+  private final Vector<Team> teams;
+  private Player currentPlayer;
+  // Game parameters
+  private int numberOfPlayers;
+  private boolean isGameExpert;
 
   /**
    * Constructor for the MainController Class
    */
   public MainController() {
-    this.turnManager = new TurnManager();
-    this.loginController = new LoginController();
-    this.playerController = new PlayerController();
-    this.gameController = new GameController(this.loginController);
-    this.playerOrderId = new Vector<>();
+
+    teams = new Vector<>();
+
+    turnManager = new TurnManager();
+    infoController = new InfoController();
+    playController = new PlayController();
   }
 
   /**
    * TODO
    */
-  public void elaborateMessage(Message msg) {
+  public void elaborateMessage(Message msg) throws FileNotFoundException {
 
     if (msg.getMessageMain() == MessageMain.INFO) {
-      // TODO : delegate control to InfoController
+      infoController.elaborateMessage((InfoMessage) msg, game);
+    } else if (msg.getMessageMain() == MessageMain.LOGIN) {
+      elaborateLoginMessage((LoginMessage) msg);
     } else {
-      // TODO: check player
-      // TODO: check phase
-      // TODO: Delegate control
-      switch (msg.getMessageMain()) {
-        case MOVE:
-          // TODO: moveController.elaborateMessage(msg);
+      elaborateGameMessage(msg);
+    }
+  }
+
+  /**
+   * @param msg
+   */
+  private void elaborateLoginMessage(LoginMessage msg) throws FileNotFoundException {
+
+    // Check if phase is correct
+    if (turnManager.getMainGamePhase() == MessageMain.LOGIN &&
+        msg.getMessageSecondary() == turnManager.getSecondaryPhase()) {
+
+      switch (msg.getMessageSecondary()) {
+        case GAME_PARAMS:
+
+          // TODO
+
+          // If parameters are okay set them and change game state
+          if (true) {
+            numberOfPlayers = 0; // TODO
+            isGameExpert = true; // TODO
+            turnManager.setNumberOfUsers(numberOfPlayers);
+            turnManager.setNumberStudentsFromEntrance(100000); // TODO
+            turnManager.updateCounters();
+            turnManager.changeState();
+          }
+
           break;
-        case PLAY:
-          // TODO: playController.elaborateMessage(msg);
+
+        case PLAYER_PARAMS:
+
+          Player newPlayer = null;  // TODO
+
+          // If player is not null, add it to a team, change state
+          if (newPlayer != null) {
+
+            // Where a player goes is based on the number of players for this game
+            if (numberOfPlayers == 4) {  // TODO: don't like magic numbers
+              if (teams.size() < 2) {
+                Team newTeam = new Team(teams.size(), Towers.values()[teams.size()]);
+                newTeam.addPlayer(newPlayer);
+                teams.add(newTeam);
+              } else {
+                long nCurrentPlayers = teams.stream().map(team -> team.getPlayers().size()).count();
+                teams.elementAt((int) nCurrentPlayers % 2).addPlayer(newPlayer);
+              }
+
+            } else {
+              Team newTeam = new Team(teams.size(), Towers.values()[teams.size()]);
+              newTeam.addPlayer(newPlayer);
+              teams.add(newTeam);
+            }
+
+            // Change state
+            turnManager.updateCounters();
+            turnManager.changeState();
+
+            // If players are all in, setup game
+            if (teams.stream().map(team -> team.getPlayers().size()).count() == numberOfPlayers) {
+              setupGame();
+            }
+          }
+
           break;
-        case LOGIN:
-          // TODO: LoginController.elaborateMessage(msg);
-          break;
+
         default:
           break;
       }
@@ -67,209 +125,54 @@ public class MainController {
   }
 
   /**
+   * @param msg
+   */
+  private void elaborateGameMessage(Message msg) {
+
+    boolean everythingOkay = true;
+
+    // Check player is current player OR phase is login
+    everythingOkay = !(msg.getPlayerId() == 0);  // ;
+
+    // Check phase is the right one
+    everythingOkay = everythingOkay &&
+        !(msg.getMessageMain() == turnManager.getMainGamePhase()) &&
+        !(msg.getMessageSecondary() == turnManager.getSecondaryPhase());
+
+    // Character todo
+
+    if (everythingOkay) {
+      switch (msg.getMessageMain()) {
+        case MOVE:
+          // TODO: everythingOkay = moveController.elaborateMessage(msg);
+          break;
+        case PLAY:
+          everythingOkay = playController.elaborateMessage((PlayMessage) msg, game);
+          break;
+        default:
+          break;
+      }
+    }
+
+    if (everythingOkay) {
+      // Update turn
+      turnManager.updateCounters();
+      turnManager.changeState();
+    } else {
+      // Send error message
+      // TODO
+    }
+  }
+
+  /**
    * It creates and set the new game, setting the current phase and chose the game order
    *
-   * @param gameMode The number of player allowed into the game
-   * @param isExpert If  the game will be expert or not
    * @throws FileNotFoundException If the json file are not found
    */
-  public void setCurrentGame(int gameMode, boolean isExpert) throws FileNotFoundException {
+  public void setupGame() throws FileNotFoundException {
 
-    this.currentGame = gameController.setUpGame(gameMode, isExpert);
-    this.playerController.setCurrentGame(this.currentGame);
-    this.currentPhase = GamePhases.PLANNING;
-    for (int currentPlayerId = 0; currentPlayerId < currentGame.getPlayerNumber();
-        currentPlayerId++) {
-      this.playerOrderId.add(currentPlayerId);
-    }
-    this.activePlayerId = playerOrderId.elementAt(0);
-    //send message to play the assistant at player 0
+    this.game = new Game(0, isGameExpert);
+
   }
-
-
-  /**
-   * This method checks if the player and the part of the player turn are what tey supposed to be
-   *
-   * @param actionPlayerId The playerId of the player that is trying to do the action
-   * @param messagePhase   The supposed phase for that action
-   * @return true the player and the phase are correct false otherwise
-   */
-  public boolean legitActionCheck(int actionPlayerId, GamePhases messagePhase) {
-    return actionPlayerId == activePlayerId && messagePhase == currentPhase || (
-        messagePhase == GamePhases.ACTION && currentPhase != GamePhases.PLANNING);
-  }
-
-  /**
-   * This method search for the player with that id
-   *
-   * @param activePlayerId The id of the player  we want to find
-   * @return Returns the player with that id if present null otherwise
-   */
-  public Player findCurrentPlayer(int activePlayerId) {
-
-    for (Team team : currentGame.getTeams()) {
-      for (Player player : team.getPlayers()) {
-
-        if (player.getPlayerId() == activePlayerId) {
-          return player;
-        }
-      }
-    }
-    return null;
-  }
-
-  /**
-   * This method moves mother nature by a number of jumps
-   *
-   * @param actionPlayerId The playerId of the player that is trying to do the action
-   * @param messagePhase   The supposed phase for that action
-   * @param moves          the number of jumps that the player want to do
-   */
-  public void moveMotherNature(int actionPlayerId, GamePhases messagePhase, int moves) {
-    if (legitActionCheck(actionPlayerId, messagePhase)) {
-
-      if (moves <= findCurrentPlayer(actionPlayerId).getAssistant().getMoves()) {
-        playerController.moveMotherNature(moves);
-        nextPhase();
-      } else {
-        //too many jumps error message
-      }
-
-    } else {
-      //send error message
-    }
-  }
-
-  /**
-   * This method move a certain student from one place to another
-   *
-   * @param actionPlayerId The playerId of the player that is trying to do the action
-   * @param messagePhase   The supposed phase for that action
-   * @param color          The color of the student moved to another location
-   * @param islandNumber   If the student will be placed into an island this is the number of that
-   *                       island
-   * @param placeFrom      The place where the student is taken from
-   * @param placeTo        The place where the student is put into
-   */
-  public void moveStudent(int actionPlayerId, GamePhases messagePhase, int color,
-      Optional<Integer> islandNumber,
-      Places placeFrom, Places placeTo) {
-    if (legitActionCheck(actionPlayerId, messagePhase)) {
-      playerController
-          .moveStudent(findCurrentPlayer(activePlayerId), color, placeFrom, placeTo, islandNumber);
-      this.studentsMoved++;
-      if (studentsMoved == currentGame.getStudentOnCloudTiles()) {
-        nextPhase();
-      }
-    } else {
-      //send error message
-    }
-  }
-
-  /**
-   * This method allows a player to play a card assistant or activate a character
-   *
-   * @param actionPlayerId The playerId of the player that is trying to do the action
-   * @param messagePhase   The supposed phase for that action
-   * @param cardType       The type of the card played by the player
-   * @param cardId         The id of the card played
-   */
-  public void playCard(int actionPlayerId, GamePhases messagePhase, CardTypes cardType,
-      int cardId) {
-    if (legitActionCheck(actionPlayerId, messagePhase)) {
-      playerController.playCard(findCurrentPlayer(activePlayerId), cardId, cardType);
-      //if everyOne has played his/her assistant
-      if (actionPlayerId == playerOrderId.lastElement()) {
-        nextPhase();
-      }
-
-    } else {
-      //send error message
-    }
-  }
-
-  /**
-   * This method allows a player to take a cloud tile of his/her choice
-   *
-   * @param actionPlayerId The playerId of the player that is trying to do the action
-   * @param messagePhase   The supposed phase for that action
-   * @param idCloudTile    The id of the tile taken
-   */
-  public void takeCloudTile(int actionPlayerId, GamePhases messagePhase, int idCloudTile) {
-    if (legitActionCheck(actionPlayerId, messagePhase)) {
-      if (idCloudTile < currentGame.getPlayerNumber() - 1) {
-        playerController.takeCloudTile(findCurrentPlayer(activePlayerId), idCloudTile);
-        nextTurn();
-      } else {
-        //invalid argument message
-      }
-    } else {
-      // send error message
-    }
-  }
-
-  /**
-   * This method chance the current game phase
-   */
-  public void nextPhase() {
-    this.currentPhase = turnManager.nextPhase(this.currentPhase);
-  }
-
-  /**
-   * This method change the turn and set everything for a new round
-   */
-  public void nextTurn() {
-    if (activePlayerId != playerOrderId.lastElement()) {
-      this.activePlayerId = turnManager.nextTurn(playerOrderId, activePlayerId);
-      this.currentPhase = GamePhases.MOVE_STUDENTS;
-
-    } else {
-      this.currentPhase = turnManager.nextRound();
-
-    }
-    this.studentsMoved = 0;
-  }
-
-  public LoginController getLoginController() {
-    return loginController;
-  }
-
-  public PlayerController getPlayerController() {
-    return playerController;
-  }
-
-  public GameController getGameController() {
-    return gameController;
-  }
-
-  public TurnManager getTurnManager() {
-    return turnManager;
-  }
-
-  public Game getCurrentGame() {
-    return currentGame;
-  }
-
-  public int getActivePlayerId() {
-    return activePlayerId;
-  }
-
-  public GamePhases getCurrentPhase() {
-    return currentPhase;
-  }
-
-  public void setCurrentPhase(GamePhases currentPhase) {
-    this.currentPhase = currentPhase;
-  }
-
-  public Vector<Integer> getPlayerOrderId() {
-    return playerOrderId;
-  }
-
-
-  public int getStudentsMoved() {
-    return studentsMoved;
-  }
-
 
 }
