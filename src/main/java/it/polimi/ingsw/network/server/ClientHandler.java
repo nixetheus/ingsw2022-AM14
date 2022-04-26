@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.server;
 
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -13,7 +14,7 @@ import java.util.Scanner;
  * the communication with its client in parallel
  */
 public class ClientHandler implements Runnable{
-  private Socket socket;
+  private final Socket socket;
 
   /**
    * Constructor for clientHandler
@@ -31,19 +32,30 @@ public class ClientHandler implements Runnable{
   @Override
   public void run() {
     try {
+      //input from client
       Scanner in = new Scanner(socket.getInputStream());
+      //output to client
       PrintWriter out = new PrintWriter(socket.getOutputStream());
 
+      TestJson testJson;
+
       while (true) {
+
         String line = in.nextLine();
-        if (line.equals("quit")) {
+
+        //deserialize JSON string
+        testJson = deserializeJson(line);
+
+        //check quit message
+        if(testJson.getName().equals("quit")){
           break;
         } else {
-          System.out.println("Received: " + line + " from" + socket.toString());
-
-          //Server response
-          out.flush();
+          System.out.println(testJson);
         }
+
+        //Server response
+        out.println("OK");
+        out.flush();
       }
 
       //Communications and socket are closed
@@ -54,4 +66,28 @@ public class ClientHandler implements Runnable{
       System.err.println(e.getMessage());
     }
   }
+
+  /**
+   * deserializeJson is used to parse a String to a testJosn object
+   *
+   * @param inputFromClient String to parse
+   * @return object of testJon class
+   */
+  private TestJson deserializeJson (String inputFromClient) {
+    Gson gson = new Gson();
+    return gson.fromJson(inputFromClient, TestJson.class);
+  }
+
+  /**
+   * toJon is used to parse a String to json format
+   *
+   * @param test Object to parse
+   * @return String in json format
+   */
+  private String toJson (TestJson test) {
+    Gson gson = new Gson();
+    return gson.toJson(test);
+  }
+
+
 }

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.network;
+package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.helpers.Constants;
 import it.polimi.ingsw.network.server.Server;
@@ -28,18 +28,20 @@ public class ServerMain {
     System.out.println("Server started!");
 
     int argIndex = 0;
-    int portNumberArg = 0;
+    int portNumberArg;
 
     for (String arg : args) {
 
       //port number
       if (arg.equals("--port") || arg.equals("-p")) {
         portNumberArg = Integer.parseInt(args[argIndex + 1]);
+
         if (portNumberArg > MAX_PORT || portNumberArg < MIN_PORT) {
           System.out.println("Incorrect port number");
         } else {
           portNumber = portNumberArg;
         }
+
       }
 
       //host name
