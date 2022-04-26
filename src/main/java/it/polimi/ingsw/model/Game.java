@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -18,6 +19,11 @@ import it.polimi.ingsw.model.player.Assistant;
 import it.polimi.ingsw.model.player.Player;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.Random;
@@ -28,47 +34,74 @@ import java.util.Vector;
  */
 public class Game {
 
-  private final Vector<Team> teams = new Vector<>();
-  private final StudentsBag studentsBag;
   private final MainBoard mainBoard;
-  private final int mode;
-  private final int gamePhase;
-  private final Player[] professorControlPlayer;
+  private final StudentsBag studentsBag;
   private final Vector<CloudTile> cloudTiles;
-  private final boolean isExpert;
-  private final HashMap<Integer, Towers> teamTowerColorMap;
-  private Vector<CharacterCard> purchasableCharacter = new Vector<>();
+  private final Player[] professorControlPlayer;  // TODO
+  private final Vector<CharacterCard> purchasableCharacter = new Vector<>();
+
   private int playerNumber;
+  private Vector<Team> teams;
   private int playerTowerNumber;
   private int studentAtEntrance;
+  private int currentPlayerIndex;
   private int studentOnCloudTiles;
+  private Vector<Player> gameOrder;
   private int influenceEqualProfessors = 0;
 
   /**
    * Constructor por Game class
    *
-   * @param mode To know how many player will play
    */
-  public Game(int mode, Boolean isExpert) throws FileNotFoundException {
-    this.mode = mode;
+  public Game(Boolean isExpert, Vector<Team> teams) throws IOException {
+
+    this.teams = teams;
+    this.gameOrder = new Vector<>();
+
+    for (Team team : teams) {
+      gameOrder.addAll(team.getPlayers());
+    }
+
     initializeGameParameter();
 
-    this.isExpert = isExpert;
-    this.gamePhase = 0;
-    this.professorControlPlayer = new Player[Constants.getNColors()];
+    this.cloudTiles = new Vector<>();
     this.studentsBag = new StudentsBag();
     this.mainBoard = new MainBoard(this.studentsBag);
+    // TODO add students to players
+    this.professorControlPlayer = new Player[Constants.getNColors()];
 
-    this.teamTowerColorMap = new HashMap<>();
-    initializeTowerColorMap();
-
-    this.cloudTiles = new Vector<>();
     createClouds();
-    fillCloud();
+    fillClouds();
 
     if (isExpert) {
       initializePurchasableCharacter();
     }
+  }
+
+  /**
+   *
+   */
+  public Player getPlayerFromOrder(int playerPosition) {
+    return this.gameOrder.elementAt(playerPosition);
+  }
+
+  /**
+   *
+   */
+  public void orderBasedOnAssistant() {
+    // TODO
+  }
+
+  public void reverseOrderEndTurn() {
+    Collections.reverse(this.gameOrder);
+  }
+
+  public void setCurrentPlayerIndex(int currentPlayerIndex) {
+    this.currentPlayerIndex = currentPlayerIndex;
+  }
+
+  public Player getCurrentPlayer() {
+    return this.gameOrder.elementAt(this.currentPlayerIndex);
   }
 
   /**
@@ -85,7 +118,7 @@ public class Game {
    * FillCloud is a method that fill the cloud tiles with the students of students required by the
    * game
    */
-  public void fillCloud() {
+  public void fillClouds() {
     for (CloudTile cloudTile : cloudTiles) {
       cloudTile.fillCloud(studentsBag.pickRandomStudents(studentOnCloudTiles));
     }
@@ -105,6 +138,8 @@ public class Game {
 
     islandMotherNatureIn.setOwner(
         mainBoard.calculateInfluence(professorControlPlayer, teams, islandMotherNatureIn));
+
+    // TODO : JOIN ISLAND
   }
 
   /**
@@ -160,11 +195,12 @@ public class Game {
   /**
    * This method reads the json and set them into the class attributes
    */
-  public void initializeGameParameter() throws FileNotFoundException {
-    int jasonIndex = 1;
-    JsonArray gameParameter = JsonParser
+  public void initializeGameParameter() throws IOException {
+
+    /*JsonArray gameParameter = JsonParser
         .parseReader(new FileReader("src/main/resources/json/gameParameters.json"))
         .getAsJsonArray();
+
     for (Object o : gameParameter) {
       if (mode == jasonIndex) {
         JsonObject object = (JsonObject) o;
@@ -174,7 +210,7 @@ public class Game {
         this.studentOnCloudTiles = object.get("STUDENTS_ON_EACH_CLOUD_TILE").getAsInt();
       }
       jasonIndex++;
-    }
+    }*/
   }
 
   /**
@@ -197,40 +233,6 @@ public class Game {
       mainBoard.addToIsland(color, islandNumber.get());
       activePlayer.getPlayerBoard().getEntrance().removeStudent(color);
     }
-    //TODO
-    //for the character part
-  }
-
-  /**
-   * Used to add a team to the match
-   */
-  public Team addTeam() {
-    Team teamToAdd = new Team(teams.size(), teamTowerColorMap.get(teams.size()));
-    this.teams.add(teamToAdd);
-    return teamToAdd;
-  }
-
-  /**
-   * This method adds a player to a certain team
-   *
-   * @param team     The team in which the player will be added
-   * @param playerId The id of the player added
-   * @param nickname The nickname of the player added
-   * @throws FileNotFoundException if the json file with the  assistant will not be found
-   */
-  public void addPlayerToTeam(Team team, int playerId, String nickname)
-      throws FileNotFoundException {
-    Player playerToAdd = new Player(playerId, nickname, this.studentsBag, this.studentAtEntrance);
-    team.addPlayer(playerToAdd);
-  }
-
-  /**
-   * Initialize the towerColor map
-   */
-  public void initializeTowerColorMap() {
-    this.teamTowerColorMap.put(0, Towers.WHITE);
-    this.teamTowerColorMap.put(1, Towers.BLACK);
-    this.teamTowerColorMap.put(2, Towers.GRAY);
   }
 
   /**
@@ -303,14 +305,6 @@ public class Game {
 
   public Vector<Team> getTeams() {
     return teams;
-  }
-
-  public int getMode() {
-    return mode;
-  }
-
-  public int getGamePhase() {
-    return gamePhase;
   }
 
   public Player[] getProfessorControlPlayer() {

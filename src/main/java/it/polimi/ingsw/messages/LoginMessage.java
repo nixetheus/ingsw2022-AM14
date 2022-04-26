@@ -6,7 +6,7 @@ import it.polimi.ingsw.helpers.MessageSecondary;
 public class LoginMessage extends Message {
 
   private int numberOfPlayer;
-  private boolean gameMode;
+  private boolean gameExpert;
   private String nickName;
 
   public LoginMessage(MessageSecondary messageSecondary) {
@@ -22,12 +22,12 @@ public class LoginMessage extends Message {
     this.numberOfPlayer = numberOfPlayer;
   }
 
-  public boolean isGameMode() {
-    return gameMode;
+  public boolean isGameExpert() {
+    return gameExpert;
   }
 
-  public void setGameMode(boolean gameMode) {
-    this.gameMode = gameMode;
+  public void setGameExpert(boolean gameMode) {
+    this.gameExpert = gameMode;
   }
 
 

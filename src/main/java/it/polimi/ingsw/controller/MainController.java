@@ -1,15 +1,18 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.helpers.MessageMain;
+import it.polimi.ingsw.helpers.MessageSecondary;
 import it.polimi.ingsw.helpers.Towers;
 import it.polimi.ingsw.messages.InfoMessage;
 import it.polimi.ingsw.messages.LoginMessage;
 import it.polimi.ingsw.messages.Message;
+import it.polimi.ingsw.messages.MoveMessage;
 import it.polimi.ingsw.messages.PlayMessage;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Team;
 import it.polimi.ingsw.model.player.Player;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Vector;
 
 /**
@@ -22,10 +25,14 @@ public class MainController {
   private final TurnManager turnManager;
   private final InfoController infoController;
   private final PlayController playController;
+  private final MoveController moveController;
+  private final LoginController loginController;
+
   // Attributes
   private Game game;
   private final Vector<Team> teams;
   private Player currentPlayer;
+
   // Game parameters
   private int numberOfPlayers;
   private boolean isGameExpert;
@@ -40,12 +47,14 @@ public class MainController {
     turnManager = new TurnManager();
     infoController = new InfoController();
     playController = new PlayController();
+    moveController = new MoveController();
+    loginController = new LoginController();
   }
 
   /**
    * TODO
    */
-  public void elaborateMessage(Message msg) throws FileNotFoundException {
+  public void elaborateMessage(Message msg) throws IOException {
 
     if (msg.getMessageMain() == MessageMain.INFO) {
       infoController.elaborateMessage((InfoMessage) msg, game);
@@ -59,7 +68,7 @@ public class MainController {
   /**
    * @param msg
    */
-  private void elaborateLoginMessage(LoginMessage msg) throws FileNotFoundException {
+  private void elaborateLoginMessage(LoginMessage msg) throws IOException {
 
     // Check if phase is correct
     if (turnManager.getMainGamePhase() == MessageMain.LOGIN &&
@@ -67,24 +76,19 @@ public class MainController {
 
       switch (msg.getMessageSecondary()) {
         case GAME_PARAMS:
-
-          // TODO
-
           // If parameters are okay set them and change game state
-          if (true) {
-            numberOfPlayers = 0; // TODO
-            isGameExpert = true; // TODO
+          if (loginController.checkGameParameters(msg)) {
+            isGameExpert = msg.isGameExpert();
+            numberOfPlayers = msg.getNumberOfPlayer();
             turnManager.setNumberOfUsers(numberOfPlayers);
-            turnManager.setNumberStudentsFromEntrance(100000); // TODO
             turnManager.updateCounters();
             turnManager.changeState();
           }
-
           break;
 
         case PLAYER_PARAMS:
 
-          Player newPlayer = null;  // TODO
+          Player newPlayer = loginController.createPlayer(msg);  // TODO
 
           // If player is not null, add it to a team, change state
           if (newPlayer != null) {
@@ -134,17 +138,19 @@ public class MainController {
     // Check player is current player OR phase is login
     everythingOkay = !(msg.getPlayerId() == 0);  // ;
 
+    boolean isCharacterPlayed = (turnManager.getMainGamePhase() == MessageMain.MOVE) &&
+        msg.getMessageSecondary() == MessageSecondary.CHARACTER;
+
     // Check phase is the right one
     everythingOkay = everythingOkay &&
-        !(msg.getMessageMain() == turnManager.getMainGamePhase()) &&
-        !(msg.getMessageSecondary() == turnManager.getSecondaryPhase());
-
-    // Character todo
+        ((!(msg.getMessageMain() == turnManager.getMainGamePhase()) &&
+            !(msg.getMessageSecondary() == turnManager.getSecondaryPhase())) ||
+            isCharacterPlayed);
 
     if (everythingOkay) {
       switch (msg.getMessageMain()) {
         case MOVE:
-          // TODO: everythingOkay = moveController.elaborateMessage(msg);
+          everythingOkay = moveController.elaborateMessage((MoveMessage) msg, game);
           break;
         case PLAY:
           everythingOkay = playController.elaborateMessage((PlayMessage) msg, game);
@@ -158,6 +164,8 @@ public class MainController {
       // Update turn
       turnManager.updateCounters();
       turnManager.changeState();
+      // TODO give game current player number
+      // TODO if appropriate change game order in game
     } else {
       // Send error message
       // TODO
@@ -169,10 +177,9 @@ public class MainController {
    *
    * @throws FileNotFoundException If the json file are not found
    */
-  public void setupGame() throws FileNotFoundException {
-
-    this.game = new Game(0, isGameExpert);
-
+  public void setupGame() throws IOException {
+    this.game = new Game(isGameExpert, teams);
+    turnManager.setNumberStudentsFromEntrance(this.game.getStudentAtEntrance());
   }
 
 }

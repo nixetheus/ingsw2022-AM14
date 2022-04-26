@@ -9,14 +9,12 @@ import java.util.Optional;
 
 public class MoveController {
 
-  private Game currentGame;
-
   /**
    * TODO
    * @param msg the message to elaborate
-   * @param activePlayer the active player
+   * @param currentGame
    */
-  public void elaborateMessage(MoveMessage msg, Player activePlayer) {
+  public boolean elaborateMessage(MoveMessage msg, Game currentGame) {
     //can create a method for each control
     switch (msg.getMessageSecondary()) {
       case MOTHER_NATURE:
@@ -28,37 +26,26 @@ public class MoveController {
         //control if the number is valid
         if (Arrays.stream(currentGame.getCloudTiles().get(msg.getCloudTileNumber()).getStudents())
             .sum() != 0 && currentGame.getCloudTiles().size() >= msg.getCloudTileNumber()) {
-          currentGame.takeCloud(activePlayer, msg.getCloudTileNumber());
+          currentGame.takeCloud(currentGame.getCurrentPlayer(), msg.getCloudTileNumber());
           break;
-        } else {
-          //error message
         }
       case ENTRANCE:
         //control if the student is present
-        if (activePlayer.getPlayerBoard().getEntrance().getStudents()[msg.getStudentColor()] >= 1) {
+        if (currentGame.getCurrentPlayer().getPlayerBoard().getEntrance().getStudents()[msg.getStudentColor()] >= 1) {
           if (msg.getPlace() == 0) {
-            currentGame.moveStudent(activePlayer, Places.ENTRANCE, Places.DINING_ROOM,
+            currentGame.moveStudent(currentGame.getCurrentPlayer(), Places.ENTRANCE, Places.DINING_ROOM,
                 msg.getStudentColor(),
                 Optional.empty());
           } else {
             currentGame
-                .moveStudent(activePlayer, Places.ENTRANCE, Places.ISLAND, msg.getStudentColor(),
+                .moveStudent(currentGame.getCurrentPlayer(), Places.ENTRANCE, Places.ISLAND, msg.getStudentColor(),
                     Optional.of(msg.getIslandNumber()));
           }
-        } else {
-          //error message
         }
       default:
         break;
     }
-  }
 
-
-  public Game getCurrentGame() {
-    return currentGame;
-  }
-
-  public void setCurrentGame(Game currentGame) {
-    this.currentGame = currentGame;
+    return false;
   }
 }
