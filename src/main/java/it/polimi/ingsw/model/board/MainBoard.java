@@ -132,14 +132,18 @@ public class MainBoard {
 
     // Check next island
     int nextIsland = (numIslandConquered + 1) % islands.size();
-    if (islands.get(numIslandConquered).getOwnerId() == islands.get(nextIsland).getOwnerId()) {
+    if (islands.get(numIslandConquered).getOwnerId() == islands.get(nextIsland).getOwnerId() &&
+        //checking if not the default one
+        islands.get(numIslandConquered).getOwnerId() != -1) {
       islands.get(numIslandConquered).addIsland(islands.get(nextIsland));
       islands.remove(islands.get(nextIsland));
     }
 
     // Check previous island
     int previousIsland = (numIslandConquered - 1) < 0 ? islands.size() - 1 : numIslandConquered - 1;
-    if (islands.get(numIslandConquered).getOwnerId() == islands.get(previousIsland).getOwnerId()) {
+    if (islands.get(numIslandConquered).getOwnerId() == islands.get(previousIsland).getOwnerId() &&
+        //checking if not the default one
+        islands.get(numIslandConquered).getOwnerId() != -1) {
       islands.get(numIslandConquered).addIsland(islands.get(previousIsland));
       islands.remove(islands.get(previousIsland));
     }

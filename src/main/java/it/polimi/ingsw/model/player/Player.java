@@ -9,12 +9,13 @@ import it.polimi.ingsw.model.board.StudentsBag;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 
 /**
  * The Player is the entity used to model the behaviour and action a person might do in the game.
  */
-public class Player {
+public class Player implements Comparable<Player> {
 
   private final int playerId;
   private final String playerNickname;
@@ -171,4 +172,8 @@ public class Player {
     return playableAssistants;
   }
 
+  @Override
+  public int compareTo(@NotNull Player o) {
+    return this.getAssistant().getSpeed() - o.getAssistant().getSpeed();
+  }
 }
