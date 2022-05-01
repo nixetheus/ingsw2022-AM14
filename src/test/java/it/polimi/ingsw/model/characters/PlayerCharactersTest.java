@@ -23,7 +23,8 @@ public class PlayerCharactersTest {
 
     StudentsBag studentsBagTest = new StudentsBag();
     CharacterStruct params = new CharacterStruct();
-    params.currentPlayer = new Player(0, "testPlayer", studentsBagTest, 0);
+    params.currentPlayer = new Player(0, "testPlayer");
+    params.currentPlayer.initializePlayerBoard(studentsBagTest.pickRandomStudents(0));
     params.currentPlayer.playAssistant((int) (Math.random() * 9));
 
     CharacterCard increaseMovementTwo = new PlayerCharacters(Effects.INCREASE_MOVEMENT_TWO,
@@ -44,7 +45,8 @@ public class PlayerCharactersTest {
 
     StudentsBag studentsBagTest = new StudentsBag();
     CharacterStruct params = new CharacterStruct();
-    params.currentPlayer = new Player(0, "testPlayer", studentsBagTest, 3);
+    params.currentPlayer = new Player(0, "testPlayer");
+    params.currentPlayer.initializePlayerBoard(studentsBagTest.pickRandomStudents(3));
 
     CharacterCard replaceStudentEntrance = new PlayerCharacters(Effects.REPLACE_STUDENT_ENTRANCE,
         Effects.REPLACE_STUDENT_ENTRANCE.getCost(), new int[5]);
@@ -67,9 +69,11 @@ public class PlayerCharactersTest {
 
     StudentsBag studentsBagTest = new StudentsBag();
     CharacterStruct params = new CharacterStruct();
-    params.currentPlayer = new Player(0, "testPlayer", studentsBagTest, 2);
+    params.currentPlayer = new Player(0, "testPlayer");
+    params.currentPlayer.initializePlayerBoard(studentsBagTest.pickRandomStudents(2));
 
-    CharacterCard exchangeTwoEntranceDining = new PlayerCharacters(Effects.EXCHANGE_TWO_ENTRANCE_DINING,
+    CharacterCard exchangeTwoEntranceDining = new PlayerCharacters(
+        Effects.EXCHANGE_TWO_ENTRANCE_DINING,
         Effects.EXCHANGE_TWO_ENTRANCE_DINING.getCost(), new int[5]);
 
     int[] diningRoomTest = studentsBagTest.pickRandomStudents(2);
@@ -100,7 +104,8 @@ public class PlayerCharactersTest {
 
     StudentsBag studentsBagTest = new StudentsBag();
     CharacterStruct params = new CharacterStruct();
-    params.currentPlayer = new Player(0, "testPlayer", studentsBagTest, 0);
+    params.currentPlayer = new Player(0, "testPlayer");
+    params.currentPlayer.initializePlayerBoard(studentsBagTest.pickRandomStudents(0));
 
     CharacterCard putOneDiningRoom = new PlayerCharacters(Effects.PUT_ONE_DINING_ROOM,
         Effects.PUT_ONE_DINING_ROOM.getCost(), new int[5]);
@@ -128,8 +133,10 @@ public class PlayerCharactersTest {
 
     StudentsBag studentsBagTest = new StudentsBag();
     CharacterStruct params = new CharacterStruct();
-    Player playerTest1 = new Player(0, "testPlayer1", studentsBagTest, 0);
-    Player playerTest2 = new Player(0, "testPlayer2", studentsBagTest, 0);
+    Player playerTest1 = new Player(0, "testPlayer1");
+    Player playerTest2 = new Player(0, "testPlayer2");
+    playerTest1.initializePlayerBoard(studentsBagTest.pickRandomStudents(0));
+    playerTest2.initializePlayerBoard(studentsBagTest.pickRandomStudents(0));
 
     CharacterCard returnThreeDiningRoom = new PlayerCharacters(Effects.RETURN_THREE_DINING_ROOM_BAG,
         Effects.RETURN_THREE_DINING_ROOM_BAG.getCost(), new int[5]);
@@ -150,9 +157,13 @@ public class PlayerCharactersTest {
       }
     }
 
-    Team team1 = new Team(0, Towers.WHITE); team1.addPlayer(playerTest1);
-    Team team2 = new Team(1, Towers.BLACK); team2.addPlayer(playerTest2);
-    Vector<Team> teams = new Vector<Team>(); teams.add(team1); teams.add(team2);
+    Team team1 = new Team(0, Towers.WHITE);
+    team1.addPlayer(playerTest1);
+    Team team2 = new Team(1, Towers.BLACK);
+    team2.addPlayer(playerTest2);
+    Vector<Team> teams = new Vector<Team>();
+    teams.add(team1);
+    teams.add(team2);
     int studentBagTestColorN = studentsBagTest.getStudents()[params.color.ordinal()];
 
     params.teams = teams;
@@ -184,7 +195,8 @@ public class PlayerCharactersTest {
    */
   @Test(expected = IllegalStateException.class)
   public void defaultRemovePlayerEffectTest() {
-    CharacterCard defaultRemovePlayerEffect = new PlayerCharacters(Effects.DEFAULT_EFFECT, 0, new int[5]);
+    CharacterCard defaultRemovePlayerEffect = new PlayerCharacters(Effects.DEFAULT_EFFECT, 0,
+        new int[5]);
     defaultRemovePlayerEffect.removeEffect(new CharacterStruct());
   }
 }

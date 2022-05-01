@@ -1,9 +1,5 @@
 package it.polimi.ingsw.model.characters;
 
-import it.polimi.ingsw.helpers.Constants;
-import it.polimi.ingsw.helpers.Effects;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.board.MainBoard;
 import java.io.FileNotFoundException;
 import org.junit.Test;
 

@@ -19,9 +19,9 @@ public class Island {
    * array and numberOfTowers to zero
    */
   public Island() {
-    ownerId = -1;
-    students = new int[Constants.getNColors()];
-    numberOfTowers = 0;
+    this.ownerId = -1;
+    this.students = new int[Constants.getNColors()];
+    this.numberOfTowers = 0;
   }
 
   /**

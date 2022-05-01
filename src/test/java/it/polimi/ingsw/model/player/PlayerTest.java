@@ -26,7 +26,8 @@ public class PlayerTest {
 
   @Test
   public void testPlayAssistant() throws FileNotFoundException {
-    testPlayer = new Player(1, "ale", studentsBag, 2);
+    testPlayer = new Player(1, "ale");
+    testPlayer.initializePlayerBoard(studentsBag.pickRandomStudents(2));
     Assistant assistant1 = new Assistant(1, 2, 2);
 
     testPlayer.playAssistant(2);
@@ -41,7 +42,8 @@ public class PlayerTest {
    */
   @Test
   public void testMoveToPlayerBoardEntranceCase() throws FileNotFoundException {
-    testPlayer = new Player(2, "ale", studentsBag, 2);
+    testPlayer = new Player(2, "ale");
+    testPlayer.initializePlayerBoard(studentsBag.pickRandomStudents(2));
     testPlayer.moveToPlayerBoard(Places.ENTRANCE, 3);
     Assert
         .assertEquals(Arrays.stream(testPlayer.getPlayerBoard().getEntrance().getStudents()).sum(),
@@ -54,7 +56,8 @@ public class PlayerTest {
    */
   @Test
   public void testMoveToPlayerBoardDiningCase() throws FileNotFoundException {
-    testPlayer = new Player(2, "ale", studentsBag, 2);
+    testPlayer = new Player(2, "ale");
+    testPlayer.initializePlayerBoard(studentsBag.pickRandomStudents(2));
     testDiningRoom = new DiningRoom();
     testPlayer.moveToPlayerBoard(Places.DINING_ROOM, 2);
     testDiningRoom.addStudent(2);
@@ -68,7 +71,8 @@ public class PlayerTest {
    */
   @Test
   public void testAddCoinMovingToPlayerBoard() throws FileNotFoundException {
-    testPlayer = new Player(2, "ale", studentsBag, 2);
+    testPlayer = new Player(2, "ale");
+    testPlayer.initializePlayerBoard(studentsBag.pickRandomStudents(2));
     testPlayer.moveToPlayerBoard(Places.DINING_ROOM, 2);
     testPlayer.moveToPlayerBoard(Places.DINING_ROOM, 2);
     testPlayer.moveToPlayerBoard(Places.DINING_ROOM, 2);
@@ -94,7 +98,8 @@ public class PlayerTest {
    */
   @Test
   public void testAddCoin() throws FileNotFoundException {
-    testPlayer = new Player(1, "marco", studentsBag, 2);
+    testPlayer = new Player(1, "marco");
+    testPlayer.initializePlayerBoard(studentsBag.pickRandomStudents(2));
     testPlayer.addCoin();
     Assert.assertEquals(testPlayer.getCoins(), Constants.getInitialCoinNumber() + 1);
   }
@@ -105,7 +110,8 @@ public class PlayerTest {
    */
   @Test
   public void testRemoveStudentDiningRoomCase() throws FileNotFoundException {
-    testPlayer = new Player(2, "ale", studentsBag, 2);
+    testPlayer = new Player(2, "ale");
+    testPlayer.initializePlayerBoard(studentsBag.pickRandomStudents(2));
     int[] arrayTest = new int[]{0, 0, 0, 0, 0};
     testPlayer.moveToPlayerBoard(Places.DINING_ROOM, 4);
     testPlayer.removeFromPlayerBoard(Places.DINING_ROOM, 4);
@@ -119,7 +125,8 @@ public class PlayerTest {
    */
   @Test
   public void testRemoveStudentEntranceCase() throws FileNotFoundException {
-    testPlayer = new Player(2, "ale", studentsBag, 2);
+    testPlayer = new Player(2, "ale");
+    testPlayer.initializePlayerBoard(studentsBag.pickRandomStudents(2));
     testPlayer.moveToPlayerBoard(Places.ENTRANCE, 1);
     testPlayer.removeFromPlayerBoard(Places.ENTRANCE, 1);
     Assert

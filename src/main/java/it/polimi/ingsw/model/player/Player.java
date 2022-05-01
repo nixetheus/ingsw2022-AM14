@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import it.polimi.ingsw.helpers.Constants;
 import it.polimi.ingsw.helpers.Places;
-import it.polimi.ingsw.model.board.StudentsBag;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Vector;
@@ -19,8 +18,8 @@ public class Player implements Comparable<Player> {
 
   private final int playerId;
   private final String playerNickname;
-  private final PlayerBoard playerBoard;
   private final Vector<Assistant> playableAssistants;
+  private PlayerBoard playerBoard;
   private Assistant assistant;
   private int coins;
 
@@ -29,23 +28,16 @@ public class Player implements Comparable<Player> {
    *
    * @param playerId       Unique identifier for each player
    * @param playerNickname Unique name chosen by each player
-   * @param studentsBag    Students put at the entrance
    * @throws FileNotFoundException Throws FileNotFoundException if file containing all the
    *                               assistants is not found
    */
 
-  public Player(
-      int playerId,
-      String playerNickname,
-      StudentsBag studentsBag,
-      int numberOfStudentAtEntrance) throws FileNotFoundException {
-
+  public Player(int playerId, String playerNickname) throws FileNotFoundException {
     this.coins = Constants.getInitialCoinNumber();
     this.assistant = null;
     this.playerId = playerId;
     this.playerNickname = playerNickname;
     this.playableAssistants = new Vector<>();
-    this.playerBoard = new PlayerBoard(studentsBag.pickRandomStudents(numberOfStudentAtEntrance));
     initializeAssistants("src/main/resources/json/assistants.json");
   }
 
@@ -66,6 +58,16 @@ public class Player implements Comparable<Player> {
       int assistantId = object.get("ASSISTANT_ID").getAsInt();
       playableAssistants.add(new Assistant(moves, speed, assistantId));
     }
+  }
+
+  /**
+   * This method sets up the player board of the play using the random students provided as
+   * parameter
+   *
+   * @param students The students used to initialize the dining room's entrance
+   */
+  public void initializePlayerBoard(int[] students) {
+    this.playerBoard = new PlayerBoard(students);
   }
 
   /**
@@ -95,8 +97,8 @@ public class Player implements Comparable<Player> {
       playerBoard.moveToEntrance(color);
     } else if (place == Places.DINING_ROOM) {
       playerBoard.moveToDiningRoom(color);
-      if (this.playerBoard.getDiningRoom().getStudents()[color] % Constants.getNumberStudentToCoin()
-          == 0) {
+      if (this.playerBoard.getDiningRoom().getStudents()[color]
+          % Constants.getNumberStudentToCoin() == 0) {
         addCoin();
       }
     }

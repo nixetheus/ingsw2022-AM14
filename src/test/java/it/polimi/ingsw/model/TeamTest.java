@@ -21,7 +21,8 @@ public class TeamTest {
    */
   @Test
   public void testAddPlayer() throws FileNotFoundException {
-    Player testPlayer = new Player(1, "Ale", studentsBag, studentAtEntrance);
+    Player testPlayer = new Player(1, "Ale");
+    testPlayer.initializePlayerBoard(studentsBag.pickRandomStudents(studentAtEntrance));
     Team testTeam = new Team(0, Towers.WHITE);
     testTeam.addPlayer(testPlayer);
 
@@ -34,8 +35,10 @@ public class TeamTest {
    */
   @Test
   public void testAddPlayerTwice() throws FileNotFoundException {
-    Player testPlayer = new Player(1, "Luca", studentsBag, studentAtEntrance);
-    Player testPlayerTwo = new Player(2, "Dario", studentsBag, studentAtEntrance);
+    Player testPlayer = new Player(1, "Luca");
+    testPlayer.initializePlayerBoard(studentsBag.pickRandomStudents(studentAtEntrance));
+    Player testPlayerTwo = new Player(2, "Dario");
+    testPlayerTwo.initializePlayerBoard(studentsBag.pickRandomStudents(studentAtEntrance));
 
     Team testTeam = new Team(0, Towers.WHITE);
     testTeam.addPlayer(testPlayer);
@@ -51,10 +54,10 @@ public class TeamTest {
    * testAddPlayerTwice method tests the addition and removal of towers from a team
    */
   @Test
-  public void  addTowersTest() {
+  public void addTowersTest() {
 
-    int toAdd = (int)(Math.random() * 100);
-    int toRemove = Math.min((int)(Math.random() * 100), Constants.getMaxTowers() + toAdd);
+    int toAdd = (int) (Math.random() * 100);
+    int toRemove = Math.min((int) (Math.random() * 100), Constants.getMaxTowers() + toAdd);
 
     Team testTeam = new Team(0, Towers.WHITE);
     Assert.assertEquals(Constants.getMaxTowers(), testTeam.getAvailableTowers());

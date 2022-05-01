@@ -1,14 +1,7 @@
 package it.polimi.ingsw.model;
 
 
-import it.polimi.ingsw.helpers.Color;
-import it.polimi.ingsw.helpers.Constants;
-import it.polimi.ingsw.helpers.Places;
-import it.polimi.ingsw.model.board.Island;
 import it.polimi.ingsw.model.player.Player;
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.Vector;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

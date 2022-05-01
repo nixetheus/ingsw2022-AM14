@@ -36,7 +36,8 @@ public class StudentsBagTest {
     testMax = bag.pickRandomStudents(
         Constants.getStudentsForColor() * Constants.getNColors());
 
-    assert (Arrays.stream(testMax).sum() == Constants.getStudentsForColor() * Constants.getNColors());
+    assert (Arrays.stream(testMax).sum()
+        == Constants.getStudentsForColor() * Constants.getNColors());
     assert (Arrays.stream(bag.getStudents()).sum() == 0);
   }
 

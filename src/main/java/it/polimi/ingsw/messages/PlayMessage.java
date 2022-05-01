@@ -3,12 +3,6 @@ package it.polimi.ingsw.messages;
 import it.polimi.ingsw.helpers.Color;
 import it.polimi.ingsw.helpers.MessageMain;
 import it.polimi.ingsw.helpers.MessageSecondary;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Team;
-import it.polimi.ingsw.model.board.MainBoard;
-import it.polimi.ingsw.model.board.StudentsBag;
-import it.polimi.ingsw.model.player.Player;
-import java.util.Vector;
 
 public class PlayMessage extends Message {
 

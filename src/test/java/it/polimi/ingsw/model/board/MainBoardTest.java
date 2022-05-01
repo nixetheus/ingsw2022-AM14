@@ -46,10 +46,12 @@ public class MainBoardTest {
 
     //create the team
     StudentsBag testStudBag2 = new StudentsBag();
-    Player player1 = new Player(0, "Jeff", testStudBag2, 0);
+    Player player1 = new Player(0, "Jeff");
+    player1.initializePlayerBoard(testStudBag2.pickRandomStudents(0));
     teamsTest.add(new Team(0, Towers.WHITE));
     StudentsBag testStudBag3 = new StudentsBag();
-    Player player2 = new Player(1, "Tony", testStudBag3, 0);
+    Player player2 = new Player(1, "Tony");
+    player2.initializePlayerBoard(testStudBag2.pickRandomStudents(0));
     teamsTest.add(new Team(1, Towers.BLACK));
 
     //fill the professors arr
@@ -101,10 +103,12 @@ public class MainBoardTest {
 
     //create the team
     StudentsBag testStudBag2 = new StudentsBag();
-    Player player1 = new Player(0, "Jeff", testStudBag2, 0);
+    Player player1 = new Player(0, "Jeff");
+    player1.initializePlayerBoard(testStudBag2.pickRandomStudents(0));
     teamsTest.add(new Team(0, Towers.WHITE));
     StudentsBag testStudBag3 = new StudentsBag();
-    Player player2 = new Player(1, "Tony", testStudBag3, 0);
+    Player player2 = new Player(1, "Tony");
+    player2.initializePlayerBoard(testStudBag3.pickRandomStudents(0));
     teamsTest.add(new Team(1, Towers.BLACK));
 
     //fill the professors arr

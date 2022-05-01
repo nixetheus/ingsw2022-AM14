@@ -11,7 +11,7 @@ public class CharacterCardTest {
    */
   @Test
   public void characterCostTest() {
-    int cost = (int)(Math.random() * 100);
+    int cost = (int) (Math.random() * 100);
     CharacterCard testCard = new CharacterCard(null, cost, new int[5]);
     Assert.assertEquals(cost, testCard.getCost());
     testCard.increaseCost();

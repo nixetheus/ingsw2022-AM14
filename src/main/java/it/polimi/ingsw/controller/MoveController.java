@@ -3,7 +3,6 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.helpers.Places;
 import it.polimi.ingsw.messages.MoveMessage;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.player.Player;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -11,7 +10,8 @@ public class MoveController {
 
   /**
    * TODO
-   * @param msg the message to elaborate
+   *
+   * @param msg         the message to elaborate
    * @param currentGame
    */
   public boolean elaborateMessage(MoveMessage msg, Game currentGame) {
@@ -31,14 +31,17 @@ public class MoveController {
         }
       case ENTRANCE:
         //control if the student is present
-        if (currentGame.getCurrentPlayer().getPlayerBoard().getEntrance().getStudents()[msg.getStudentColor()] >= 1) {
+        if (currentGame.getCurrentPlayer().getPlayerBoard().getEntrance()
+            .getStudents()[msg.getStudentColor()] >= 1) {
           if (msg.getPlace() == 0) {
-            currentGame.moveStudent(currentGame.getCurrentPlayer(), Places.ENTRANCE, Places.DINING_ROOM,
+            currentGame.moveStudent(currentGame.getCurrentPlayer(), Places.ENTRANCE,
+                Places.DINING_ROOM,
                 msg.getStudentColor(),
                 Optional.empty());
           } else {
             currentGame
-                .moveStudent(currentGame.getCurrentPlayer(), Places.ENTRANCE, Places.ISLAND, msg.getStudentColor(),
+                .moveStudent(currentGame.getCurrentPlayer(), Places.ENTRANCE, Places.ISLAND,
+                    msg.getStudentColor(),
                     Optional.of(msg.getIslandNumber()));
           }
         }

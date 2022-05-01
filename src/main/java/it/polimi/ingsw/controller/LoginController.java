@@ -1,11 +1,8 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.helpers.Constants;
 import it.polimi.ingsw.messages.LoginMessage;
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.Player;
 import java.io.FileNotFoundException;
-import java.util.HashMap;
 
 /**
  * LoginController control any kind of error incurring in the log in phase

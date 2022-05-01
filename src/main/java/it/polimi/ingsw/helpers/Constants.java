@@ -77,8 +77,12 @@ public class Constants {
     return INITIAL_COIN_NUMBER;
   }
 
-  public static int getDefaultPort() { return DEFAULT_PORT; }
+  public static int getDefaultPort() {
+    return DEFAULT_PORT;
+  }
 
-  public static String getDefaultHost() { return DEFAULT_HOST; }
+  public static String getDefaultHost() {
+    return DEFAULT_HOST;
+  }
 
 }

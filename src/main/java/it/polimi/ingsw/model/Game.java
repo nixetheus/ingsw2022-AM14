@@ -1,13 +1,8 @@
 package it.polimi.ingsw.model;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import it.polimi.ingsw.helpers.Constants;
 import it.polimi.ingsw.helpers.Effects;
 import it.polimi.ingsw.helpers.Places;
-import it.polimi.ingsw.helpers.Towers;
 import it.polimi.ingsw.model.board.Island;
 import it.polimi.ingsw.model.board.MainBoard;
 import it.polimi.ingsw.model.board.StudentsBag;
@@ -17,14 +12,8 @@ import it.polimi.ingsw.model.characters.MainBoardCharacters;
 import it.polimi.ingsw.model.characters.PlayerCharacters;
 import it.polimi.ingsw.model.player.Assistant;
 import it.polimi.ingsw.model.player.Player;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Vector;
@@ -37,38 +26,37 @@ public class Game {
   private final MainBoard mainBoard;
   private final StudentsBag studentsBag;
   private final Vector<CloudTile> cloudTiles;
-  private final Player[] professorControlPlayer;  // TODO
+  private final Player[] professorControlPlayer;
   private final Vector<CharacterCard> purchasableCharacter = new Vector<>();
 
   private int playerNumber;
-  private Vector<Team> teams;
   private int playerTowerNumber;
   private int studentAtEntrance;
   private int currentPlayerIndex;
   private int studentOnCloudTiles;
-  private Vector<Player> gameOrder;
+  private final Vector<Team> teams;
+  private final Vector<Player> gameOrder;
   private int influenceEqualProfessors = 0;
 
   /**
    * Constructor por Game class
-   *
    */
   public Game(Boolean isExpert, Vector<Team> teams) throws IOException {
 
     this.teams = teams;
     this.gameOrder = new Vector<>();
-
-    for (Team team : teams) {
-      gameOrder.addAll(team.getPlayers());
-    }
-
-    initializeGameParameter();
-
     this.cloudTiles = new Vector<>();
     this.studentsBag = new StudentsBag();
     this.mainBoard = new MainBoard(this.studentsBag);
-    // TODO add students to players
     this.professorControlPlayer = new Player[Constants.getNColors()];
+
+    initializeGameParameter();
+    for (Team team : teams) {
+      gameOrder.addAll(team.getPlayers());
+      for (Player player : team.getPlayers()) {
+        player.initializePlayerBoard(studentsBag.pickRandomStudents(studentAtEntrance));
+      }
+    }
 
     createClouds();
     fillClouds();
@@ -139,7 +127,7 @@ public class Game {
     islandMotherNatureIn.setOwner(
         mainBoard.calculateInfluence(professorControlPlayer, teams, islandMotherNatureIn));
 
-    // TODO : JOIN ISLAND
+    mainBoard.joinIsland(mainBoard.getMotherNature().getPosition());
   }
 
   /**
@@ -169,8 +157,9 @@ public class Game {
     Vector<Effects> cardEffects = new Vector<>();
     while (cardEffects.size() < 3) {
       Effects effect = Effects.values()[random.nextInt(Effects.values().length)];
-      if (!cardEffects.contains(effect))
+      if (!cardEffects.contains(effect)) {
         cardEffects.add(effect);
+      }
     }
 
     for (Effects effect : cardEffects) {
@@ -250,7 +239,7 @@ public class Game {
   /**
    * This method allows to play a certain character card
    *
-   * @param activePlayer The player that is playing the card
+   * @param activePlayer   The player that is playing the card
    * @param characterIndex The index of the character that is played
    */
   public void playCharacter(Player activePlayer, int characterIndex) {
@@ -335,12 +324,12 @@ public class Game {
     return studentsBag;
   }
 
-  public void setInfluenceEqualProfessors(int influenceEqualProfessors) {
-    this.influenceEqualProfessors = influenceEqualProfessors;
-  }
-
   public int getInfluenceEqualProfessors() {
     return this.influenceEqualProfessors;
+  }
+
+  public void setInfluenceEqualProfessors(int influenceEqualProfessors) {
+    this.influenceEqualProfessors = influenceEqualProfessors;
   }
 
 }

@@ -71,7 +71,7 @@ public class PlayController {
           if (player.getPlayerId() == msg.getPlayerId()) {
 
             characterParameters.currentPlayer = player;
-            game.playCharacter(player, msg.getAssistantId());
+            game.playCharacter(player, msg.getCharacterId());
             characterCard.applyEffect(characterParameters);
             return true;
 

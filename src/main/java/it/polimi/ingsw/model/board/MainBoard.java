@@ -75,7 +75,7 @@ public class MainBoard {
         if (team.getPlayers().contains(playerHasProfessor)) {
           teamHasProfessor = team;
         }
-        /*
+        /* TODO: add BUT NOT HERE
         if (team.getPlayers().contains(cu)) {
           influences[team.getId()] += influencePlus + influenceEqualProfessors;
         }*/

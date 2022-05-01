@@ -3,7 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.helpers.MessageMain;
 import it.polimi.ingsw.helpers.MessageSecondary;
 import it.polimi.ingsw.helpers.Towers;
-import it.polimi.ingsw.messages.InfoMessage;
+import it.polimi.ingsw.messages.InfoRequestMessage;
 import it.polimi.ingsw.messages.LoginMessage;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.MoveMessage;
@@ -27,11 +27,9 @@ public class MainController {
   private final PlayController playController;
   private final MoveController moveController;
   private final LoginController loginController;
-
+  private final Vector<Team> teams;
   // Attributes
   private Game game;
-  private final Vector<Team> teams;
-  private Player currentPlayer;
 
   // Game parameters
   private int numberOfPlayers;
@@ -52,12 +50,14 @@ public class MainController {
   }
 
   /**
-   * TODO
+   * This method assigns the message received from a player to the respective sub-controller
+   *
+   * @param msg The message received from the player
    */
   public void elaborateMessage(Message msg) throws IOException {
 
     if (msg.getMessageMain() == MessageMain.INFO) {
-      infoController.elaborateMessage((InfoMessage) msg, game);
+      infoController.elaborateMessage((InfoRequestMessage) msg, game);
     } else if (msg.getMessageMain() == MessageMain.LOGIN) {
       elaborateLoginMessage((LoginMessage) msg);
     } else {
@@ -66,7 +66,10 @@ public class MainController {
   }
 
   /**
-   * @param msg
+   * This method elaborates login messages, differentiating between the ones send to set the details
+   * of each player and those used to set the parameters of the game
+   *
+   * @param msg The Login message received
    */
   private void elaborateLoginMessage(LoginMessage msg) throws IOException {
 
@@ -88,13 +91,13 @@ public class MainController {
 
         case PLAYER_PARAMS:
 
-          Player newPlayer = loginController.createPlayer(msg);  // TODO
+          Player newPlayer = loginController.createPlayer(msg);
 
           // If player is not null, add it to a team, change state
           if (newPlayer != null) {
 
             // Where a player goes is based on the number of players for this game
-            if (numberOfPlayers == 4) {  // TODO: don't like magic numbers
+            if (numberOfPlayers == 4) {
               if (teams.size() < 2) {
                 Team newTeam = new Team(teams.size(), Towers.values()[teams.size()]);
                 newTeam.addPlayer(newPlayer);
@@ -129,7 +132,11 @@ public class MainController {
   }
 
   /**
-   * @param msg
+   * This method elaborates game messages, differentiating between the ones used to play a card
+   * specifically, a character or an assistant card, and those used to move elements inside the game
+   * board. It also checks whether an action can be performed.
+   *
+   * @param msg The game message to be elaborated
    */
   private void elaborateGameMessage(Message msg) {
 
@@ -173,9 +180,9 @@ public class MainController {
   }
 
   /**
-   * It creates and set the new game, setting the current phase and chose the game order
+   * It creates and sets the new game, setting the current phase and choosing the game order
    *
-   * @throws FileNotFoundException If the json file are not found
+   * @throws FileNotFoundException If the json file is not found
    */
   public void setupGame() throws IOException {
     this.game = new Game(isGameExpert, teams);
