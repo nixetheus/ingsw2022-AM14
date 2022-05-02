@@ -176,6 +176,6 @@ public class Player implements Comparable<Player> {
 
   @Override
   public int compareTo(@NotNull Player o) {
-    return this.getAssistant().getSpeed() - o.getAssistant().getSpeed();
+    return o.getAssistant().getSpeed() - this.getAssistant().getSpeed();
   }
 }

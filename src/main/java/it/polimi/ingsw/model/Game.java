@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import it.polimi.ingsw.helpers.Constants;
 import it.polimi.ingsw.helpers.Effects;
 import it.polimi.ingsw.helpers.Places;
@@ -12,6 +15,7 @@ import it.polimi.ingsw.model.characters.MainBoardCharacters;
 import it.polimi.ingsw.model.characters.PlayerCharacters;
 import it.polimi.ingsw.model.player.Assistant;
 import it.polimi.ingsw.model.player.Player;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Optional;
@@ -27,16 +31,16 @@ public class Game {
   private final StudentsBag studentsBag;
   private final Vector<CloudTile> cloudTiles;
   private final Player[] professorControlPlayer;
-  private final Vector<CharacterCard> purchasableCharacter = new Vector<>();
-
+  private final Vector<CharacterCard> purchasableCharacter;
+  private final Vector<Team> teams;
+  private final Vector<Player> gameOrder;
   private int playerNumber;
   private int playerTowerNumber;
   private int studentAtEntrance;
   private int currentPlayerIndex;
   private int studentOnCloudTiles;
-  private final Vector<Team> teams;
-  private final Vector<Player> gameOrder;
   private int influenceEqualProfessors = 0;
+  private Player activePlayer;
 
   /**
    * Constructor por Game class
@@ -50,9 +54,15 @@ public class Game {
     this.mainBoard = new MainBoard(this.studentsBag);
     this.professorControlPlayer = new Player[Constants.getNColors()];
 
-    initializeGameParameter();
     for (Team team : teams) {
       gameOrder.addAll(team.getPlayers());
+    }
+
+    this.playerNumber = gameOrder.size();
+    initializeGameParameter();
+
+    for (Team team : teams) {
+      team.setAvailableTowers(playerTowerNumber);
       for (Player player : team.getPlayers()) {
         player.initializePlayerBoard(studentsBag.pickRandomStudents(studentAtEntrance));
       }
@@ -62,24 +72,33 @@ public class Game {
     fillClouds();
 
     if (isExpert) {
+      purchasableCharacter = new Vector<>();
       initializePurchasableCharacter();
+    } else {
+      purchasableCharacter = null;
     }
   }
 
   /**
+   * This method return the player in a certain position in the gameOrder
    *
+   * @param playerPosition The round position of the current player
+   * @return The player in that position
    */
   public Player getPlayerFromOrder(int playerPosition) {
     return this.gameOrder.elementAt(playerPosition);
   }
 
   /**
-   *
+   * This method calculates the game order based on the speed of each player assistant
    */
   public void orderBasedOnAssistant() {
-    // TODO
+    Collections.sort(this.gameOrder);
   }
 
+  /**
+   * This method reverts the gameOrder in order to have the order for the next planning phase
+   */
   public void reverseOrderEndTurn() {
     Collections.reverse(this.gameOrder);
   }
@@ -89,6 +108,7 @@ public class Game {
   }
 
   public Player getCurrentPlayer() {
+    this.activePlayer = this.gameOrder.elementAt(this.currentPlayerIndex);
     return this.gameOrder.elementAt(this.currentPlayerIndex);
   }
 
@@ -124,9 +144,23 @@ public class Game {
     Island islandMotherNatureIn = mainBoard.getIslands()
         .get(mainBoard.getMotherNature().getPosition());
 
-    islandMotherNatureIn.setOwner(
-        mainBoard.calculateInfluence(professorControlPlayer, teams, islandMotherNatureIn));
+    if (islandMotherNatureIn.getOwnerId() == -1) {
 
+      int idTeamControlIsland = mainBoard
+          .calculateInfluence(professorControlPlayer, teams, islandMotherNatureIn);
+      islandMotherNatureIn.setOwner(idTeamControlIsland);
+
+      teams.get(idTeamControlIsland).removeTowers(1);
+      islandMotherNatureIn.addTower(1);
+
+    } else {
+      teams.get(islandMotherNatureIn.getOwnerId()).addTowers(1);
+
+      islandMotherNatureIn.setOwner(
+          mainBoard.calculateInfluence(professorControlPlayer, teams, islandMotherNatureIn));
+
+      teams.get(islandMotherNatureIn.getOwnerId()).removeTowers(1);
+    }
     mainBoard.joinIsland(mainBoard.getMotherNature().getPosition());
   }
 
@@ -186,20 +220,14 @@ public class Game {
    */
   public void initializeGameParameter() throws IOException {
 
-    /*JsonArray gameParameter = JsonParser
-        .parseReader(new FileReader("src/main/resources/json/gameParameters.json"))
-        .getAsJsonArray();
-
-    for (Object o : gameParameter) {
-      if (mode == jasonIndex) {
-        JsonObject object = (JsonObject) o;
-        this.playerNumber = object.get("PLAYER_NUMBER").getAsInt();
-        this.playerTowerNumber = object.get("NUMBER_OF_TOWER_FOR_A_TEAM").getAsInt();
-        this.studentAtEntrance = object.get("STUDENT_AT_THE_ENTRANCE").getAsInt();
-        this.studentOnCloudTiles = object.get("STUDENTS_ON_EACH_CLOUD_TILE").getAsInt();
-      }
-      jasonIndex++;
-    }*/
+    Gson gson = new Gson();
+    JsonArray list = gson
+        .fromJson(new FileReader("src/main/resources/json/gameParameters.json"), JsonArray.class);
+    JsonObject object = list.get(playerNumber - 2).getAsJsonObject();
+    this.playerNumber = object.get("PLAYER_NUMBER").getAsInt();
+    this.playerTowerNumber = object.get("NUMBER_OF_TOWER_FOR_A_TEAM").getAsInt();
+    this.studentAtEntrance = object.get("STUDENT_AT_THE_ENTRANCE").getAsInt();
+    this.studentOnCloudTiles = object.get("STUDENTS_ON_EACH_CLOUD_TILE").getAsInt();
   }
 
   /**
@@ -218,6 +246,7 @@ public class Game {
       activePlayer.moveToPlayerBoard(Places.DINING_ROOM, color);
       activePlayer.getPlayerBoard().getEntrance().removeStudent(color);
       giveProfessorToPlayer(color);
+
     } else if (placeToAdd == Places.ISLAND && placeToTake == Places.ENTRANCE) {
       mainBoard.addToIsland(color, islandNumber.get());
       activePlayer.getPlayerBoard().getEntrance().removeStudent(color);
@@ -254,34 +283,24 @@ public class Game {
    * @param color The color of the student added to a player dining room
    */
   public void giveProfessorToPlayer(int color) {
-    int studentPerColor;
-    int maxStudentColor = 0;
-    Player playerTakesProfessor = null;
+    int activePlayerNumberColorStudents;
+    int professorOwnerNumberColorStudent;
 
     if (professorControlPlayer[color] != null) {
-      maxStudentColor = professorControlPlayer[color].getPlayerBoard().getDiningRoom()
+
+      activePlayerNumberColorStudents = activePlayer.getPlayerBoard().getDiningRoom()
           .getStudents()[color];
-      playerTakesProfessor = professorControlPlayer[color];
-    }
+      professorOwnerNumberColorStudent = professorControlPlayer[color].getPlayerBoard()
+          .getDiningRoom().getStudents()[color];
 
-    for (Team team : teams) {
-      for (Player player : team.getPlayers()) {
-
-        studentPerColor = player.getPlayerBoard().getDiningRoom().getStudents()[color];
-        // TODO: current player?
-        // if (player.equals(this.pla)) {
-        // studentPerColor += this.influenceEqualProfessors;
-        //}
-
-        if (studentPerColor > maxStudentColor) {
-          playerTakesProfessor = player;
-          maxStudentColor = studentPerColor;
-        }
-
+      if (activePlayerNumberColorStudents > professorOwnerNumberColorStudent) {
+        this.professorControlPlayer[color] = activePlayer;
       }
+
+    } else {
+      this.professorControlPlayer[color] = activePlayer;
     }
 
-    this.professorControlPlayer[color] = playerTakesProfessor;
   }
 
   public Vector<CloudTile> getCloudTiles() {

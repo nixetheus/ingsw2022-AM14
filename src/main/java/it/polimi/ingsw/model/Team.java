@@ -71,6 +71,10 @@ public class Team {
     return availableTowers;
   }
 
+  public void setAvailableTowers(int availableTowers) {
+    this.availableTowers = availableTowers;
+  }
+
   public Vector<Player> getPlayers() {
     return players;
   }

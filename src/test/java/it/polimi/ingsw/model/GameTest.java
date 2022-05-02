@@ -1,26 +1,58 @@
 package it.polimi.ingsw.model;
 
 
+import it.polimi.ingsw.helpers.Color;
+import it.polimi.ingsw.helpers.Places;
+import it.polimi.ingsw.helpers.Towers;
+import it.polimi.ingsw.model.board.Island;
 import it.polimi.ingsw.model.player.Player;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.Vector;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * GameTest class that test the methods of Game class
+ */
 public class GameTest {
 
   Game expertGame;
   Game noExpertGame;
+  Team firstTeam;
+  Team secondTeam;
   Player activePlayer;
   Player otherPlayer;
+  Vector<Team> teams;
 
+  /**
+   *Set up method that create players, teams, and the current game
+   */
   @Before
   public void setUp() throws Exception {
 
-    this.expertGame = null; // new Game(Constants.getTwoPlayerMode(), true);
-    this.noExpertGame = null; // Game(Constants.getThreePlayerMode(), false);
+    this.activePlayer = new Player(0, "ale");
+    this.otherPlayer = new Player(0, "dario");
+    this.activePlayer.playAssistant(5);
+    this.otherPlayer.playAssistant(7);
 
-    //this.activePlayer = expertGame.getTeams().get(0).getPlayers().get(0);
-    //this.otherPlayer = expertGame.getTeams().get(1).getPlayers().get(0);
+    this.firstTeam = new Team(0, Towers.BLACK);
+    firstTeam.addPlayer(activePlayer);
+
+    this.secondTeam = new Team(1, Towers.WHITE);
+    secondTeam.addPlayer(otherPlayer);
+
+    teams = new Vector<>();
+    teams.add(firstTeam);
+    teams.add(secondTeam);
+
+    this.noExpertGame = new Game(false, teams);
+    this.expertGame = new Game(true, teams);
+
+    this.expertGame.setCurrentPlayerIndex(0);
+    this.expertGame.getCurrentPlayer();
+
   }
 
   /**
@@ -29,8 +61,8 @@ public class GameTest {
    */
   @Test
   public void testCreateCloudTiles() {
-    //Assert.assertEquals(expertGame.getCloudTiles().size(), expertGame.getPlayerNumber());
-    Assert.assertTrue(true);
+    Assert.assertEquals(expertGame.getCloudTiles().size(), expertGame.getPlayerNumber());
+
   }
 
   /**
@@ -39,13 +71,13 @@ public class GameTest {
    */
   @Test
   public void testFillCloudTiles() {
-    /*Vector<CloudTile> testClouds = expertGame.getCloudTiles();
+    Vector<CloudTile> testClouds = expertGame.getCloudTiles();
     for (CloudTile cloudTile : testClouds) {
       Assert.assertEquals(Arrays.stream(testClouds.get(cloudTile.getId())
               .getStudents()).sum(),
           expertGame.getStudentOnCloudTiles());
-    }*/
-    Assert.assertTrue(true);
+    }
+
   }
 
   /**
@@ -55,15 +87,22 @@ public class GameTest {
    */
   @Test
   public void testMoveNature() {
-    /*int motherNatureInitialPosition;
+    int motherNatureInitialPosition;
     int motherNatureFinalPosition;
     motherNatureInitialPosition = expertGame.getMainBoard().getMotherNature().getPosition();
-    expertGame.moveNature(5);
+    activePlayer.moveToPlayerBoard(Places.ENTRANCE,Color.BLUE.ordinal());
+   expertGame.moveStudent(activePlayer,Places.ENTRANCE,Places.DINING_ROOM,Color.BLUE.ordinal(),Optional.empty());
+
+   // expertGame.moveNature(5);
     motherNatureFinalPosition = expertGame.getMainBoard().getMotherNature().getPosition();
 
-    Assert.assertEquals(motherNatureFinalPosition,
-        (motherNatureInitialPosition + 5) % (expertGame.getMainBoard().getIslands().size()));*/
-    Assert.assertTrue(true);
+   // Assert.assertEquals(motherNatureFinalPosition,
+      //  (motherNatureInitialPosition + 5) % (expertGame.getMainBoard().getIslands().size()));
+
+    //   Assert.assertEquals(1,
+    //  expertGame.getMainBoard().getIslands().get(motherNatureFinalPosition).getNumberOfTowers());
+
+    //  Assert.assertEquals(expertGame.getProfessorControlPlayer()[Color.BLUE.ordinal()],activePlayer);
   }
 
   /**
@@ -72,11 +111,10 @@ public class GameTest {
    */
   @Test
   public void testTakeCloud() {
-    /*expertGame.takeCloud(activePlayer, 1);
+    expertGame.takeCloud(activePlayer, 1);
     Assert.assertEquals(
         Arrays.stream(activePlayer.getPlayerBoard().getEntrance().getStudents()).sum(),
-        expertGame.getStudentAtEntrance() + expertGame.getStudentOnCloudTiles());*/
-    Assert.assertTrue(true);
+        expertGame.getStudentAtEntrance() + expertGame.getStudentOnCloudTiles());
   }
 
   /**
@@ -85,8 +123,7 @@ public class GameTest {
    */
   @Test
   public void testSetPurchasableCharacterNoExpertMode() {
-    //Assert.assertNull(noExpertGame.getPurchasableCharacter());
-    Assert.assertTrue(true);
+    Assert.assertNull(noExpertGame.getPurchasableCharacter());
   }
 
   /**
@@ -95,7 +132,7 @@ public class GameTest {
    */
   @Test
   public void testSetPurchasableCharacterExpertMode() {
-    Assert.assertTrue(true);
+    Assert.assertNotNull(expertGame.getPurchasableCharacter());
   }
 
   /**
@@ -104,12 +141,12 @@ public class GameTest {
    */
   @Test
   public void testSetGameParameter() {
-    /*Assert.assertEquals(expertGame.getPlayerNumber(), 2);
+    Assert.assertEquals(expertGame.getPlayerNumber(), 2);
     Assert.assertEquals(expertGame.getPlayerTowerNumber(), 8);
     Assert.assertEquals(expertGame.getStudentAtEntrance(), 7);
     Assert.assertEquals(expertGame.getStudentOnCloudTiles(), 3);
-*/
-    Assert.assertTrue(true);
+
+
   }
 
   /**
@@ -118,14 +155,14 @@ public class GameTest {
    */
   @Test
   public void testMoveStudentDiningRoomCase() {
-   /* expertGame.moveStudent(activePlayer, Places.ENTRANCE, Places.DINING_ROOM, 2,
+    expertGame.moveStudent(activePlayer, Places.ENTRANCE, Places.DINING_ROOM, 2,
         Optional.empty());
     Assert.assertEquals(
         Arrays.stream(activePlayer.getPlayerBoard().getDiningRoom().getStudents()).sum(), 1);
     Assert.assertEquals(
         Arrays.stream(activePlayer.getPlayerBoard().getEntrance().getStudents()).sum(),
-        expertGame.getStudentAtEntrance() - 1);*/
-    Assert.assertTrue(true);
+        expertGame.getStudentAtEntrance() - 1);
+
   }
 
   /**
@@ -136,29 +173,31 @@ public class GameTest {
    */
   @Test
   public void testMoveStudentCloudCase() {
-    /*activePlayer.getPlayerBoard().getEntrance().addStudent(3);
+    activePlayer.getPlayerBoard().getEntrance().addStudent(3);
     expertGame.moveStudent(activePlayer, Places.ENTRANCE, Places.ISLAND, 3, Optional.of(5));
     Island chosenIsland = expertGame.getMainBoard().getIslands().get(5);
     Assert.assertEquals(Arrays.stream(chosenIsland.getStudents()).sum(), 2);
     Assert.assertEquals(
         Arrays.stream(activePlayer.getPlayerBoard().getEntrance().getStudents()).sum(),
-        expertGame.getStudentAtEntrance());*/
-    Assert.assertTrue(true);
+        expertGame.getStudentAtEntrance());
+
   }
 
   /**
    * Testing the give professor method, it ensures that the professor will be correctly given to the
    * right player
    */
+
   @Test
   public void testGiveProfessorToPlayer() {
-    /*Player[] testProfessorArray = new Player[]{null, null, activePlayer, null, null};
+    Player[] testProfessorArray = new Player[]{null, null, activePlayer, null, null};
+
     activePlayer.moveToPlayerBoard(Places.DINING_ROOM, Color.GREEN.ordinal());
     expertGame.giveProfessorToPlayer(Color.GREEN.ordinal());
 
     Assert.assertEquals(expertGame.getProfessorControlPlayer()[Color.GREEN.ordinal()].toString(),
-        testProfessorArray[Color.GREEN.ordinal()].toString());*/
-    Assert.assertTrue(true);
+        testProfessorArray[Color.GREEN.ordinal()].toString());
+
   }
 
   /**
@@ -168,14 +207,17 @@ public class GameTest {
 
   @Test
   public void testGiveProfessorToPlayerSameNumberOfStudent() {
-    /*Player[] testProfessorArray = new Player[]{null, null, activePlayer, null, null};
+    Player[] testProfessorArray = new Player[]{null, null, activePlayer, null, null};
+
     Assert.assertNull(expertGame.getProfessorControlPlayer()[Color.GREEN.ordinal()]);
+
     activePlayer.moveToPlayerBoard(Places.DINING_ROOM, Color.GREEN.ordinal());
     otherPlayer.moveToPlayerBoard(Places.DINING_ROOM, Color.GREEN.ordinal());
+
     expertGame.giveProfessorToPlayer(Color.GREEN.ordinal());
+
     Assert.assertEquals(expertGame.getProfessorControlPlayer()[Color.GREEN.ordinal()].toString(),
-        testProfessorArray[Color.GREEN.ordinal()].toString());*/
-    Assert.assertTrue(true);
+        testProfessorArray[Color.GREEN.ordinal()].toString());
   }
 
   /**
@@ -186,15 +228,41 @@ public class GameTest {
 
   @Test
   public void testGiveProfessorToAnotherPlayer() {
-    /*Player[] testProfessorArray = new Player[]{null, null, otherPlayer, null, null};
+    Player[] testProfessorArray = new Player[]{null, null, otherPlayer, null, null};
+
+    this.expertGame.setCurrentPlayerIndex(1);
+    this.expertGame.getCurrentPlayer();
+
     activePlayer.moveToPlayerBoard(Places.DINING_ROOM, Color.GREEN.ordinal());
-    expertGame.giveProfessorToPlayer(Color.GREEN.ordinal());
+
     otherPlayer.moveToPlayerBoard(Places.DINING_ROOM, Color.GREEN.ordinal());
     otherPlayer.moveToPlayerBoard(Places.DINING_ROOM, Color.GREEN.ordinal());
+
     expertGame.giveProfessorToPlayer(Color.GREEN.ordinal());
+
     Assert.assertEquals(expertGame.getProfessorControlPlayer()[Color.GREEN.ordinal()].toString(),
-        testProfessorArray[Color.GREEN.ordinal()].toString());*/
-    Assert.assertTrue(true);
+        testProfessorArray[Color.GREEN.ordinal()].toString());
+  }
+
+  /**
+   * This method tests if the game order will be correctly filled following the played assistant speed
+   */
+  @Test
+  public void testOrderBasedOnAssistant() {
+    expertGame.orderBasedOnAssistant();
+    Assert.assertEquals(expertGame.getPlayerFromOrder(0), otherPlayer);
+    Assert.assertEquals(expertGame.getPlayerFromOrder(1), activePlayer);
+  }
+
+  /**
+   * This method tests if the game order will be correctly reverted at the beginning of the planning phase
+   */
+  @Test
+  public void testReverseOrderEndTurn() {
+    expertGame.orderBasedOnAssistant();
+    expertGame.reverseOrderEndTurn();
+    Assert.assertEquals(expertGame.getPlayerFromOrder(0), activePlayer);
+    Assert.assertEquals(expertGame.getPlayerFromOrder(1), otherPlayer);
   }
 }
 
