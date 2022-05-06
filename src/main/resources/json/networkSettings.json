@@ -1,0 +1,6 @@
+ [
+   {
+     "DEFAULT_PORT_NUMBER": 1234,
+     "DEFAULT_HOST": "127.0.0.1"
+   }
+ ]
