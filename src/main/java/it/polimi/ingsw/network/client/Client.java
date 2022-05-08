@@ -1,7 +1,7 @@
 package it.polimi.ingsw.network.client;
 
 import com.google.gson.Gson;
-import it.polimi.ingsw.network.server.TestJson;
+import it.polimi.ingsw.messages.Message;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,12 +17,10 @@ public class Client {
 
   private final int portNumber;
   private final String hostName;
-  private String nickName;
 
   public Client(int portNumber, String hostName, String nickName) {
     this.portNumber = portNumber;
     this.hostName = hostName;
-    this.nickName = nickName;
   }
 
   /**
@@ -32,9 +30,6 @@ public class Client {
    * the while method is where the data exchange takes place
    */
   public void connect(){
-
-    //object to test json
-    TestJson test = new TestJson("giorgio", "bella@hotmail.it", 62, true);
 
     try (
         //creates a socket to handle communication with Server
@@ -60,7 +55,7 @@ public class Client {
 
       while ((userInput = stdIn.readLine()) != null) {
         //send to server
-        out.println(toJson(test));
+        out.println("test" + userInput);
         //print the server response
         System.out.println("Server: " + in.readLine());
       }
@@ -84,7 +79,7 @@ public class Client {
    * @param test Object to parse
    * @return String in json format
    */
-  private String toJson (TestJson test){
+  private String toJson (Message test){
     Gson gson = new Gson();
     return gson.toJson(test);
   }

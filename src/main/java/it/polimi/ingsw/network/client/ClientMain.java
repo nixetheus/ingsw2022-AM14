@@ -1,20 +1,18 @@
 package it.polimi.ingsw.network.client;
 
-import it.polimi.ingsw.helpers.Constants;
-import it.polimi.ingsw.network.server.TestJson;
 import java.util.Scanner;
 
 
 /**
- * ClientMain class creates a Client class and the connect method
+ * ClientMain class: TODO
  */
 public class ClientMain {
 
   public static void main(String[] args) {
 
     //Parameters of connection
-    String hostName = Constants.getDefaultHost();
-    int portNumber = Constants.getDefaultPort();
+    String hostName = "127.0.0.1";
+    int portNumber = 1234;
 
     //set nicknames
     System.out.println("Enter username");
