@@ -3,6 +3,7 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.model.CloudTile;
 import it.polimi.ingsw.model.board.Island;
 import it.polimi.ingsw.model.board.MotherNature;
+import it.polimi.ingsw.model.characters.CharacterCard;
 import it.polimi.ingsw.model.player.Assistant;
 import it.polimi.ingsw.model.player.PlayerBoard;
 import java.util.HashMap;
@@ -16,15 +17,15 @@ public interface View {
 
   void setNickname();
 
-  void selectNumberOfPlayer();
+  void selectNumberOfPlayerAndMode();
 
-  void selectExpertMode();
 
-  void showLobby(HashMap<Integer,String> lobby);
+  void showLobby(HashMap<Integer, String> lobby);
 
   void printPlayableAssistants(Vector<Assistant> playableDeck);
 
   void printPlayedAssistantsFromOthers(Vector<Assistant> playedAssistant);
+
 
   void playAssistant();
 
@@ -32,14 +33,13 @@ public interface View {
 
   void showActualTurn(String actualPlayerNickname);
 
-  void printPurchasableCharacter(Vector<Character> purchasableCharacter);
+  void printPurchasableCharacter(Vector<CharacterCard> purchasableCharacter);
 
   void printMainBoard(Vector<Island> islands, MotherNature motherNature);
 
-  void printAllPlayerBoard(HashMap<Integer, PlayerBoard> allPlayersPlayerBoard);
+  void printPlayerBoard(PlayerBoard playerBoard);
 
   void printCloudTile(Vector<CloudTile> cloudTiles);
-
 
 
   void moveStudents();
@@ -56,8 +56,6 @@ public interface View {
 
 
   void printError(String errorString);
-
-
 
 
 }

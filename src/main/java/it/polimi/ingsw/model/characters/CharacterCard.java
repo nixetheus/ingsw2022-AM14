@@ -35,4 +35,13 @@ public class CharacterCard {
     cost++;
   }
 
+  public Effects getCardEffect() {
+    return cardEffect;
+  }
+
+  public int[] getStudents() {
+    return students;
+  }
+
+
 }
