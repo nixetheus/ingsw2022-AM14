@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.helpers.MessageMain;
 import it.polimi.ingsw.helpers.MessageSecondary;
 import it.polimi.ingsw.helpers.Towers;
+import it.polimi.ingsw.messages.ClientResponse;
 import it.polimi.ingsw.messages.InfoRequestMessage;
 import it.polimi.ingsw.messages.LoginMessage;
 import it.polimi.ingsw.messages.Message;
@@ -13,7 +14,9 @@ import it.polimi.ingsw.model.Team;
 import it.polimi.ingsw.model.player.Player;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.Socket;
 import java.util.Vector;
+import java.util.concurrent.Semaphore;
 
 /**
  * Main controller class that manage the other controller and do the correct phase and correct
@@ -35,6 +38,10 @@ public class MainController {
   private int numberOfPlayers;
   private boolean isGameExpert;
 
+  // Server
+  private Semaphore serverSemaphore;
+  private Vector<Socket> socketClientsOut;
+
   /**
    * Constructor for the MainController Class
    */
@@ -47,6 +54,25 @@ public class MainController {
     playController = new PlayController();
     moveController = new MoveController();
     loginController = new LoginController();
+  }
+
+  /**
+   * Sets the game as given by the server
+   *
+   * @param newGame the game created by the Server
+   */
+  public void setGame(Game newGame) {
+    this.game = newGame;
+  }
+
+  /**
+   * Gets the server's semaphore for controlling logic
+   *
+   * @param serverSemaphore The server's Semaphore
+   */
+  public void setServerSemaphore(Semaphore serverSemaphore) throws InterruptedException {
+    this.serverSemaphore = serverSemaphore;
+    this.serverSemaphore.acquire();
   }
 
   /**
@@ -86,6 +112,7 @@ public class MainController {
             turnManager.setNumberOfUsers(numberOfPlayers);
             turnManager.updateCounters();
             turnManager.changeState();
+            this.serverSemaphore.release();
           }
           break;
 
@@ -185,8 +212,9 @@ public class MainController {
    * @throws FileNotFoundException If the json file is not found
    */
   public void setupGame() throws IOException {
-    /*this.game = new Game(isGameExpert, teams);
-    turnManager.setNumberStudentsFromEntrance(this.game.getStudentAtEntrance());*/
+    this.game.setTeams(teams);
+    this.game.setExpert(isGameExpert);
+    turnManager.setNumberStudentsFromEntrance(this.game.getStudentAtEntrance());
   }
 
 }

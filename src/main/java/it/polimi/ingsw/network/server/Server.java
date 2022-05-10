@@ -36,7 +36,7 @@ public class Server {
    * @param portNumber portNumber
    * @param hostName hostName
    */
-  public Server(int portNumber, String hostName) {
+  public Server(int portNumber, String hostName) throws InterruptedException {
     this.game = new Game();
     this.hostName = hostName;
     this.portNumber = portNumber;
@@ -45,6 +45,9 @@ public class Server {
     socketOut = new Vector<>();
     clientsHandler = new Vector<>();
     mainController = new MainController();
+
+    mainController.setGame(this.game);
+    mainController.setServerSemaphore(this.sem);
   }
 
   /**
