@@ -31,8 +31,8 @@ public class Game {
   private final StudentsBag studentsBag;
   private final Vector<CloudTile> cloudTiles;
   private final Player[] professorControlPlayer;
-  private final Vector<CharacterCard> purchasableCharacter;
-  private final Vector<Team> teams;
+  private Vector<CharacterCard> purchasableCharacter;
+  private Vector<Team> teams;
   private final Vector<Player> gameOrder;
   private int playerNumber;
   private int playerTowerNumber;
@@ -45,21 +45,25 @@ public class Game {
   /**
    * Constructor por Game class
    */
-  public Game(Boolean isExpert, Vector<Team> teams) throws IOException {
-
-    this.teams = teams;
+  public Game() {
     this.gameOrder = new Vector<>();
     this.cloudTiles = new Vector<>();
     this.studentsBag = new StudentsBag();
     this.mainBoard = new MainBoard(this.studentsBag);
     this.professorControlPlayer = new Player[Constants.getNColors()];
+  }
+
+  /**
+   *
+   */
+  public void setTeams(Vector<Team> teams) throws IOException {
+
+    this.teams = teams;
 
     for (Team team : teams) {
       gameOrder.addAll(team.getPlayers());
     }
-
     this.playerNumber = gameOrder.size();
-    initializeGameParameter();
 
     for (Team team : teams) {
       team.setAvailableTowers(playerTowerNumber);
@@ -68,9 +72,17 @@ public class Game {
       }
     }
 
+    initializeGameParameter();
+
     createClouds();
     fillClouds();
+  }
 
+  /**
+   *
+   * @param isExpert
+   */
+  public void setExpert(boolean isExpert) {
     if (isExpert) {
       purchasableCharacter = new Vector<>();
       initializePurchasableCharacter();

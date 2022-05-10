@@ -185,8 +185,8 @@ public class MainController {
    * @throws FileNotFoundException If the json file is not found
    */
   public void setupGame() throws IOException {
-    this.game = new Game(isGameExpert, teams);
-    turnManager.setNumberStudentsFromEntrance(this.game.getStudentAtEntrance());
+    /*this.game = new Game(isGameExpert, teams);
+    turnManager.setNumberStudentsFromEntrance(this.game.getStudentAtEntrance());*/
   }
 
 }

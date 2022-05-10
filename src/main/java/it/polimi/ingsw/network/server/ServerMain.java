@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import it.polimi.ingsw.helpers.Constants;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -27,7 +28,7 @@ public class ServerMain {
    * In the end creates the server and runs it
    * @param args arguments passed from command line
    */
-  public static void main(String[] args) throws FileNotFoundException {
+  public static void main(String[] args) throws IOException, InterruptedException {
 
     //set network settings from networkSettings.json
     setPortNumberFromJson();

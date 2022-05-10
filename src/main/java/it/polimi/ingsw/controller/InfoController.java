@@ -3,7 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.helpers.Color;
 import it.polimi.ingsw.helpers.MessageSecondary;
 import it.polimi.ingsw.messages.InfoRequestMessage;
-import it.polimi.ingsw.messages.InfoResponseMessage;
+import it.polimi.ingsw.messages.ClientResponse;
 import it.polimi.ingsw.model.CloudTile;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Team;
@@ -18,7 +18,7 @@ public class InfoController {
   /**
    *
    */
-  public void elaborateMessage(InfoRequestMessage msg, Game game) {
+  public ClientResponse elaborateMessage(InfoRequestMessage msg, Game game) {
 
     String response;
     switch (msg.getMessageSecondary()) {
@@ -49,9 +49,12 @@ public class InfoController {
     }
 
     if (response != null) {
-      InfoResponseMessage responseMessage = new InfoResponseMessage(
+      ClientResponse responseMessage = new ClientResponse(
           MessageSecondary.INFO_RESPONSE_MESSAGE);
       responseMessage.setResponse(response);
+      return responseMessage;
+    } else {
+      return null;
     }
   }
 

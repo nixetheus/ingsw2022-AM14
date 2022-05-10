@@ -1,12 +1,14 @@
 package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.controller.MainController;
+import it.polimi.ingsw.model.Game;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
 
 /**
  * Server Class:
@@ -18,14 +20,15 @@ import java.util.concurrent.Executors;
 public class Server {
 
   //Attributes
-  //private final Game game;
-  private final MainController mainController;
-  private final Vector<ClientHandler> clientsHandler;
-  private Vector<Socket> socketOut;
+  private final Game game;
+  private final Semaphore sem;
   private final int portNumber;
   private final String hostName;
+  private final Vector<Socket> socketOut;
   private ExecutorService executor;
   private ServerSocket serverSocket;
+  private final MainController mainController;
+  private final Vector<ClientHandler> clientsHandler;
 
   /**
    * Constructor Server:
@@ -34,12 +37,14 @@ public class Server {
    * @param hostName hostName
    */
   public Server(int portNumber, String hostName) {
-    this.portNumber = portNumber;
+    this.game = new Game();
     this.hostName = hostName;
+    this.portNumber = portNumber;
+    this.sem = new Semaphore(1);
 
-    mainController = new MainController();
-    clientsHandler = new Vector<>();
     socketOut = new Vector<>();
+    clientsHandler = new Vector<>();
+    mainController = new MainController();
   }
 
   /**
@@ -48,7 +53,7 @@ public class Server {
    * accept clients and creates thread and clientHandler
    * In the end, it close the Server connection
    */
-  public void startServer() {
+  public void startServer() throws IOException, InterruptedException {
 
     setUpServer();
     acceptClientsConnections();
@@ -82,7 +87,19 @@ public class Server {
    * create a ClientHandler class (Runnable class runs by the thread) and add it to
    * clientsHandler Vector
    */
-  private void acceptClientsConnections() {
+  private void acceptClientsConnections() throws IOException, InterruptedException {
+
+    // FIRST CLIENT
+    Socket firstClientSocket;
+    firstClientSocket = serverSocket.accept();
+
+    socketOut.add(firstClientSocket);
+    ClientHandler firstClientHandler = new ClientHandler(firstClientSocket, mainController, socketOut);
+    executor.submit(firstClientHandler);
+    clientsHandler.add(firstClientHandler);
+
+    // STOP ACCEPTING CLIENTS IF PARAMS NOT GIVEN
+    sem.acquire();
 
     while (true) {
       try {
@@ -92,7 +109,6 @@ public class Server {
 
         ClientHandler newClientHandler = new ClientHandler(newClientSocket, mainController, socketOut);
         executor.submit(newClientHandler);
-
 
         clientsHandler.add(newClientHandler);
 

@@ -3,8 +3,10 @@ package it.polimi.ingsw.network.server;
 import com.google.gson.Gson;
 import it.polimi.ingsw.controller.MainController;
 import it.polimi.ingsw.helpers.MessageSecondary;
+import it.polimi.ingsw.messages.ClientResponse;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.MoveMessage;
+import it.polimi.ingsw.network.client.Client;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -54,22 +56,23 @@ public class ClientHandler implements Runnable {
   public void run() {
     try {
 
-      Message message;
+      ClientResponse response;
 
       while (true) {
 
-        message = readInputAndSendItToMainController();
+        response = readInputAndSendItToMainController();
 
         //TODO it is mandatory to put an exit condition, quit message
-        if(message.toString().equals("quit"))
+        if (response == null)
+          continue;
+
+        if(response.getResponse().equals("quit"))
           break;
 
-        sendResponseToAllClients(message);
+        sendResponseToAllClients(response);
 
       }
-
       closeStreams();
-
     } catch (IOException e) {
       System.err.println(e.getMessage());
     } catch (ClassNotFoundException e) {
@@ -85,7 +88,9 @@ public class ClientHandler implements Runnable {
    * @throws IOException exception
    * @throws ClassNotFoundException exception
    */
-  private Message readInputAndSendItToMainController() throws IOException, ClassNotFoundException {
+  private ClientResponse readInputAndSendItToMainController()
+      throws IOException, ClassNotFoundException {
+
     String input = inputStream.nextLine();
     if (input != null) {
 
@@ -95,13 +100,9 @@ public class ClientHandler implements Runnable {
 
       System.out.println("Message sent to controller");
 
-      //message for test
-      MoveMessage test = new MoveMessage(MessageSecondary.CHARACTER);
-      test.setPlace(0);
-      test.setCloudTileNumber(1);
-      test.setStudentColor(2);
-      test.setIslandNumber(3);
-
+      // Message for test
+      ClientResponse test = new ClientResponse(MessageSecondary.INFO_RESPONSE_MESSAGE);
+      test.setResponse("TESTING");
       return test;
     }
     return null;
@@ -114,9 +115,9 @@ public class ClientHandler implements Runnable {
    * @param message message
    * @throws IOException exception
    */
-  synchronized private void sendResponseToAllClients(Message message) throws IOException {
+  synchronized private void sendResponseToAllClients(ClientResponse message) throws IOException {
     for(Socket socketOut : socketOut)
-      sendSocketMessage(toJson(message), new PrintWriter(socketOut.getOutputStream()));
+      sendSocketMessage(message.getResponse(), new PrintWriter(socketOut.getOutputStream()));
   }
 
   /**
@@ -125,7 +126,6 @@ public class ClientHandler implements Runnable {
    * the client associated to the PrintWriter passed from parameter
    * @param serverAnswer String JSON to send to the client
    * @param outputStream PrintWriter associated to one client
-   * @throws IOException exception
    */
   private void sendSocketMessage(String serverAnswer, @NotNull PrintWriter outputStream) {
     outputStream.println(serverAnswer);
