@@ -95,13 +95,13 @@ public class GameTest {
     int motherNatureFinalPosition;
     motherNatureInitialPosition = expertGame.getMainBoard().getMotherNature().getPosition();
     activePlayer.moveToPlayerBoard(Places.ENTRANCE,Color.BLUE.ordinal());
-   expertGame.moveStudent(activePlayer,Places.ENTRANCE,Places.DINING_ROOM,Color.BLUE.ordinal(),Optional.empty());
+    expertGame.moveStudent(activePlayer,Places.ENTRANCE,Places.DINING_ROOM,Color.BLUE.ordinal(),Optional.empty());
 
-   // expertGame.moveNature(5);
+    // expertGame.moveNature(5);
     motherNatureFinalPosition = expertGame.getMainBoard().getMotherNature().getPosition();
 
-   // Assert.assertEquals(motherNatureFinalPosition,
-      //  (motherNatureInitialPosition + 5) % (expertGame.getMainBoard().getIslands().size()));
+    // Assert.assertEquals(motherNatureFinalPosition,
+    //  (motherNatureInitialPosition + 5) % (expertGame.getMainBoard().getIslands().size()));
 
     //   Assert.assertEquals(1,
     //  expertGame.getMainBoard().getIslands().get(motherNatureFinalPosition).getNumberOfTowers());
@@ -116,9 +116,9 @@ public class GameTest {
   @Test
   public void testTakeCloud() {
     expertGame.takeCloud(activePlayer, 1);
-    /*Assert.assertEquals(
+    Assert.assertEquals(
         Arrays.stream(activePlayer.getPlayerBoard().getEntrance().getStudents()).sum(),
-        expertGame.getStudentAtEntrance() + expertGame.getStudentOnCloudTiles());*/
+        expertGame.getStudentAtEntrance() + expertGame.getStudentOnCloudTiles());
   }
 
   /**
@@ -163,9 +163,9 @@ public class GameTest {
         Optional.empty());
     Assert.assertEquals(
         Arrays.stream(activePlayer.getPlayerBoard().getDiningRoom().getStudents()).sum(), 1);
-    /*Assert.assertEquals(
+    Assert.assertEquals(
         Arrays.stream(activePlayer.getPlayerBoard().getEntrance().getStudents()).sum(),
-        expertGame.getStudentAtEntrance() - 1);*/
+        expertGame.getStudentAtEntrance() - 1);
 
   }
 
@@ -181,9 +181,9 @@ public class GameTest {
     expertGame.moveStudent(activePlayer, Places.ENTRANCE, Places.ISLAND, 3, Optional.of(5));
     Island chosenIsland = expertGame.getMainBoard().getIslands().get(5);
     Assert.assertEquals(Arrays.stream(chosenIsland.getStudents()).sum(), 2);
-    /*Assert.assertEquals(
+    Assert.assertEquals(
         Arrays.stream(activePlayer.getPlayerBoard().getEntrance().getStudents()).sum(),
-        expertGame.getStudentAtEntrance());*/
+        expertGame.getStudentAtEntrance());
 
   }
 

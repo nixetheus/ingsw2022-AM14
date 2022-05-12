@@ -31,9 +31,9 @@ public class Game {
   private final StudentsBag studentsBag;
   private final Vector<CloudTile> cloudTiles;
   private final Player[] professorControlPlayer;
+  private final Vector<Player> gameOrder;
   private Vector<CharacterCard> purchasableCharacter;
   private Vector<Team> teams;
-  private final Vector<Player> gameOrder;
   private int playerNumber;
   private int playerTowerNumber;
   private int studentAtEntrance;
@@ -54,33 +54,9 @@ public class Game {
   }
 
   /**
+   * This method set the game mode
    *
-   */
-  public void setTeams(Vector<Team> teams) throws IOException {
-
-    this.teams = teams;
-
-    for (Team team : teams) {
-      gameOrder.addAll(team.getPlayers());
-    }
-    this.playerNumber = gameOrder.size();
-
-    for (Team team : teams) {
-      team.setAvailableTowers(playerTowerNumber);
-      for (Player player : team.getPlayers()) {
-        player.initializePlayerBoard(studentsBag.pickRandomStudents(studentAtEntrance));
-      }
-    }
-
-    initializeGameParameter();
-
-    createClouds();
-    fillClouds();
-  }
-
-  /**
-   *
-   * @param isExpert
+   * @param isExpert the game mode to be set into the game
    */
   public void setExpert(boolean isExpert) {
     if (isExpert) {
@@ -193,7 +169,6 @@ public class Game {
     }
   }
 
-
   /**
    * Method used to create and set the character available fore this match
    */
@@ -225,7 +200,6 @@ public class Game {
       }
     }
   }
-
 
   /**
    * This method reads the json and set them into the class attributes
@@ -325,6 +299,33 @@ public class Game {
 
   public Vector<Team> getTeams() {
     return teams;
+  }
+
+  /**
+   * This method allow to set the team vector to have an empty constructor
+   *
+   * @param teams The vector of teams that is needed to set into the game
+   */
+  public void setTeams(Vector<Team> teams) throws IOException {
+
+    this.teams = teams;
+
+    for (Team team : teams) {
+      gameOrder.addAll(team.getPlayers());
+    }
+    this.playerNumber = gameOrder.size();
+
+    initializeGameParameter();
+
+    for (Team team : teams) {
+      team.setAvailableTowers(playerTowerNumber);
+      for (Player player : team.getPlayers()) {
+        player.initializePlayerBoard(studentsBag.pickRandomStudents(studentAtEntrance));
+      }
+    }
+
+    createClouds();
+    fillClouds();
   }
 
   public Player[] getProfessorControlPlayer() {
