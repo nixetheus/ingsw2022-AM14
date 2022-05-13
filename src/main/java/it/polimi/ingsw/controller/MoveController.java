@@ -23,6 +23,7 @@ public class MoveController {
    * @param msg         The message sent
    * @param currentGame The started match
    */
+  //TODO return null se qualcosa storto altrimenti stringa
   public boolean elaborateMessage(MoveMessage msg, Game currentGame) {
     //can create a method for each control
     switch (msg.getMessageSecondary()) {

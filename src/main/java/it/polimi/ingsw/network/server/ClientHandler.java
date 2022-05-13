@@ -95,16 +95,15 @@ public class ClientHandler implements Runnable {
     String input = inputStream.nextLine();
     if (input != null) {
 
-      /*TODO return response of main controller
+
       Message message = fromJson(input);
-      mainController.elaborateMessage(message);*/
+      ClientResponse clientResponse=mainController.elaborateMessage(message);
 
       System.out.println("Message sent to controller");
 
       // Message for test
-      ClientResponse test = new ClientResponse(MessageSecondary.INFO_RESPONSE_MESSAGE);
-      test.setResponse("TESTING");
-      return test;
+
+      return clientResponse;
     }
     return null;
   }

@@ -38,6 +38,7 @@ public class TurnManager {
     currentNumberOfUsersPlayedActionPhase = 0;
   }
 
+  //TODO update message what to do next
   public void changeState() {
 
     int nextState = currentState;

@@ -77,7 +77,7 @@ public class Client {
       System.out.println("Communication starts");
 
       //Communications with server
-      while ((userInput = stdIn.readLine()).equals("quit")) {
+      while (!(userInput = stdIn.readLine()).equals("quit")) {
         //send to server
         String str = messageParser.parser(userInput);
         out.println(str);

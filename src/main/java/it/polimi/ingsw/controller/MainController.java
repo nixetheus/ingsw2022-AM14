@@ -80,15 +80,16 @@ public class MainController {
    *
    * @param msg The message received from the player
    */
-  public void elaborateMessage(Message msg) throws IOException {
+  public ClientResponse elaborateMessage(Message msg) throws IOException {
 
     if (msg.getMessageMain() == MessageMain.INFO) {
-      infoController.elaborateMessage((InfoRequestMessage) msg, game);
+     return infoController.elaborateMessage((InfoRequestMessage) msg, game);
     } else if (msg.getMessageMain() == MessageMain.LOGIN) {
-      elaborateLoginMessage((LoginMessage) msg);
+      return elaborateLoginMessage((LoginMessage) msg);
     } else {
-      elaborateGameMessage(msg);
+      return elaborateGameMessage(msg);
     }
+
   }
 
   /**
@@ -97,7 +98,7 @@ public class MainController {
    *
    * @param msg The Login message received
    */
-  private void elaborateLoginMessage(LoginMessage msg) throws IOException {
+  private ClientResponse elaborateLoginMessage(LoginMessage msg) throws IOException {
 
     // Check if phase is correct
     if (turnManager.getMainGamePhase() == MessageMain.LOGIN &&
@@ -156,6 +157,7 @@ public class MainController {
           break;
       }
     }
+    return null;
   }
 
   /**
@@ -165,8 +167,8 @@ public class MainController {
    *
    * @param msg The game message to be elaborated
    */
-  private void elaborateGameMessage(Message msg) {
-
+  private ClientResponse elaborateGameMessage(Message msg) {
+//TODO create message response
     boolean everythingOkay = true;
 
     // Check player is current player OR phase is login
@@ -184,9 +186,11 @@ public class MainController {
     if (everythingOkay) {
       switch (msg.getMessageMain()) {
         case MOVE:
+          //TODO set string
           everythingOkay = moveController.elaborateMessage((MoveMessage) msg, game);
           break;
         case PLAY:
+          //TODO set string
           everythingOkay = playController.elaborateMessage((PlayMessage) msg, game);
           break;
         default:
@@ -194,6 +198,7 @@ public class MainController {
       }
     }
 
+   //TODO if string != null
     if (everythingOkay) {
       // Update turn
       turnManager.updateCounters();
@@ -204,6 +209,7 @@ public class MainController {
       // Send error message
       // TODO
     }
+    return null;
   }
 
   /**
