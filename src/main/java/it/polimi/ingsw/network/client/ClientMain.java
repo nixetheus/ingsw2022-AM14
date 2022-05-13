@@ -1,18 +1,27 @@
 package it.polimi.ingsw.network.client;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.Scanner;
 
 
 /**
- * ClientMain class: TODO
+ * ClientMain class:
+ * set up the parameters to connect the client to the server,
+ * ask and pass to Client class the nickname and
+ * creates Client class and connect it
  */
 public class ClientMain {
 
-  public static void main(String[] args) {
+  private static int portNumber;
+  private static String hostName;
 
-    //Parameters of connection
-    String hostName = "127.0.0.1";
-    int portNumber = 1234;
+  public static void main(String[] args) throws FileNotFoundException {
+
+    setPortNumberFromJson();
 
     //set nicknames
     System.out.println("Enter username");
@@ -21,5 +30,24 @@ public class ClientMain {
 
     Client client = new Client(portNumber, hostName, nickName);
     client.connect();
+  }
+
+  /**
+   * setPortNumberFromJson method:
+   * Initialize port number and host name with the default value contents in
+   * the file networkSettings.json
+   * @throws FileNotFoundException if file not found
+   */
+  private static void setPortNumberFromJson() throws FileNotFoundException {
+
+    Gson gson = new Gson();
+    JsonArray list = gson
+        .fromJson(new FileReader("src/main/resources/json/networkSettings.json"), JsonArray.class);
+    JsonObject object = list.get(0).getAsJsonObject();
+    portNumber = object.get("DEFAULT_PORT_NUMBER").getAsInt();
+    hostName = object.get("DEFAULT_HOST").getAsString();
+
+    System.out.println(hostName + " " +  portNumber);
+
   }
 }

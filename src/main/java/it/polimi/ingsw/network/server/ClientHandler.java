@@ -25,10 +25,11 @@ import org.jetbrains.annotations.Nullable;
  */
 public class ClientHandler implements Runnable {
 
+  //Attributes
   private final MainController mainController;
-  private Vector<Socket> socketOut;
-  private Socket socketClient;
-  private Scanner inputStream;
+  private final Vector<Socket> socketOut;
+  private final Socket socketClient;
+  private final Scanner inputStream;
 
   /**
    * ClientHandler constructor:

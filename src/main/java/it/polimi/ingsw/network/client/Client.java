@@ -2,12 +2,16 @@ package it.polimi.ingsw.network.client;
 
 import com.google.gson.Gson;
 import it.polimi.ingsw.messages.Message;
+import it.polimi.ingsw.view.Cli;
+import it.polimi.ingsw.view.MessageParser;
+import it.polimi.ingsw.view.View;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Scanner;
 
 /**
  * Client class takes care of the communication with the server
@@ -15,12 +19,29 @@ import java.net.UnknownHostException;
  */
 public class Client {
 
+  private View view;
+  private final MessageParser messageParser;
   private final int portNumber;
   private final String hostName;
 
   public Client(int portNumber, String hostName, String nickName) {
+    //select type of view
+    boolean choice = cliOrGui();
+    if(choice)
+      view = new Cli();
+    messageParser = new MessageParser();
     this.portNumber = portNumber;
     this.hostName = hostName;
+
+  }
+
+  private boolean cliOrGui() {
+    System.out.println("Type '1' for the CLI or '2' for the GUI");
+    Scanner typeOfViewIn = new Scanner(System.in);
+    String choice = typeOfViewIn.nextLine();
+    //true => cli
+    //false => gui
+    return (choice.equals("1"));
   }
 
   /**
@@ -31,6 +52,7 @@ public class Client {
    */
   public void connect(){
 
+    //setUp connection with Server
     try (
         //creates a socket to handle communication with Server
         Socket socket = new Socket(hostName, portNumber);
@@ -49,15 +71,19 @@ public class Client {
             new BufferedReader(
                 new InputStreamReader(System.in))
     ){
+
       String userInput;
 
       System.out.println("Communication starts");
 
-      while ((userInput = stdIn.readLine()) != null) {
+      //Communications with server
+      while ((userInput = stdIn.readLine()).equals("quit")) {
         //send to server
-        out.println("test" + userInput);
+        String str = messageParser.parser(userInput);
+        out.println(str);
+
         //print the server response
-        System.out.println("Server: " + in.readLine());
+        view.printGameUpdate(in.readLine());
       }
 
     } catch (UnknownHostException e) {
@@ -72,16 +98,4 @@ public class Client {
 
     }
   }
-
-  /**
-   * toJon is used to parse a String to json format
-   *
-   * @param test Object to parse
-   * @return String in json format
-   */
-  private String toJson (Message test){
-    Gson gson = new Gson();
-    return gson.toJson(test);
-  }
-
 }

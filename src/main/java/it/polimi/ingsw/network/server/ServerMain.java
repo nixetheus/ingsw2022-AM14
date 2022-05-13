@@ -56,7 +56,7 @@ public class ServerMain {
     portNumber = object.get("DEFAULT_PORT_NUMBER").getAsInt();
     hostName = object.get("DEFAULT_HOST").getAsString();
 
-    System.out.println(portNumber + " " +  hostName);
+    System.out.println(hostName + " " +  portNumber);
 
   }
 

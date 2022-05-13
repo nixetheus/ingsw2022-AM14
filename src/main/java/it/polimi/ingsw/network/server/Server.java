@@ -59,7 +59,7 @@ public class Server {
   public void startServer() throws IOException, InterruptedException {
 
     setUpServer();
-    acceptClientsConnections();
+    acceptClientsConnections(); //loop
     closeServer();
 
   }
@@ -95,6 +95,7 @@ public class Server {
     // FIRST CLIENT
     Socket firstClientSocket;
     firstClientSocket = serverSocket.accept();
+    System.out.println("accepted first client");
 
     socketOut.add(firstClientSocket);
     ClientHandler firstClientHandler = new ClientHandler(firstClientSocket, mainController, socketOut);
