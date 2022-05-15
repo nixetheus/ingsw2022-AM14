@@ -13,14 +13,14 @@ public class PlayController {
   /**
    *
    */
-  public boolean elaborateMessage(PlayMessage msg, Game game) {
+  public String elaborateMessage(PlayMessage msg, Game game) {
     switch (msg.getMessageSecondary()) {
       case ASSISTANT:
         return playAssistant(msg, game);
       case CHARACTER:
         return playCharacter(msg, game);
       default:
-        return false;
+        return null;
     }
   }
 
@@ -29,18 +29,22 @@ public class PlayController {
    * @param game
    * @return
    */
-  private boolean playAssistant(PlayMessage msg, Game game) {
+  private String playAssistant(PlayMessage msg, Game game) {
     if (canPlayAssistant(msg.getPlayerId(), msg.getAssistantId(), game.getTeams())) {
       for (Team team : game.getTeams()) {
         for (Player player : team.getPlayers()) {
           if (player.getPlayerId() == msg.getPlayerId()) {
             game.playAssistant(player, msg.getAssistantId());
-            return true;
+            return "Assistant played correctly!\n"
+                + "You can now move mother nature of " + player.getAssistant().getMoves()
+                + " spaces when your turn comes.\n"
+                + "You're speed is " + player.getAssistant().getSpeed() + " ouf of 10.\n"
+                + "Please wait...";
           }
         }
       }
     }
-    return false;
+    return null;
   }
 
   /**
@@ -48,7 +52,7 @@ public class PlayController {
    * @param game
    * @return
    */
-  private boolean playCharacter(PlayMessage msg, Game game) {
+  private String playCharacter(PlayMessage msg, Game game) {
 
     CharacterStruct characterParameters = new CharacterStruct();
     CharacterCard characterCard = game.getPurchasableCharacter().elementAt(msg.getCharacterId());
@@ -73,13 +77,14 @@ public class PlayController {
             characterParameters.currentPlayer = player;
             game.playCharacter(player, msg.getCharacterId());
             characterCard.applyEffect(characterParameters);
-            return true;
+            return "Character played correctly!\n"
+                + "You now have " + player.getCoins() + " remaining coins.\n Please wait...";
 
           }
         }
       }
     }
-    return false;
+    return null;
   }
 
   /**

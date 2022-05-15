@@ -7,14 +7,12 @@ import it.polimi.ingsw.messages.ClientResponse;
 import it.polimi.ingsw.messages.InfoRequestMessage;
 import it.polimi.ingsw.messages.LoginMessage;
 import it.polimi.ingsw.messages.Message;
-import it.polimi.ingsw.messages.MoveMessage;
 import it.polimi.ingsw.messages.PlayMessage;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Team;
 import it.polimi.ingsw.model.player.Player;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.Socket;
 import java.util.Vector;
 import java.util.concurrent.Semaphore;
 
@@ -40,7 +38,6 @@ public class MainController {
 
   // Server
   private Semaphore serverSemaphore;
-  private Vector<Socket> socketClientsOut;
 
   /**
    * Constructor for the MainController Class
@@ -83,7 +80,7 @@ public class MainController {
   public ClientResponse elaborateMessage(Message msg) throws IOException {
 
     if (msg.getMessageMain() == MessageMain.INFO) {
-     return infoController.elaborateMessage((InfoRequestMessage) msg, game);
+      return infoController.elaborateMessage((InfoRequestMessage) msg, game);
     } else if (msg.getMessageMain() == MessageMain.LOGIN) {
       return elaborateLoginMessage((LoginMessage) msg);
     } else {
@@ -100,13 +97,15 @@ public class MainController {
    */
   private ClientResponse elaborateLoginMessage(LoginMessage msg) throws IOException {
 
+    ClientResponse loginResponse = new ClientResponse(MessageSecondary.INFO_RESPONSE_MESSAGE);
+
     // Check if phase is correct
     if (turnManager.getMainGamePhase() == MessageMain.LOGIN &&
         msg.getMessageSecondary() == turnManager.getSecondaryPhase()) {
 
       switch (msg.getMessageSecondary()) {
         case GAME_PARAMS:
-          // If parameters are okay set them and change game state
+          // If parameters are okay set them and change game state else send error message
           if (loginController.checkGameParameters(msg)) {
             isGameExpert = msg.isGameExpert();
             numberOfPlayers = msg.getNumberOfPlayer();
@@ -114,6 +113,9 @@ public class MainController {
             turnManager.updateCounters();
             turnManager.changeState();
             this.serverSemaphore.release();
+            loginResponse.setResponse("Game parameters correctly set!\n");
+          } else {
+            loginResponse.setResponse("Error! Game parameters are not correct! Retry!\n");
           }
           break;
 
@@ -148,16 +150,23 @@ public class MainController {
             // If players are all in, setup game
             if (teams.stream().map(team -> team.getPlayers().size()).count() == numberOfPlayers) {
               setupGame();
+              loginResponse.setResponse("Welcome aboard " + newPlayer.getPlayerNickname() + "!\n" +
+                  "Everyone is ready now! We shall let the game start!");
+            } else {
+              loginResponse.setResponse("Welcome aboard " + newPlayer.getPlayerNickname() + "!\n");
             }
+          } else {
+            loginResponse.setResponse("Error while creating new player, please try again!\n");
           }
 
           break;
 
         default:
+          loginResponse.setResponse("Unexpected error! This should've not happened!\n");
           break;
       }
     }
-    return null;
+    return loginResponse;
   }
 
   /**
@@ -168,8 +177,8 @@ public class MainController {
    * @param msg The game message to be elaborated
    */
   private ClientResponse elaborateGameMessage(Message msg) {
-//TODO create message response
-    boolean everythingOkay = true;
+    boolean everythingOkay;
+    ClientResponse gameResponse = new ClientResponse(MessageSecondary.INFO_RESPONSE_MESSAGE);
 
     // Check player is current player OR phase is login
     everythingOkay = !(msg.getPlayerId() == 0);  // ;
@@ -183,33 +192,51 @@ public class MainController {
             !(msg.getMessageSecondary() == turnManager.getSecondaryPhase())) ||
             isCharacterPlayed);
 
+    String responseString = null;
     if (everythingOkay) {
       switch (msg.getMessageMain()) {
         case MOVE:
-          //TODO set string
-          everythingOkay = moveController.elaborateMessage((MoveMessage) msg, game);
+          // responseString = moveController.elaborateMessage((MoveMessage) msg, game);
           break;
         case PLAY:
-          //TODO set string
-          everythingOkay = playController.elaborateMessage((PlayMessage) msg, game);
+          responseString = playController.elaborateMessage((PlayMessage) msg, game);
           break;
         default:
+          gameResponse.setResponse("Unexpected error! This should've not happened!\n");
           break;
       }
     }
 
-   //TODO if string != null
-    if (everythingOkay) {
+    if (responseString != null) {
       // Update turn
       turnManager.updateCounters();
-      turnManager.changeState();
-      // TODO give game current player number
-      // TODO if appropriate change game order in game
+      responseString += turnManager.changeState();
+
+      // Set current player
+      if (msg.getMessageSecondary() == MessageSecondary.ASSISTANT) {
+        this.game.setCurrentPlayerIndex(turnManager.getCurrentNumberOfPlayedAssistants());
+      } else if (msg.getMessageMain() == MessageMain.MOVE) {
+        this.game.setCurrentPlayerIndex(turnManager.getCurrentNumberOfUsersPlayedActionPhase());
+      }
+
+      // If appropriate change game order in game
+      if (msg.getMessageMain() == MessageMain.PLAY
+          && msg.getMessageSecondary() == MessageSecondary.ASSISTANT
+          && turnManager.getCurrentNumberOfPlayedAssistants() == numberOfPlayers) {
+        this.game.orderBasedOnAssistant();
+      } else if (msg.getMessageMain() == MessageMain.MOVE
+          && msg.getMessageSecondary() == MessageSecondary.CLOUD_TILE
+          && turnManager.getCurrentNumberOfUsersPlayedActionPhase() == numberOfPlayers) {
+        this.game.reverseOrderEndTurn();
+      }
+
+      gameResponse.setResponse(responseString);
+
     } else {
-      // Send error message
-      // TODO
+      gameResponse.setResponse(
+          "Error! The inserted inputs are not correct or it is not your turn!\n");
     }
-    return null;
+    return gameResponse;
   }
 
   /**
