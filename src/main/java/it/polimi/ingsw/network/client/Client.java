@@ -64,7 +64,7 @@ public class Client {
 
       System.out.println("Communication starts");
       //TODO chiedere solo al primo client
-      System.out.println("Enter the mode and how many players");
+      System.out.println("Enter a nickname");
 
       userInput = stdIn.readLine();
 

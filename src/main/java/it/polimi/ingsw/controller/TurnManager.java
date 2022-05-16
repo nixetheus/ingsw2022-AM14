@@ -30,7 +30,7 @@ public class TurnManager {
 
     currentState = 0;
     mainGamePhase = MessageMain.LOGIN;
-    secondaryPhase = MessageSecondary.GAME_PARAMS;
+    secondaryPhase = MessageSecondary.PLAYER_PARAMS;
 
     currentNumberOfUsers = 0;
     currentNumberOfPlayedAssistants = 0;
