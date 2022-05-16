@@ -5,14 +5,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.Scanner;
 
 
 /**
- * ClientMain class:
- * set up the parameters to connect the client to the server,
- * ask and pass to Client class the nickname and
- * creates Client class and connect it
+ * ClientMain class: set up the parameters to connect the client to the server, ask and pass to
+ * Client class the nickname and creates Client class and connect it
  */
 public class ClientMain {
 
@@ -23,19 +20,14 @@ public class ClientMain {
 
     setPortNumberFromJson();
 
-    //set nicknames
-    System.out.println("Enter username");
-    Scanner nickNameIn = new Scanner(System.in);
-    String nickName = nickNameIn.nextLine();
-
-    Client client = new Client(portNumber, hostName, nickName);
+    Client client = new Client(portNumber, hostName);
     client.connect();
   }
 
   /**
-   * setPortNumberFromJson method:
-   * Initialize port number and host name with the default value contents in
-   * the file networkSettings.json
+   * setPortNumberFromJson method: Initialize port number and host name with the default value
+   * contents in the file networkSettings.json
+   *
    * @throws FileNotFoundException if file not found
    */
   private static void setPortNumberFromJson() throws FileNotFoundException {
@@ -47,7 +39,7 @@ public class ClientMain {
     portNumber = object.get("DEFAULT_PORT_NUMBER").getAsInt();
     hostName = object.get("DEFAULT_HOST").getAsString();
 
-    System.out.println(hostName + " " +  portNumber);
+    System.out.println(hostName + " " + portNumber);
 
   }
 }
