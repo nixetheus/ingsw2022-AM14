@@ -24,7 +24,7 @@ public class MoveController {
    * @param currentGame The started match
    */
   //TODO return null se qualcosa storto altrimenti stringa
-  public boolean elaborateMessage(MoveMessage msg, Game currentGame) {
+  public String elaborateMessage(MoveMessage msg, Game currentGame) {
     //can create a method for each control
     switch (msg.getMessageSecondary()) {
       case MOTHER_NATURE:
@@ -33,13 +33,13 @@ public class MoveController {
             msg.getIslandNumber() - currentGame.getMainBoard().getMotherNature().getPosition();
         currentGame.moveNature(
             motherNatureMoves);
-        return true;
+        return "mother nature moved into" + msg.getIslandNumber() + "island";
       case CLOUD_TILE:
         //control if the number is valid
         if (checkCloudTileValid(msg, currentGame) && !currentGame.getMainBoard().getIslands()
             .get(msg.getIslandNumber()).isNoEntry()) {
           currentGame.takeCloud(currentGame.getCurrentPlayer(), msg.getCloudTileNumber());
-          return true;
+          return msg.getCloudTileNumber() + "cloud tile taken";
         }
         break;
       case ENTRANCE:
@@ -50,19 +50,20 @@ public class MoveController {
                 .moveStudent(currentGame.getCurrentPlayer(), Places.ENTRANCE, Places.DINING_ROOM,
                     msg.getStudentColor(),
                     Optional.empty());
+            return "Chosen student moved to dining room";
           } else {
             currentGame
                 .moveStudent(currentGame.getCurrentPlayer(), Places.ENTRANCE, Places.ISLAND,
                     msg.getStudentColor(),
                     Optional.of(msg.getIslandNumber()));
           }
-          return true;
+          return "Chosen student moved to correct island";
         }
       default:
         break;
     }
 
-    return false;
+    return null;
   }
 
   /**

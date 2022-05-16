@@ -7,6 +7,7 @@ import it.polimi.ingsw.messages.ClientResponse;
 import it.polimi.ingsw.messages.InfoRequestMessage;
 import it.polimi.ingsw.messages.LoginMessage;
 import it.polimi.ingsw.messages.Message;
+import it.polimi.ingsw.messages.MoveMessage;
 import it.polimi.ingsw.messages.PlayMessage;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Team;
@@ -196,7 +197,7 @@ public class MainController {
     if (everythingOkay) {
       switch (msg.getMessageMain()) {
         case MOVE:
-          // responseString = moveController.elaborateMessage((MoveMessage) msg, game);
+           responseString = moveController.elaborateMessage((MoveMessage) msg, game);
           break;
         case PLAY:
           responseString = playController.elaborateMessage((PlayMessage) msg, game);
