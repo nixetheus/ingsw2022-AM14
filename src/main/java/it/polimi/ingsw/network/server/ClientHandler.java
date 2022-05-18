@@ -55,7 +55,7 @@ public class ClientHandler implements Runnable {
   public void run() {
     try {
 
-      ClientResponse response;
+      Message response;
 
       while (true) {
 
@@ -63,14 +63,12 @@ public class ClientHandler implements Runnable {
 
         //TODO it is mandatory to put an exit condition, quit message
         if (response == null) {
-          continue;
-        }
-
-        if (response.getResponse().equals("quit")) {
           break;
         }
-
-        sendResponseToAllClients(response);
+        if(response.getPlayerId() == -1)
+          sendResponseToAllClients(response);
+        else
+          sendSocketMessage(toJson(response), new PrintWriter(socketClient.getOutputStream()));
       }
       closeStreams();
     } catch (IOException e) {
@@ -88,17 +86,16 @@ public class ClientHandler implements Runnable {
    * @throws IOException            exception
    * @throws ClassNotFoundException exception
    */
-  private ClientResponse readInputAndSendItToMainController()
+  private Message readInputAndSendItToMainController()
       throws IOException, ClassNotFoundException {
 
     String input = inputStream.nextLine();
 
     if (input != null) {
-      Message message = fromJson(input);
-      ClientResponse clientResponse = mainController.elaborateMessage(message);
 
       System.out.println("Message sent to controller");
-      return clientResponse;
+
+      return mainController.elaborateMessage(fromJson(input));
     }
     return null;
   }
@@ -110,9 +107,9 @@ public class ClientHandler implements Runnable {
    * @param message message
    * @throws IOException exception
    */
-  synchronized private void sendResponseToAllClients(ClientResponse message) throws IOException {
-    for (Socket socketOut1 : socketOut) {
-      sendSocketMessage(message.getResponse(), new PrintWriter(socketOut1.getOutputStream()));
+  synchronized private void sendResponseToAllClients(Message message) throws IOException {
+    for (Socket socketOut : socketOut) {
+      sendSocketMessage(toJson(message), new PrintWriter(socketOut.getOutputStream()));
     }
   }
 

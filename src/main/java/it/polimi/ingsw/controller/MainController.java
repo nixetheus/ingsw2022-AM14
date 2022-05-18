@@ -114,9 +114,9 @@ public class MainController {
             turnManager.updateCounters();
             turnManager.changeState();
             this.serverSemaphore.release();
-            loginResponse.setResponse("Game parameters correctly set!\n");
+            loginResponse.setResponse("Game parameters correctly set!");
           } else {
-            loginResponse.setResponse("Error! Game parameters are not correct! Retry!\n");
+            loginResponse.setResponse("Error! Game parameters are not correct! Retry!");
           }
           break;
 
@@ -151,19 +151,19 @@ public class MainController {
             // If players are all in, setup game
             if (teams.stream().map(team -> team.getPlayers().size()).count() == numberOfPlayers) {
               setupGame();
-              loginResponse.setResponse("Welcome aboard " + newPlayer.getPlayerNickname() + "!\n" +
+              loginResponse.setResponse("Welcome aboard " + newPlayer.getPlayerNickname() + "!  " +
                   "Everyone is ready now! We shall let the game start!");
             } else {
-              loginResponse.setResponse("Welcome aboard " + newPlayer.getPlayerNickname() + "!\n");
+              loginResponse.setResponse("Welcome aboard " + newPlayer.getPlayerNickname() + "!");
             }
           } else {
-            loginResponse.setResponse("Error while creating new player, please try again!\n");
+            loginResponse.setResponse("Error while creating new player, please try again!");
           }
 
           break;
 
         default:
-          loginResponse.setResponse("Unexpected error! This should've not happened!\n");
+          loginResponse.setResponse("Unexpected error! This should've not happened!");
           break;
       }
     }
