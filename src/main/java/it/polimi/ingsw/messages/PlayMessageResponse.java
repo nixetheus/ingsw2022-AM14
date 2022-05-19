@@ -8,6 +8,7 @@ public class PlayMessageResponse extends Message{
 
   private int assistantId;
   private int characterId;
+  private String effectString;
 
   // Character parameters
   private Color color;
@@ -85,5 +86,13 @@ public class PlayMessageResponse extends Message{
 
   public void setStudentsDiningRoom(int[] studentsDiningRoom) {
     this.studentsDiningRoom = studentsDiningRoom;
+  }
+
+  public String getEffectString() {
+    return effectString;
+  }
+
+  public void setEffectString(String effectString) {
+    this.effectString = effectString;
   }
 }
