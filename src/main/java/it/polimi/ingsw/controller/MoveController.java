@@ -1,7 +1,10 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.helpers.MessageSecondary;
 import it.polimi.ingsw.helpers.Places;
+import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.MoveMessage;
+import it.polimi.ingsw.messages.MoveMessageResponse;
 import it.polimi.ingsw.model.Game;
 import java.util.Arrays;
 import java.util.Optional;
@@ -18,14 +21,14 @@ public class MoveController {
   }
 
   /**
-   * TODO
+   * This method elaborates the message and return the response
    *
    * @param msg         The message sent
    * @param currentGame The started match
    */
-  //TODO return null se qualcosa storto altrimenti stringa
-  public String elaborateMessage(MoveMessage msg, Game currentGame) {
+  public Message elaborateMessage(MoveMessage msg, Game currentGame) {
     //can create a method for each control
+
     switch (msg.getMessageSecondary()) {
       case MOTHER_NATURE:
         //control if no entry tile
@@ -33,31 +36,58 @@ public class MoveController {
             msg.getIslandNumber() - currentGame.getMainBoard().getMotherNature().getPosition();
         currentGame.moveNature(
             motherNatureMoves);
-        return "mother nature moved into" + msg.getIslandNumber() + "island";
+
+        MoveMessageResponse responseNature = new MoveMessageResponse(
+            MessageSecondary.MOTHER_NATURE);
+        responseNature.setIslandNumber(currentGame.getMainBoard().getMotherNature().getPosition());
+        return responseNature;
+
       case CLOUD_TILE:
         //control if the number is valid
+
         if (checkCloudTileValid(msg, currentGame) && !currentGame.getMainBoard().getIslands()
             .get(msg.getIslandNumber()).isNoEntry()) {
+
+          MoveMessageResponse responseCloud = new MoveMessageResponse(MessageSecondary.CLOUD_TILE);
+
+          responseCloud.setStudentsCloud(
+              currentGame.getCloudTiles().get(msg.getCloudTileNumber()).getStudents());
           currentGame.takeCloud(currentGame.getCurrentPlayer(), msg.getCloudTileNumber());
-          return msg.getCloudTileNumber() + "cloud tile taken";
+          responseCloud.setIslandNumber(msg.getCloudTileNumber());
+          return responseCloud;
         }
         break;
       case ENTRANCE:
         //control if the student is present
         if (checkStudentIfPresent(msg, currentGame)) {
+          MoveMessageResponse responseEntrance = new MoveMessageResponse(MessageSecondary.ENTRANCE);
+          responseEntrance
+              .setStudentsEntrance(currentGame.getCurrentPlayer().getPlayerBoard().getEntrance()
+                  .getStudents());
+
           if (msg.getPlace() == 0) {
+            responseEntrance.setPlace(0);
+
             currentGame
                 .moveStudent(currentGame.getCurrentPlayer(), Places.ENTRANCE, Places.DINING_ROOM,
                     msg.getStudentColor(),
                     Optional.empty());
-            return "Chosen student moved to dining room";
+
+            responseEntrance.setStudentsDiningRoom(
+                currentGame.getCurrentPlayer().getPlayerBoard().getDiningRoom()
+                    .getStudents());
           } else {
+            responseEntrance.setPlace(1);
+
             currentGame
                 .moveStudent(currentGame.getCurrentPlayer(), Places.ENTRANCE, Places.ISLAND,
                     msg.getStudentColor(),
                     Optional.of(msg.getIslandNumber()));
+
+            responseEntrance.setStudentsIsland(
+                currentGame.getMainBoard().getIslands().get(msg.getIslandNumber()).getStudents());
           }
-          return "Chosen student moved to correct island";
+          return responseEntrance;
         }
       default:
         break;

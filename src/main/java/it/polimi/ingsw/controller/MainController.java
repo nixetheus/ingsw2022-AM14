@@ -6,9 +6,9 @@ import it.polimi.ingsw.helpers.Towers;
 import it.polimi.ingsw.messages.ClientResponse;
 import it.polimi.ingsw.messages.InfoRequestMessage;
 import it.polimi.ingsw.messages.LoginMessage;
+import it.polimi.ingsw.messages.LoginMessageResponse;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.MoveMessage;
-import it.polimi.ingsw.messages.PlayMessage;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Team;
 import it.polimi.ingsw.model.player.Player;
@@ -78,7 +78,7 @@ public class MainController {
    *
    * @param msg The message received from the player
    */
-  public ClientResponse elaborateMessage(Message msg) throws IOException {
+  public Message elaborateMessage(Message msg) throws IOException {
 
     if (msg.getMessageMain() == MessageMain.INFO) {
       return infoController.elaborateMessage((InfoRequestMessage) msg, game);
@@ -96,9 +96,9 @@ public class MainController {
    *
    * @param msg The Login message received
    */
-  private ClientResponse elaborateLoginMessage(LoginMessage msg) throws IOException {
+  private LoginMessageResponse elaborateLoginMessage(LoginMessage msg) throws IOException {
 
-    ClientResponse loginResponse = new ClientResponse(MessageSecondary.INFO_RESPONSE_MESSAGE);
+    LoginMessageResponse loginResponse = new LoginMessageResponse(msg.getMessageSecondary());
 
     // Check if phase is correct
     if (turnManager.getMainGamePhase() == MessageMain.LOGIN &&
@@ -177,9 +177,8 @@ public class MainController {
    *
    * @param msg The game message to be elaborated
    */
-  private ClientResponse elaborateGameMessage(Message msg) {
+  private Message elaborateGameMessage(Message msg) {
     boolean everythingOkay;
-    ClientResponse gameResponse = new ClientResponse(MessageSecondary.INFO_RESPONSE_MESSAGE);
 
     // Check player is current player OR phase is login
     everythingOkay = !(msg.getPlayerId() == 0);  // ;
@@ -193,25 +192,26 @@ public class MainController {
             !(msg.getMessageSecondary() == turnManager.getSecondaryPhase())) ||
             isCharacterPlayed);
 
-    String responseString = null;
+    Message gameResponse = null;
     if (everythingOkay) {
       switch (msg.getMessageMain()) {
         case MOVE:
-           responseString = moveController.elaborateMessage((MoveMessage) msg, game);
+          gameResponse = moveController.elaborateMessage((MoveMessage) msg, game);
           break;
         case PLAY:
-          responseString = playController.elaborateMessage((PlayMessage) msg, game);
+          //TODO dario
+
+          // gameResponse= playController.elaborateMessage((PlayMessage) msg, game);
           break;
         default:
-          gameResponse.setResponse("Unexpected error! This should've not happened!\n");
           break;
       }
     }
 
-    if (responseString != null) {
+    if (gameResponse != null) {
       // Update turn
       turnManager.updateCounters();
-      responseString += turnManager.changeState();
+      //responseString += turnManager.changeState();
 
       // Set current player
       if (msg.getMessageSecondary() == MessageSecondary.ASSISTANT) {
@@ -225,17 +225,21 @@ public class MainController {
           && msg.getMessageSecondary() == MessageSecondary.ASSISTANT
           && turnManager.getCurrentNumberOfPlayedAssistants() == numberOfPlayers) {
         this.game.orderBasedOnAssistant();
+        //send turn message
       } else if (msg.getMessageMain() == MessageMain.MOVE
           && msg.getMessageSecondary() == MessageSecondary.CLOUD_TILE
           && turnManager.getCurrentNumberOfUsersPlayedActionPhase() == numberOfPlayers) {
+        //send turn message
         this.game.reverseOrderEndTurn();
       }
 
-      gameResponse.setResponse(responseString);
+      //gameResponse.setResponse(responseString);
 
     } else {
-      gameResponse.setResponse(
+      ClientResponse error = new ClientResponse(MessageSecondary.ERROR);
+      error.setResponse(
           "Error! The inserted inputs are not correct or it is not your turn!\n");
+      return error;
     }
     return gameResponse;
   }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.client;
 
 
 import it.polimi.ingsw.view.Cli;
+import it.polimi.ingsw.view.CliParser;
 import it.polimi.ingsw.view.MessageParser;
 import it.polimi.ingsw.view.View;
 import java.io.BufferedReader;
@@ -19,6 +20,7 @@ import java.net.UnknownHostException;
 public class Client {
 
   private final View view;
+  private final CliParser cliParser;
   private final MessageParser messageParser;
   private final int portNumber;
   private final String hostName;
@@ -28,6 +30,7 @@ public class Client {
     messageParser = new MessageParser();
     this.portNumber = portNumber;
     this.hostName = hostName;
+    this.cliParser = new CliParser();
 
   }
 
@@ -73,7 +76,7 @@ public class Client {
       out.println(mode);
 
       //print the server response
-      view.printGameUpdate(in.readLine());
+      view.printGameUpdate(cliParser.fromJson(in.readLine()));
 
       //Communications with server
 
@@ -85,7 +88,7 @@ public class Client {
         out.println(str);
 
         //print the server response
-        view.printGameUpdate(in.readLine());
+        view.printGameUpdate(cliParser.fromJson(in.readLine()));
       }
 
     } catch (UnknownHostException e) {

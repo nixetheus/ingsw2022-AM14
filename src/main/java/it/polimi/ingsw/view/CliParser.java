@@ -4,7 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.helpers.Color;
+import it.polimi.ingsw.helpers.MessageSecondary;
 import it.polimi.ingsw.messages.ClientResponse;
+import it.polimi.ingsw.messages.LoginMessageResponse;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.MoveMessageResponse;
 import it.polimi.ingsw.messages.PhaseMessageResponse;
@@ -19,35 +21,55 @@ public class CliParser {
   public CliParser() {
   }
 
-  public void printMessage(Message msg) throws FileNotFoundException {
-    switch (msg.getMessageMain()) {
-      case LOGIN:
-        printLoginMessage((ClientResponse) msg);
-      case MOVE:
-        printMoveMessage((MoveMessageResponse) msg);
-      case PLAY:
-        printPlayMessage((PlayMessageResponse) msg);
-      case INFO:
-        printInfoMessage((ClientResponse) msg);
-      case PHASE:
-        printPhaseMessage((PhaseMessageResponse) msg);
+  public String fromJson(String jsonMessage) throws FileNotFoundException {
+    Gson gson = new Gson();
+    if (jsonMessage.contains("LOGIN")) {
+      return elaborateMessage(gson.fromJson(jsonMessage, LoginMessageResponse.class));
     }
-
+    if (jsonMessage.contains("MOVE")) {
+      return elaborateMessage(gson.fromJson(jsonMessage, MoveMessageResponse.class));
+    }
+    if (jsonMessage.contains("PLAY")) {
+      return elaborateMessage(gson.fromJson(jsonMessage, PhaseMessageResponse.class));
+    }
+    if (jsonMessage.contains("INFO")) {
+      return elaborateMessage(gson.fromJson(jsonMessage, ClientResponse.class));
+    }
+    return null;
   }
 
-  private void printLoginMessage(ClientResponse msg) {
-    this.playerId = msg.getPlayerId();
-    System.out.println(msg.getResponse());
-    if (msg.getPlayerId() == 0) {
-      System.out.println("Now you have to choose the game mode and number of players");
+  private String elaborateMessage(Message msg) throws FileNotFoundException {
+    switch (msg.getMessageMain()) {
+      case LOGIN:
+        return printLoginMessage((LoginMessageResponse) msg);
+      case MOVE:
+        return printMoveMessage((MoveMessageResponse) msg);
+      case PLAY:
+        return printPlayMessage((PlayMessageResponse) msg);
+      case INFO:
+        return printInfoMessage((ClientResponse) msg);
+      case PHASE:
+        return printPhaseMessage((PhaseMessageResponse) msg);
     }
+    return null;
+  }
+
+  private String printLoginMessage(LoginMessageResponse msg) {
+    this.playerId = msg.getPlayerId();
+    StringBuilder returnString = new StringBuilder();
+    returnString.append(msg.getResponse());
+    if (msg.getPlayerId() == 0 && msg.getMessageSecondary() == MessageSecondary.PLAYER_PARAMS) {
+      returnString.append("Now you have to choose the game mode and number of players");
+    }
+    return String.valueOf(returnString);
   }
 
   public int getPlayerId() {
     return playerId;
   }
 
-  private void printPlayMessage(PlayMessageResponse msg) throws FileNotFoundException {
+  private String printPlayMessage(PlayMessageResponse msg) throws FileNotFoundException {
+    StringBuilder returnString = new StringBuilder();
     switch (msg.getMessageSecondary()) {
       case ASSISTANT:
         Gson gson = new Gson();
@@ -60,25 +82,25 @@ public class CliParser {
         int speed = object.get("SPEED").getAsInt();
 
         if (msg.getPlayerId() == this.playerId) {
-          System.out.println("Assistant played correctly!\n"
-              + "You can now move mother nature of " + moves
-              + " spaces when your turn comes.\n"
-              + "You're speed is " + speed + " ouf of 10.\n"
-              + "Please wait...");
+          returnString
+              .append("Assistant played correctly!\n" + "You can now move mother nature of ")
+              .append(moves).append(" spaces when your turn comes.\n").append("You're speed is ")
+              .append(speed).append(" ouf of 10.\n").append("Please wait...");
         } else {
-          System.out.println("another player has player an assistant now he/she can do" + moves
-              + "moves with a speed of" + speed + "you cannot play the same assistant");
+          returnString.append("another player has player an assistant now he/she can do")
+              .append(moves).append("moves with a speed of").append(speed)
+              .append("you cannot play the same assistant");
         }
 
       case CHARACTER:
-        System.out.println(
-            "Character" + msg.getCharacterId() + "purchased now you can" + msg.getEffectString());
+        returnString.append("Character").append(msg.getCharacterId())
+            .append("purchased now you can").append(msg.getEffectString());
         //TODO
     }
-
+    return String.valueOf(returnString);
   }
 
-  private void printMoveMessage(MoveMessageResponse msg) {
+  private String printMoveMessage(MoveMessageResponse msg) {
 
     StringBuilder printedString = new StringBuilder();
 
@@ -113,15 +135,16 @@ public class CliParser {
         printedString.append("now mother nature is on the island number")
             .append(msg.getIslandNumber()).append("island");
     }
-    System.out.println(printedString);
+    return String.valueOf(printedString);
   }
 
-  private void printInfoMessage(ClientResponse msg) {
-    System.out.println(msg.getResponse());
+  private String printInfoMessage(ClientResponse msg) {
+    //TODO
+    return null;
   }
 
-  private void printPhaseMessage(PhaseMessageResponse msg) {
-    System.out.println(msg.getWhatTodo());
+  private String printPhaseMessage(PhaseMessageResponse msg) {
+    return msg.getWhatTodo();
   }
 }
 

@@ -21,6 +21,8 @@ public enum MessageSecondary {
   PING,
 
   GAME_PARAMS,
-  PLAYER_PARAMS
+  PLAYER_PARAMS,
+
+  ERROR
 
 }
