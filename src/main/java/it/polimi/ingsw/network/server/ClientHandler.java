@@ -2,7 +2,6 @@ package it.polimi.ingsw.network.server;
 
 import com.google.gson.Gson;
 import it.polimi.ingsw.controller.MainController;
-import it.polimi.ingsw.messages.ClientResponse;
 import it.polimi.ingsw.messages.InfoRequestMessage;
 import it.polimi.ingsw.messages.LoginMessage;
 import it.polimi.ingsw.messages.Message;
@@ -55,20 +54,25 @@ public class ClientHandler implements Runnable {
   public void run() {
     try {
 
-      Message response;
+      Vector<Message> responses;
 
       while (true) {
 
-        response = readInputAndSendItToMainController();
+        responses = readInputAndSendItToMainController();
 
         //TODO it is mandatory to put an exit condition, quit message
-        if (response == null) {
+        if (responses == null) {
           break;
         }
-        if(response.getPlayerId() == -1)
-          sendResponseToAllClients(response);
-        else
-          sendSocketMessage(toJson(response), new PrintWriter(socketClient.getOutputStream()));
+        while (!responses.isEmpty()) {
+          Message response = responses.firstElement();
+          if (response.getPlayerId() == -1) {
+            sendResponseToAllClients(response);
+          } else {
+            sendSocketMessage(toJson(response), new PrintWriter(socketClient.getOutputStream()));
+          }
+          responses.remove(response);
+        }
       }
       closeStreams();
     } catch (IOException e) {
@@ -86,7 +90,7 @@ public class ClientHandler implements Runnable {
    * @throws IOException            exception
    * @throws ClassNotFoundException exception
    */
-  private Message readInputAndSendItToMainController()
+  private Vector<Message> readInputAndSendItToMainController()
       throws IOException, ClassNotFoundException {
 
     String input = inputStream.nextLine();

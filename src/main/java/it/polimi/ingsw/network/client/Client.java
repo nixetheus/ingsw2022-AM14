@@ -24,6 +24,7 @@ public class Client {
   private final MessageParser messageParser;
   private final int portNumber;
   private final String hostName;
+  private int playerId;
 
   public Client(int portNumber, String hostName) {
     view = new Cli();
@@ -66,7 +67,6 @@ public class Client {
       String userInput;
 
       System.out.println("Communication starts");
-      //TODO chiedere solo al primo client
       System.out.println("Enter a nickname");
 
       userInput = stdIn.readLine();
@@ -76,8 +76,11 @@ public class Client {
       out.println(mode);
 
       //print the server response
+
       view.printGameUpdate(cliParser.fromJson(in.readLine()));
 
+      this.playerId= cliParser.getPlayerId();
+      messageParser.setPlayerId(this.playerId);
       //Communications with server
 
       while (!userInput.equals("quit")) {

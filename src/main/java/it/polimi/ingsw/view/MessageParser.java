@@ -17,6 +17,7 @@ import java.util.Locale;
  */
 public class MessageParser {
 //TODO adding from which player the message arrives
+  private int playerId;
   /**
    * Constructor method for message parser class
    */
@@ -329,5 +330,12 @@ public class MessageParser {
     return returnedArray;
   }
 
+  public int getPlayerId() {
+    return playerId;
+  }
+
+  public void setPlayerId(int playerId) {
+    this.playerId = playerId;
+  }
 }
 

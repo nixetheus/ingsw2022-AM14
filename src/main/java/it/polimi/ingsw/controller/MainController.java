@@ -30,6 +30,7 @@ public class MainController {
   private final MoveController moveController;
   private final LoginController loginController;
   private final Vector<Team> teams;
+  private Vector<Message> messages;
   // Attributes
   private Game game;
 
@@ -78,7 +79,7 @@ public class MainController {
    *
    * @param msg The message received from the player
    */
-  public Message elaborateMessage(Message msg) throws IOException {
+  public Vector<Message> elaborateMessage(Message msg) throws IOException {
 
     if (msg.getMessageMain() == MessageMain.INFO) {
       return infoController.elaborateMessage((InfoRequestMessage) msg, game);
@@ -96,9 +97,11 @@ public class MainController {
    *
    * @param msg The Login message received
    */
-  private LoginMessageResponse elaborateLoginMessage(LoginMessage msg) throws IOException {
+  private Vector<Message> elaborateLoginMessage(LoginMessage msg) throws IOException {
+    Vector<Message> messages=new Vector<>();
 
     LoginMessageResponse loginResponse = new LoginMessageResponse(msg.getMessageSecondary());
+    messages.add(loginResponse);
 
     // Check if phase is correct
     if (turnManager.getMainGamePhase() == MessageMain.LOGIN &&
@@ -115,8 +118,10 @@ public class MainController {
             turnManager.changeState();
             this.serverSemaphore.release();
             loginResponse.setResponse("Game parameters correctly set!");
+
           } else {
             loginResponse.setResponse("Error! Game parameters are not correct! Retry!");
+
           }
           break;
 
@@ -151,10 +156,20 @@ public class MainController {
             // If players are all in, setup game
             if (teams.stream().map(team -> team.getPlayers().size()).count() == numberOfPlayers) {
               setupGame();
-              loginResponse.setResponse("Welcome aboard " + newPlayer.getPlayerNickname() + "!  " +
-                  "Everyone is ready now! We shall let the game start!");
+              loginResponse.setResponse("Welcome aboard " + newPlayer.getPlayerNickname() + "!  ");
+              loginResponse.setPlayerId(numberOfPlayers);
+
+
+              LoginMessageResponse loginMessageResponse2=new LoginMessageResponse(msg.getMessageSecondary());
+              loginMessageResponse2.setResponse("Everyone is ready now! We shall let the game start!");
+              loginMessageResponse2.setPlayerId(-1);
+              messages.add(loginMessageResponse2);
+
+              //TODO message init game
             } else {
               loginResponse.setResponse("Welcome aboard " + newPlayer.getPlayerNickname() + "!");
+              loginResponse.setPlayerId(numberOfPlayers);
+
             }
           } else {
             loginResponse.setResponse("Error while creating new player, please try again!");
@@ -167,7 +182,7 @@ public class MainController {
           break;
       }
     }
-    return loginResponse;
+    return messages;
   }
 
   /**
@@ -177,8 +192,9 @@ public class MainController {
    *
    * @param msg The game message to be elaborated
    */
-  private Message elaborateGameMessage(Message msg) {
+  private Vector<Message> elaborateGameMessage(Message msg) {
     boolean everythingOkay;
+    Vector<Message> messages=new Vector<>();
 
     // Check player is current player OR phase is login
     everythingOkay = !(msg.getPlayerId() == 0);  // ;
@@ -197,11 +213,13 @@ public class MainController {
       switch (msg.getMessageMain()) {
         case MOVE:
           gameResponse = moveController.elaborateMessage((MoveMessage) msg, game);
+          messages.add(gameResponse);
           break;
         case PLAY:
           //TODO dario
 
           // gameResponse= playController.elaborateMessage((PlayMessage) msg, game);
+          //messages.add(gameResponse);
           break;
         default:
           break;
@@ -239,9 +257,9 @@ public class MainController {
       ClientResponse error = new ClientResponse(MessageSecondary.ERROR);
       error.setResponse(
           "Error! The inserted inputs are not correct or it is not your turn!\n");
-      return error;
+      messages.add(error);
     }
-    return gameResponse;
+    return messages;
   }
 
   /**

@@ -4,6 +4,7 @@ import it.polimi.ingsw.helpers.Color;
 import it.polimi.ingsw.helpers.MessageSecondary;
 import it.polimi.ingsw.messages.InfoRequestMessage;
 import it.polimi.ingsw.messages.ClientResponse;
+import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.model.CloudTile;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Team;
@@ -12,15 +13,17 @@ import it.polimi.ingsw.model.characters.CharacterCard;
 import it.polimi.ingsw.model.player.Assistant;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerBoard;
+import java.util.Vector;
 
 public class InfoController {
 
   /**
    *
    */
-  public ClientResponse elaborateMessage(InfoRequestMessage msg, Game game) {
+  public Vector<Message> elaborateMessage(InfoRequestMessage msg, Game game) {
 
     String response;
+    Vector<Message> messages=new Vector<>();
     switch (msg.getMessageSecondary()) {
       case INFO_MN:
         response = infoMotherNature(game);
@@ -52,7 +55,8 @@ public class InfoController {
       ClientResponse responseMessage = new ClientResponse(
           MessageSecondary.INFO_RESPONSE_MESSAGE);
       responseMessage.setResponse(response);
-      return responseMessage;
+      messages.add(responseMessage);
+      return messages;
     } else {
       return null;
     }
