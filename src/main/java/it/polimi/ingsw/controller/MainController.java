@@ -9,6 +9,7 @@ import it.polimi.ingsw.messages.LoginMessage;
 import it.polimi.ingsw.messages.LoginMessageResponse;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.MoveMessage;
+import it.polimi.ingsw.messages.PlayMessage;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Team;
 import it.polimi.ingsw.model.player.Player;
@@ -20,6 +21,7 @@ import java.util.concurrent.Semaphore;
 /**
  * Main controller class that manage the other controller and do the correct phase and correct
  * player check
+ *
  */
 public class MainController {
 
@@ -217,9 +219,8 @@ public class MainController {
           break;
         case PLAY:
           //TODO dario
-
-          // gameResponse= playController.elaborateMessage((PlayMessage) msg, game);
-          //messages.add(gameResponse);
+          gameResponse = playController.elaborateMessage((PlayMessage) msg, game);
+          messages.add(gameResponse);
           break;
         default:
           break;

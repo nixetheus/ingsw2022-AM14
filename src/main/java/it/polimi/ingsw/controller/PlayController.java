@@ -1,6 +1,9 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.helpers.MessageSecondary;
+import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.PlayMessage;
+import it.polimi.ingsw.messages.PlayMessageResponse;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Team;
 import it.polimi.ingsw.model.characters.CharacterCard;
@@ -13,7 +16,7 @@ public class PlayController {
   /**
    *
    */
-  public String elaborateMessage(PlayMessage msg, Game game) {
+  public Message elaborateMessage(PlayMessage msg, Game game) {
     switch (msg.getMessageSecondary()) {
       case ASSISTANT:
         return playAssistant(msg, game);
@@ -29,17 +32,26 @@ public class PlayController {
    * @param game
    * @return
    */
-  private String playAssistant(PlayMessage msg, Game game) {
+  private Message playAssistant(PlayMessage msg, Game game) {
+
+    PlayMessageResponse playResponse = new PlayMessageResponse(MessageSecondary.ASSISTANT);
+
     if (canPlayAssistant(msg.getPlayerId(), msg.getAssistantId(), game.getTeams())) {
       for (Team team : game.getTeams()) {
         for (Player player : team.getPlayers()) {
           if (player.getPlayerId() == msg.getPlayerId()) {
             game.playAssistant(player, msg.getAssistantId());
+
+            playResponse.setAssistantId(player.getAssistant().getAssistantId());
+            return playResponse;
+
+            /*
             return "Assistant played correctly!\n"
                 + "You can now move mother nature of " + player.getAssistant().getMoves()
                 + " spaces when your turn comes.\n"
                 + "You're speed is " + player.getAssistant().getSpeed() + " ouf of 10.\n"
                 + "Please wait...";
+                */
           }
         }
       }
@@ -52,7 +64,7 @@ public class PlayController {
    * @param game
    * @return
    */
-  private String playCharacter(PlayMessage msg, Game game) {
+  private Message playCharacter(PlayMessage msg, Game game) {
 
     CharacterStruct characterParameters = new CharacterStruct();
     CharacterCard characterCard = game.getPurchasableCharacter().elementAt(msg.getCharacterId());
@@ -77,9 +89,14 @@ public class PlayController {
             characterParameters.currentPlayer = player;
             game.playCharacter(player, msg.getCharacterId());
             characterCard.applyEffect(characterParameters);
+
+            PlayMessageResponse playResponse = new PlayMessageResponse(MessageSecondary.CHARACTER);
+            playResponse.setCharacterId(msg.getCharacterId());
+
+            /*
             return "Character played correctly!\n"
                 + "You now have " + player.getCoins() + " remaining coins.\n Please wait...";
-
+            */
           }
         }
       }
