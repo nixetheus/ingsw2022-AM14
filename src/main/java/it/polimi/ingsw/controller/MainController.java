@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.helpers.MessageMain;
 import it.polimi.ingsw.helpers.MessageSecondary;
 import it.polimi.ingsw.helpers.Towers;
+import it.polimi.ingsw.messages.BeginTurnMessage;
 import it.polimi.ingsw.messages.ClientResponse;
 import it.polimi.ingsw.messages.InfoRequestMessage;
 import it.polimi.ingsw.messages.LoginMessage;
@@ -11,6 +12,8 @@ import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.MoveMessage;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Team;
+import it.polimi.ingsw.model.board.Island;
+import it.polimi.ingsw.model.player.Assistant;
 import it.polimi.ingsw.model.player.Player;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -98,7 +101,7 @@ public class MainController {
    * @param msg The Login message received
    */
   private Vector<Message> elaborateLoginMessage(LoginMessage msg) throws IOException {
-    Vector<Message> messages=new Vector<>();
+    Vector<Message> messages = new Vector<>();
 
     LoginMessageResponse loginResponse = new LoginMessageResponse(msg.getMessageSecondary());
     messages.add(loginResponse);
@@ -127,7 +130,8 @@ public class MainController {
 
         case PLAYER_PARAMS:
 
-          Player newPlayer = loginController.createPlayer(msg);
+          Player newPlayer = loginController
+              .createPlayer(msg, turnManager.getCurrentNumberOfUsers());
 
           // If player is not null, add it to a team, change state
           if (newPlayer != null) {
@@ -157,18 +161,24 @@ public class MainController {
             if (teams.stream().map(team -> team.getPlayers().size()).count() == numberOfPlayers) {
               setupGame();
               loginResponse.setResponse("Welcome aboard " + newPlayer.getPlayerNickname() + "!  ");
-              loginResponse.setPlayerId(numberOfPlayers);
+              loginResponse.setPlayerId(
+                  turnManager.getCurrentNumberOfUsers());//TODO check
 
-
-              LoginMessageResponse loginMessageResponse2=new LoginMessageResponse(msg.getMessageSecondary());
-              loginMessageResponse2.setResponse("Everyone is ready now! We shall let the game start!");
+              LoginMessageResponse loginMessageResponse2 = new LoginMessageResponse(
+                  MessageSecondary.GAME_PARAMS);
+              loginMessageResponse2
+                  .setResponse("Everyone is ready now! We shall let the game start!");
               loginMessageResponse2.setPlayerId(-1);
               messages.add(loginMessageResponse2);
 
-              //TODO message init game
+              Vector<Message> changeTurnMessages = changeTurnMessage(MessageSecondary.INIT_GAME);
+              messages.addAll(changeTurnMessages);
+
+
             } else {
               loginResponse.setResponse("Welcome aboard " + newPlayer.getPlayerNickname() + "!");
-              loginResponse.setPlayerId(numberOfPlayers);
+              loginResponse.setPlayerId(
+                  turnManager.getCurrentNumberOfUsers());//TODO check
 
             }
           } else {
@@ -194,7 +204,7 @@ public class MainController {
    */
   private Vector<Message> elaborateGameMessage(Message msg) {
     boolean everythingOkay;
-    Vector<Message> messages=new Vector<>();
+    Vector<Message> messages = new Vector<>();
 
     // Check player is current player OR phase is login
     everythingOkay = !(msg.getPlayerId() == 0);  // ;
@@ -273,4 +283,60 @@ public class MainController {
     turnManager.setNumberStudentsFromEntrance(this.game.getStudentAtEntrance());
   }
 
+  /**
+   * This method compile the begin turn message at the beginning of the game and each turn
+   * @param messageSecondary the message secondary to create the message
+   * @return the vector of messages to be sent to each client
+   */
+  public Vector<Message> changeTurnMessage(MessageSecondary messageSecondary) {
+    Vector<Message> returnedVector = new Vector<>();
+
+    for (Team team : this.game.getTeams()) {
+      for (Player player : team.getPlayers()) {
+
+        BeginTurnMessage beginTurnMessage = new BeginTurnMessage(messageSecondary);
+        beginTurnMessage.setPlayerId(player.getPlayerId());
+
+        Vector<int[]> studentsAtEntrances = new Vector<>();
+        Vector<int[]> studentDiningRooms = new Vector<>();
+
+        for (Team teamStudents : this.game.getTeams()) {
+          for (Player playerStudents : teamStudents.getPlayers()) {
+
+            studentsAtEntrances.add(playerStudents.getPlayerBoard().getEntrance().getStudents());
+            beginTurnMessage.setStudentEntrance(studentsAtEntrances);
+
+            studentDiningRooms.add(playerStudents.getPlayerBoard().getDiningRoom().getStudents());
+            beginTurnMessage.setStudentDiningRoom(studentDiningRooms);
+          }
+        }
+
+        beginTurnMessage.setStudentEntrance(studentsAtEntrances);
+        beginTurnMessage.setStudentDiningRoom(studentDiningRooms);
+
+        int[] professorControlIdPlayer = new int[]{-1, -1, -1, -1, -1};
+        // for(int i=0;i<5;i++){
+        //professorControlIdPlayer[i]=game.getProfessorControlPlayer()[i].getPlayerId();
+        // }
+        beginTurnMessage.setProfessors(professorControlIdPlayer);
+
+        Vector<int[]> studentsIslands = new Vector<>();
+        for (Island island : game.getMainBoard().getIslands()) {
+          int[] studentIsland = island.getStudents();
+          studentsIslands.add(studentIsland);
+        }
+        beginTurnMessage.setStudentsIsland(studentsIslands);
+
+        Vector<Integer> playableAssistantId = new Vector<>();
+        for (Assistant assistant : player.getPlayableAssistant()) {
+          playableAssistantId.add(assistant.getAssistantId());
+        }
+        beginTurnMessage.setPlayableAssistantId(playableAssistantId);
+
+        //TODO character
+        returnedVector.add(beginTurnMessage);
+      }
+    }
+    return returnedVector;
+  }
 }

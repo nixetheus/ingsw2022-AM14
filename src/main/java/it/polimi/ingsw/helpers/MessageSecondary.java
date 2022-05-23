@@ -23,6 +23,9 @@ public enum MessageSecondary {
   GAME_PARAMS,
   PLAYER_PARAMS,
 
-  ERROR
+  ERROR,
+
+  INIT_GAME,
+  CHANGE_TURN
 
 }

@@ -48,8 +48,8 @@ public class LoginControllerTest {
   public void testCreatePlayer() throws FileNotFoundException {
     msg.setNickName("ale");
     msg.setPlayerId(0);
-    Assert.assertEquals(loginController.createPlayer(msg).getPlayerNickname(),msg.getNickName());
-    Assert.assertEquals(loginController.createPlayer(msg).getPlayerId(),msg.getPlayerId());
+    Assert.assertEquals(loginController.createPlayer(msg,0).getPlayerNickname(),msg.getNickName());
+    Assert.assertEquals(loginController.createPlayer(msg,0).getPlayerId(),msg.getPlayerId());
 
   }
 }

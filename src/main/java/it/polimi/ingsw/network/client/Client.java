@@ -71,27 +71,31 @@ public class Client {
 
       userInput = stdIn.readLine();
 
-      String mode = messageParser.parser(userInput);
+      String nickname = messageParser.parser(userInput);
 
-      out.println(mode);
+      out.println(nickname);
 
       //print the server response
 
       view.printGameUpdate(cliParser.fromJson(in.readLine()));
 
-      this.playerId= cliParser.getPlayerId();
+      this.playerId = cliParser.getPlayerId();
       messageParser.setPlayerId(this.playerId);
+
       //Communications with server
 
       while (!userInput.equals("quit")) {
         //send to server
         userInput = stdIn.readLine();
+
         String str = messageParser.parser(userInput);
 
         out.println(str);
 
         //print the server response
+
         view.printGameUpdate(cliParser.fromJson(in.readLine()));
+
       }
 
     } catch (UnknownHostException e) {

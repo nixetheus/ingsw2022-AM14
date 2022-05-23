@@ -16,8 +16,10 @@ import java.util.Locale;
  * MessageParser class used to take a string from user and parse it into a message
  */
 public class MessageParser {
-//TODO adding from which player the message arrives
+
+  //TODO adding from which player the message arrives
   private int playerId;
+
   /**
    * Constructor method for message parser class
    */
@@ -33,13 +35,18 @@ public class MessageParser {
   public String parser(String str) {
     Gson gson = new Gson();
 
-
     Message message = messageCreator(str);
 
-    if(message!=null){
-    return gson.toJson(message);}
-    else {
-      return null;}
+    if (message != null) {
+
+      if (message.getMessageSecondary() != MessageSecondary.PLAYER_PARAMS) {
+        message.setPlayerId(playerId);
+      }
+
+      return gson.toJson(message);
+    } else {
+      return null;
+    }
   }
 
   /**
@@ -49,11 +56,11 @@ public class MessageParser {
    * @return The constructed message
    */
   public Message messageCreator(String str) {
-      str = str.toUpperCase(Locale.ROOT);
-      MessageMain messageMain = findMessageMain(str);
-      MessageSecondary messageSecondary = findMessageSecondary(str);
+    str = str.toUpperCase(Locale.ROOT);
+    MessageMain messageMain = findMessageMain(str);
+    MessageSecondary messageSecondary = findMessageSecondary(str);
 
-      if(messageMain!=null){
+    if (messageMain != null) {
       switch (messageMain) {
         case INFO:
           InfoRequestMessage infoRequestMessage = new InfoRequestMessage(messageSecondary);
@@ -92,8 +99,8 @@ public class MessageParser {
           loginMessage.setNumberOfPlayer(findIndex(str));
           loginMessage.setGameExpert(findMode(str));
           return loginMessage;
-      }}
-
+      }
+    }
 
     return null;
   }
@@ -159,7 +166,7 @@ public class MessageParser {
       return MessageMain.MOVE;
     } else if ((str.contains("INFO") || str.contains("HELP"))) {
       return MessageMain.INFO;
-    } else if ((!(str.contains(" ")) || str.contains("MODE"))&&str.length()!=0) {
+    } else if ((!(str.contains(" ")) || str.contains("MODE")) && str.length() != 0) {
       return MessageMain.LOGIN;
     }
     return null;
@@ -209,7 +216,7 @@ public class MessageParser {
     } else if (!str.contains(" ")) {
       return MessageSecondary.PLAYER_PARAMS;
     }
-    if(str.contains("MODE")){
+    if (str.contains("MODE")) {
       return MessageSecondary.GAME_PARAMS;
     }
     return null;
@@ -222,7 +229,7 @@ public class MessageParser {
    * @param str User input string
    * @return The color into the string
    */
-  private Color findColor( String str) {
+  private Color findColor(String str) {
     if ((str.contains("YELLOW"))) {
       return Color.YELLOW;
     } else if ((str.contains("BLUE"))) {
@@ -244,7 +251,7 @@ public class MessageParser {
    * @param str User input string
    * @return The correct place index
    */
-  private int findPlace( String str) {
+  private int findPlace(String str) {
     if (str.contains("TO DINING ROOM")) {
       return 0;
     } else if (str.contains("TO ISLAND")) {
@@ -260,7 +267,7 @@ public class MessageParser {
    * @param str User input string
    * @return The correct number written
    */
-  private int findIndex( String str) {
+  private int findIndex(String str) {
     if (str.contains("11")) {
       return 11;
     }
@@ -308,7 +315,7 @@ public class MessageParser {
    * @param str User input string
    * @return The boolean for the chosen mode
    */
-  private Boolean findMode( String str) {
+  private Boolean findMode(String str) {
     if (str.contains("NOT EXPERT")) {
       return false;
     } else {
@@ -316,7 +323,7 @@ public class MessageParser {
     }
   }
 
-  private int[] findArrays( String str) {
+  private int[] findArrays(String str) {
 
     int[] returnedArray = new int[Constants.getNColors()];
 

@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.helpers.Color;
 import it.polimi.ingsw.helpers.MessageSecondary;
+import it.polimi.ingsw.messages.BeginTurnMessage;
 import it.polimi.ingsw.messages.ClientResponse;
 import it.polimi.ingsw.messages.LoginMessageResponse;
 import it.polimi.ingsw.messages.Message;
@@ -35,6 +36,9 @@ public class CliParser {
     if (jsonMessage.contains("INFO")) {
       return elaborateMessage(gson.fromJson(jsonMessage, ClientResponse.class));
     }
+    if (jsonMessage.contains("PHASE")) {
+      return elaborateMessage(gson.fromJson(jsonMessage, BeginTurnMessage.class));
+    }
     return null;
   }
 
@@ -49,13 +53,15 @@ public class CliParser {
       case INFO:
         return printInfoMessage((ClientResponse) msg);
       case PHASE:
-        return printPhaseMessage((PhaseMessageResponse) msg);
+        return printPhaseMessage((BeginTurnMessage) msg);
     }
     return null;
   }
 
   private String printLoginMessage(LoginMessageResponse msg) {
-    this.playerId = msg.getPlayerId();
+    if (msg.getMessageSecondary() == MessageSecondary.PLAYER_PARAMS) {
+      setPlayerId(msg.getPlayerId());
+    }
     StringBuilder returnString = new StringBuilder();
     returnString.append(msg.getResponse());
     if (msg.getPlayerId() == 0 && msg.getMessageSecondary() == MessageSecondary.PLAYER_PARAMS) {
@@ -68,6 +74,10 @@ public class CliParser {
     return playerId;
   }
 
+  public void setPlayerId(int playerId) {
+    this.playerId = playerId;
+  }
+
   private String printPlayMessage(PlayMessageResponse msg) throws FileNotFoundException {
     StringBuilder returnString = new StringBuilder();
     switch (msg.getMessageSecondary()) {
@@ -75,7 +85,7 @@ public class CliParser {
         Gson gson = new Gson();
         JsonArray list = gson
             .fromJson(new FileReader(
-                    "C:\\Users\\Utente\\Documents\\GitHub\\ingsw2022-AM14\\src\\main\\resources\\json\\assistants.json"),
+                    "src/main/resources/json/assistants.json"),
                 JsonArray.class);
         JsonObject object = list.get(msg.getAssistantId()).getAsJsonObject();
         int moves = object.get("MOVES").getAsInt();
@@ -91,7 +101,7 @@ public class CliParser {
               .append(moves).append("moves with a speed of").append(speed)
               .append("you cannot play the same assistant");
         }
-
+        break;
       case CHARACTER:
         returnString.append("Character").append(msg.getCharacterId())
             .append("purchased now you can").append(msg.getEffectString());
@@ -117,13 +127,14 @@ public class CliParser {
             printedString.append(msg.getStudentsDiningRoom()[color.ordinal()]).append(" ")
                 .append(color).append(" students;\n");
           }
-        } else {
+        } else if (msg.getPlace() == 1) {
           printedString.append("now the island").append(msg.getIslandNumber()).append("contains");
           for (Color color : Color.values()) {
             printedString.append(msg.getStudentsIsland()[color.ordinal()]).append(" ")
                 .append(color).append(" students;\n");
           }
         }
+        break;
       case CLOUD_TILE:
         printedString.append("cloud tile number").append(msg.getCloudTileNumber())
             .append("successfully taken").append("now your entrance contains");
@@ -131,9 +142,11 @@ public class CliParser {
           printedString.append(msg.getStudentsCloud()[color.ordinal()]).append(" ")
               .append(color).append(" students;\n");
         }
+        break;
       case MOTHER_NATURE:
         printedString.append("now mother nature is on the island number")
             .append(msg.getIslandNumber()).append("island");
+        break;
     }
     return String.valueOf(printedString);
   }
@@ -143,8 +156,62 @@ public class CliParser {
     return null;
   }
 
-  private String printPhaseMessage(PhaseMessageResponse msg) {
-    return msg.getWhatTodo();
+  /**
+   * This method creates the string to be printed in case of a turn message
+   * @param msg the input message to decode and print
+   * @return the string to be printed
+   */
+  private String printPhaseMessage(BeginTurnMessage msg) throws FileNotFoundException {
+    StringBuilder returnString = new StringBuilder();
+    switch (msg.getMessageSecondary()) {
+      case INIT_GAME:
+        returnString.append("The game has now started you are the player number ")
+            .append(this.playerId).append("\n");
+
+        returnString.append("The island are as follows").append("\n");
+        for (int[] students : msg.getStudentsIsland()) {
+          returnString.append("Island number ").append(msg.getStudentsIsland().indexOf(students))
+              .append(": \n");
+          for (Color color : Color.values()) {
+            returnString.append(students[color.ordinal()]).append(" ")
+                .append(color).append(" students;\n");
+          }
+          returnString.append("\n");
+        }
+
+        returnString.append("your and opponents entrance are as follows").append("\n");
+        for (int[] students : msg.getStudentEntrance()) {
+          if (msg.getStudentEntrance().indexOf(students) == this.playerId) {
+            returnString.append("your entrance is:").append("\n");
+          } else {
+            returnString.append("an opponent entrance is").append("\n");
+          }
+          for (Color color : Color.values()) {
+            returnString.append(students[color.ordinal()]).append(" ")
+                .append(color).append(" students;\n");
+          }
+          returnString.append("\n");
+        }
+
+        returnString.append("these are the assistant tou can play :").append("\n");
+        Gson gson = new Gson();
+        JsonArray list = gson
+            .fromJson(new FileReader("src/main/resources/json/assistants.json"), JsonArray.class);
+        for (Integer idAssistant : msg.getPlayableAssistantId()) {
+
+          JsonObject object = list.get(idAssistant).getAsJsonObject();
+          int speed = object.get("SPEED").getAsInt();
+          int moves = object.get("MOVES").getAsInt();
+
+          returnString.append("assistant speed is").append(" ").append(speed).append("\n")
+              .append("max mother nature moves").append(" ").append(moves).append("\n")
+              .append("\n");
+        }
+
+      case CHANGE_TURN:
+        //TODO
+    }
+    return returnString.toString();
   }
 }
 
