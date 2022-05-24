@@ -12,8 +12,8 @@ Project for Software Engineering Course - Polimi
 | Basic rules      | 🟡 |
 | Complete rules   | 🟡 |
 | Socket           | 🟡 |
-| GUI              | 🔴 |
-| CLI              | 🔴 |
+| GUI              | 🟡 |
+| CLI              | 🟡 |
 | 4 Players Mode   | 🟢 |
 | 12 Characters    | 🟡 |
 
