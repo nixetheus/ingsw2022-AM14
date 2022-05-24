@@ -64,15 +64,19 @@ public class ClientHandler implements Runnable {
         if (responses == null) {
           break;
         }
+
         while (!responses.isEmpty()) {
           Message response = responses.firstElement();
           if (response.getPlayerId() == -1) {
             sendResponseToAllClients(response);
           } else {
-            sendSocketMessage(toJson(response), new PrintWriter(socketClient.getOutputStream()));
+            //TODO check do not send to last client
+            sendSocketMessage(toJson(response),
+                new PrintWriter(socketOut.get(response.getPlayerId()).getOutputStream()));
           }
           responses.remove(response);
         }
+
       }
       closeStreams();
     } catch (IOException e) {
@@ -167,12 +171,12 @@ public class ClientHandler implements Runnable {
   /**
    * toJon method: is used to parse a String to json format
    *
-   * @param test Object to parse
+   * @param msg Object to parse
    * @return String in json format
    */
-  private String toJson(Message test) {
+  private String toJson(Message msg) {
     Gson gson = new Gson();
-    return gson.toJson(test);
+    return gson.toJson(msg);
   }
 
 }

@@ -31,11 +31,12 @@ public class LoginController {
    * This method creates a player
    *
    * @param msg The message in which i can find the nickname
+   * @param idPlayer Is the id that the new player must have
    * @return The created player
    * @throws FileNotFoundException if the json file will not be found
    */
-  public Player createPlayer(LoginMessage msg) throws FileNotFoundException {
-    return new Player(msg.getPlayerId(), msg.getNickName());
+  public Player createPlayer(LoginMessage msg, int idPlayer) throws FileNotFoundException {
+    return new Player(idPlayer, msg.getNickName());
   }
 
 }
