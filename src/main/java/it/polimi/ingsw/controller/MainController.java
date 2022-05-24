@@ -145,7 +145,8 @@ public class MainController {
                 newTeam.addPlayer(newPlayer);
                 teams.add(newTeam);
               } else {
-                long nCurrentPlayers = teams.stream().map(team -> team.getPlayers().size()).count();
+                long nCurrentPlayers = teams.stream().map(team -> team.getPlayers().size()).reduce(0, Integer::sum);
+                System.out.println(nCurrentPlayers + " " + numberOfPlayers);
                 teams.elementAt((int) nCurrentPlayers % 2).addPlayer(newPlayer);
               }
 
@@ -160,7 +161,7 @@ public class MainController {
             turnManager.changeState();
 
             // If players are all in, setup game
-            if (teams.stream().map(team -> team.getPlayers().size()).count() == numberOfPlayers) {
+            if (teams.stream().map(team -> team.getPlayers().size()).reduce(0, Integer::sum) == numberOfPlayers) {
               setupGame();
               loginResponse.setResponse("Welcome aboard " + newPlayer.getPlayerNickname() + "!  ");
               loginResponse.setPlayerId(
