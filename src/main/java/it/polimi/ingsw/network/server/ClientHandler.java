@@ -2,6 +2,9 @@ package it.polimi.ingsw.network.server;
 
 import com.google.gson.Gson;
 import it.polimi.ingsw.controller.MainController;
+import it.polimi.ingsw.helpers.MessageMain;
+import it.polimi.ingsw.helpers.MessageSecondary;
+import it.polimi.ingsw.messages.ClientResponse;
 import it.polimi.ingsw.messages.InfoRequestMessage;
 import it.polimi.ingsw.messages.LoginMessage;
 import it.polimi.ingsw.messages.Message;
@@ -11,6 +14,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,7 +23,6 @@ import org.jetbrains.annotations.NotNull;
 /**
  * ClientHandler class: It takes care of managing the communication with the associated client with
  * the assigned socket
- * <p>
  * It implements Runnable because each thread handles the communication with its client in parallel
  */
 public class ClientHandler implements Runnable {
@@ -28,6 +32,8 @@ public class ClientHandler implements Runnable {
   private final Vector<Socket> socketOut;
   private final Socket socketClient;
   private final Scanner inputStream;
+  private Timer pingTimer;
+  private Thread timer;
 
   /**
    * ClientHandler constructor:
@@ -39,10 +45,12 @@ public class ClientHandler implements Runnable {
    */
   public ClientHandler(Socket socketClient, MainController mainController, Vector<Socket> socketOut)
       throws IOException {
+
     this.socketClient = socketClient;
     this.mainController = mainController;
     this.socketOut = socketOut;
     inputStream = new Scanner(socketClient.getInputStream());
+
   }
 
   /**
@@ -56,16 +64,19 @@ public class ClientHandler implements Runnable {
 
       Vector<Message> responses;
 
-      while (true) {
+      pingThreadCreation();
 
+      while (true) {
         responses = readInputAndSendItToMainController();
 
-        //TODO it is mandatory to put an exit condition, quit message
-        if (responses == null) {
+        //TODO put here a quit condition
+        if (responses.get(0).toString().equals("exit_condition")) {
           break;
         }
 
-        while (!responses.isEmpty()) {
+        while (!responses.isEmpty() && responses != null &&
+            responses.get(0).getMessageSecondary() != MessageSecondary.PING) {
+
           Message response = responses.firstElement();
           if (response.getPlayerId() == -1) {
             sendResponseToAllClients(response);
@@ -78,6 +89,7 @@ public class ClientHandler implements Runnable {
         }
 
       }
+
       closeStreams();
     } catch (IOException e) {
       System.err.println(e.getMessage());
@@ -97,14 +109,27 @@ public class ClientHandler implements Runnable {
   private Vector<Message> readInputAndSendItToMainController()
       throws IOException, ClassNotFoundException {
 
+    //read input from client
     String input = inputStream.nextLine();
-
     if (input != null) {
 
-      System.out.println("Message sent to controller");
+      Message clientResponse = fromJson(input);
 
-      return mainController.elaborateMessage(fromJson(input));
+      if(clientResponse.getMessageMain() == MessageMain.INFO &&
+          clientResponse.getMessageSecondary() == MessageSecondary.PING) {
+
+        restartTimer();
+
+        //if I don't return a Vector<Message> to run() method it doesn't work,
+        //so I create a default Vector<Message> to return
+        return PingResponse();
+      }
+
+      System.out.println("Message sent to controller");
+      return mainController.elaborateMessage(clientResponse);
+
     }
+
     return null;
   }
 
@@ -177,6 +202,39 @@ public class ClientHandler implements Runnable {
   private String toJson(Message msg) {
     Gson gson = new Gson();
     return gson.toJson(msg);
+  }
+
+  /**
+   * This method creates a timer and starts the TimerThread thread
+   */
+  private void pingThreadCreation() {
+    pingTimer = new Timer();
+    timer = new Thread(new TimerThread(pingTimer));
+    timer.start();
+  }
+
+  /**
+   * This method restarts the timer,
+   * it is invoked when ping message arrived to the server
+   */
+  private void restartTimer() {
+    pingTimer.cancel();
+    timer.stop();
+
+    pingTimer = new Timer();
+    timer = new Thread(new TimerThread(pingTimer));
+    timer.start();
+  }
+
+  /**
+   * Create a default message to return to run()
+   * @return default Vector<Message>
+   */
+  private Vector<Message> PingResponse() {
+    Vector<Message> messages = new Vector<>();
+    ClientResponse pingResponse = new ClientResponse(MessageSecondary.PING);
+    messages.add(pingResponse);
+    return messages;
   }
 
 }

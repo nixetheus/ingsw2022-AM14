@@ -5,6 +5,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
+import java.net.Socket;
 
 
 /**
@@ -16,12 +18,26 @@ public class ClientMain {
   private static int portNumber;
   private static String hostName;
 
-  public static void main(String[] args) throws FileNotFoundException {
+  public static void main(String[] args) throws IOException {
 
     setPortNumberFromJson();
 
-    Client client = new Client(portNumber, hostName);
-    client.connect();
+    Socket socket = new Socket(hostName, portNumber);
+
+    //thread for asynchronous communication
+    ClientServerOutputReader clientServerOutputReader = new ClientServerOutputReader(portNumber,
+        hostName, socket);
+
+    //thread for synchronous communication
+    ClientUserInput clientUserInput = new ClientUserInput(portNumber, hostName, socket);
+
+    //thread for ping the server
+    Thread pinger = new Thread(new Pinger(socket));
+
+    //Let's start!
+    clientUserInput.start();
+    clientServerOutputReader.start();
+    pinger.start();
   }
 
   /**
