@@ -4,7 +4,7 @@ import it.polimi.ingsw.helpers.Color;
 import it.polimi.ingsw.helpers.MessageMain;
 import it.polimi.ingsw.helpers.MessageSecondary;
 
-public class PlayMessageResponse extends Message{
+public class PlayMessageResponse extends Message {
 
   private int assistantId;
   private int characterId;
@@ -18,6 +18,9 @@ public class PlayMessageResponse extends Message{
   private int[] studentsCard;
   private int[] studentsEntrance;
   private int[] studentsDiningRoom;
+
+  private String response;
+  private int activePlayerId;
 
   public PlayMessageResponse(MessageSecondary messageSecondary) {
     this.messageMain = MessageMain.PLAY;
@@ -94,5 +97,21 @@ public class PlayMessageResponse extends Message{
 
   public void setEffectString(String effectString) {
     this.effectString = effectString;
+  }
+
+  public String getResponse() {
+    return response;
+  }
+
+  public void setResponse(String response) {
+    this.response = response;
+  }
+
+  public int getActivePlayerId() {
+    return activePlayerId;
+  }
+
+  public void setActivePlayerId(int activePlayerId) {
+    this.activePlayerId = activePlayerId;
   }
 }

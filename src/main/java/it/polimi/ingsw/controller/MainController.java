@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.helpers.MessageMain;
 import it.polimi.ingsw.helpers.MessageSecondary;
+import it.polimi.ingsw.helpers.StudentsPlayerId;
 import it.polimi.ingsw.helpers.Towers;
 import it.polimi.ingsw.messages.BeginTurnMessage;
 import it.polimi.ingsw.messages.ClientResponse;
@@ -24,7 +25,6 @@ import java.util.concurrent.Semaphore;
 /**
  * Main controller class that manage the other controller and do the correct phase and correct
  * player check
- *
  */
 public class MainController {
 
@@ -114,6 +114,7 @@ public class MainController {
 
       switch (msg.getMessageSecondary()) {
         case GAME_PARAMS:
+
           // If parameters are okay set them and change game state else send error message
           if (loginController.checkGameParameters(msg)) {
             isGameExpert = msg.isGameExpert();
@@ -145,8 +146,9 @@ public class MainController {
                 newTeam.addPlayer(newPlayer);
                 teams.add(newTeam);
               } else {
-                long nCurrentPlayers = teams.stream().map(team -> team.getPlayers().size()).reduce(0, Integer::sum);
-                System.out.println(nCurrentPlayers + " " + numberOfPlayers);
+                long nCurrentPlayers = teams.stream().map(team -> team.getPlayers().size())
+                    .reduce(0, Integer::sum);
+
                 teams.elementAt((int) nCurrentPlayers % 2).addPlayer(newPlayer);
               }
 
@@ -156,16 +158,13 @@ public class MainController {
               teams.add(newTeam);
             }
 
-            // Change state
-            turnManager.updateCounters();
-            turnManager.changeState();
-
             // If players are all in, setup game
-            if (teams.stream().map(team -> team.getPlayers().size()).reduce(0, Integer::sum) == numberOfPlayers) {
+            if (teams.stream().map(team -> team.getPlayers().size()).reduce(0, Integer::sum)
+                == numberOfPlayers) {
               setupGame();
               loginResponse.setResponse("Welcome aboard " + newPlayer.getPlayerNickname() + "!  ");
               loginResponse.setPlayerId(
-                  turnManager.getCurrentNumberOfUsers());//TODO check
+                  turnManager.getCurrentNumberOfUsers());
 
               LoginMessageResponse loginMessageResponse2 = new LoginMessageResponse(
                   MessageSecondary.GAME_PARAMS);
@@ -177,16 +176,22 @@ public class MainController {
               Vector<Message> changeTurnMessages = changeTurnMessage(MessageSecondary.INIT_GAME);
               messages.addAll(changeTurnMessages);
 
+              messages.add(sendClientResponse(MessageSecondary.ASSISTANT,
+                  "its your turn to play an assistant"));
+
 
             } else {
               loginResponse.setResponse("Welcome aboard " + newPlayer.getPlayerNickname() + "!");
               loginResponse.setPlayerId(
-                  turnManager.getCurrentNumberOfUsers());//TODO check
+                  turnManager.getCurrentNumberOfUsers());
 
             }
           } else {
             loginResponse.setResponse("Error while creating new player, please try again!");
           }
+
+          turnManager.updateCounters();
+          turnManager.changeState();
 
           break;
 
@@ -210,18 +215,19 @@ public class MainController {
     Vector<Message> messages = new Vector<>();
 
     // Check player is current player OR phase is login
-    everythingOkay = !(msg.getPlayerId() == 0);  // ;
+    everythingOkay = true;//!(msg.getPlayerId() == 0);  // ;
 
     boolean isCharacterPlayed = (turnManager.getMainGamePhase() == MessageMain.MOVE) &&
         msg.getMessageSecondary() == MessageSecondary.CHARACTER;
 
     // Check phase is the right one
     everythingOkay = everythingOkay &&
-        ((!(msg.getMessageMain() == turnManager.getMainGamePhase()) &&
-            !(msg.getMessageSecondary() == turnManager.getSecondaryPhase())) ||
+        (((msg.getMessageMain() == turnManager.getMainGamePhase()) &&
+            (msg.getMessageSecondary() == turnManager.getSecondaryPhase())) ||
             isCharacterPlayed);
 
     Message gameResponse = null;
+
     if (everythingOkay) {
       switch (msg.getMessageMain()) {
         case MOVE:
@@ -229,7 +235,6 @@ public class MainController {
           messages.add(gameResponse);
           break;
         case PLAY:
-          //TODO dario
           gameResponse = playController.elaborateMessage((PlayMessage) msg, game);
           messages.add(gameResponse);
           break;
@@ -241,11 +246,18 @@ public class MainController {
     if (gameResponse != null) {
       // Update turn
       turnManager.updateCounters();
-      //responseString += turnManager.changeState();
+      turnManager.changeState();
 
       // Set current player
-      if (msg.getMessageSecondary() == MessageSecondary.ASSISTANT) {
+      if (msg.getMessageSecondary() == MessageSecondary.ASSISTANT
+          && turnManager.getCurrentNumberOfPlayedAssistants() != numberOfPlayers) {
         this.game.setCurrentPlayerIndex(turnManager.getCurrentNumberOfPlayedAssistants());
+        //new current player turn to play assistant
+
+        messages.add(
+            sendClientResponse(MessageSecondary.ASSISTANT, "it's your turn to play an assistant"));
+
+
       } else if (msg.getMessageMain() == MessageMain.MOVE) {
         this.game.setCurrentPlayerIndex(turnManager.getCurrentNumberOfUsersPlayedActionPhase());
       }
@@ -254,7 +266,23 @@ public class MainController {
       if (msg.getMessageMain() == MessageMain.PLAY
           && msg.getMessageSecondary() == MessageSecondary.ASSISTANT
           && turnManager.getCurrentNumberOfPlayedAssistants() == numberOfPlayers) {
+
+        //TODO broken
         this.game.orderBasedOnAssistant();
+
+        //send order message
+        ClientResponse order = new ClientResponse(MessageSecondary.GAME_ORDER);
+        order.setPlayerId(-1);
+
+        Vector<Integer> playerOrderIdVector = new Vector<>();
+
+        for (Player player : game.getGameOrder()) {
+          playerOrderIdVector.add(player.getPlayerId());
+        }
+
+        order.setPlayerOrderId(playerOrderIdVector);
+        messages.add(order);
+
         //send turn message
       } else if (msg.getMessageMain() == MessageMain.MOVE
           && msg.getMessageSecondary() == MessageSecondary.CLOUD_TILE
@@ -287,6 +315,7 @@ public class MainController {
 
   /**
    * This method compile the begin turn message at the beginning of the game and each turn
+   *
    * @param messageSecondary the message secondary to create the message
    * @return the vector of messages to be sent to each client
    */
@@ -299,16 +328,18 @@ public class MainController {
         BeginTurnMessage beginTurnMessage = new BeginTurnMessage(messageSecondary);
         beginTurnMessage.setPlayerId(player.getPlayerId());
 
-        Vector<int[]> studentsAtEntrances = new Vector<>();
-        Vector<int[]> studentDiningRooms = new Vector<>();
+        Vector<StudentsPlayerId> studentsAtEntrances = new Vector<>();
+        Vector<StudentsPlayerId> studentDiningRooms = new Vector<>();
 
         for (Team teamStudents : this.game.getTeams()) {
           for (Player playerStudents : teamStudents.getPlayers()) {
 
-            studentsAtEntrances.add(playerStudents.getPlayerBoard().getEntrance().getStudents());
+            studentsAtEntrances.add(new StudentsPlayerId(playerStudents.getPlayerId(),
+                playerStudents.getPlayerBoard().getEntrance().getStudents()));
             beginTurnMessage.setStudentEntrance(studentsAtEntrances);
 
-            studentDiningRooms.add(playerStudents.getPlayerBoard().getDiningRoom().getStudents());
+            studentDiningRooms.add(new StudentsPlayerId(playerStudents.getPlayerId(),
+                playerStudents.getPlayerBoard().getDiningRoom().getStudents()));
             beginTurnMessage.setStudentDiningRoom(studentDiningRooms);
           }
         }
@@ -340,5 +371,13 @@ public class MainController {
       }
     }
     return returnedVector;
+  }
+
+  private Message sendClientResponse(MessageSecondary messageSecondary, String response) {
+    ClientResponse clientResponse = new ClientResponse(messageSecondary);
+    clientResponse.setResponse(response);
+    clientResponse.setPlayerId(this.game.getCurrentPlayer().getPlayerId());
+
+    return clientResponse;
   }
 }

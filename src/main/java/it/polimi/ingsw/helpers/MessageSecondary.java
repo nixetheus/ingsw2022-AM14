@@ -26,6 +26,7 @@ public enum MessageSecondary {
   ERROR,
 
   INIT_GAME,
-  CHANGE_TURN
+  CHANGE_TURN,
+  GAME_ORDER
 
 }

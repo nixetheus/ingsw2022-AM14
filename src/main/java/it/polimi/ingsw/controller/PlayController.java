@@ -35,6 +35,7 @@ public class PlayController {
   private Message playAssistant(PlayMessage msg, Game game) {
 
     PlayMessageResponse playResponse = new PlayMessageResponse(MessageSecondary.ASSISTANT);
+    playResponse.setPlayerId(-1);
 
     if (canPlayAssistant(msg.getPlayerId(), msg.getAssistantId(), game.getTeams())) {
       for (Team team : game.getTeams()) {
@@ -42,21 +43,15 @@ public class PlayController {
           if (player.getPlayerId() == msg.getPlayerId()) {
             game.playAssistant(player, msg.getAssistantId());
 
+            playResponse.setActivePlayerId(game.getCurrentPlayer().getPlayerId());
             playResponse.setAssistantId(player.getAssistant().getAssistantId());
-            return playResponse;
 
-            /*
-            return "Assistant played correctly!\n"
-                + "You can now move mother nature of " + player.getAssistant().getMoves()
-                + " spaces when your turn comes.\n"
-                + "You're speed is " + player.getAssistant().getSpeed() + " ouf of 10.\n"
-                + "Please wait...";
-                */
           }
+
         }
       }
     }
-    return null;
+    return playResponse;
   }
 
   /**

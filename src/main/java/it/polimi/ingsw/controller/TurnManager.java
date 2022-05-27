@@ -103,7 +103,7 @@ public class TurnManager {
     switch (currentState) {
       case 0:
         currentNumberOfUsers++;
-      break;
+        break;
       case 1:
         break;
       case 2:
@@ -135,7 +135,6 @@ public class TurnManager {
         secondaryPhase = MessageSecondary.PLAYER_PARAMS;
         break;
       case 1:
-        currentNumberOfUsers = 0;
         mainGamePhase = MessageMain.LOGIN;
         secondaryPhase = MessageSecondary.GAME_PARAMS;
         break;
@@ -144,12 +143,13 @@ public class TurnManager {
         secondaryPhase = MessageSecondary.PLAYER_PARAMS;
         break;
       case 3:
+        //currentNumberOfPlayedAssistants = 0;
         currentNumberOfUsersPlayedActionPhase = 0;
         mainGamePhase = MessageMain.PLAY;
         secondaryPhase = MessageSecondary.ASSISTANT;
         break;
       case 4:
-        currentNumberOfPlayedAssistants = 0;
+        //currentNumberOfPlayedAssistants = 0;
         mainGamePhase = MessageMain.MOVE;
         secondaryPhase = MessageSecondary.ENTRANCE;
         break;

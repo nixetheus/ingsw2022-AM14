@@ -17,7 +17,6 @@ import java.util.Locale;
  */
 public class MessageParser {
 
-  //TODO adding from which player the message arrives
   private int playerId;
 
   /**

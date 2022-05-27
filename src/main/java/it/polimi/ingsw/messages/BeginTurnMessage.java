@@ -2,12 +2,13 @@ package it.polimi.ingsw.messages;
 
 import it.polimi.ingsw.helpers.MessageMain;
 import it.polimi.ingsw.helpers.MessageSecondary;
+import it.polimi.ingsw.helpers.StudentsPlayerId;
 import java.util.Vector;
 
 public class BeginTurnMessage extends Message {
 
-  Vector<int[]> studentDiningRoom;
-  Vector<int[]> studentEntrance;
+  Vector<StudentsPlayerId> studentDiningRoom;
+  Vector<StudentsPlayerId> studentEntrance;
   int[] professors;
   Vector<int[]> studentsIsland;
   Vector<int[]> studentsCloudTiles;
@@ -19,19 +20,21 @@ public class BeginTurnMessage extends Message {
     this.messageSecondary = messageSecondary;
   }
 
-  public Vector<int[]> getStudentDiningRoom() {
+  public Vector<StudentsPlayerId> getStudentDiningRoom() {
     return studentDiningRoom;
   }
 
-  public void setStudentDiningRoom(Vector<int[]> studentDiningRoom) {
+  public void setStudentDiningRoom(
+      Vector<StudentsPlayerId> studentDiningRoom) {
     this.studentDiningRoom = studentDiningRoom;
   }
 
-  public Vector<int[]> getStudentEntrance() {
+  public Vector<StudentsPlayerId> getStudentEntrance() {
     return studentEntrance;
   }
 
-  public void setStudentEntrance(Vector<int[]> studentEntrance) {
+  public void setStudentEntrance(
+      Vector<StudentsPlayerId> studentEntrance) {
     this.studentEntrance = studentEntrance;
   }
 

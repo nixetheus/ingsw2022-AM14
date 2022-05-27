@@ -5,12 +5,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.helpers.Color;
 import it.polimi.ingsw.helpers.MessageSecondary;
+import it.polimi.ingsw.helpers.StudentsPlayerId;
 import it.polimi.ingsw.messages.BeginTurnMessage;
 import it.polimi.ingsw.messages.ClientResponse;
 import it.polimi.ingsw.messages.LoginMessageResponse;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.MoveMessageResponse;
-import it.polimi.ingsw.messages.PhaseMessageResponse;
 import it.polimi.ingsw.messages.PlayMessageResponse;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -31,7 +31,7 @@ public class CliParser {
       return elaborateMessage(gson.fromJson(jsonMessage, MoveMessageResponse.class));
     }
     if (jsonMessage.contains("PLAY")) {
-      return elaborateMessage(gson.fromJson(jsonMessage, PhaseMessageResponse.class));
+      return elaborateMessage(gson.fromJson(jsonMessage, PlayMessageResponse.class));
     }
     if (jsonMessage.contains("INFO")) {
       return elaborateMessage(gson.fromJson(jsonMessage, ClientResponse.class));
@@ -91,15 +91,17 @@ public class CliParser {
         int moves = object.get("MOVES").getAsInt();
         int speed = object.get("SPEED").getAsInt();
 
-        if (msg.getPlayerId() == this.playerId) {
+        if (this.playerId == msg.getActivePlayerId()) {
           returnString
               .append("Assistant played correctly!\n" + "You can now move mother nature of ")
               .append(moves).append(" spaces when your turn comes.\n").append("You're speed is ")
-              .append(speed).append(" ouf of 10.\n").append("Please wait...");
+              .append(speed).append(" ouf of 10.\n").append("Please wait...").append("\n")
+              .append("\n");
         } else {
           returnString.append("another player has player an assistant now he/she can do")
-              .append(moves).append("moves with a speed of").append(speed)
-              .append("you cannot play the same assistant");
+              .append(" ")
+              .append(moves).append(" ").append("moves with a speed of ").append(speed).append("\n")
+              .append("\n");
         }
         break;
       case CHARACTER:
@@ -152,12 +154,19 @@ public class CliParser {
   }
 
   private String printInfoMessage(ClientResponse msg) {
-    //TODO
+    switch (msg.getMessageSecondary()) {
+      case ASSISTANT:
+        return msg.getResponse();
+      case GAME_ORDER:
+        return "You have to play as" + msg.getPlayerOrderId().indexOf(this.playerId) + "player";
+    }
+
     return null;
   }
 
   /**
    * This method creates the string to be printed in case of a turn message
+   *
    * @param msg the input message to decode and print
    * @return the string to be printed
    */
@@ -180,14 +189,14 @@ public class CliParser {
         }
 
         returnString.append("your and opponents entrance are as follows").append("\n");
-        for (int[] students : msg.getStudentEntrance()) {
-          if (msg.getStudentEntrance().indexOf(students) == this.playerId) {
+        for (StudentsPlayerId entranceIdPlayer : msg.getStudentEntrance()) {
+          if (entranceIdPlayer.getPlayerId() == this.playerId) {
             returnString.append("your entrance is:").append("\n");
           } else {
             returnString.append("an opponent entrance is").append("\n");
           }
           for (Color color : Color.values()) {
-            returnString.append(students[color.ordinal()]).append(" ")
+            returnString.append(entranceIdPlayer.getStudents()[color.ordinal()]).append(" ")
                 .append(color).append(" students;\n");
           }
           returnString.append("\n");

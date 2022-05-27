@@ -364,4 +364,7 @@ public class Game {
     this.influenceEqualProfessors = influenceEqualProfessors;
   }
 
+  public Vector<Player> getGameOrder() {
+    return gameOrder;
+  }
 }
