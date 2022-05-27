@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="585.0" prefWidth="260.0" style="-fx-border-color: black; -fx-border-width: 4;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.guicontrollers.PlayerBoardController">
+   <children>
+      <ImageView fitWidth="575.0" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
+         <image>
+            <Image url="@Graphical_Assets/Plancia/Plancia_DEF.png" />
+         </image>
+      </ImageView>
+      <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="575.0" prefWidth="250.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="250.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="125.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="305.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <GridPane fx:id="diningRoom" onMouseClicked="#onClickDiningRoom" GridPane.rowIndex="2">
+              <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="54.5" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="64.5" minWidth="0.0" prefWidth="62.25" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.75" minWidth="6.5" prefWidth="15.75" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="133.0" minWidth="0.0" prefWidth="63.75" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="129.5" minWidth="10.0" prefWidth="55.25" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="395.5" minHeight="10.0" prefHeight="269.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <VBox fx:id="greenStudents" alignment="TOP_RIGHT" onMouseClicked="#onClickStudentsDiningRoom">
+                     <children>
+                        <Circle fill="#6da661" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#6da661" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#6da661" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#6da661" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#6da661" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#6da661" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#6da661" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#6da661" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#6da661" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#6da661" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                     </children>
+                  </VBox>
+                  <VBox fx:id="redStudents" alignment="TOP_CENTER" onMouseClicked="#onClickStudentsDiningRoom" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+                     <children>
+                        <Circle fill="#d94d59" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#d94d59" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#d94d59" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#d94d59" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#d94d59" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#d94d59" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#d94d59" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#d94d59" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#d94d59" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#d94d59" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                     </children>
+                  </VBox>
+                  <VBox fx:id="yellowStudents" alignment="TOP_CENTER" onMouseClicked="#onClickStudentsDiningRoom" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2">
+                     <children>
+                        <Circle fill="#fecf35" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#fecf35" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#fecf35" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#fecf35" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#fecf35" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#fecf35" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#fecf35" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#fecf35" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#fecf35" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#fecf35" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                     </children>
+                  </VBox>
+                  <VBox fx:id="pinkStudents" alignment="TOP_CENTER" onMouseClicked="#onClickStudentsDiningRoom" prefHeight="360.0" prefWidth="51.0" GridPane.columnIndex="3">
+                     <children>
+                        <Circle fill="#ef84b4" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#ef84b4" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#ef84b4" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#ef84b4" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#ef84b4" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#ef84b4" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#ef84b4" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#ef84b4" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#ef84b4" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#ef84b4" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                     </children>
+                  </VBox>
+                  <VBox fx:id="blueStudents" onMouseClicked="#onClickStudentsDiningRoom" GridPane.columnIndex="4">
+                     <children>
+                        <Circle fill="#21bbef" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#21bbef" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#21bbef" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#21bbef" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#21bbef" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#21bbef" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#21bbef" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#21bbef" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#21bbef" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                        <Circle fill="#21bbef" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                           <VBox.margin>
+                              <Insets top="7.0" />
+                           </VBox.margin>
+                        </Circle>
+                     </children>
+                  </VBox>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+               <padding>
+                  <Insets top="20.0" />
+               </padding>
+            </GridPane>
+            <HBox fx:id="professors" prefHeight="66.0" prefWidth="285.0" GridPane.rowIndex="1">
+               <children>
+                  <Circle fill="#6da661" radius="12.5" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0">
+                     <HBox.margin>
+                        <Insets left="31.0" top="15.0" />
+                     </HBox.margin>
+                  </Circle>
+                  <Circle fill="#d94d59" radius="12.5" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0">
+                     <HBox.margin>
+                        <Insets left="16.0" top="15.0" />
+                     </HBox.margin>
+                  </Circle>
+                  <Circle fill="#fecf35" radius="12.5" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0">
+                     <HBox.margin>
+                        <Insets left="16.0" top="15.0" />
+                     </HBox.margin>
+                  </Circle>
+                  <Circle fill="#ef84b4" radius="12.5" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0">
+                     <HBox.margin>
+                        <Insets left="16.0" top="15.0" />
+                     </HBox.margin>
+                  </Circle>
+                  <Circle fill="#21bbef" radius="12.5" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0">
+                     <HBox.margin>
+                        <Insets left="16.0" top="15.0" />
+                     </HBox.margin>
+                  </Circle>
+               </children>
+               <GridPane.margin>
+                  <Insets top="2.0" />
+               </GridPane.margin>
+            </HBox>
+            <GridPane fx:id="playerTowers">
+              <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="45.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="45.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Circle fill="#222222" radius="17.5" stroke="WHITE" strokeType="INSIDE" strokeWidth="1.5" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="2.5" />
+                     </GridPane.margin>
+                  </Circle>
+                  <Circle fill="#222222" radius="17.5" stroke="WHITE" strokeType="INSIDE" strokeWidth="1.5" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="2.5" />
+                     </GridPane.margin>
+                  </Circle>
+                  <Circle fill="#222222" radius="17.5" stroke="WHITE" strokeType="INSIDE" strokeWidth="1.5" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="2.5" />
+                     </GridPane.margin>
+                  </Circle>
+                  <Circle fill="#222222" radius="17.5" stroke="WHITE" strokeType="INSIDE" strokeWidth="1.5" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="2.5" />
+                     </GridPane.margin>
+                  </Circle>
+                  <Circle fill="#222222" radius="17.5" stroke="WHITE" strokeType="INSIDE" strokeWidth="1.5" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="2.5" />
+                     </GridPane.margin>
+                  </Circle>
+                  <Circle fill="#222222" radius="17.5" stroke="WHITE" strokeType="INSIDE" strokeWidth="1.5" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="2.5" />
+                     </GridPane.margin>
+                  </Circle>
+                  <Circle fill="#222222" radius="17.5" stroke="WHITE" strokeType="INSIDE" strokeWidth="1.5" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="2.5" />
+                     </GridPane.margin>
+                  </Circle>
+                  <Circle fill="#222222" radius="17.5" stroke="WHITE" strokeType="INSIDE" strokeWidth="1.5" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="2.5" />
+                     </GridPane.margin>
+                  </Circle>
+               </children>
+            </GridPane>
+            <GridPane GridPane.rowIndex="3">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="45.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="45.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="15.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="46.5" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="66.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="15.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Circle fx:id="studentEntrance0" fill="#21bbef" onMouseClicked="#onClickStudentEntrance" onMouseEntered="#onHoverStudentEntrance" onMouseExited="#onExitHoverStudentEntrance" radius="12.5" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="7.5" />
+                     </GridPane.margin>
+                  </Circle>
+                  <Circle fx:id="studentEntrance2" fill="#21bbef" onMouseClicked="#onClickStudentEntrance" onMouseEntered="#onHoverStudentEntrance" onMouseExited="#onExitHoverStudentEntrance" radius="12.5" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="7.5" />
+                     </GridPane.margin>
+                  </Circle>
+                  <Circle fx:id="studentEntrance1" fill="#21bbef" onMouseClicked="#onClickStudentEntrance" onMouseEntered="#onHoverStudentEntrance" onMouseExited="#onExitHoverStudentEntrance" radius="12.5" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="7.5" />
+                     </GridPane.margin>
+                  </Circle>
+                  <Circle fx:id="studentEntrance4" fill="#21bbef" onMouseClicked="#onClickStudentEntrance" onMouseEntered="#onHoverStudentEntrance" onMouseExited="#onExitHoverStudentEntrance" radius="12.5" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="7.5" />
+                     </GridPane.margin>
+                  </Circle>
+                  <Circle fx:id="studentEntrance5" fill="#21bbef" onMouseClicked="#onClickStudentEntrance" onMouseEntered="#onHoverStudentEntrance" onMouseExited="#onExitHoverStudentEntrance" radius="12.5" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="7.5" />
+                     </GridPane.margin>
+                  </Circle>
+                  <Circle fx:id="studentEntrance6" fill="#21bbef" onMouseClicked="#onClickStudentEntrance" onMouseEntered="#onHoverStudentEntrance" onMouseExited="#onExitHoverStudentEntrance" radius="12.5" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="7.5" />
+                     </GridPane.margin>
+                  </Circle>
+                  <Circle fx:id="studentEntrance3" fill="#21bbef" onMouseClicked="#onClickStudentEntrance" onMouseEntered="#onHoverStudentEntrance" onMouseExited="#onExitHoverStudentEntrance" radius="12.5" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="7.5" />
+                     </GridPane.margin>
+                  </Circle>
+                  <Circle fx:id="studentEntrance7" fill="#21bbef" onMouseClicked="#onClickStudentEntrance" onMouseEntered="#onHoverStudentEntrance" onMouseExited="#onExitHoverStudentEntrance" radius="12.5" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="7.5" />
+                     </GridPane.margin>
+                  </Circle>
+               </children>
+            </GridPane>
+         </children>
+      </GridPane>
+   </children>
+</StackPane>

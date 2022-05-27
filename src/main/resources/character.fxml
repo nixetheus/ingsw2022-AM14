@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="152.0" prefWidth="102.0" style="-fx-border-color: black; -fx-border-width: 2;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.guicontrollers.CharacterController">
+   <children>
+      <ImageView fx:id="characterPic" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Graphical_Assets/Personaggi/CarteTOT_front.jpg" />
+         </image>
+      </ImageView>
+      <GridPane>
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.5" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.5" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="26.5" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Circle fx:id="student0" fill="WHITE" onMouseClicked="#onClickStudentCharacter" onMouseEntered="#onHoverStudentCharacter" onMouseExited="#onExitHoverStudentCharacter" radius="12.5" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="15.0" />
+               </GridPane.margin>
+            </Circle>
+            <Circle fx:id="student3" fill="WHITE" onMouseClicked="#onClickStudentCharacter" onMouseEntered="#onHoverStudentCharacter" onMouseExited="#onExitHoverStudentCharacter" radius="12.5" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets left="7.5" />
+               </GridPane.margin>
+            </Circle>
+            <Circle fx:id="student2" fill="WHITE" onMouseClicked="#onClickStudentCharacter" onMouseEntered="#onHoverStudentCharacter" onMouseExited="#onExitHoverStudentCharacter" radius="12.5" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets left="15.0" />
+               </GridPane.margin>
+            </Circle>
+            <Circle fx:id="student1" fill="WHITE" onMouseClicked="#onClickStudentCharacter" onMouseEntered="#onHoverStudentCharacter" onMouseExited="#onExitHoverStudentCharacter" radius="12.5" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="7.5" />
+               </GridPane.margin>
+            </Circle>
+            <Circle fx:id="student5" fill="WHITE" onMouseClicked="#onClickStudentCharacter" onMouseEntered="#onHoverStudentCharacter" onMouseExited="#onExitHoverStudentCharacter" radius="12.5" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets left="7.5" />
+               </GridPane.margin>
+            </Circle>
+            <Circle fx:id="student4" fill="WHITE" onMouseClicked="#onClickStudentCharacter" onMouseEntered="#onHoverStudentCharacter" onMouseExited="#onExitHoverStudentCharacter" radius="12.5" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets left="15.0" />
+               </GridPane.margin>
+            </Circle>
+            <Label fx:id="cost" alignment="TOP_LEFT" style="-fx-background-color: #444; -fx-border-radius: 2; -fx-border-color: white; -fx-background-radius: 3; -fx-border-width: 0.5;" text="0" textFill="WHITE" translateY="-20.0">
+               <font>
+                  <Font name="Agency FB Bold" size="16.0" />
+               </font>
+               <padding>
+                  <Insets left="2.0" right="2.0" />
+               </padding>
+               <GridPane.margin>
+                  <Insets left="2.0" />
+               </GridPane.margin>
+            </Label>
+            <Pane fx:id="cardPane" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" />
+         </children>
+      </GridPane>
+   </children>
+</StackPane>

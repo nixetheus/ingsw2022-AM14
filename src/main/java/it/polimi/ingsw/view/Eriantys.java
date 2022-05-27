@@ -1,0 +1,109 @@
+package it.polimi.ingsw.view;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import it.polimi.ingsw.guicontrollers.GameController;
+import it.polimi.ingsw.guicontrollers.LoginController;
+import it.polimi.ingsw.network.client.ClientServerOutputReader;
+import it.polimi.ingsw.network.client.ClientUserInput;
+import it.polimi.ingsw.network.client.Pinger;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.net.Socket;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+
+public class Eriantys extends Application {
+
+  static boolean isGUI;
+  static Socket socket;
+  private static int portNumber;
+  private static String hostName;
+  private static ServerParserGUI serverParserGUI;
+  private GuiParser guiParser;
+
+  @Override
+  public void start(Stage stage) throws IOException, InterruptedException {
+
+    stage.setResizable(false);
+
+    FXMLLoader loginFxmlLoader = new FXMLLoader(Eriantys.class.getResource("/login.fxml"));
+    FXMLLoader loginParamsFxmlLoader = new FXMLLoader(Eriantys.class.getResource("/loginParams.fxml"));
+    FXMLLoader loginLobbyFxmlLoader = new FXMLLoader(Eriantys.class.getResource("/loginLobby.fxml"));
+    FXMLLoader gameFxmlLoader = new FXMLLoader(Eriantys.class.getResource("/game.fxml"));
+
+    Scene login = new Scene(loginFxmlLoader.load());
+    Scene loginParams = new Scene(loginParamsFxmlLoader.load());
+    Scene loginLobby = new Scene(loginLobbyFxmlLoader.load());
+    Scene game = new Scene(gameFxmlLoader.load());
+
+    guiParser = new GuiParser(portNumber, hostName, socket);
+    serverParserGUI = new ServerParserGUI(stage, login, loginParams, loginLobby, game, gameFxmlLoader);
+
+    LoginController loginController = loginFxmlLoader.getController();
+    loginController.setParser(guiParser);
+
+    LoginController loginParamsController = loginParamsFxmlLoader.getController();
+    loginParamsController.setParser(guiParser);
+
+    GameController gameController = gameFxmlLoader.getController();
+    gameController.setGuiParser(guiParser);
+
+    stage.setTitle("Eriantys");
+    stage.show();
+
+    // Thread for asynchronous communication: Server -> Client
+    ClientServerOutputReader clientServerOutputReader = new ClientServerOutputReader(portNumber,
+        hostName, socket, serverParserGUI, isGUI);
+    clientServerOutputReader.start();
+
+    stage.sizeToScene();
+  }
+
+  public static void main(String[] args) throws IOException {
+
+    setPortNumberFromJson();
+    isGUI = Integer.parseInt(args[0]) > 0;
+    socket = new Socket(hostName, portNumber);
+
+    if (isGUI) {
+      launch();
+    } else {
+      // Thread for asynchronous communication: Server -> Client
+      ClientServerOutputReader clientServerOutputReader = new ClientServerOutputReader(portNumber,
+          hostName, socket, serverParserGUI, isGUI);
+      clientServerOutputReader.start();
+      // Thread for synchronous communication: CLI -> Server
+      ClientUserInput clientUserInput = new ClientUserInput(portNumber, hostName, socket);
+      clientUserInput.start();
+    }
+
+    // Thread for ping the server
+    Thread pinger = new Thread(new Pinger(socket));
+    pinger.start();
+  }
+
+  /**
+   * setPortNumberFromJson method: Initialize port number and host name with the default value
+   * contents in the file networkSettings.json
+   *
+   * @throws FileNotFoundException if file not found
+   */
+  private static void setPortNumberFromJson() throws FileNotFoundException {
+
+    Gson gson = new Gson();
+    JsonArray list = gson
+        .fromJson(new FileReader("src/main/resources/json/networkSettings.json"), JsonArray.class);
+    JsonObject object = list.get(0).getAsJsonObject();
+    portNumber = object.get("DEFAULT_PORT_NUMBER").getAsInt();
+    hostName = object.get("DEFAULT_HOST").getAsString();
+
+    System.out.println(hostName + " " + portNumber);
+
+  }
+}

@@ -12,7 +12,7 @@ import java.net.Socket;
 /**
  * Class for ping the clients and detects the disconnections
  */
-class Pinger implements Runnable {
+public class Pinger implements Runnable {
 
   private static final int pingTime = 2000;
   private final Socket socketOut;
@@ -32,7 +32,7 @@ class Pinger implements Runnable {
       try {
 
         Thread.sleep(pingTime);
-        out.println(toJson(pingMessage));
+        //out.println(toJson(pingMessage));
 
       } catch (InterruptedException e) {
         e.printStackTrace();

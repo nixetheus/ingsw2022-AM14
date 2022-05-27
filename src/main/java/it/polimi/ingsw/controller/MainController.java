@@ -124,6 +124,7 @@ public class MainController {
             turnManager.changeState();
             this.serverSemaphore.release();
             loginResponse.setResponse("Game parameters correctly set!");
+            loginResponse.setMessageSecondary(null);
 
           } else {
             loginResponse.setResponse("Error! Game parameters are not correct! Retry!");

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#onClickCloudTile" prefHeight="140.0" prefWidth="150.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.guicontrollers.CloudController">
+   <children>
+      <ImageView fitHeight="200.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Graphical_Assets/Reame/PNG/reameB_2.png" />
+         </image>
+      </ImageView>
+      <GridPane>
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Circle fx:id="student0" fill="#21bbef" radius="15.0" stroke="#cccccc" strokeLineCap="ROUND" strokeType="INSIDE" translateX="12.5" translateY="15.0" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </Circle>
+            <Circle fx:id="student3" fill="#21bbef" radius="15.0" stroke="#cccccc" strokeLineCap="ROUND" strokeType="INSIDE" translateX="5.0" translateY="-10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </Circle>
+            <Circle fx:id="student1" fill="#21bbef" radius="15.0" stroke="#cccccc" strokeLineCap="ROUND" strokeType="INSIDE" translateX="30.0" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </Circle>
+            <Circle fx:id="student2" fill="#21bbef" radius="15.0" stroke="#cccccc" strokeLineCap="ROUND" strokeType="INSIDE" translateX="-10.0" translateY="5.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </Circle>
+         </children>
+      </GridPane>
+   </children>
+</StackPane>

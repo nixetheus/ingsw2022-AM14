@@ -3,6 +3,7 @@ package it.polimi.ingsw.network.client;
 
 import it.polimi.ingsw.view.Cli;
 import it.polimi.ingsw.view.CliParser;
+import it.polimi.ingsw.view.ServerParserGUI;
 import it.polimi.ingsw.view.View;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,20 +18,23 @@ import java.net.UnknownHostException;
 public class ClientServerOutputReader extends Thread {
 
   //Attributes
+  private final ServerParserGUI serverParserGUI;
   private final View view;
   private final CliParser cliParser;
   private final int portNumber;
   private final String hostName;
   private final Socket socket;
+  private final boolean isGUI;
 
-  public ClientServerOutputReader(int portNumber, String hostName, Socket socket) {
+  public ClientServerOutputReader(int portNumber, String hostName, Socket socket, ServerParserGUI SPG, boolean GUI) {
 
     view = new Cli();
     this.portNumber = portNumber;
     this.hostName = hostName;
     this.cliParser = new CliParser();
     this.socket = socket;
-
+    this.serverParserGUI = SPG;
+    this.isGUI = GUI;
   }
 
 
@@ -58,8 +62,11 @@ public class ClientServerOutputReader extends Thread {
         //print the server response
         serverOutput = in.readLine();
 
-        view.printGameUpdate(cliParser.fromJson(serverOutput));
-
+        if (isGUI) {
+          serverParserGUI.elaborateMessage(serverOutput);
+        } else {
+          view.printGameUpdate(cliParser.fromJson(serverOutput));
+        }
       }
 
     } catch (UnknownHostException e) {

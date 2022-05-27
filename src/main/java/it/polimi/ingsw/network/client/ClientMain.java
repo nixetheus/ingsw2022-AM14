@@ -3,10 +3,12 @@ package it.polimi.ingsw.network.client;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import it.polimi.ingsw.view.Eriantys;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.Socket;
+import javafx.application.Application;
 
 
 /**
@@ -21,12 +23,12 @@ public class ClientMain {
   public static void main(String[] args) throws IOException {
 
     setPortNumberFromJson();
-
+    //boolean isGUI = Integer.parseInt(args[1]) > 0;
     Socket socket = new Socket(hostName, portNumber);
 
     //thread for asynchronous communication
-    ClientServerOutputReader clientServerOutputReader = new ClientServerOutputReader(portNumber,
-        hostName, socket);
+    //ClientServerOutputReader clientServerOutputReader = new ClientServerOutputReader(portNumber,
+        //hostName, socket);
 
     //thread for synchronous communication
     ClientUserInput clientUserInput = new ClientUserInput(portNumber, hostName, socket);
@@ -36,7 +38,7 @@ public class ClientMain {
 
     //Let's start!
     clientUserInput.start();
-    clientServerOutputReader.start();
+    //clientServerOutputReader.start();
     pinger.start();
   }
 

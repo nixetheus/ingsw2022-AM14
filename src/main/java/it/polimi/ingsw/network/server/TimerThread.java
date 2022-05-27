@@ -5,7 +5,7 @@ import java.util.TimerTask;
 
 public class TimerThread implements Runnable {
 
-  private final int timeOut = 5000;
+  private final int timeOut = 1234565000;
   private final Timer pingTimer;
   private final TimerTask endGameTask = new TimerTask() {
     @Override
