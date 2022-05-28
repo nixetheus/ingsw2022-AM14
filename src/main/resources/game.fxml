@@ -128,7 +128,7 @@
                 <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" vgrow="SOMETIMES" />
               </rowConstraints>
       
-                <fx:include fx:id="playerBoard" maxWidth="348" source="playerBoard.fxml" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.rowSpan="2147483647" />
+                <fx:include fx:id="player0Board" maxWidth="348" source="playerBoard.fxml" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.rowSpan="2147483647" />
                 <fx:include fx:id="player1Board" maxWidth="348" source="playerBoard.fxml" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.rowSpan="2147483647" />
                 <fx:include fx:id="player2Board" maxWidth="348" source="playerBoard.fxml" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.rowSpan="2147483647" />
                 <fx:include fx:id="player3Board" maxWidth="348" source="playerBoard.fxml" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.rowSpan="2147483647" />

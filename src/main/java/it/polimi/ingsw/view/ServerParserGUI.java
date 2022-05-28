@@ -16,8 +16,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.guicontrollers.GameController;
 import it.polimi.ingsw.guicontrollers.IslandController;
+import it.polimi.ingsw.guicontrollers.PlayerBoardController;
 import it.polimi.ingsw.helpers.Color;
 import it.polimi.ingsw.helpers.MessageSecondary;
+import it.polimi.ingsw.helpers.StudentsPlayerId;
 import it.polimi.ingsw.messages.BeginTurnMessage;
 import it.polimi.ingsw.messages.ClientResponse;
 import it.polimi.ingsw.messages.LoginMessageResponse;
@@ -35,6 +37,7 @@ import javafx.stage.Stage;
 
 public class ServerParserGUI {
 
+  private int playerId;
   private final Stage mainStage;
   private final Scene loginParamsScene;
   private final Scene loginLobbyScene;
@@ -91,7 +94,7 @@ public class ServerParserGUI {
       return gson.fromJson(jsonString, MoveMessageResponse.class);
     }
     if (jsonString.contains("PLAY")) {
-      return gson.fromJson(jsonString, PhaseMessageResponse.class);
+      return gson.fromJson(jsonString, PlayMessageResponse.class);
     }
     if (jsonString.contains("INFO")) {
       return gson.fromJson(jsonString, ClientResponse.class);
@@ -106,6 +109,8 @@ public class ServerParserGUI {
     if (loginMessage.getMessageSecondary() == ASK_GAME_PARAMS) {
       Platform.runLater(() -> mainStage.setScene(loginParamsScene));
     } else if (loginMessage.getMessageSecondary() == LOBBY) {
+      playerId = loginMessage.getPlayerId();
+      mainController.setPlayerId(playerId);
       Platform.runLater(() -> mainStage.setScene(loginLobbyScene));
     }
   }
@@ -190,19 +195,23 @@ public class ServerParserGUI {
       }
       break;
     }
-    mainController.setTextArea(returnString.toString());
+    if (playMessage.getResponse() != null)
+      Platform.runLater(() ->mainController.setTextArea(playMessage.getResponse()));
   }
 
   private void elaborateInfoMessage(ClientResponse infoMessage) {
-    mainController.setTextArea(infoMessage.getResponse());
+    if (infoMessage.getResponse() != null)
+      Platform.runLater(() ->mainController.setTextArea(infoMessage.getResponse()));
   }
 
   private void elaboratePhaseMessage(BeginTurnMessage phaseMessage) {
 
     if (phaseMessage.getMessageSecondary() == INIT_GAME) {
       Platform.runLater(() -> mainStage.setScene(gameScene));
-    } else {
-      // SET ISLANDS STUDENTS
+    }
+
+    // SET ISLANDS STUDENTS
+    Platform.runLater(() -> {
       if (phaseMessage.getStudentsIsland() != null) {
         for (int index = 0; index < phaseMessage.getStudentsIsland().size(); index++) {
           int[] students = phaseMessage.getStudentsIsland().elementAt(index);
@@ -218,16 +227,38 @@ public class ServerParserGUI {
               .setYellowStudents(students[Color.YELLOW.ordinal()]);
         }
       }
+    });
 
-      // SET CLOUD TILES
+    // SET CLOUD TILES
+    Platform.runLater(() -> {
       if (phaseMessage.getStudentsCloudTiles() != null) {
         for (int index = 0; index < phaseMessage.getStudentsCloudTiles().size(); index++) {
           int[] students = phaseMessage.getStudentsCloudTiles().elementAt(index);
           mainController.cloudControllers.elementAt(index).setStudents(students);
         }
       }
+    });
 
-      // TODO: REMAINING MSG PARTS
-    }
+    // DINING ROOMS
+    Platform.runLater(() -> {
+      for (StudentsPlayerId playerDiningRoom : phaseMessage.getStudentDiningRoom()) {
+        PlayerBoardController board = mainController.BoardsControllers.elementAt(playerDiningRoom.getPlayerId());
+        board.showStudents(playerDiningRoom.getStudents()[Color.RED.ordinal()], board.redStudents);
+        board.showStudents(playerDiningRoom.getStudents()[Color.BLUE.ordinal()], board.blueStudents);
+        board.showStudents(playerDiningRoom.getStudents()[Color.PURPLE.ordinal()], board.pinkStudents);
+        board.showStudents(playerDiningRoom.getStudents()[Color.GREEN.ordinal()], board.greenStudents);
+        board.showStudents(playerDiningRoom.getStudents()[Color.YELLOW.ordinal()], board.yellowStudents);
+      }
+    });
+
+    // ENTRANCES
+    Platform.runLater(() -> {
+      for (StudentsPlayerId playerEntrance : phaseMessage.getStudentEntrance()) {
+        PlayerBoardController board = mainController.BoardsControllers.elementAt(playerEntrance.getPlayerId());
+        board.setEntranceStudents(playerEntrance.getStudents());
+      }
+    });
+
+    // TODO: REMAINING MSG PARTS
   }
 }

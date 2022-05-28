@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="593.0" style="-fx-border-color: black; -fx-border-width: 2;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.guicontrollers.LoginController">
+<StackPane minHeight="-Infinity" minWidth="-Infinity"  onKeyPressed="#onPressEnterParams" prefHeight="593.0" style="-fx-border-color: black; -fx-border-width: 2;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.guicontrollers.LoginController">
    <children>
       <ImageView fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
          <image>

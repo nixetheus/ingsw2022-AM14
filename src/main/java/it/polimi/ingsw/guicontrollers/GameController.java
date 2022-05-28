@@ -86,21 +86,19 @@ public class GameController implements Initializable {
   public IslandController island11Controller;
   public Vector<IslandController> islandsControllers;
 
-  // PlayerBoard
-  @FXML private Parent playerBoard;
-  @FXML private PlayerBoardController playerBoardController;
-
   // Other Players boards
-  int currentBoardIndex = 0;
   int numberOfPlayers = 2;
+  int currentBoardIndex = 0;
+  @FXML private Parent player0Board;
   @FXML private Parent player1Board;
   @FXML private Parent player2Board;
-  @FXML private Parent player3Board;
+  @FXML private Parent player3Board;  // PlayerBoard
+  @FXML private PlayerBoardController player0BoardController;
   @FXML private PlayerBoardController player1BoardController;
   @FXML private PlayerBoardController player2BoardController;
   @FXML private PlayerBoardController player3BoardController;
   Vector<Parent> boards = new Vector<>();
-  Vector<PlayerBoardController> adversariesBoardsControllers = new Vector<>();
+  public Vector<PlayerBoardController> BoardsControllers = new Vector<>();
 
   // Coins
   public Label playerCoins;
@@ -110,25 +108,25 @@ public class GameController implements Initializable {
   private String activeCharacterId;
   private Pane activeCharacterPane;
 
+  private int playerId = 0;
+
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
 
-    boards.add(playerBoard);
+    boards.add(player0Board);
     boards.add(player1Board);
     boards.add(player2Board);
     boards.add(player3Board);
 
-    adversariesBoardsControllers.add(player1BoardController);
-    adversariesBoardsControllers.add(player2BoardController);
-    adversariesBoardsControllers.add(player3BoardController);
+    BoardsControllers.add(player0BoardController);
+    BoardsControllers.add(player1BoardController);
+    BoardsControllers.add(player2BoardController);
+    BoardsControllers.add(player3BoardController);
 
     for(Parent board : boards) {
       board.setDisable(true);
       board.setVisible(false);
     }
-
-    boards.elementAt(currentBoardIndex).setDisable(false);
-    boards.elementAt(currentBoardIndex).setVisible(true);
 
     textAreaStrings = new Vector<>();
 
@@ -171,6 +169,13 @@ public class GameController implements Initializable {
     this.parser = parser;
   }
 
+  public void setPlayerId(int playerId) {
+    this.playerId = playerId;
+    boards.elementAt(playerId).setDisable(false);
+    boards.elementAt(playerId).setVisible(true);
+    currentBoardIndex = playerId;
+  }
+
   @FXML
   protected void onChangeBoardUp(MouseEvent event) {
     currentBoardIndex++;
@@ -181,9 +186,8 @@ public class GameController implements Initializable {
       board.setVisible(false);
     }
 
-    if (currentBoardIndex == 0)
+    if (currentBoardIndex == playerId)
       boards.elementAt(currentBoardIndex).setDisable(false);
-
     boards.elementAt(currentBoardIndex).setVisible(true);
   }
 
@@ -197,9 +201,8 @@ public class GameController implements Initializable {
       board.setVisible(false);
     }
 
-    if (currentBoardIndex == 0)
+    if (currentBoardIndex == playerId)
       boards.elementAt(currentBoardIndex).setDisable(false);
-
     boards.elementAt(currentBoardIndex).setVisible(true);
   }
 
@@ -216,7 +219,7 @@ public class GameController implements Initializable {
     }
 
     if (event.getX() < 950 || event.getY() < 500 || event.getY() > 600) {
-      playerBoardController.unClickStudentsEntrance();
+      BoardsControllers.elementAt(playerId).unClickStudentsEntrance();
     }
 
     Bounds boundsCh0 = character0.localToScene(character0.getBoundsInLocal());
@@ -260,7 +263,21 @@ public class GameController implements Initializable {
   @FXML
   protected void onClickIsland(MouseEvent event) {
     StackPane island = (StackPane)event.getSource();
-    parser.moveMotherNature(island.getId());
+    String studentEntrance = BoardsControllers.elementAt(playerId).studentEntranceId;
+
+    // CHARACTER CARD
+    if (isCharacterActive) {
+      // TODO
+    }
+    // MOVE STUDENT ENTRANCE TO ISLAND
+    else if (studentEntrance != null) {
+      parser.moveStudentFromEntrance(island.getId(), false, studentEntrance);
+    }
+    // MOVE MOTHER NATURE
+    else {
+      parser.moveMotherNature(island.getId());
+    }
+
   }
 
   @FXML

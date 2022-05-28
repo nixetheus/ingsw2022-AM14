@@ -123,6 +123,7 @@ public class MainController {
             turnManager.updateCounters();
             turnManager.changeState();
             this.serverSemaphore.release();
+            loginResponse.setPlayerId(0);
             loginResponse.setResponse("Game parameters correctly set!");
             loginResponse.setMessageSecondary(MessageSecondary.LOBBY);
 
@@ -167,6 +168,7 @@ public class MainController {
               // SEND WELCOME MESSAGE
               loginResponse.setResponse("Welcome aboard " + newPlayer.getPlayerNickname() + "!  ");
               loginResponse.setPlayerId(turnManager.getCurrentNumberOfUsers());
+              loginResponse.setMessageSecondary(MessageSecondary.LOBBY);
 
               // SEND READY MESSAGE TODO: CHANGE SECONDARY
               LoginMessageResponse loginMessageResponse2 = new LoginMessageResponse(
@@ -192,6 +194,7 @@ public class MainController {
                   == 1) {
                 loginResponse.setMessageSecondary(MessageSecondary.ASK_GAME_PARAMS);
               } else {
+                loginResponse.setPlayerId(turnManager.getCurrentNumberOfUsers());
                 loginResponse.setMessageSecondary(MessageSecondary.LOBBY);
               }
             }

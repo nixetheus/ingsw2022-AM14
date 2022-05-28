@@ -8,6 +8,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
 public class LoginController implements Initializable {
@@ -31,16 +33,33 @@ public class LoginController implements Initializable {
   @FXML
   protected void sendLoginMessage(MouseEvent event) {
     String usernameString = username.getText();
-    String hostnameString = hostname.getText();
-    String portNumberString = portNumber.getText();
-    parser.sendLoginMessage(usernameString);
+    if (usernameString != null)
+      parser.sendLoginMessage(usernameString);
   }
 
   @FXML
   protected void sendLoginParams(MouseEvent event) {
-    Boolean isGameExpert = expertMode.isSelected();
+    boolean isGameExpert = expertMode.isSelected();
     String numberOfPlayersString = "";
     parser.sendLoginParameters(isGameExpert, "4 Players");
+  }
+
+  @FXML
+  protected void onPressEnterLogin(KeyEvent key) {
+    if(key.getCode() == KeyCode.ENTER) {
+      String usernameString = username.getText();
+      if (usernameString != null)
+        parser.sendLoginMessage(usernameString);
+    }
+  }
+
+  @FXML
+  protected void onPressEnterParams(KeyEvent key) {
+    if(key.getCode() == KeyCode.ENTER) {
+      boolean isGameExpert = expertMode.isSelected();
+      String numberOfPlayersString = "";
+      parser.sendLoginParameters(isGameExpert, "4 Players");
+    }
   }
 
 }

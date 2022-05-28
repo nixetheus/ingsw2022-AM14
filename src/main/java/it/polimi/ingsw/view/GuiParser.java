@@ -49,6 +49,7 @@ public class GuiParser {
 
     PlayMessage playAssistantMessage = new PlayMessage(MessageSecondary.ASSISTANT);
     playAssistantMessage.setAssistantId(id);
+    out.println(gson.toJson(playAssistantMessage));
   }
 
   public void playCharacter(String characterId) {
@@ -67,6 +68,7 @@ public class GuiParser {
 
     MoveMessage moveFromCloudMessage = new MoveMessage(MessageSecondary.CLOUD_TILE);
     moveFromCloudMessage.setCloudTileNumber(id);
+    out.println(gson.toJson(moveFromCloudMessage));
   }
 
   public void moveMotherNature(String islandId) {
@@ -75,6 +77,8 @@ public class GuiParser {
 
     MoveMessage moveMNMessage = new MoveMessage(MessageSecondary.CLOUD_TILE);
     moveMNMessage.setIslandNumber(id);
+
+    out.println(gson.toJson(moveMNMessage));
   }
 
   public void moveStudentFromEntrance(String islandId, boolean diningRoom, String studentId) {
@@ -91,6 +95,8 @@ public class GuiParser {
       moveStudentEntranceMessage.setIslandNumber(islId);
       moveStudentEntranceMessage.setPlace(1);
     }
+
+    out.println(gson.toJson(moveStudentEntranceMessage));
 
   }
 }
