@@ -1,10 +1,13 @@
 package it.polimi.ingsw.view;
 
 
+import static it.polimi.ingsw.helpers.MessageSecondary.ASK_GAME_PARAMS;
 import static it.polimi.ingsw.helpers.MessageSecondary.ASSISTANT;
 import static it.polimi.ingsw.helpers.MessageSecondary.CHARACTER;
 import static it.polimi.ingsw.helpers.MessageSecondary.CLOUD_TILE;
 import static it.polimi.ingsw.helpers.MessageSecondary.ENTRANCE;
+import static it.polimi.ingsw.helpers.MessageSecondary.INIT_GAME;
+import static it.polimi.ingsw.helpers.MessageSecondary.LOBBY;
 import static it.polimi.ingsw.helpers.MessageSecondary.MOTHER_NATURE;
 import static it.polimi.ingsw.helpers.MessageSecondary.PLAYER_PARAMS;
 
@@ -100,9 +103,9 @@ public class ServerParserGUI {
   }
 
   private void elaborateLoginMessage(LoginMessageResponse loginMessage) {
-    if (loginMessage.getMessageSecondary() == PLAYER_PARAMS) {
+    if (loginMessage.getMessageSecondary() == ASK_GAME_PARAMS) {
       Platform.runLater(() -> mainStage.setScene(loginParamsScene));
-    } else {
+    } else if (loginMessage.getMessageSecondary() == LOBBY) {
       Platform.runLater(() -> mainStage.setScene(loginLobbyScene));
     }
   }
@@ -196,31 +199,35 @@ public class ServerParserGUI {
 
   private void elaboratePhaseMessage(BeginTurnMessage phaseMessage) {
 
-    // SET ISLANDS STUDENTS
-    if ( phaseMessage.getStudentsIsland() != null) {
-      for (int index = 0; index < phaseMessage.getStudentsIsland().size(); index++) {
-        int[] students = phaseMessage.getStudentsIsland().elementAt(index);
-        mainController.islandsControllers.elementAt(index)
-            .setRedStudents(students[Color.RED.ordinal()]);
-        mainController.islandsControllers.elementAt(index)
-            .setBlueStudents(students[Color.BLUE.ordinal()]);
-        mainController.islandsControllers.elementAt(index)
-            .setPinkStudents(students[Color.PURPLE.ordinal()]);
-        mainController.islandsControllers.elementAt(index)
-            .setGreenStudents(students[Color.GREEN.ordinal()]);
-        mainController.islandsControllers.elementAt(index)
-            .setYellowStudents(students[Color.YELLOW.ordinal()]);
+    if (phaseMessage.getMessageSecondary() == INIT_GAME) {
+      Platform.runLater(() -> mainStage.setScene(gameScene));
+    } else {
+      // SET ISLANDS STUDENTS
+      if (phaseMessage.getStudentsIsland() != null) {
+        for (int index = 0; index < phaseMessage.getStudentsIsland().size(); index++) {
+          int[] students = phaseMessage.getStudentsIsland().elementAt(index);
+          mainController.islandsControllers.elementAt(index)
+              .setRedStudents(students[Color.RED.ordinal()]);
+          mainController.islandsControllers.elementAt(index)
+              .setBlueStudents(students[Color.BLUE.ordinal()]);
+          mainController.islandsControllers.elementAt(index)
+              .setPinkStudents(students[Color.PURPLE.ordinal()]);
+          mainController.islandsControllers.elementAt(index)
+              .setGreenStudents(students[Color.GREEN.ordinal()]);
+          mainController.islandsControllers.elementAt(index)
+              .setYellowStudents(students[Color.YELLOW.ordinal()]);
+        }
       }
-    }
 
-    // SET CLOUD TILES
-    if ( phaseMessage.getStudentsCloudTiles() != null) {
-      for (int index = 0; index < phaseMessage.getStudentsCloudTiles().size(); index++) {
-        int[] students = phaseMessage.getStudentsCloudTiles().elementAt(index);
-        mainController.cloudControllers.elementAt(index).setStudents(students);
+      // SET CLOUD TILES
+      if (phaseMessage.getStudentsCloudTiles() != null) {
+        for (int index = 0; index < phaseMessage.getStudentsCloudTiles().size(); index++) {
+          int[] students = phaseMessage.getStudentsCloudTiles().elementAt(index);
+          mainController.cloudControllers.elementAt(index).setStudents(students);
+        }
       }
-    }
 
-    // TODO: REMAINING MSG PARTS
+      // TODO: REMAINING MSG PARTS
+    }
   }
 }

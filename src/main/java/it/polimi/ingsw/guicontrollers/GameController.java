@@ -260,13 +260,13 @@ public class GameController implements Initializable {
   @FXML
   protected void onClickIsland(MouseEvent event) {
     StackPane island = (StackPane)event.getSource();
-    System.out.println(island.getId());
+    parser.moveMotherNature(island.getId());
   }
 
   @FXML
   protected void onClickCloudTile(MouseEvent event) {
     StackPane cloudTile = (StackPane)event.getSource();
-    System.out.println(cloudTile.getId());
+    parser.moveStudentsFromCloud(cloudTile.getId());
   }
 
   @FXML
@@ -292,7 +292,7 @@ public class GameController implements Initializable {
   @FXML
   protected void onClickAssistant(MouseEvent event) {
     Pane assistant = (Pane)event.getSource();
-    System.out.println(assistant.getId());
+    parser.playAssistant(assistant.getId());
   }
 
   @FXML
@@ -311,6 +311,7 @@ public class GameController implements Initializable {
       character.setEffect(glow);
       character.setScaleX(1.2);
       character.setScaleY(1.2);
+      parser.playCharacter(character.getId());
     }
   }
 

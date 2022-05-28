@@ -22,6 +22,8 @@ public enum MessageSecondary {
 
   GAME_PARAMS,
   PLAYER_PARAMS,
+  ASK_GAME_PARAMS,
+  LOBBY,
 
   ERROR,
 

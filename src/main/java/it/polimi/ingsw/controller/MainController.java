@@ -35,7 +35,7 @@ public class MainController {
   private final MoveController moveController;
   private final LoginController loginController;
   private final Vector<Team> teams;
-  private Vector<Message> messages;
+  //private Vector<Message> messages;
   // Attributes
   private Game game;
 
@@ -124,7 +124,7 @@ public class MainController {
             turnManager.changeState();
             this.serverSemaphore.release();
             loginResponse.setResponse("Game parameters correctly set!");
-            loginResponse.setMessageSecondary(null);
+            loginResponse.setMessageSecondary(MessageSecondary.LOBBY);
 
           } else {
             loginResponse.setResponse("Error! Game parameters are not correct! Retry!");
@@ -163,12 +163,14 @@ public class MainController {
             if (teams.stream().map(team -> team.getPlayers().size()).reduce(0, Integer::sum)
                 == numberOfPlayers) {
               setupGame();
-              loginResponse.setResponse("Welcome aboard " + newPlayer.getPlayerNickname() + "!  ");
-              loginResponse.setPlayerId(
-                  turnManager.getCurrentNumberOfUsers());
 
+              // SEND WELCOME MESSAGE
+              loginResponse.setResponse("Welcome aboard " + newPlayer.getPlayerNickname() + "!  ");
+              loginResponse.setPlayerId(turnManager.getCurrentNumberOfUsers());
+
+              // SEND READY MESSAGE TODO: CHANGE SECONDARY
               LoginMessageResponse loginMessageResponse2 = new LoginMessageResponse(
-                  MessageSecondary.GAME_PARAMS);
+                  MessageSecondary.INFO_HELP);
               loginMessageResponse2
                   .setResponse("Everyone is ready now! We shall let the game start!");
               loginMessageResponse2.setPlayerId(-1);
@@ -178,14 +180,20 @@ public class MainController {
               messages.addAll(changeTurnMessages);
 
               messages.add(sendClientResponse(MessageSecondary.ASSISTANT,
-                  "its your turn to play an assistant"));
+                  "It's your turn to play an assistant"));
 
 
             } else {
               loginResponse.setResponse("Welcome aboard " + newPlayer.getPlayerNickname() + "!");
               loginResponse.setPlayerId(
                   turnManager.getCurrentNumberOfUsers());
-
+              // FIRST PLAYER
+              if (teams.stream().map(team -> team.getPlayers().size()).reduce(0, Integer::sum)
+                  == 1) {
+                loginResponse.setMessageSecondary(MessageSecondary.ASK_GAME_PARAMS);
+              } else {
+                loginResponse.setMessageSecondary(MessageSecondary.LOBBY);
+              }
             }
           } else {
             loginResponse.setResponse("Error while creating new player, please try again!");
@@ -315,7 +323,7 @@ public class MainController {
   }
 
   /**
-   * This method compile the begin turn message at the beginning of the game and each turn
+   * This method compiles the begin-turn message at the beginning of the game and each turn
    *
    * @param messageSecondary the message secondary to create the message
    * @return the vector of messages to be sent to each client

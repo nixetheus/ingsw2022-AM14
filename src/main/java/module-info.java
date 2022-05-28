@@ -12,5 +12,7 @@ module it.polimi.ingsw {
   opens it.polimi.ingsw.view to javafx.fxml;
 
   opens it.polimi.ingsw.messages to com.google.gson;
+  exports it.polimi.ingsw.messages to com.google.gson;
+  opens it.polimi.ingsw.helpers to com.google.gson;
   exports it.polimi.ingsw.helpers to com.google.gson;
 }

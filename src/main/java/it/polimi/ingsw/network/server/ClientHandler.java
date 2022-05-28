@@ -74,7 +74,7 @@ public class ClientHandler implements Runnable {
           break;
         }
 
-        while (!responses.isEmpty() && responses != null &&
+        while (!responses.isEmpty() &&
             responses.get(0).getMessageSecondary() != MessageSecondary.PING) {
 
           Message response = responses.firstElement();
