@@ -161,7 +161,13 @@ public class CliParser {
       case ASSISTANT:
         return msg.getResponse();
       case GAME_ORDER:
-        return "You have to play as" + msg.getPlayerOrderId().indexOf(this.playerId) + "player";
+        if(msg.getPlayerOrderId().indexOf(this.playerId)==0){
+          return "its your turn to move some students";
+        }
+        else{
+          return "You have to play as " + (msg.getPlayerOrderId().indexOf(this.playerId)+1) + " player";
+        }
+
     }
 
     return null;

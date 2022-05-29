@@ -149,11 +149,12 @@ public class TurnManager {
         secondaryPhase = MessageSecondary.ASSISTANT;
         break;
       case 4:
-        currentNumberOfPlayedAssistants = 0;
+        //currentNumberOfPlayedAssistants = 0;
         mainGamePhase = MessageMain.MOVE;
         secondaryPhase = MessageSecondary.ENTRANCE;
         break;
       case 5:
+        currentNumberOfPlayedAssistants = 0;
         currentNumberOfStudentsFromEntrance = 0;
         mainGamePhase = MessageMain.MOVE;
         secondaryPhase = MessageSecondary.MOTHER_NATURE;
