@@ -18,21 +18,23 @@ public class ClientUserInput extends Thread {
   private final int portNumber;
   private final String hostName;
   private final Socket socket;
+  private final ClientServerOutputReader clientServerOutputReader;
+  private int playerId;
 
-  public ClientUserInput(int portNumber, String hostName, Socket socket) {
+  public ClientUserInput(int portNumber, String hostName, Socket socket,
+      ClientServerOutputReader clientServerOutputReader) {
 
     messageParser = new MessageParser();
     this.portNumber = portNumber;
     this.hostName = hostName;
     this.socket = socket;
-
+    this.clientServerOutputReader = clientServerOutputReader;
   }
 
 
   /**
    * This method creates a socket to manage communication with the server and then takes care of
-   * data exchange with the server
-   * the while method is where the data exchange takes place
+   * data exchange with the server the while method is where the data exchange takes place
    */
   public void run() {
 
@@ -53,14 +55,29 @@ public class ClientUserInput extends Thread {
       System.out.println("Communication starts");
       System.out.println("Enter a nickname");
 
+      //read input from stdin
+      userInput = stdIn.readLine();
+
+      //processed input from controller, ready to be sent to the server
+      String clientInputJson = messageParser.parser(userInput);
+
+      //send to server
+      out.println(clientInputJson);
+
+      //set the player id
+
       //Communications with server
       while (!userInput.equals("quit")) {
 
         //read input from stdin
         userInput = stdIn.readLine();
 
+        //set the player id
+        this.playerId = clientServerOutputReader.getCliParser().getPlayerId();
+        this.messageParser.setPlayerId(this.playerId);
+
         //processed input from controller, ready to be sent to the server
-        String clientInputJson = messageParser.parser(userInput);
+        clientInputJson = messageParser.parser(userInput);
 
         //send to server
         out.println(clientInputJson);

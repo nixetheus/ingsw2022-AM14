@@ -59,13 +59,16 @@ public class CliParser {
   }
 
   private String printLoginMessage(LoginMessageResponse msg) {
-    if (msg.getMessageSecondary() == MessageSecondary.PLAYER_PARAMS) {
+    if (msg.getMessageSecondary() == MessageSecondary.LOBBY) {
       setPlayerId(msg.getPlayerId());
     }
     StringBuilder returnString = new StringBuilder();
     returnString.append(msg.getResponse());
-    if (msg.getPlayerId() == 0 && msg.getMessageSecondary() == MessageSecondary.PLAYER_PARAMS) {
+    if (msg.getPlayerId() == 0 && msg.getMessageSecondary() == MessageSecondary.ASK_GAME_PARAMS) {
       returnString.append("Now you have to choose the game mode and number of players");
+    }
+    if(msg.getMessageSecondary()==MessageSecondary.LOBBY){
+      returnString.append("welcome into the Eriantys lobby");
     }
     return String.valueOf(returnString);
   }
@@ -174,51 +177,81 @@ public class CliParser {
     StringBuilder returnString = new StringBuilder();
     switch (msg.getMessageSecondary()) {
       case INIT_GAME:
-        returnString.append("The game has now started you are the player number ")
-            .append(this.playerId).append("\n");
-
-        returnString.append("The island are as follows").append("\n");
-        for (int[] students : msg.getStudentsIsland()) {
-          returnString.append("Island number ").append(msg.getStudentsIsland().indexOf(students))
-              .append(": \n");
-          for (Color color : Color.values()) {
-            returnString.append(students[color.ordinal()]).append(" ")
-                .append(color).append(" students;\n");
-          }
-          returnString.append("\n");
-        }
-
-        returnString.append("your and opponents entrance are as follows").append("\n");
-        for (StudentsPlayerId entranceIdPlayer : msg.getStudentEntrance()) {
-          if (entranceIdPlayer.getPlayerId() == this.playerId) {
-            returnString.append("your entrance is:").append("\n");
-          } else {
-            returnString.append("an opponent entrance is").append("\n");
-          }
-          for (Color color : Color.values()) {
-            returnString.append(entranceIdPlayer.getStudents()[color.ordinal()]).append(" ")
-                .append(color).append(" students;\n");
-          }
-          returnString.append("\n");
-        }
-
-        returnString.append("these are the assistant tou can play :").append("\n");
-        Gson gson = new Gson();
-        JsonArray list = gson
-            .fromJson(new FileReader("src/main/resources/json/assistants.json"), JsonArray.class);
-        for (Integer idAssistant : msg.getPlayableAssistantId()) {
-
-          JsonObject object = list.get(idAssistant).getAsJsonObject();
-          int speed = object.get("SPEED").getAsInt();
-          int moves = object.get("MOVES").getAsInt();
-
-          returnString.append("assistant speed is").append(" ").append(speed).append("\n")
-              .append("max mother nature moves").append(" ").append(moves).append("\n")
-              .append("\n");
-        }
+        return printUpdate(returnString, msg);
 
       case CHANGE_TURN:
-        //TODO
+        //TODO test
+        returnString.append(printUpdate(returnString, msg));
+        returnString.append("your and opponents entrance are as follows").append("\n");
+        for (StudentsPlayerId diningRoomIdPlayer : msg.getStudentDiningRoom()) {
+          if (diningRoomIdPlayer.getPlayerId() == this.playerId) {
+            returnString.append("your diningRoom is:").append("\n");
+          } else {
+            returnString.append("an opponent diningRoom is").append("\n");
+          }
+          for (Color color : Color.values()) {
+            returnString.append(diningRoomIdPlayer.getStudents()[color.ordinal()]).append(" ")
+                .append(color).append(" students;\n");
+          }
+          returnString.append("\n");
+        }
+    }
+    return null;
+  }
+
+  /**
+   *
+   */
+  private String printUpdate(StringBuilder returnString, BeginTurnMessage msg)
+      throws FileNotFoundException {
+    returnString.append("The game has now started you are the player number ")
+        .append(this.playerId).append("\n");
+
+    returnString.append("The island are as follows").append("\n");
+    for (int[] students : msg.getStudentsIsland()) {
+      returnString.append("Island number ").append(msg.getStudentsIsland().indexOf(students))
+          .append(": \n");
+      for (Color color : Color.values()) {
+        returnString.append(students[color.ordinal()]).append(" ")
+            .append(color).append(" students;\n");
+      }
+      if(msg.getMotherNaturePosition()==msg.getStudentsIsland().indexOf(students)){
+        returnString.append("mother nature is here");
+      }
+      else{
+        returnString.append("mother nature is NOT here");
+      }
+      returnString.append("\n").append("\n");
+    }
+
+
+    returnString.append("your and opponents entrance are as follows").append("\n");
+    for (StudentsPlayerId entranceIdPlayer : msg.getStudentEntrance()) {
+      if (entranceIdPlayer.getPlayerId() == this.playerId) {
+        returnString.append("your entrance is:").append("\n");
+      } else {
+        returnString.append("an opponent entrance is").append("\n");
+      }
+      for (Color color : Color.values()) {
+        returnString.append(entranceIdPlayer.getStudents()[color.ordinal()]).append(" ")
+            .append(color).append(" students;\n");
+      }
+      returnString.append("\n");
+    }
+
+    returnString.append("these are the assistant tou can play :").append("\n");
+    Gson gson = new Gson();
+    JsonArray list = gson
+        .fromJson(new FileReader("src/main/resources/json/assistants.json"), JsonArray.class);
+    for (Integer idAssistant : msg.getPlayableAssistantId()) {
+
+      JsonObject object = list.get(idAssistant).getAsJsonObject();
+      int speed = object.get("SPEED").getAsInt();
+      int moves = object.get("MOVES").getAsInt();
+
+      returnString.append("assistant speed is").append(" ").append(speed).append("\n")
+          .append("max mother nature moves").append(" ").append(moves).append("\n")
+          .append("\n");
     }
     return returnString.toString();
   }

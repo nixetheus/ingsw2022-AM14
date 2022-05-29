@@ -25,8 +25,10 @@ public class ClientServerOutputReader extends Thread {
   private final String hostName;
   private final Socket socket;
   private final boolean isGUI;
+  private int playerId;
 
-  public ClientServerOutputReader(int portNumber, String hostName, Socket socket, ServerParserGUI SPG, boolean GUI) {
+  public ClientServerOutputReader(int portNumber, String hostName, Socket socket,
+      ServerParserGUI SPG, boolean GUI) {
 
     view = new Cli();
     this.portNumber = portNumber;
@@ -40,8 +42,7 @@ public class ClientServerOutputReader extends Thread {
 
   /**
    * This method creates a socket to manage communication with the server and then takes care of
-   * data exchange with the server
-   * the while method is where the data exchange takes place
+   * data exchange with the server the while method is where the data exchange takes place
    */
   public void run() {
 
@@ -56,6 +57,16 @@ public class ClientServerOutputReader extends Thread {
 
       //Communications with server
       String serverOutput = "";
+
+      //print the server response
+      serverOutput = in.readLine();
+
+      if (isGUI) {
+        serverParserGUI.elaborateMessage(serverOutput);
+      } else {
+        view.printGameUpdate(cliParser.fromJson(serverOutput));
+        this.playerId = cliParser.getPlayerId();
+      }
 
       while (!serverOutput.equals("quit")) {
 
@@ -82,4 +93,7 @@ public class ClientServerOutputReader extends Thread {
     }
   }
 
+  public CliParser getCliParser() {
+    return cliParser;
+  }
 }

@@ -14,6 +14,7 @@ public class BeginTurnMessage extends Message {
   Vector<int[]> studentsCloudTiles;
   Vector<Integer> playableAssistantId;
   Vector<Integer> PurchasableCharacterId;
+  int motherNaturePosition;
 
   public BeginTurnMessage(MessageSecondary messageSecondary) {
     this.messageMain = MessageMain.PHASE;
@@ -76,5 +77,13 @@ public class BeginTurnMessage extends Message {
 
   public void setPurchasableCharacterId(Vector<Integer> purchasableCharacterId) {
     PurchasableCharacterId = purchasableCharacterId;
+  }
+
+  public int getMotherNaturePosition() {
+    return motherNaturePosition;
+  }
+
+  public void setMotherNaturePosition(int motherNaturePosition) {
+    this.motherNaturePosition = motherNaturePosition;
   }
 }

@@ -263,9 +263,10 @@ public class MainController {
       // Set current player
       if (msg.getMessageSecondary() == MessageSecondary.ASSISTANT
           && turnManager.getCurrentNumberOfPlayedAssistants() != numberOfPlayers) {
-        this.game.setCurrentPlayerIndex(turnManager.getCurrentNumberOfPlayedAssistants());
-        //new current player turn to play assistant
 
+        this.game.setCurrentPlayerIndex(turnManager.getCurrentNumberOfPlayedAssistants());
+
+        //new current player turn to play assistant
         messages.add(
             sendClientResponse(MessageSecondary.ASSISTANT, "it's your turn to play an assistant"));
 
@@ -358,6 +359,8 @@ public class MainController {
 
         beginTurnMessage.setStudentEntrance(studentsAtEntrances);
         beginTurnMessage.setStudentDiningRoom(studentDiningRooms);
+
+        beginTurnMessage.setMotherNaturePosition(game.getMainBoard().getMotherNature().getPosition());
 
         int[] professorControlIdPlayer = new int[]{-1, -1, -1, -1, -1};
         // for(int i=0;i<5;i++){

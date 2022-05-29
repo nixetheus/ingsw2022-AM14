@@ -10,13 +10,12 @@ import it.polimi.ingsw.network.client.ClientUserInput;
 import it.polimi.ingsw.network.client.Pinger;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.net.Socket;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class Eriantys extends Application {
 
@@ -26,44 +25,6 @@ public class Eriantys extends Application {
   private static String hostName;
   private static ServerParserGUI serverParserGUI;
   private GuiParser guiParser;
-
-  @Override
-  public void start(Stage stage) throws IOException, InterruptedException {
-
-    stage.setResizable(false);
-
-    FXMLLoader loginFxmlLoader = new FXMLLoader(Eriantys.class.getResource("/login.fxml"));
-    FXMLLoader loginParamsFxmlLoader = new FXMLLoader(Eriantys.class.getResource("/loginParams.fxml"));
-    FXMLLoader loginLobbyFxmlLoader = new FXMLLoader(Eriantys.class.getResource("/loginLobby.fxml"));
-    FXMLLoader gameFxmlLoader = new FXMLLoader(Eriantys.class.getResource("/game.fxml"));
-
-    Scene login = new Scene(loginFxmlLoader.load());
-    Scene loginParams = new Scene(loginParamsFxmlLoader.load());
-    Scene loginLobby = new Scene(loginLobbyFxmlLoader.load());
-    Scene game = new Scene(gameFxmlLoader.load());
-
-    guiParser = new GuiParser(portNumber, hostName, socket);
-    serverParserGUI = new ServerParserGUI(stage, login, loginParams, loginLobby, game, gameFxmlLoader);
-
-    LoginController loginController = loginFxmlLoader.getController();
-    loginController.setParser(guiParser);
-
-    LoginController loginParamsController = loginParamsFxmlLoader.getController();
-    loginParamsController.setParser(guiParser);
-
-    GameController gameController = gameFxmlLoader.getController();
-    gameController.setGuiParser(guiParser);
-
-    stage.setTitle("Eriantys");
-    stage.show();
-
-    // Thread for asynchronous communication: Server -> Client
-    ClientServerOutputReader clientServerOutputReader = new ClientServerOutputReader(portNumber,
-        hostName, socket, serverParserGUI, isGUI);
-    clientServerOutputReader.start();
-
-    stage.sizeToScene();
-  }
 
   public static void main(String[] args) throws IOException {
 
@@ -79,7 +40,8 @@ public class Eriantys extends Application {
           hostName, socket, serverParserGUI, isGUI);
       clientServerOutputReader.start();
       // Thread for synchronous communication: CLI -> Server
-      ClientUserInput clientUserInput = new ClientUserInput(portNumber, hostName, socket);
+      ClientUserInput clientUserInput = new ClientUserInput(portNumber, hostName, socket,
+          clientServerOutputReader);
       clientUserInput.start();
     }
 
@@ -105,5 +67,46 @@ public class Eriantys extends Application {
 
     System.out.println(hostName + " " + portNumber);
 
+  }
+
+  @Override
+  public void start(Stage stage) throws IOException, InterruptedException {
+
+    stage.setResizable(false);
+
+    FXMLLoader loginFxmlLoader = new FXMLLoader(Eriantys.class.getResource("/login.fxml"));
+    FXMLLoader loginParamsFxmlLoader = new FXMLLoader(
+        Eriantys.class.getResource("/loginParams.fxml"));
+    FXMLLoader loginLobbyFxmlLoader = new FXMLLoader(
+        Eriantys.class.getResource("/loginLobby.fxml"));
+    FXMLLoader gameFxmlLoader = new FXMLLoader(Eriantys.class.getResource("/game.fxml"));
+
+    Scene login = new Scene(loginFxmlLoader.load());
+    Scene loginParams = new Scene(loginParamsFxmlLoader.load());
+    Scene loginLobby = new Scene(loginLobbyFxmlLoader.load());
+    Scene game = new Scene(gameFxmlLoader.load());
+
+    guiParser = new GuiParser(portNumber, hostName, socket);
+    serverParserGUI = new ServerParserGUI(stage, login, loginParams, loginLobby, game,
+        gameFxmlLoader);
+
+    LoginController loginController = loginFxmlLoader.getController();
+    loginController.setParser(guiParser);
+
+    LoginController loginParamsController = loginParamsFxmlLoader.getController();
+    loginParamsController.setParser(guiParser);
+
+    GameController gameController = gameFxmlLoader.getController();
+    gameController.setGuiParser(guiParser);
+
+    stage.setTitle("Eriantys");
+    stage.show();
+
+    // Thread for asynchronous communication: Server -> Client
+    ClientServerOutputReader clientServerOutputReader = new ClientServerOutputReader(portNumber,
+        hostName, socket, serverParserGUI, isGUI);
+    clientServerOutputReader.start();
+
+    stage.sizeToScene();
   }
 }

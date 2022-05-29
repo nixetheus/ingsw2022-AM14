@@ -43,7 +43,10 @@ public class PlayController {
           if (player.getPlayerId() == msg.getPlayerId()) {
             game.playAssistant(player, msg.getAssistantId());
 
+            //TODO no feedback to the current player add the previous active player index
+
             playResponse.setActivePlayerId(msg.getPlayerId() + 1);
+            playResponse.setAssistantId(msg.getAssistantId());
 
           }
 
