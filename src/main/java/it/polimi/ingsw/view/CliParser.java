@@ -24,19 +24,19 @@ public class CliParser {
 
   public String fromJson(String jsonMessage) throws FileNotFoundException {
     Gson gson = new Gson();
-    if (jsonMessage.contains("LOGIN")) {
+    if (jsonMessage.contains("\"messageMain\":\"LOGIN\"")) {
       return elaborateMessage(gson.fromJson(jsonMessage, LoginMessageResponse.class));
     }
-    if (jsonMessage.contains("MOVE")) {
+    if (jsonMessage.contains("\"messageMain\":\"MOVE\"")) {
       return elaborateMessage(gson.fromJson(jsonMessage, MoveMessageResponse.class));
     }
-    if (jsonMessage.contains("PLAY")) {
+    if (jsonMessage.contains("\"messageMain\":\"PLAY\"")) {
       return elaborateMessage(gson.fromJson(jsonMessage, PlayMessageResponse.class));
     }
-    if (jsonMessage.contains("INFO")) {
+    if (jsonMessage.contains("\"messageMain\":\"INFO\"")) {
       return elaborateMessage(gson.fromJson(jsonMessage, ClientResponse.class));
     }
-    if (jsonMessage.contains("PHASE")) {
+    if (jsonMessage.contains("\"messageMain\":\"PHASE\"")) {
       return elaborateMessage(gson.fromJson(jsonMessage, BeginTurnMessage.class));
     }
     return null;
@@ -120,8 +120,8 @@ public class CliParser {
     StringBuilder printedString = new StringBuilder();
 
     switch (msg.getMessageSecondary()) {
-      case ENTRANCE:
-        printedString.append("now your entrance contains");
+      case MOVE_STUDENT_ENTRANCE:
+        printedString.append("now your entrance contains").append("\n");;
         for (Color color : Color.values()) {
           printedString.append(msg.getStudentsEntrance()[color.ordinal()]).append(" ")
               .append(color).append(" students;\n");
@@ -142,7 +142,7 @@ public class CliParser {
         break;
       case CLOUD_TILE:
         printedString.append("cloud tile number").append(msg.getCloudTileNumber())
-            .append("successfully taken").append("now your entrance contains");
+            .append("successfully taken").append("now your entrance contains").append("\n");
         for (Color color : Color.values()) {
           printedString.append(msg.getStudentsCloud()[color.ordinal()]).append(" ")
               .append(color).append(" students;\n");
@@ -167,7 +167,8 @@ public class CliParser {
         else{
           return "You have to play as " + (msg.getPlayerOrderId().indexOf(this.playerId)+1) + " player";
         }
-
+      case MOVE_STUDENT_ENTRANCE:
+        return msg.getResponse();
     }
 
     return null;
@@ -201,6 +202,8 @@ public class CliParser {
           }
           returnString.append("\n");
         }
+      case INFRA_TURN:
+        return "ciao";//TODO
     }
     return null;
   }

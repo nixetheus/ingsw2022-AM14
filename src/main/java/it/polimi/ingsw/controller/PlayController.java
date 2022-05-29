@@ -18,7 +18,7 @@ public class PlayController {
    */
   public Message elaborateMessage(PlayMessage msg, Game game) {
     switch (msg.getMessageSecondary()) {
-      case ASSISTANT:
+      case ASK_ASSISTANT:
         return playAssistant(msg, game);
       case CHARACTER:
         return playCharacter(msg, game);

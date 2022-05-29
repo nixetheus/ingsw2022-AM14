@@ -30,7 +30,7 @@ public class MoveController {
     //can create a method for each control
 
     switch (msg.getMessageSecondary()) {
-      case MOTHER_NATURE:
+      case ASK_MN:
         //control if no entry tile
         int motherNatureMoves =
             msg.getIslandNumber() - currentGame.getMainBoard().getMotherNature().getPosition();
@@ -38,17 +38,19 @@ public class MoveController {
             motherNatureMoves);
 
         MoveMessageResponse responseNature = new MoveMessageResponse(
-            MessageSecondary.MOTHER_NATURE);
+            MessageSecondary.MOVE_MN);
+        responseNature.setPlayerId(currentGame.getCurrentPlayer().getPlayerId());
         responseNature.setIslandNumber(currentGame.getMainBoard().getMotherNature().getPosition());
         return responseNature;
 
-      case CLOUD_TILE:
+      case ASK_CLOUD:
         //control if the number is valid
 
         if (checkCloudTileValid(msg, currentGame) && !currentGame.getMainBoard().getIslands()
             .get(msg.getIslandNumber()).isNoEntry()) {
 
-          MoveMessageResponse responseCloud = new MoveMessageResponse(MessageSecondary.CLOUD_TILE);
+          MoveMessageResponse responseCloud = new MoveMessageResponse(MessageSecondary.MOVE_CLOUD);
+          responseCloud.setPlayerId(currentGame.getCurrentPlayer().getPlayerId());
 
           responseCloud.setStudentsCloud(
               currentGame.getCloudTiles().get(msg.getCloudTileNumber()).getStudents());
@@ -57,13 +59,11 @@ public class MoveController {
           return responseCloud;
         }
         break;
-      case ENTRANCE:
+      case ASK_STUDENT_ENTRANCE:
         //control if the student is present
         if (checkStudentIfPresent(msg, currentGame)) {
-          MoveMessageResponse responseEntrance = new MoveMessageResponse(MessageSecondary.ENTRANCE);
-          responseEntrance
-              .setStudentsEntrance(currentGame.getCurrentPlayer().getPlayerBoard().getEntrance()
-                  .getStudents());
+          MoveMessageResponse responseEntrance = new MoveMessageResponse(MessageSecondary.MOVE_STUDENT_ENTRANCE);
+          responseEntrance.setPlayerId(currentGame.getCurrentPlayer().getPlayerId());
 
           if (msg.getPlace() == 0) {
             responseEntrance.setPlace(0);
@@ -76,6 +76,7 @@ public class MoveController {
             responseEntrance.setStudentsDiningRoom(
                 currentGame.getCurrentPlayer().getPlayerBoard().getDiningRoom()
                     .getStudents());
+
           } else {
             responseEntrance.setPlace(1);
 
@@ -87,6 +88,11 @@ public class MoveController {
             responseEntrance.setStudentsIsland(
                 currentGame.getMainBoard().getIslands().get(msg.getIslandNumber()).getStudents());
           }
+
+          responseEntrance
+              .setStudentsEntrance(currentGame.getCurrentPlayer().getPlayerBoard().getEntrance()
+                  .getStudents());
+
           return responseEntrance;
         }
       default:

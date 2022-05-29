@@ -40,7 +40,7 @@ public class TurnManager {
 
   //TODO update message what to do next
   public String changeState() {
-//TODO from six state to 3
+
     int nextState = currentState;
     String stateResponse = "";
 
@@ -146,22 +146,22 @@ public class TurnManager {
         //currentNumberOfPlayedAssistants = 0;
         currentNumberOfUsersPlayedActionPhase = 0;
         mainGamePhase = MessageMain.PLAY;
-        secondaryPhase = MessageSecondary.ASSISTANT;
+        secondaryPhase = MessageSecondary.ASK_ASSISTANT;
         break;
       case 4:
         //currentNumberOfPlayedAssistants = 0;
         mainGamePhase = MessageMain.MOVE;
-        secondaryPhase = MessageSecondary.ENTRANCE;
+        secondaryPhase = MessageSecondary.ASK_STUDENT_ENTRANCE;
         break;
       case 5:
         currentNumberOfPlayedAssistants = 0;
-        currentNumberOfStudentsFromEntrance = 0;
         mainGamePhase = MessageMain.MOVE;
-        secondaryPhase = MessageSecondary.MOTHER_NATURE;
+        secondaryPhase = MessageSecondary.ASK_MN;
         break;
       case 6:
+        currentNumberOfStudentsFromEntrance = 0;
         mainGamePhase = MessageMain.MOVE;
-        secondaryPhase = MessageSecondary.CLOUD_TILE;
+        secondaryPhase = MessageSecondary.ASK_CLOUD;
         break;
       default:
         break;

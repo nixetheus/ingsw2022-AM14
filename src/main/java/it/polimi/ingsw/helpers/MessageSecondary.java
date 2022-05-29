@@ -4,10 +4,17 @@ public enum MessageSecondary {
 
   CHARACTER,
   ASSISTANT,
+  ASK_ASSISTANT,
 
   ENTRANCE,
+  ASK_STUDENT_ENTRANCE,
+  MOVE_STUDENT_ENTRANCE,
   MOTHER_NATURE,
+  ASK_MN,
+  MOVE_MN,
   CLOUD_TILE,
+  ASK_CLOUD,
+  MOVE_CLOUD,
 
   INFO_MN,
   INFO_HELP,
@@ -28,6 +35,7 @@ public enum MessageSecondary {
   ERROR,
 
   INIT_GAME,
+  INFRA_TURN,
   CHANGE_TURN,
   GAME_ORDER
 

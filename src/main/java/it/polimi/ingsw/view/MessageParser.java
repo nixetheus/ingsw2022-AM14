@@ -188,17 +188,17 @@ public class MessageParser {
       if (str.contains("INFO")) {
         return MessageSecondary.INFO_ASSISTANTS;
       }
-      return MessageSecondary.ASSISTANT;
+      return MessageSecondary.ASK_ASSISTANT;
     } else if ((str.contains("MOTHER NATURE"))) {
       if (str.contains("INFO")) {
         return MessageSecondary.INFO_MN;
       }
-      return MessageSecondary.MOTHER_NATURE;
+      return MessageSecondary.ASK_MN;
     } else if ((str.contains("CLOUD TILE"))) {
       if (str.contains("INFO")) {
         return MessageSecondary.INFO_CLOUD_TILE;
       }
-      return MessageSecondary.CLOUD_TILE;
+      return MessageSecondary.ASK_CLOUD;
     } else if (str.contains("PLAYER")) {
       if (str.contains("INFO")) {
         return MessageSecondary.INFO_PLAYER;
@@ -207,11 +207,11 @@ public class MessageParser {
       if (str.contains("INFO")) {
         return MessageSecondary.INFO_ISLAND;
       }
-      return MessageSecondary.ENTRANCE;
+      return MessageSecondary.ASK_STUDENT_ENTRANCE;
     } else if (str.contains("HELP")) {
       return MessageSecondary.INFO_HELP;
     } else if (str.contains("FROM ENTRANCE")) {
-      return MessageSecondary.ENTRANCE;
+      return MessageSecondary.ASK_STUDENT_ENTRANCE;
     } else if (!str.contains(" ")) {
       return MessageSecondary.PLAYER_PARAMS;
     }

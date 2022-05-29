@@ -120,6 +120,13 @@ public class MainController {
             isGameExpert = msg.isGameExpert();
             numberOfPlayers = msg.getNumberOfPlayer();
             turnManager.setNumberOfUsers(numberOfPlayers);
+
+            //TODO but better
+            if(numberOfPlayers==3){
+            turnManager.setNumberStudentsFromEntrance(4);}
+            else {
+              turnManager.setNumberStudentsFromEntrance(3);
+            }
             turnManager.updateCounters();
             turnManager.changeState();
             this.serverSemaphore.release();
@@ -261,7 +268,7 @@ public class MainController {
       turnManager.changeState();
 
       // Set current player
-      if (msg.getMessageSecondary() == MessageSecondary.ASSISTANT
+      if (msg.getMessageSecondary() == MessageSecondary.ASK_ASSISTANT
           && turnManager.getCurrentNumberOfPlayedAssistants() != numberOfPlayers) {
 
         this.game.setCurrentPlayerIndex(turnManager.getCurrentNumberOfPlayedAssistants());
@@ -273,14 +280,30 @@ public class MainController {
 
       } else if (msg.getMessageMain() == MessageMain.MOVE) {
         this.game.setCurrentPlayerIndex(turnManager.getCurrentNumberOfUsersPlayedActionPhase());
+
+        //message to update gui
+        messages.addAll(changeTurnMessage(MessageSecondary.INFRA_TURN));
+
+        //message to help understanding the game from cli
+        if(turnManager.getSecondaryPhase()==MessageSecondary.ASK_STUDENT_ENTRANCE){
+        messages.add(
+            sendClientResponse(MessageSecondary.MOVE_STUDENT_ENTRANCE, "continue to move students "));}
+
+        if(turnManager.getSecondaryPhase()==MessageSecondary.ASK_MN){
+          messages.add(
+              sendClientResponse(MessageSecondary.MOVE_MN, "move mother nature "));}
+
+        if(turnManager.getSecondaryPhase()==MessageSecondary.ASK_CLOUD){
+          messages.add(
+              sendClientResponse(MessageSecondary.MOVE_CLOUD, "take cloud "));}
       }
 
       // If appropriate change game order in game
       if (msg.getMessageMain() == MessageMain.PLAY
-          && msg.getMessageSecondary() == MessageSecondary.ASSISTANT
+          && msg.getMessageSecondary() == MessageSecondary.ASK_ASSISTANT
           && turnManager.getCurrentNumberOfPlayedAssistants() == numberOfPlayers) {
 
-        //TODO broken
+        //set player order
         this.game.orderBasedOnAssistant();
 
         //send order message
