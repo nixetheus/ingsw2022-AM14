@@ -219,8 +219,6 @@ public class ClientHandler implements Runnable {
    */
   private void restartTimer() {
     pingTimer.cancel();
-    timer.stop();
-
     pingTimer = new Timer();
     timer = new Thread(new TimerThread(pingTimer));
     timer.start();
