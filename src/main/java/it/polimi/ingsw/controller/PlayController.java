@@ -11,10 +11,13 @@ import it.polimi.ingsw.model.characters.CharacterStruct;
 import it.polimi.ingsw.model.player.Player;
 import java.util.Vector;
 
+/**
+ * PLayController class elaborate play messages
+ */
 public class PlayController {
 
   /**
-   *
+   *Constructor method for PlayController class
    */
   public Message elaborateMessage(PlayMessage msg, Game game) {
     switch (msg.getMessageSecondary()) {
@@ -28,9 +31,9 @@ public class PlayController {
   }
 
   /**
-   * @param msg
-   * @param game
-   * @return
+   * @param msg The userInput message
+   * @param game the current game
+   * @return The response message created
    */
   private Message playAssistant(PlayMessage msg, Game game) {
 
@@ -43,9 +46,8 @@ public class PlayController {
           if (player.getPlayerId() == msg.getPlayerId()) {
             game.playAssistant(player, msg.getAssistantId());
 
-            //TODO no feedback to the current player add the previous active player index
-
             playResponse.setActivePlayerId(msg.getPlayerId() + 1);
+            playResponse.setPreviousPlayerId(msg.getPlayerId());
             playResponse.setAssistantId(msg.getAssistantId());
 
           }
@@ -57,9 +59,9 @@ public class PlayController {
   }
 
   /**
-   * @param msg
-   * @param game
-   * @return
+   * @param msg The userInput message
+   * @param game the current game
+   * @return The response message created
    */
   private Message playCharacter(PlayMessage msg, Game game) {
 
@@ -102,10 +104,10 @@ public class PlayController {
   }
 
   /**
-   * @param playerId
-   * @param assistantId
-   * @param teams
-   * @return
+   * @param playerId the player that want to play the assistant
+   * @param assistantId The assistant that a player want to play
+   * @param teams The teams in witch you will search for the player
+   * @return true if the player can play that assistant
    */
   private boolean canPlayAssistant(int playerId, int assistantId, Vector<Team> teams) {
     for (Team team : teams) {
@@ -120,10 +122,10 @@ public class PlayController {
   }
 
   /**
-   * @param playerId
-   * @param characterCost
-   * @param teams
-   * @return
+   * @param playerId The player that want to play the Character
+   * @param characterCost The cost of the character
+   * @param teams The teams in witch you will search for the player
+   * @return true if the player can purchase the character
    */
   private boolean canPlayCharacter(int playerId, int characterCost, Vector<Team> teams) {
     for (Team team : teams) {

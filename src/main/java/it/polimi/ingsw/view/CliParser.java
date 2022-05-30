@@ -94,7 +94,7 @@ public class CliParser {
         int moves = object.get("MOVES").getAsInt();
         int speed = object.get("SPEED").getAsInt();
 
-        if (this.playerId == msg.getActivePlayerId()) {
+        if (this.playerId == msg.getPreviousPlayerId()) {
           returnString
               .append("Assistant played correctly!\n" + "You can now move mother nature of ")
               .append(moves).append(" spaces when your turn comes.\n").append("You're speed is ")
@@ -140,7 +140,7 @@ public class CliParser {
           }
         }
         break;
-      case CLOUD_TILE:
+      case MOVE_CLOUD:
         printedString.append("cloud tile number").append(msg.getCloudTileNumber())
             .append("successfully taken").append("now your entrance contains").append("\n");
         for (Color color : Color.values()) {
@@ -148,7 +148,7 @@ public class CliParser {
               .append(color).append(" students;\n");
         }
         break;
-      case MOTHER_NATURE:
+      case MOVE_MN:
         printedString.append("now mother nature is on the island number")
             .append(msg.getIslandNumber()).append("island");
         break;
@@ -168,6 +168,10 @@ public class CliParser {
           return "You have to play as " + (msg.getPlayerOrderId().indexOf(this.playerId)+1) + " player";
         }
       case MOVE_STUDENT_ENTRANCE:
+        return msg.getResponse();
+      case MOVE_MN:
+        return msg.getResponse();
+      case MOVE_CLOUD:
         return msg.getResponse();
     }
 

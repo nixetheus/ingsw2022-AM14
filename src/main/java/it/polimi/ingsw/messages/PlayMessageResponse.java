@@ -21,6 +21,7 @@ public class PlayMessageResponse extends Message {
 
   private String response;
   private int activePlayerId;
+  private int previousPlayerId;
 
   public PlayMessageResponse(MessageSecondary messageSecondary) {
     this.messageMain = MessageMain.PLAY;
@@ -113,5 +114,13 @@ public class PlayMessageResponse extends Message {
 
   public void setActivePlayerId(int activePlayerId) {
     this.activePlayerId = activePlayerId;
+  }
+
+  public int getPreviousPlayerId() {
+    return previousPlayerId;
+  }
+
+  public void setPreviousPlayerId(int previousPlayerId) {
+    this.previousPlayerId = previousPlayerId;
   }
 }

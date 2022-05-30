@@ -203,4 +203,8 @@ public class TurnManager {
   public int getCurrentNumberOfUsersPlayedActionPhase() {
     return currentNumberOfUsersPlayedActionPhase;
   }
+
+  public int getNumberStudentsFromEntrance() {
+    return numberStudentsFromEntrance;
+  }
 }
