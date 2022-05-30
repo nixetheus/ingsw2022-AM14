@@ -108,7 +108,7 @@ public class GameController implements Initializable {
   private String activeCharacterId;
   private Pane activeCharacterPane;
 
-  private int playerId = 0;
+  public int playerId = 0;
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {

@@ -81,7 +81,7 @@ public class Game {
    * This method calculates the game order based on the speed of each player assistant
    */
   public void orderBasedOnAssistant() {
-    Collections.sort(this.gameOrder);
+    //Collections.sort(this.gameOrder);
   }
 
   /**
@@ -138,8 +138,10 @@ public class Game {
           .calculateInfluence(professorControlPlayer, teams, islandMotherNatureIn);
       islandMotherNatureIn.setOwner(idTeamControlIsland);
 
-      teams.get(idTeamControlIsland).removeTowers(1);
-      islandMotherNatureIn.addTower(1);
+      if (idTeamControlIsland >= 0) {
+        teams.get(idTeamControlIsland).removeTowers(1);
+        islandMotherNatureIn.addTower(1);
+      }
 
     } else {
       teams.get(islandMotherNatureIn.getOwnerId()).addTowers(1);

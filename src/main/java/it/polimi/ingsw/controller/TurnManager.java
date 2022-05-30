@@ -39,52 +39,39 @@ public class TurnManager {
   }
 
   //TODO update message what to do next
-  public String changeState() {
+  public void changeState() {
 
     int nextState = currentState;
-    String stateResponse = "";
 
     switch (currentState) {
       case 0:  // GET FIRST USER
         nextState++;
-        stateResponse = "Now please insert the number of players and mode: ";
         break;
       case 1:  // GET PARAMS
         nextState++;
-        stateResponse = "Waiting for other users to connect...";
         break;
       case 2:  // CONNECT USERS
         if (currentNumberOfUsers == numberOfUsers) {
           nextState++;
-        } else {
-          stateResponse = "Waiting for other users to connect...";
         }
         break;
       case 3:  // PLAY ASSISTANT
         if (currentNumberOfPlayedAssistants == numberOfUsers) {
-          stateResponse = "Everyone played their assistant! It's time to get into action!\n";
-          nextState++;
+          nextState += 1;
         }
         break;
       case 4:  // MOVE STUDENTS FROM ENTRANCE
         if (currentNumberOfStudentsFromEntrance == numberStudentsFromEntrance) {
-          stateResponse = "TODO\n Now move mother nature!\n";
           nextState++;
         }
         break;
       case 5:  // MOVE MOTHER NATURE
-        stateResponse = "Choose a cloud and take move its students into your entrance!\n";
         nextState++;
         break;
       case 6:
         if (currentNumberOfUsersPlayedActionPhase == numberOfUsers) {
-          stateResponse =
-              "This turn is over, time to plan your next one and choose an assistant to "
-                  + "help you in your quest!\n";
           nextState = 3;
         } else {
-          stateResponse = "Player n." + currentNumberOfUsersPlayedActionPhase + ", it's your turn! "
-              + "Move those students from the entrance!\n";
           nextState = 4;
         }
         break;
@@ -93,7 +80,6 @@ public class TurnManager {
     }
     currentState = nextState;
     setStateParameters();
-    return stateResponse;
   }
 
   /**
@@ -146,22 +132,22 @@ public class TurnManager {
         //currentNumberOfPlayedAssistants = 0;
         currentNumberOfUsersPlayedActionPhase = 0;
         mainGamePhase = MessageMain.PLAY;
-        secondaryPhase = MessageSecondary.ASK_ASSISTANT;
+        secondaryPhase = MessageSecondary.ASSISTANT;
         break;
       case 4:
         //currentNumberOfPlayedAssistants = 0;
         mainGamePhase = MessageMain.MOVE;
-        secondaryPhase = MessageSecondary.ASK_STUDENT_ENTRANCE;
+        secondaryPhase = MessageSecondary.ENTRANCE;
         break;
       case 5:
         currentNumberOfPlayedAssistants = 0;
         mainGamePhase = MessageMain.MOVE;
-        secondaryPhase = MessageSecondary.ASK_MN;
+        secondaryPhase = MessageSecondary.MOVE_MN;
         break;
       case 6:
         currentNumberOfStudentsFromEntrance = 0;
         mainGamePhase = MessageMain.MOVE;
-        secondaryPhase = MessageSecondary.ASK_CLOUD;
+        secondaryPhase = MessageSecondary.CLOUD_TILE;
         break;
       default:
         break;

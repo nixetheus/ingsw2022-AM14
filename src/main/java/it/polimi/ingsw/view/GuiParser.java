@@ -17,7 +17,8 @@ public class GuiParser {
   Gson gson = new Gson();
   GameController mainGuiController;
 
-  public GuiParser (int portNumber, String hostName, Socket socket) {
+  public GuiParser (int portNumber, String hostName, Socket socket, GameController main) {
+    mainGuiController = main;
     try {
       out = new PrintWriter(socket.getOutputStream(), true);
     } catch (IOException e) {
@@ -48,6 +49,7 @@ public class GuiParser {
     int id = Integer.parseInt(assistantId.replace("assistant", ""));
 
     PlayMessage playAssistantMessage = new PlayMessage(MessageSecondary.ASSISTANT);
+    playAssistantMessage.setPlayerId(mainGuiController.playerId);
     playAssistantMessage.setAssistantId(id);
     out.println(gson.toJson(playAssistantMessage));
   }
@@ -75,7 +77,7 @@ public class GuiParser {
 
     int id = Integer.parseInt(islandId.replace("island", ""));
 
-    MoveMessage moveMNMessage = new MoveMessage(MessageSecondary.CLOUD_TILE);
+    MoveMessage moveMNMessage = new MoveMessage(MessageSecondary.MOVE_MN);
     moveMNMessage.setIslandNumber(id);
 
     out.println(gson.toJson(moveMNMessage));

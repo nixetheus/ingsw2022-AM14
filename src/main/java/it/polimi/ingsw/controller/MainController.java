@@ -181,8 +181,9 @@ public class MainController {
               Vector<Message> changeTurnMessages = changeTurnMessage(MessageSecondary.INIT_GAME);
               messages.addAll(changeTurnMessages);
 
-              messages.add(sendClientResponse(MessageSecondary.ASSISTANT,
-                  "It's your turn to play an assistant"));
+              messages.add(sendClientResponse(
+                  MessageSecondary.ASSISTANT, "It's your turn to play an assistant",
+                  game.getCurrentPlayer().getPlayerId()));
 
 
             } else {
@@ -258,51 +259,61 @@ public class MainController {
     }
 
     if (gameResponse != null) {
+
       // Update turn
       turnManager.updateCounters();
       turnManager.changeState();
 
-
       // Set current player
-      if (msg.getMessageSecondary() == MessageSecondary.ASK_ASSISTANT
+      if (msg.getMessageSecondary() == MessageSecondary.ASSISTANT
           && turnManager.getCurrentNumberOfPlayedAssistants() != numberOfPlayers) {
 
         this.game.setCurrentPlayerIndex(turnManager.getCurrentNumberOfPlayedAssistants());
 
-        //new current player turn to play assistant
-        messages.add(
-            sendClientResponse(MessageSecondary.ASSISTANT, "it's your turn to play an assistant"));
+        // New current player turn to play assistant
+        messages.add(sendClientResponse(
+            MessageSecondary.ASK_ASSISTANT, "It's your turn to play an assistant",
+            game.getCurrentPlayer().getPlayerId()));
 
 
       } else if (msg.getMessageMain() == MessageMain.MOVE) {
+
         this.game.setCurrentPlayerIndex(turnManager.getCurrentNumberOfUsersPlayedActionPhase());
 
-
-        //message to update gui
+        // Message to update gui
         messages.addAll(changeTurnMessage(MessageSecondary.INFRA_TURN));
 
-        //message to help understanding the game from cli
+        // Message to help to understand the game from cli
+        // TODO
+        if (turnManager.getCurrentNumberOfStudentsFromEntrance() ==
+            turnManager.getNumberStudentsFromEntrance()) {
 
-        if(turnManager.getCurrentNumberOfStudentsFromEntrance()==turnManager.getNumberStudentsFromEntrance()){
+          messages.add(sendClientResponse(
+              MessageSecondary.ASK_MN, "Select island to move mother nature",
+              game.getCurrentPlayer().getPlayerId()));
+
+        } else {
+          messages.add(sendClientResponse(
+              MessageSecondary.ASK_STUDENT_ENTRANCE, "Move another student",
+              game.getCurrentPlayer().getPlayerId()));
+        }
+
+        if (turnManager.getSecondaryPhase() == MessageSecondary.ASK_CLOUD) {
           messages.add(
-              sendClientResponse(MessageSecondary.MOVE_MN, "move mother nature "));}
-        }else{
-        messages.add(
-            sendClientResponse(MessageSecondary.MOVE_STUDENT_ENTRANCE, "continue to move students "));
+              sendClientResponse(
+                  MessageSecondary.ASK_CLOUD, "Take one cloud",
+                  game.getCurrentPlayer().getPlayerId()));
+        }
+
       }
-
-        if(turnManager.getSecondaryPhase()==MessageSecondary.ASK_CLOUD){
-          messages.add(
-              sendClientResponse(MessageSecondary.MOVE_CLOUD, "take cloud "));}
-
 
       // If appropriate change game order in game
       if (msg.getMessageMain() == MessageMain.PLAY
-          && msg.getMessageSecondary() == MessageSecondary.ASK_ASSISTANT
+          && msg.getMessageSecondary() == MessageSecondary.ASSISTANT
           && turnManager.getCurrentNumberOfPlayedAssistants() == numberOfPlayers) {
 
         //set player order
-        this.game.orderBasedOnAssistant();
+        this.game.orderBasedOnAssistant();  // TODO
 
         //send order message
         ClientResponse order = new ClientResponse(MessageSecondary.GAME_ORDER);
@@ -317,11 +328,9 @@ public class MainController {
         order.setPlayerOrderId(playerOrderIdVector);
         messages.add(order);
 
-        //send turn message
       } else if (msg.getMessageMain() == MessageMain.MOVE
           && msg.getMessageSecondary() == MessageSecondary.CLOUD_TILE
           && turnManager.getCurrentNumberOfUsersPlayedActionPhase() == numberOfPlayers) {
-        //send turn message
         this.game.reverseOrderEndTurn();
       }
 
@@ -409,11 +418,10 @@ public class MainController {
     return returnedVector;
   }
 
-  private Message sendClientResponse(MessageSecondary messageSecondary, String response) {
+  private Message sendClientResponse(MessageSecondary messageSecondary, String response, int id) {
     ClientResponse clientResponse = new ClientResponse(messageSecondary);
     clientResponse.setResponse(response);
-    clientResponse.setPlayerId(this.game.getCurrentPlayer().getPlayerId());
-
+    clientResponse.setPlayerId(id);
     return clientResponse;
   }
 }

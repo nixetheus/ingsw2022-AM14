@@ -21,7 +21,7 @@ public class PlayController {
    */
   public Message elaborateMessage(PlayMessage msg, Game game) {
     switch (msg.getMessageSecondary()) {
-      case ASK_ASSISTANT:
+      case ASSISTANT:
         return playAssistant(msg, game);
       case CHARACTER:
         return playCharacter(msg, game);
@@ -37,16 +37,21 @@ public class PlayController {
    */
   private Message playAssistant(PlayMessage msg, Game game) {
 
-    PlayMessageResponse playResponse = new PlayMessageResponse(MessageSecondary.ASSISTANT);
-    playResponse.setPlayerId(-1);
+    PlayMessageResponse playResponse = null;
 
     if (canPlayAssistant(msg.getPlayerId(), msg.getAssistantId(), game.getTeams())) {
+
+      playResponse = new PlayMessageResponse(MessageSecondary.ASK_ASSISTANT);
+      playResponse.setPlayerId(-1);
+
       for (Team team : game.getTeams()) {
         for (Player player : team.getPlayers()) {
+
           if (player.getPlayerId() == msg.getPlayerId()) {
+
             game.playAssistant(player, msg.getAssistantId());
 
-            playResponse.setActivePlayerId(msg.getPlayerId() + 1);
+            // playResponse.setActivePlayerId(msg.getPlayerId() + 1);  // TODO
             playResponse.setPreviousPlayerId(msg.getPlayerId());
             playResponse.setAssistantId(msg.getAssistantId());
 

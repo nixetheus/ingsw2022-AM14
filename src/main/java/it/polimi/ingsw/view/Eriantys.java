@@ -86,7 +86,7 @@ public class Eriantys extends Application {
     Scene loginLobby = new Scene(loginLobbyFxmlLoader.load());
     Scene game = new Scene(gameFxmlLoader.load());
 
-    guiParser = new GuiParser(portNumber, hostName, socket);
+    guiParser = new GuiParser(portNumber, hostName, socket, gameFxmlLoader.getController());
     serverParserGUI = new ServerParserGUI(stage, login, loginParams, loginLobby, game,
         gameFxmlLoader);
 

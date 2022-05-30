@@ -14,6 +14,7 @@ import static it.polimi.ingsw.helpers.MessageSecondary.PLAYER_PARAMS;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import it.polimi.ingsw.guicontrollers.CloudController;
 import it.polimi.ingsw.guicontrollers.GameController;
 import it.polimi.ingsw.guicontrollers.IslandController;
 import it.polimi.ingsw.guicontrollers.PlayerBoardController;
@@ -153,6 +154,8 @@ public class ServerParserGUI {
               .append(color).append(" students;\n");
         }
          */
+        CloudController cloud = mainController.cloudControllers.elementAt(moveMessage.getCloudTileNumber());
+        cloud.hideStudents();
 
         // RETURN MESSAGE
         returnString.append("Cloud tile ").append(moveMessage.getCloudTileNumber() + 1)
@@ -161,10 +164,11 @@ public class ServerParserGUI {
       }
       break;
 
-      case MOTHER_NATURE: {
+      case MOVE_MN: {
 
         for (IslandController islandController : mainController.islandsControllers)
           islandController.setMotherNature(false);
+
         mainController.islandsControllers.elementAt(moveMessage.getIslandNumber())
             .setMotherNature(true);
 
@@ -179,24 +183,31 @@ public class ServerParserGUI {
   }
 
   private void elaboratePlayMessage(PlayMessageResponse playMessage) {
+
     StringBuilder returnString = new StringBuilder();
+
     switch (playMessage.getMessageSecondary()) {
-      case ASSISTANT: {
-        // TODO: HIDE ASSISTANT
-        // mainController.hideAssistant();
-        // TODO
-        returnString.append("TODO PLAY ASSISTANT");
+
+      case ASK_ASSISTANT: {
+        if (playMessage.getPreviousPlayerId() == playerId) {
+          Platform.runLater(() -> mainController.hideAssistant(playMessage.getAssistantId()));
+        } else if (playMessage.getActivePlayerId() == playerId) {
+          // TODO
+        }
       }
       break;
+
       case CHARACTER: {
         // TODO: CHANGE COST
         // TODO
         returnString.append("TODO PLAY CHARACTER");
       }
       break;
+
     }
+
     if (playMessage.getResponse() != null)
-      Platform.runLater(() ->mainController.setTextArea(playMessage.getResponse()));
+      Platform.runLater(() -> mainController.setTextArea(playMessage.getResponse() + " " + returnString));
   }
 
   private void elaborateInfoMessage(ClientResponse infoMessage) {
@@ -210,7 +221,7 @@ public class ServerParserGUI {
       Platform.runLater(() -> mainStage.setScene(gameScene));
     }
 
-    // SET ISLANDS STUDENTS
+    // SET ISLANDS
     Platform.runLater(() -> {
       if (phaseMessage.getStudentsIsland() != null) {
         for (int index = 0; index < phaseMessage.getStudentsIsland().size(); index++) {
@@ -225,6 +236,12 @@ public class ServerParserGUI {
               .setGreenStudents(students[Color.GREEN.ordinal()]);
           mainController.islandsControllers.elementAt(index)
               .setYellowStudents(students[Color.YELLOW.ordinal()]);
+
+          if (index == phaseMessage.getMotherNaturePosition()) {
+            mainController.islandsControllers.elementAt(index).setMotherNature(true);
+          } else {
+            mainController.islandsControllers.elementAt(index).setMotherNature(false);
+          }
         }
       }
     });

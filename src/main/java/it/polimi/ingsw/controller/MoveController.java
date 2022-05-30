@@ -30,7 +30,7 @@ public class MoveController {
     //can create a method for each control
 
     switch (msg.getMessageSecondary()) {
-      case ASK_MN:
+      case MOVE_MN:
         //control if no entry tile
         int motherNatureMoves =
             msg.getIslandNumber() - currentGame.getMainBoard().getMotherNature().getPosition();
@@ -43,23 +43,26 @@ public class MoveController {
         responseNature.setIslandNumber(currentGame.getMainBoard().getMotherNature().getPosition());
         return responseNature;
 
-      case ASK_CLOUD:
+      case CLOUD_TILE:
         //control if the number is valid
 
         if (checkCloudTileValid(msg, currentGame) && !currentGame.getMainBoard().getIslands()
             .get(msg.getIslandNumber()).isNoEntry()) {
 
-          MoveMessageResponse responseCloud = new MoveMessageResponse(MessageSecondary.MOVE_CLOUD);
+          MoveMessageResponse responseCloud = new MoveMessageResponse(MessageSecondary.CLOUD_TILE);
           responseCloud.setPlayerId(currentGame.getCurrentPlayer().getPlayerId());
 
           responseCloud.setStudentsCloud(
               currentGame.getCloudTiles().get(msg.getCloudTileNumber()).getStudents());
+
           currentGame.takeCloud(currentGame.getCurrentPlayer(), msg.getCloudTileNumber());
-          responseCloud.setIslandNumber(msg.getCloudTileNumber());
+
+          responseCloud.setCloudTileNumber(msg.getCloudTileNumber());
+
           return responseCloud;
         }
         break;
-      case ASK_STUDENT_ENTRANCE:
+      case ENTRANCE:
         //control if the student is present
         if (checkStudentIfPresent(msg, currentGame)) {
           MoveMessageResponse responseEntrance = new MoveMessageResponse(MessageSecondary.MOVE_STUDENT_ENTRANCE);

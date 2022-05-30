@@ -22,13 +22,13 @@ public class ClientMain {
 
   public static void main(String[] args) throws IOException {
 
-    setPortNumberFromJson();
+    /*setPortNumberFromJson();
     //boolean isGUI = Integer.parseInt(args[1]) > 0;
     Socket socket = new Socket(hostName, portNumber);
 
     //thread for asynchronous communication
-    //ClientServerOutputReader clientServerOutputReader = new ClientServerOutputReader(portNumber,
-        //hostName, socket);
+    ClientServerOutputReader clientServerOutputReader = new ClientServerOutputReader(portNumber,
+        hostName, socket);
 
     //thread for synchronous communication
     ClientUserInput clientUserInput = new ClientUserInput(portNumber, hostName, socket);
@@ -39,7 +39,7 @@ public class ClientMain {
     //Let's start!
     clientUserInput.start();
     //clientServerOutputReader.start();
-    pinger.start();
+    pinger.start();*/
   }
 
   /**
