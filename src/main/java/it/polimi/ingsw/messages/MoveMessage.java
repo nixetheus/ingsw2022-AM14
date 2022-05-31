@@ -9,6 +9,7 @@ public class MoveMessage extends Message {
   private int studentColor;
   private int islandNumber;
   private int cloudTileNumber;
+  private int studentNumber = -1;
 
   public MoveMessage(MessageSecondary messageSecondary) {
     this.messageMain = MessageMain.MOVE;
@@ -45,5 +46,13 @@ public class MoveMessage extends Message {
 
   public void setCloudTileNumber(int cloudTileNumber) {
     this.cloudTileNumber = cloudTileNumber;
+  }
+
+  public int getStudentNumber() {
+    return studentNumber;
+  }
+
+  public void setStudentNumber(int studentNumber) {
+    this.studentNumber = studentNumber;
   }
 }

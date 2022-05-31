@@ -164,8 +164,8 @@ public class Game {
     CloudTile cloudTile = cloudTiles.get(idCloudToTake);
     int[] students = cloudTile.emptyCloud();
 
-    for (int color : students) {
-      for (int student = 0; student < color; student++) {
+    for (int color = 0; color < students.length; color++) {
+      for (int student = 0; student < students[color]; student++) {
         activePlayer.moveToPlayerBoard(Places.ENTRANCE, color);
       }
     }

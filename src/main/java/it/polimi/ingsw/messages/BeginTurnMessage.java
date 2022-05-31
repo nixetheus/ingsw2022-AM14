@@ -9,8 +9,9 @@ public class BeginTurnMessage extends Message {
 
   Vector<StudentsPlayerId> studentDiningRoom;
   Vector<StudentsPlayerId> studentEntrance;
-  int[] professors;
+  Vector<int[]> professors;
   Vector<int[]> studentsIsland;
+  Vector<Integer> towersIsland;
   Vector<int[]> studentsCloudTiles;
   Vector<Integer> playableAssistantId;
   Vector<Integer> PurchasableCharacterId;
@@ -39,11 +40,11 @@ public class BeginTurnMessage extends Message {
     this.studentEntrance = studentEntrance;
   }
 
-  public int[] getProfessors() {
+  public Vector<int[]> getProfessors() {
     return professors;
   }
 
-  public void setProfessors(int[] professors) {
+  public void setProfessors(Vector<int[]> professors) {
     this.professors = professors;
   }
 
@@ -85,5 +86,13 @@ public class BeginTurnMessage extends Message {
 
   public void setMotherNaturePosition(int motherNaturePosition) {
     this.motherNaturePosition = motherNaturePosition;
+  }
+
+  public Vector<Integer> getTowersIsland() {
+    return towersIsland;
+  }
+
+  public void setTowersIsland(Vector<Integer> towersIsland) {
+    this.towersIsland = towersIsland;
   }
 }

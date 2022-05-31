@@ -1,5 +1,6 @@
 package it.polimi.ingsw.guicontrollers;
 
+import it.polimi.ingsw.view.GuiParser;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Vector;
@@ -47,6 +48,8 @@ public class PlayerBoardController implements Initializable {
   // For moving
   public String studentEntranceId;
   public String studentDiningRoomId;
+
+  private GuiParser parser;
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -100,6 +103,14 @@ public class PlayerBoardController implements Initializable {
     VBox diningRoomStudents = ((VBox)event.getSource());
     System.out.println(diningRoomStudents.getId());
     studentDiningRoomId = diningRoomStudents.getId();
+    if (studentEntranceId != null) {
+      parser.moveStudentFromEntrance("", true, studentEntranceId);
+      unClickStudentsEntrance();
+    }
+  }
+
+  public void setParser(GuiParser parser) {
+    this.parser = parser;
   }
 
   public void unClickStudentsEntrance() {
@@ -135,21 +146,23 @@ public class PlayerBoardController implements Initializable {
       for (int nOfColor = 0; nOfColor < studentsColors[index]; nOfColor++) {
         studentsEntrance.elementAt(studVisibleIndex).setVisible(true);
         switch (index) {
-          case 0:  // RED
+          case 3:  // RED
               studentsEntrance.elementAt(studVisibleIndex).setFill(Color.rgb(217, 77, 89));
             break;
-          case 1:  // GREEN
+          case 2:  // GREEN
               studentsEntrance.elementAt(studVisibleIndex).setFill(Color.rgb(109, 166, 97));
             break;
-          case 2:  // YELLOW
+          case 0:  // YELLOW
               studentsEntrance.elementAt(studVisibleIndex).setFill(Color.rgb(254, 207, 53));
             break;
-          case 3:  // PINK
+          case 4:  // PINK
               studentsEntrance.elementAt(studVisibleIndex).setFill(Color.rgb(239, 132, 180));
             break;
-          case 4:  // BLUE
+          case 1:  // BLUE
               studentsEntrance.elementAt(studVisibleIndex).setFill(Color.rgb(33, 187, 239));
             break;
+          default:
+            throw new IllegalStateException("Unexpected value: " + index);
         }
         studVisibleIndex++;
       }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.helpers.Color;
 import it.polimi.ingsw.helpers.MessageSecondary;
 import it.polimi.ingsw.helpers.Places;
 import it.polimi.ingsw.messages.Message;
@@ -46,8 +47,7 @@ public class MoveController {
       case CLOUD_TILE:
         //control if the number is valid
 
-        if (checkCloudTileValid(msg, currentGame) && !currentGame.getMainBoard().getIslands()
-            .get(msg.getIslandNumber()).isNoEntry()) {
+        if (checkCloudTileValid(msg, currentGame)) {
 
           MoveMessageResponse responseCloud = new MoveMessageResponse(MessageSecondary.CLOUD_TILE);
           responseCloud.setPlayerId(currentGame.getCurrentPlayer().getPlayerId());
@@ -63,6 +63,26 @@ public class MoveController {
         }
         break;
       case ENTRANCE:
+
+        // Get color for GUI
+        if (msg.getStudentNumber() >= 0) {
+
+          int[] playerStudents = currentGame.getCurrentPlayer().getPlayerBoard().getEntrance()
+              .getStudents();
+
+          int studentIndex = 0;
+          msg.setStudentColor(-1);
+          for (int color = 0; color < playerStudents.length; color++) {
+            for (int nOfColor = 0; nOfColor < playerStudents[color]; nOfColor++) {
+              if (msg.getStudentNumber() == studentIndex) {
+                msg.setStudentColor(color);
+                break;
+              } else {studentIndex++;}
+            }
+            if (msg.getStudentColor() != -1) break;
+          }
+        }
+
         //control if the student is present
         if (checkStudentIfPresent(msg, currentGame)) {
           MoveMessageResponse responseEntrance = new MoveMessageResponse(MessageSecondary.MOVE_STUDENT_ENTRANCE);

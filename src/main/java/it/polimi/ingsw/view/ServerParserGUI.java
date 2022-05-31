@@ -124,14 +124,16 @@ public class ServerParserGUI {
       case ENTRANCE: {
 
         // UPDATE ISLAND
-        int index = moveMessage.getIslandNumber();
-        int[] students = moveMessage.getStudentsIsland();
-        IslandController affectedIsland = mainController.islandsControllers.elementAt(index);
-        affectedIsland.setRedStudents(students[Color.RED.ordinal()]);
-        affectedIsland.setBlueStudents(students[Color.BLUE.ordinal()]);
-        affectedIsland.setPinkStudents(students[Color.PURPLE.ordinal()]);
-        affectedIsland.setGreenStudents(students[Color.GREEN.ordinal()]);
-        affectedIsland.setYellowStudents(students[Color.YELLOW.ordinal()]);
+        Platform.runLater(() -> {
+          int index = moveMessage.getIslandNumber();
+          int[] students = moveMessage.getStudentsIsland();
+          IslandController affectedIsland = mainController.islandsControllers.elementAt(index);
+          affectedIsland.setRedStudents(students[Color.RED.ordinal()]);
+          affectedIsland.setBlueStudents(students[Color.BLUE.ordinal()]);
+          affectedIsland.setPinkStudents(students[Color.PURPLE.ordinal()]);
+          affectedIsland.setGreenStudents(students[Color.GREEN.ordinal()]);
+          affectedIsland.setYellowStudents(students[Color.YELLOW.ordinal()]);
+        });
 
         // UPDATE ENTRANCE
         // TODO
@@ -146,16 +148,11 @@ public class ServerParserGUI {
 
       case CLOUD_TILE: {
 
-        // UPDATE ENTRANCE
-        // TODO
-        /*
-        for (Color color : Color.values()) {
-          returnString.append(moveMessage.getStudentsCloud()[color.ordinal()]).append(" ")
-              .append(color).append(" students;\n");
-        }
-         */
-        CloudController cloud = mainController.cloudControllers.elementAt(moveMessage.getCloudTileNumber());
-        cloud.hideStudents();
+        // UPDATE CLOUD
+        Platform.runLater(() -> {
+          CloudController cloud = mainController.cloudControllers.elementAt(moveMessage.getCloudTileNumber());
+          cloud.hideStudents();
+        });
 
         // RETURN MESSAGE
         returnString.append("Cloud tile ").append(moveMessage.getCloudTileNumber() + 1)
@@ -166,11 +163,13 @@ public class ServerParserGUI {
 
       case MOVE_MN: {
 
-        for (IslandController islandController : mainController.islandsControllers)
-          islandController.setMotherNature(false);
+        Platform.runLater(() -> {
+          for (IslandController islandController : mainController.islandsControllers)
+            islandController.setMotherNature(false);
 
-        mainController.islandsControllers.elementAt(moveMessage.getIslandNumber())
-            .setMotherNature(true);
+          mainController.islandsControllers.elementAt(moveMessage.getIslandNumber())
+              .setMotherNature(true);
+        });
 
         // RETURN MESSAGE
         returnString.append("Mother nature is on island number: ")
@@ -179,7 +178,7 @@ public class ServerParserGUI {
       break;
 
     }
-    mainController.setTextArea(returnString.toString());
+    Platform.runLater(() -> mainController.setTextArea(returnString.toString()));
   }
 
   private void elaboratePlayMessage(PlayMessageResponse playMessage) {
@@ -225,6 +224,8 @@ public class ServerParserGUI {
     Platform.runLater(() -> {
       if (phaseMessage.getStudentsIsland() != null) {
         for (int index = 0; index < phaseMessage.getStudentsIsland().size(); index++) {
+
+          // STUDENTS
           int[] students = phaseMessage.getStudentsIsland().elementAt(index);
           mainController.islandsControllers.elementAt(index)
               .setRedStudents(students[Color.RED.ordinal()]);
@@ -237,6 +238,11 @@ public class ServerParserGUI {
           mainController.islandsControllers.elementAt(index)
               .setYellowStudents(students[Color.YELLOW.ordinal()]);
 
+          // TOWERS
+          mainController.islandsControllers.elementAt(index)
+              .setNumberOfTowers(phaseMessage.getTowersIsland().elementAt(index));
+
+          // MOTHER NATURE
           if (index == phaseMessage.getMotherNaturePosition()) {
             mainController.islandsControllers.elementAt(index).setMotherNature(true);
           } else {
@@ -273,6 +279,22 @@ public class ServerParserGUI {
       for (StudentsPlayerId playerEntrance : phaseMessage.getStudentEntrance()) {
         PlayerBoardController board = mainController.BoardsControllers.elementAt(playerEntrance.getPlayerId());
         board.setEntranceStudents(playerEntrance.getStudents());
+      }
+    });
+
+    // PROFESSORS
+    Platform.runLater(() -> {
+      for (int indexPlayer = 0; indexPlayer < phaseMessage.getProfessors().size(); indexPlayer++) {
+
+        PlayerBoardController board = mainController.BoardsControllers.elementAt(indexPlayer);
+        int[] professors = phaseMessage.getProfessors().elementAt(indexPlayer);
+        int professorsFlag =  professors[0] << 2 |
+                              professors[1] << 4 |
+                              professors[2]      |
+                              professors[3] << 1 |
+                              professors[4] << 3;
+
+        board.showProfessors(professorsFlag);
       }
     });
 

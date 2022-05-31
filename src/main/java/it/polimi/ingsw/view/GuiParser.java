@@ -86,14 +86,14 @@ public class GuiParser {
   public void moveStudentFromEntrance(String islandId, boolean diningRoom, String studentId) {
 
     MoveMessage moveStudentEntranceMessage = new MoveMessage(MessageSecondary.ENTRANCE);
-    int studId = Integer.parseInt(studentId.replace("student", ""));
+    int studId = Integer.parseInt(studentId.replace("studentEntrance", ""));
 
     if (diningRoom) {
-      moveStudentEntranceMessage.setStudentColor(0);  // TODO: HOW?
+      moveStudentEntranceMessage.setStudentNumber(studId);
       moveStudentEntranceMessage.setPlace(0);
     } else {
       int islId = Integer.parseInt(islandId.replace("island", ""));
-      moveStudentEntranceMessage.setStudentColor(0);  // TODO: HOW?
+      moveStudentEntranceMessage.setStudentNumber(studId);
       moveStudentEntranceMessage.setIslandNumber(islId);
       moveStudentEntranceMessage.setPlace(1);
     }

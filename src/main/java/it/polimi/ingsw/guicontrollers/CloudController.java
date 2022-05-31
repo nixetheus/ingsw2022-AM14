@@ -29,11 +29,6 @@ public class CloudController implements Initializable {
     hideStudents();
   }
 
-  @FXML
-  public void onClickCloudTile(MouseEvent event) {
-    System.out.println(((StackPane)event.getSource()).getId());
-  }
-
   public void hideStudents() {
     for (Circle student : students) {
       student.setDisable(true);
@@ -48,19 +43,19 @@ public class CloudController implements Initializable {
         students.elementAt(studVisibleIndex).setVisible(true);
         students.elementAt(studVisibleIndex).setDisable(false);
         switch (index) {
-          case 0:  // RED
+          case 3:  // RED
               students.elementAt(studVisibleIndex).setFill(Color.rgb(217, 77, 89));
             break;
-          case 1:  // GREEN
+          case 2:  // GREEN
               students.elementAt(studVisibleIndex).setFill(Color.rgb(109, 166, 97));
             break;
-          case 2:  // YELLOW
+          case 0:  // YELLOW
               students.elementAt(studVisibleIndex).setFill(Color.rgb(254, 207, 53));
             break;
-          case 3:  // PINK
+          case 4:  // PINK
               students.elementAt(studVisibleIndex).setFill(Color.rgb(239, 132, 180));
             break;
-          case 4:  // BLUE
+          case 1:  // BLUE
               students.elementAt(studVisibleIndex).setFill(Color.rgb(33, 187, 239));
             break;
         }

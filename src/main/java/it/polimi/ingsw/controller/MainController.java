@@ -12,6 +12,7 @@ import it.polimi.ingsw.messages.LoginMessageResponse;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.MoveMessage;
 import it.polimi.ingsw.messages.PlayMessage;
+import it.polimi.ingsw.model.CloudTile;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Team;
 import it.polimi.ingsw.model.board.Island;
@@ -373,6 +374,7 @@ public class MainController {
 
         Vector<StudentsPlayerId> studentsAtEntrances = new Vector<>();
         Vector<StudentsPlayerId> studentDiningRooms = new Vector<>();
+        Vector<int[]> professors = new Vector<>();
 
         for (Team teamStudents : this.game.getTeams()) {
           for (Player playerStudents : teamStudents.getPlayers()) {
@@ -384,6 +386,18 @@ public class MainController {
             studentDiningRooms.add(new StudentsPlayerId(playerStudents.getPlayerId(),
                 playerStudents.getPlayerBoard().getDiningRoom().getStudents()));
             beginTurnMessage.setStudentDiningRoom(studentDiningRooms);
+
+            // Professors
+            int[] playerProfessors = new int[5];
+            professors.add(playerProfessors);
+            for (int profIndex = 0; profIndex < 5; profIndex++) {
+              if (game.getProfessorControlPlayer()[profIndex] != null) {
+                if (game.getProfessorControlPlayer()[profIndex].getPlayerId()
+                    == playerStudents.getPlayerId()) {
+                  professors.elementAt(playerStudents.getPlayerId())[profIndex] = 1;
+                }
+              }
+            }
           }
         }
 
@@ -391,25 +405,31 @@ public class MainController {
         beginTurnMessage.setStudentDiningRoom(studentDiningRooms);
 
         beginTurnMessage.setMotherNaturePosition(game.getMainBoard().getMotherNature().getPosition());
+        beginTurnMessage.setProfessors(professors);
 
-        int[] professorControlIdPlayer = new int[]{-1, -1, -1, -1, -1};
-        // for(int i=0;i<5;i++){
-        //professorControlIdPlayer[i]=game.getProfessorControlPlayer()[i].getPlayerId();
-        // }
-        beginTurnMessage.setProfessors(professorControlIdPlayer);
 
         Vector<int[]> studentsIslands = new Vector<>();
+        Vector<Integer> towersIslands = new Vector<>();
         for (Island island : game.getMainBoard().getIslands()) {
           int[] studentIsland = island.getStudents();
           studentsIslands.add(studentIsland);
+          towersIslands.add(island.getNumberOfTowers());
         }
         beginTurnMessage.setStudentsIsland(studentsIslands);
+        beginTurnMessage.setTowersIsland(towersIslands);
 
         Vector<Integer> playableAssistantId = new Vector<>();
         for (Assistant assistant : player.getPlayableAssistant()) {
           playableAssistantId.add(assistant.getAssistantId());
         }
         beginTurnMessage.setPlayableAssistantId(playableAssistantId);
+
+        // Clouds
+        Vector<int[]> clouds = new Vector<>();
+        for (CloudTile cloud : game.getCloudTiles()) {
+          clouds.add(cloud.getStudents());
+        }
+        beginTurnMessage.setStudentsCloudTiles(clouds);
 
         //TODO character
         returnedVector.add(beginTurnMessage);

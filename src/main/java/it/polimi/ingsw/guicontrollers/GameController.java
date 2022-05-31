@@ -167,6 +167,8 @@ public class GameController implements Initializable {
 
   public void setGuiParser(GuiParser parser) {
     this.parser = parser;
+    for (PlayerBoardController boardController : BoardsControllers)
+      boardController.setParser(parser);
   }
 
   public void setPlayerId(int playerId) {
@@ -272,6 +274,7 @@ public class GameController implements Initializable {
     // MOVE STUDENT ENTRANCE TO ISLAND
     else if (studentEntrance != null) {
       parser.moveStudentFromEntrance(island.getId(), false, studentEntrance);
+      BoardsControllers.elementAt(playerId).unClickStudentsEntrance();
     }
     // MOVE MOTHER NATURE
     else {
