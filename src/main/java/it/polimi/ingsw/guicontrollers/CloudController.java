@@ -30,10 +30,8 @@ public class CloudController implements Initializable {
   }
 
   public void hideStudents() {
-    for (Circle student : students) {
-      student.setDisable(true);
-      student.setVisible(false);
-    }
+    int[] empty = {0, 0, 0, 0, 0};
+    setStudents(empty);
   }
 
   public void setStudents(int[] colors) {
@@ -65,7 +63,7 @@ public class CloudController implements Initializable {
 
     for (; studVisibleIndex < students.size(); studVisibleIndex++) {
       students.elementAt(studVisibleIndex).setDisable(true);
-      students.elementAt(studVisibleIndex++).setVisible(false);
+      students.elementAt(studVisibleIndex).setVisible(false);
     }
   }
 }

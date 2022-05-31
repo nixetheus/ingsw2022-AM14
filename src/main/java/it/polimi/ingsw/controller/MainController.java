@@ -183,7 +183,7 @@ public class MainController {
               messages.addAll(changeTurnMessages);
 
               messages.add(sendClientResponse(
-                  MessageSecondary.ASSISTANT, "It's your turn to play an assistant",
+                  MessageSecondary.ASK_ASSISTANT, "It's your turn to play an assistant",
                   game.getCurrentPlayer().getPlayerId()));
 
 
@@ -263,6 +263,35 @@ public class MainController {
 
       // Update turn
       turnManager.updateCounters();
+
+      // If appropriate change game order in game
+      if (msg.getMessageMain() == MessageMain.PLAY
+          && msg.getMessageSecondary() == MessageSecondary.ASSISTANT
+          && turnManager.getCurrentNumberOfPlayedAssistants() == numberOfPlayers) {
+
+        //set player order
+        this.game.orderBasedOnAssistant();  // TODO
+
+        //send order message
+        ClientResponse order = new ClientResponse(MessageSecondary.GAME_ORDER);
+        order.setPlayerId(-1);
+
+        Vector<Integer> playerOrderIdVector = new Vector<>();
+
+        for (Player player : game.getGameOrder()) {
+          playerOrderIdVector.add(player.getPlayerId());
+        }
+
+        order.setPlayerOrderId(playerOrderIdVector);
+        messages.add(order);
+
+      } else if (msg.getMessageMain() == MessageMain.MOVE
+          && msg.getMessageSecondary() == MessageSecondary.CLOUD_TILE
+          && turnManager.getCurrentNumberOfUsersPlayedActionPhase() == numberOfPlayers) {
+        this.game.fillClouds();
+        this.game.reverseOrderEndTurn();
+      }
+
       turnManager.changeState();
 
       // Set current player
@@ -294,6 +323,7 @@ public class MainController {
               game.getCurrentPlayer().getPlayerId()));
 
         } else {
+          // TODO
           messages.add(sendClientResponse(
               MessageSecondary.ASK_STUDENT_ENTRANCE, "Move another student",
               game.getCurrentPlayer().getPlayerId()));
@@ -307,35 +337,6 @@ public class MainController {
         }
 
       }
-
-      // If appropriate change game order in game
-      if (msg.getMessageMain() == MessageMain.PLAY
-          && msg.getMessageSecondary() == MessageSecondary.ASSISTANT
-          && turnManager.getCurrentNumberOfPlayedAssistants() == numberOfPlayers) {
-
-        //set player order
-        this.game.orderBasedOnAssistant();  // TODO
-
-        //send order message
-        ClientResponse order = new ClientResponse(MessageSecondary.GAME_ORDER);
-        order.setPlayerId(-1);
-
-        Vector<Integer> playerOrderIdVector = new Vector<>();
-
-        for (Player player : game.getGameOrder()) {
-          playerOrderIdVector.add(player.getPlayerId());
-        }
-
-        order.setPlayerOrderId(playerOrderIdVector);
-        messages.add(order);
-
-      } else if (msg.getMessageMain() == MessageMain.MOVE
-          && msg.getMessageSecondary() == MessageSecondary.CLOUD_TILE
-          && turnManager.getCurrentNumberOfUsersPlayedActionPhase() == numberOfPlayers) {
-        this.game.reverseOrderEndTurn();
-      }
-
-
 
     } else {
       ClientResponse error = new ClientResponse(MessageSecondary.ERROR);
@@ -375,6 +376,7 @@ public class MainController {
         Vector<StudentsPlayerId> studentsAtEntrances = new Vector<>();
         Vector<StudentsPlayerId> studentDiningRooms = new Vector<>();
         Vector<int[]> professors = new Vector<>();
+        int[] playersCoins = new int[numberOfPlayers];
 
         for (Team teamStudents : this.game.getTeams()) {
           for (Player playerStudents : teamStudents.getPlayers()) {
@@ -398,6 +400,9 @@ public class MainController {
                 }
               }
             }
+
+            // Coins
+            playersCoins[playerStudents.getPlayerId()] = playerStudents.getCoins();
           }
         }
 
@@ -407,16 +412,21 @@ public class MainController {
         beginTurnMessage.setMotherNaturePosition(game.getMainBoard().getMotherNature().getPosition());
         beginTurnMessage.setProfessors(professors);
 
+        beginTurnMessage.setPlayerCoins(playersCoins);
 
+        int towerIndex = 0;
+        int[] towersColors = new int[game.getMainBoard().getIslands().size()];
         Vector<int[]> studentsIslands = new Vector<>();
         Vector<Integer> towersIslands = new Vector<>();
         for (Island island : game.getMainBoard().getIslands()) {
           int[] studentIsland = island.getStudents();
           studentsIslands.add(studentIsland);
           towersIslands.add(island.getNumberOfTowers());
+          towersColors[towerIndex++] = island.getOwnerId();
         }
         beginTurnMessage.setStudentsIsland(studentsIslands);
         beginTurnMessage.setTowersIsland(towersIslands);
+        beginTurnMessage.setTowersColor(towersColors);
 
         Vector<Integer> playableAssistantId = new Vector<>();
         for (Assistant assistant : player.getPlayableAssistant()) {

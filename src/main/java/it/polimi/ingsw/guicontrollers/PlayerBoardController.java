@@ -140,6 +140,18 @@ public class PlayerBoardController implements Initializable {
     }
   }
 
+  public void setTowersColor(int towerColor) {
+    for (int index = 0; index < playerTowers.getChildren().size(); index++) {
+      Circle tower = (Circle) playerTowers.getChildren().get(index);
+      if (towerColor == 0)
+        tower.setFill(Color.WHITE);
+      else if (towerColor == 1)
+        tower.setFill(Color.BLACK);
+      else if (towerColor == 2)
+        tower.setFill(Color.GRAY);
+    }
+  }
+
   public void setEntranceStudents(int[] studentsColors) {
     int studVisibleIndex = 0;
     for (int index = 0; index < studentsColors.length; index++) {

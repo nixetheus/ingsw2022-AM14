@@ -242,6 +242,10 @@ public class ServerParserGUI {
           mainController.islandsControllers.elementAt(index)
               .setNumberOfTowers(phaseMessage.getTowersIsland().elementAt(index));
 
+          // TOWERS COLOR
+          mainController.islandsControllers.elementAt(index)
+              .setTeamTower(phaseMessage.getTowersColor()[index]);
+
           // MOTHER NATURE
           if (index == phaseMessage.getMotherNaturePosition()) {
             mainController.islandsControllers.elementAt(index).setMotherNature(true);
@@ -296,6 +300,11 @@ public class ServerParserGUI {
 
         board.showProfessors(professorsFlag);
       }
+    });
+
+    // PLAYER COINS
+    Platform.runLater(() -> {
+      mainController.playerCoins.setText("Coins: " + phaseMessage.getPlayerCoins()[playerId]);
     });
 
     // TODO: REMAINING MSG PARTS

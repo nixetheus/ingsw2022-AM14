@@ -59,6 +59,7 @@ public class GuiParser {
     int id = Integer.parseInt(characterId.replace("character", ""));
 
     PlayMessage playCharacterMessage = new PlayMessage(MessageSecondary.CHARACTER);
+    playCharacterMessage.setPlayerId(mainGuiController.playerId);
     playCharacterMessage.setCharacterId(id);
     // TODO: some things can only be set by the controller and server
   }
@@ -69,6 +70,7 @@ public class GuiParser {
     int id = Integer.parseInt(cloudId.replace("cloud", ""));
 
     MoveMessage moveFromCloudMessage = new MoveMessage(MessageSecondary.CLOUD_TILE);
+    moveFromCloudMessage.setPlayerId(mainGuiController.playerId);
     moveFromCloudMessage.setCloudTileNumber(id);
     out.println(gson.toJson(moveFromCloudMessage));
   }
@@ -78,6 +80,7 @@ public class GuiParser {
     int id = Integer.parseInt(islandId.replace("island", ""));
 
     MoveMessage moveMNMessage = new MoveMessage(MessageSecondary.MOVE_MN);
+    moveMNMessage.setPlayerId(mainGuiController.playerId);
     moveMNMessage.setIslandNumber(id);
 
     out.println(gson.toJson(moveMNMessage));
@@ -98,6 +101,7 @@ public class GuiParser {
       moveStudentEntranceMessage.setPlace(1);
     }
 
+    moveStudentEntranceMessage.setPlayerId(mainGuiController.playerId);
     out.println(gson.toJson(moveStudentEntranceMessage));
 
   }

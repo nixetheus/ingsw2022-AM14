@@ -176,6 +176,12 @@ public class GameController implements Initializable {
     boards.elementAt(playerId).setDisable(false);
     boards.elementAt(playerId).setVisible(true);
     currentBoardIndex = playerId;
+    if (numberOfPlayers == 3) {
+      BoardsControllers.elementAt(playerId).setTowersColor(playerId % 2);
+    } else {
+      BoardsControllers.elementAt(playerId).setTowersColor(playerId % 2);
+    }
+    gameSetup(numberOfPlayers);
   }
 
   @FXML
@@ -355,8 +361,12 @@ public class GameController implements Initializable {
     if (numberOfPlayers == 2) {
       cloud2.setVisible(false);
       cloud3.setVisible(false);
-    } else if (numberOfPlayers == 3)
+      cloud2Controller.hideStudents();
+      cloud3Controller.hideStudents();
+    } else if (numberOfPlayers == 3) {
       cloud3.setVisible(false);
+      cloud3Controller.hideStudents();
+    }
   }
 
   public void hideAssistant(int numberOfAssistant) {

@@ -12,10 +12,12 @@ public class BeginTurnMessage extends Message {
   Vector<int[]> professors;
   Vector<int[]> studentsIsland;
   Vector<Integer> towersIsland;
+  int[] towersColor;
   Vector<int[]> studentsCloudTiles;
   Vector<Integer> playableAssistantId;
   Vector<Integer> PurchasableCharacterId;
   int motherNaturePosition;
+  int[] playerCoins;
 
   public BeginTurnMessage(MessageSecondary messageSecondary) {
     this.messageMain = MessageMain.PHASE;
@@ -94,5 +96,21 @@ public class BeginTurnMessage extends Message {
 
   public void setTowersIsland(Vector<Integer> towersIsland) {
     this.towersIsland = towersIsland;
+  }
+
+  public int[] getTowersColor() {
+    return towersColor;
+  }
+
+  public void setTowersColor(int[] towersColor) {
+    this.towersColor = towersColor;
+  }
+
+  public int[] getPlayerCoins() {
+    return playerCoins;
+  }
+
+  public void setPlayerCoins(int[] playerCoins) {
+    this.playerCoins = playerCoins;
   }
 }

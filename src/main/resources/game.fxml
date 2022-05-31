@@ -98,9 +98,9 @@
               <fx:include fx:id="island6" onMouseClicked="#onClickIsland" source="island.fxml" translateX="10.0" translateY="-30.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
       
               <fx:include fx:id="cloud0" onMouseClicked="#onClickCloudTile" source="cloud.fxml" translateX="30.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-              <fx:include fx:id="cloud1" onMouseClicked="#onClickCloudTile" source="cloud.fxml" translateX="38.0" translateY="10.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-              <fx:include fx:id="cloud2" onMouseClicked="#onClickCloudTile" source="cloud.fxml" translateX="-20.0" translateY="-10.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-              <fx:include fx:id="cloud3" onMouseClicked="#onClickCloudTile" source="cloud.fxml" translateX="-10.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+              <fx:include fx:id="cloud2" onMouseClicked="#onClickCloudTile" source="cloud.fxml" translateX="38.0" translateY="10.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+              <fx:include fx:id="cloud3" onMouseClicked="#onClickCloudTile" source="cloud.fxml" translateX="-20.0" translateY="-10.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+              <fx:include fx:id="cloud1" onMouseClicked="#onClickCloudTile" source="cloud.fxml" translateX="-10.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
                <Label fx:id="playerCoins" alignment="BOTTOM_LEFT" style="-fx-background-color: #910032; -fx-border-color: black; -fx-border-style: solid; -fx-border-width: 2.5 2.5 0 0;" text="Coins: 0" textFill="WHITE" GridPane.columnSpan="2" GridPane.rowIndex="4">
                   <font>
                      <Font name="Agency FB Bold" size="25.0" />
