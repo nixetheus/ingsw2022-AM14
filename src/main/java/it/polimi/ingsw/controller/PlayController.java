@@ -115,15 +115,24 @@ public class PlayController {
    * @return true if the player can play that assistant
    */
   private boolean canPlayAssistant(int playerId, int assistantId, Vector<Team> teams) {
+
+    boolean canPlay = true;
     for (Team team : teams) {
       for (Player player : team.getPlayers()) {
+
+        // IS IN PLAYER'S ASSISTANTS
         if (player.getPlayerId() == playerId) {
-          return player.getPlayableAssistant().stream()
+          canPlay = canPlay && player.getPlayableAssistant().stream()
               .anyMatch(assistant -> assistant.getAssistantId() == assistantId);
+        }
+        // HAS IT BEEN ALREADY PLAYED BY ANOTHER PLAYER
+        else {
+          if (player.getAssistant() != null)
+            canPlay = canPlay && (player.getAssistant().getAssistantId() != assistantId);
         }
       }
     }
-    return false;
+    return canPlay;
   }
 
   /**

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.controller;
 
+import static java.lang.Math.abs;
+
 import it.polimi.ingsw.helpers.Color;
 import it.polimi.ingsw.helpers.MessageSecondary;
 import it.polimi.ingsw.helpers.Places;
@@ -28,21 +30,36 @@ public class MoveController {
    * @param currentGame The started match
    */
   public Message elaborateMessage(MoveMessage msg, Game currentGame) {
-    //can create a method for each control
 
     switch (msg.getMessageSecondary()) {
       case MOVE_MN:
         //control if no entry tile
-        int motherNatureMoves =
-            msg.getIslandNumber() - currentGame.getMainBoard().getMotherNature().getPosition();
-        currentGame.moveNature(
-            motherNatureMoves);
+        int islandCurrentMN = currentGame.getMainBoard().getMotherNature().getPosition();
+        int motherNatureMoves = 0;
+        while (true) {
+          if (islandCurrentMN + motherNatureMoves == msg.getIslandNumber())
+            break;
+          else
+            motherNatureMoves++;
+        }
+        int nOfIslands = currentGame.getMainBoard().getIslands().size();
 
-        MoveMessageResponse responseNature = new MoveMessageResponse(
-            MessageSecondary.MOVE_MN);
-        responseNature.setPlayerId(currentGame.getCurrentPlayer().getPlayerId());
-        responseNature.setIslandNumber(currentGame.getMainBoard().getMotherNature().getPosition());
-        return responseNature;
+        // ONLY CONSENTED N OF MOVES
+        if (motherNatureMoves <= currentGame.getCurrentPlayer().getAssistant().getMoves()) {
+
+          // ONLY CLOCKWISE
+          if (msg.getIslandNumber() == (islandCurrentMN + motherNatureMoves) % nOfIslands) {
+
+            currentGame.moveNature(motherNatureMoves);
+
+            MoveMessageResponse responseNature = new MoveMessageResponse(MessageSecondary.MOVE_MN);
+            responseNature.setPlayerId(currentGame.getCurrentPlayer().getPlayerId());
+            responseNature.setIslandNumber(currentGame.getMainBoard().getMotherNature().getPosition());
+            return responseNature;
+          }
+
+        }
+        break;
 
       case CLOUD_TILE:
         //control if the number is valid
@@ -118,6 +135,8 @@ public class MoveController {
 
           return responseEntrance;
         }
+        break;
+
       default:
         break;
     }

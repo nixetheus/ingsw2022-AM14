@@ -56,6 +56,7 @@ public class GameController implements Initializable {
   public CharacterController character0Controller;
   public CharacterController character1Controller;
   public CharacterController character2Controller;
+  public Vector<CharacterController> characterControllers;
 
   // Islands
   public StackPane island0;
@@ -163,6 +164,11 @@ public class GameController implements Initializable {
     cloudControllers.add(cloud1Controller);
     cloudControllers.add(cloud2Controller);
     cloudControllers.add(cloud3Controller);
+
+    characterControllers = new Vector<>();
+    characterControllers.add(character0Controller);
+    characterControllers.add(character1Controller);
+    characterControllers.add(character2Controller);
   }
 
   public void setGuiParser(GuiParser parser) {
@@ -329,7 +335,6 @@ public class GameController implements Initializable {
       if (character != activeCharacterPane)
         characterWasUsed();
 
-      System.out.println(character.getId());
       isCharacterActive = true;
       activeCharacterId = character.getId();
       activeCharacterPane = character;
@@ -433,6 +438,15 @@ public class GameController implements Initializable {
   public void deleteIsland(int islandIndex) {
     islands.elementAt(islandIndex).setDisable(true);
     islands.elementAt(islandIndex).setVisible(false);
+  }
+
+  public void hideCharacters() {
+    character0.setDisable(true);
+    character1.setDisable(true);
+    character2.setDisable(true);
+    character0.setVisible(false);
+    character1.setVisible(false);
+    character2.setVisible(false);
   }
 
   public void setPlayerCoins(int numberOfCoins) {

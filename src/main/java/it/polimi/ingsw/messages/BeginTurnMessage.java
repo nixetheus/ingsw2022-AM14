@@ -16,6 +16,8 @@ public class BeginTurnMessage extends Message {
   Vector<int[]> studentsCloudTiles;
   Vector<Integer> playableAssistantId;
   Vector<Integer> PurchasableCharacterId;
+  int[] charactersCosts;
+  Vector<int[]> charactersStudents;
   int motherNaturePosition;
   int[] playerCoins;
 
@@ -112,5 +114,21 @@ public class BeginTurnMessage extends Message {
 
   public void setPlayerCoins(int[] playerCoins) {
     this.playerCoins = playerCoins;
+  }
+
+  public int[] getCharactersCosts() {
+    return charactersCosts;
+  }
+
+  public void setCharactersCosts(int[] charactersCosts) {
+    this.charactersCosts = charactersCosts;
+  }
+
+  public Vector<int[]> getCharactersStudents() {
+    return charactersStudents;
+  }
+
+  public void setCharactersStudents(Vector<int[]> charactersStudents) {
+    this.charactersStudents = charactersStudents;
   }
 }

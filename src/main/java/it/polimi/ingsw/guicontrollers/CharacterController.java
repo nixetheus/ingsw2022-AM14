@@ -105,7 +105,7 @@ public class CharacterController implements Initializable {
 
     for (;studVisibleIndex < students.size(); studVisibleIndex++) {
       students.elementAt(studVisibleIndex).setDisable(true);
-      students.elementAt(studVisibleIndex++).setVisible(false);
+      students.elementAt(studVisibleIndex).setVisible(false);
     }
   }
 

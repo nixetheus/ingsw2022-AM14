@@ -2,34 +2,23 @@ package it.polimi.ingsw.view;
 
 
 import static it.polimi.ingsw.helpers.MessageSecondary.ASK_GAME_PARAMS;
-import static it.polimi.ingsw.helpers.MessageSecondary.ASSISTANT;
-import static it.polimi.ingsw.helpers.MessageSecondary.CHARACTER;
-import static it.polimi.ingsw.helpers.MessageSecondary.CLOUD_TILE;
-import static it.polimi.ingsw.helpers.MessageSecondary.ENTRANCE;
 import static it.polimi.ingsw.helpers.MessageSecondary.INIT_GAME;
 import static it.polimi.ingsw.helpers.MessageSecondary.LOBBY;
-import static it.polimi.ingsw.helpers.MessageSecondary.MOTHER_NATURE;
-import static it.polimi.ingsw.helpers.MessageSecondary.PLAYER_PARAMS;
+import static it.polimi.ingsw.helpers.MessageSecondary.MOVE_MN;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import it.polimi.ingsw.guicontrollers.CloudController;
+import it.polimi.ingsw.guicontrollers.CharacterController;
 import it.polimi.ingsw.guicontrollers.GameController;
 import it.polimi.ingsw.guicontrollers.IslandController;
 import it.polimi.ingsw.guicontrollers.PlayerBoardController;
 import it.polimi.ingsw.helpers.Color;
-import it.polimi.ingsw.helpers.MessageSecondary;
 import it.polimi.ingsw.helpers.StudentsPlayerId;
 import it.polimi.ingsw.messages.BeginTurnMessage;
 import it.polimi.ingsw.messages.ClientResponse;
 import it.polimi.ingsw.messages.LoginMessageResponse;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.MoveMessageResponse;
-import it.polimi.ingsw.messages.PhaseMessageResponse;
 import it.polimi.ingsw.messages.PlayMessageResponse;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.Vector;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -45,6 +34,11 @@ public class ServerParserGUI {
   private final Scene gameScene;
   private final GameController mainController;
 
+  // Character Files
+  String[] charactersFiles = {
+      ""  // TODO
+  };
+
   public ServerParserGUI(Stage stage, Scene login, Scene params, Scene lobby, Scene game, FXMLLoader gameFxmlLoader) {
 
     gameScene = game;
@@ -53,6 +47,8 @@ public class ServerParserGUI {
     loginParamsScene = params;
     mainStage.setScene(login);
 
+    System.out.println(
+        Eriantys.class.getResource("src/main/resources/Graphical_Assets/Personaggi/CarteTOT_front.jpg"));
     mainController = gameFxmlLoader.getController();
   }
 
@@ -117,68 +113,18 @@ public class ServerParserGUI {
   }
 
   private void elaborateMoveMessage(MoveMessageResponse moveMessage) {
-    StringBuilder returnString = new StringBuilder();
+    if (moveMessage.getMessageSecondary() == MOVE_MN) {
 
-    switch (moveMessage.getMessageSecondary()) {
+      Platform.runLater(() -> {
 
-      case ENTRANCE: {
+        for (IslandController islandController : mainController.islandsControllers)
+          islandController.setMotherNature(false);
 
-        // UPDATE ISLAND
-        Platform.runLater(() -> {
-          int index = moveMessage.getIslandNumber();
-          int[] students = moveMessage.getStudentsIsland();
-          IslandController affectedIsland = mainController.islandsControllers.elementAt(index);
-          affectedIsland.setRedStudents(students[Color.RED.ordinal()]);
-          affectedIsland.setBlueStudents(students[Color.BLUE.ordinal()]);
-          affectedIsland.setPinkStudents(students[Color.PURPLE.ordinal()]);
-          affectedIsland.setGreenStudents(students[Color.GREEN.ordinal()]);
-          affectedIsland.setYellowStudents(students[Color.YELLOW.ordinal()]);
-        });
-
-        // UPDATE ENTRANCE
-        // TODO
-
-        // UPDATE DINING ROOM
-        // TODO
-
-        // RETURN MESSAGE
-        returnString.append("Student successfully moved!");
-      }
-      break;
-
-      case CLOUD_TILE: {
-
-        // UPDATE CLOUD
-        Platform.runLater(() -> {
-          CloudController cloud = mainController.cloudControllers.elementAt(moveMessage.getCloudTileNumber());
-          cloud.hideStudents();
-        });
-
-        // RETURN MESSAGE
-        returnString.append("Cloud tile ").append(moveMessage.getCloudTileNumber() + 1)
-            .append(" successfully taken! ");
-
-      }
-      break;
-
-      case MOVE_MN: {
-
-        Platform.runLater(() -> {
-          for (IslandController islandController : mainController.islandsControllers)
-            islandController.setMotherNature(false);
-
-          mainController.islandsControllers.elementAt(moveMessage.getIslandNumber())
-              .setMotherNature(true);
-        });
-
-        // RETURN MESSAGE
-        returnString.append("Mother nature is on island number: ")
-            .append(moveMessage.getIslandNumber());
-      }
-      break;
+        mainController.islandsControllers.elementAt(moveMessage.getIslandNumber())
+            .setMotherNature(true);
+      });
 
     }
-    Platform.runLater(() -> mainController.setTextArea(returnString.toString()));
   }
 
   private void elaboratePlayMessage(PlayMessageResponse playMessage) {
@@ -190,15 +136,12 @@ public class ServerParserGUI {
       case ASK_ASSISTANT: {
         if (playMessage.getPreviousPlayerId() == playerId) {
           Platform.runLater(() -> mainController.hideAssistant(playMessage.getAssistantId()));
-        } else if (playMessage.getActivePlayerId() == playerId) {
-          // TODO
         }
       }
       break;
 
       case CHARACTER: {
         // TODO: CHANGE COST
-        // TODO
         returnString.append("TODO PLAY CHARACTER");
       }
       break;
@@ -247,11 +190,8 @@ public class ServerParserGUI {
               .setTeamTower(phaseMessage.getTowersColor()[index]);
 
           // MOTHER NATURE
-          if (index == phaseMessage.getMotherNaturePosition()) {
-            mainController.islandsControllers.elementAt(index).setMotherNature(true);
-          } else {
-            mainController.islandsControllers.elementAt(index).setMotherNature(false);
-          }
+          mainController.islandsControllers.elementAt(index).setMotherNature(
+              index == phaseMessage.getMotherNaturePosition());
         }
       }
     });
@@ -307,6 +247,21 @@ public class ServerParserGUI {
       mainController.playerCoins.setText("Coins: " + phaseMessage.getPlayerCoins()[playerId]);
     });
 
-    // TODO: REMAINING MSG PARTS
+    // CHARACTERS
+    Platform.runLater(() -> {
+      if (phaseMessage.getPurchasableCharacterId() != null) {
+        Vector<Integer> charactersIds = phaseMessage.getPurchasableCharacterId();
+        for (int characterIndex = 0; characterIndex < charactersIds.size(); characterIndex++) {
+
+          CharacterController character = mainController.characterControllers.elementAt(characterIndex);
+          int[] students = phaseMessage.getCharactersStudents().elementAt(characterIndex);
+          character.setStudents(students);
+          character.setCost(phaseMessage.getCharactersCosts()[characterIndex]);
+          // character.changeCharacterPic(charactersFiles[charactersIds.elementAt(characterIndex)]); TODO
+        }
+      } else {
+        mainController.hideCharacters();
+      }
+    });
   }
 }

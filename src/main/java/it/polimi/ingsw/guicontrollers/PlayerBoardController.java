@@ -95,13 +95,11 @@ public class PlayerBoardController implements Initializable {
   @FXML
   protected void onClickDiningRoom(MouseEvent event) {
     GridPane diningRoom = ((GridPane)event.getSource());
-    System.out.println(diningRoom.getId());
   }
 
   @FXML
   protected void onClickStudentsDiningRoom(MouseEvent event) {
     VBox diningRoomStudents = ((VBox)event.getSource());
-    System.out.println(diningRoomStudents.getId());
     studentDiningRoomId = diningRoomStudents.getId();
     if (studentEntranceId != null) {
       parser.moveStudentFromEntrance("", true, studentEntranceId);

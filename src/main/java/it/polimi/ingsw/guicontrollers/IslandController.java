@@ -57,7 +57,6 @@ public class IslandController implements Initializable {
   @FXML
   protected void onStudentDropOnIsland(MouseEvent event) {
     StackPane island = ((StackPane)event.getSource());
-    System.out.println(island.getId());
   }
 
   public void setRedStudents(int nStudents) {

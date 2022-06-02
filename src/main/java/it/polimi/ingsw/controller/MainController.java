@@ -16,6 +16,7 @@ import it.polimi.ingsw.model.CloudTile;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Team;
 import it.polimi.ingsw.model.board.Island;
+import it.polimi.ingsw.model.characters.CharacterCard;
 import it.polimi.ingsw.model.player.Assistant;
 import it.polimi.ingsw.model.player.Player;
 import java.io.FileNotFoundException;
@@ -228,31 +229,31 @@ public class MainController {
     boolean everythingOkay;
     Vector<Message> messages = new Vector<>();
 
-    // Check player is current player OR phase is login
-    everythingOkay = true;//!(msg.getPlayerId() == 0);  // ;
-
     boolean isCharacterPlayed = (turnManager.getMainGamePhase() == MessageMain.MOVE) &&
         msg.getMessageSecondary() == MessageSecondary.CHARACTER;
 
-    // Check phase is the right one
-    everythingOkay = everythingOkay &&
-        (((msg.getMessageMain() == turnManager.getMainGamePhase()) &&
-            (msg.getMessageSecondary() == turnManager.getSecondaryPhase())) ||
-            isCharacterPlayed);
+    // Set current player
+    if (turnManager.getMainGamePhase() == MessageMain.MOVE)
+    {this.game.setCurrentPlayerIndex(turnManager.getCurrentNumberOfUsersPlayedActionPhase());}
+    else if (turnManager.getSecondaryPhase() == MessageSecondary.ASSISTANT)
+    {this.game.setCurrentPlayerIndex(turnManager.getCurrentNumberOfPlayedAssistants());}
 
-     if (msg.getMessageMain() == MessageMain.MOVE) {
-      this.game.setCurrentPlayerIndex(turnManager.getCurrentNumberOfUsersPlayedActionPhase());}
+    // Check phase is the right one
+    everythingOkay =  (((msg.getMessageMain() == turnManager.getMainGamePhase()) &&
+                      (msg.getMessageSecondary() == turnManager.getSecondaryPhase()))
+                      || isCharacterPlayed);
+
+    // Check player is current player
+    everythingOkay = everythingOkay && (msg.getPlayerId() == this.game.getCurrentPlayer().getPlayerId());
 
     Message gameResponse = null;
     if (everythingOkay) {
       switch (msg.getMessageMain()) {
         case MOVE:
           gameResponse = moveController.elaborateMessage((MoveMessage) msg, game);
-          messages.add(gameResponse);
           break;
         case PLAY:
           gameResponse = playController.elaborateMessage((PlayMessage) msg, game);
-          messages.add(gameResponse);
           break;
         default:
           break;
@@ -260,6 +261,8 @@ public class MainController {
     }
 
     if (gameResponse != null) {
+
+      messages.add(gameResponse);
 
       // Update turn
       turnManager.updateCounters();
@@ -295,16 +298,19 @@ public class MainController {
       turnManager.changeState();
 
       // Set current player
-      if (msg.getMessageSecondary() == MessageSecondary.ASSISTANT
-          && turnManager.getCurrentNumberOfPlayedAssistants() != numberOfPlayers) {
-
-        this.game.setCurrentPlayerIndex(turnManager.getCurrentNumberOfPlayedAssistants());
-
-        // New current player turn to play assistant
-        messages.add(sendClientResponse(
-            MessageSecondary.ASK_ASSISTANT, "It's your turn to play an assistant",
-            game.getCurrentPlayer().getPlayerId()));
-
+      if (msg.getMessageSecondary() == MessageSecondary.ASSISTANT) {
+        if (turnManager.getCurrentNumberOfPlayedAssistants() != numberOfPlayers) {
+          this.game.setCurrentPlayerIndex(turnManager.getCurrentNumberOfPlayedAssistants());
+          // New current player turn to play assistant
+          messages.add(sendClientResponse(
+              MessageSecondary.ASK_ASSISTANT, "It's your turn to play an assistant",
+              game.getCurrentPlayer().getPlayerId()));
+        } else {
+          this.game.setCurrentPlayerIndex(turnManager.getCurrentNumberOfUsersPlayedActionPhase());
+          messages.add(sendClientResponse(
+              MessageSecondary.ASK_STUDENT_ENTRANCE, "It's your turn move your students",
+              game.getCurrentPlayer().getPlayerId()));
+        }
 
       } else if (msg.getMessageMain() == MessageMain.MOVE) {
 
@@ -314,34 +320,41 @@ public class MainController {
         messages.addAll(changeTurnMessage(MessageSecondary.INFRA_TURN));
 
         // Message to help to understand the game from cli
-        // TODO
-        if (turnManager.getCurrentNumberOfStudentsFromEntrance() ==
-            turnManager.getNumberStudentsFromEntrance()) {
+        if (msg.getMessageSecondary() == MessageSecondary.ENTRANCE) {
+          if (turnManager.getCurrentNumberOfStudentsFromEntrance() ==
+              turnManager.getNumberStudentsFromEntrance()) {
 
+            messages.add(sendClientResponse(
+                MessageSecondary.ASK_MN, "Select an island to move mother nature",
+                game.getCurrentPlayer().getPlayerId()));
+
+          } else {
+            messages.add(sendClientResponse(
+                MessageSecondary.ASK_STUDENT_ENTRANCE, "Move another student",
+                game.getCurrentPlayer().getPlayerId()));
+          }
+        } else if (msg.getMessageSecondary() == MessageSecondary.MOVE_MN) {
           messages.add(sendClientResponse(
-              MessageSecondary.ASK_MN, "Select island to move mother nature",
-              game.getCurrentPlayer().getPlayerId()));
-
-        } else {
-          // TODO
-          messages.add(sendClientResponse(
-              MessageSecondary.ASK_STUDENT_ENTRANCE, "Move another student",
-              game.getCurrentPlayer().getPlayerId()));
-        }
-
-        if (turnManager.getSecondaryPhase() == MessageSecondary.ASK_CLOUD) {
-          messages.add(
-              sendClientResponse(
                   MessageSecondary.ASK_CLOUD, "Take one cloud",
                   game.getCurrentPlayer().getPlayerId()));
+        } else {
+          if (turnManager.getCurrentNumberOfUsersPlayedActionPhase() != numberOfPlayers) {
+            messages.add(sendClientResponse(
+                MessageSecondary.ASK_STUDENT_ENTRANCE, "It's your turn move your students",
+                game.getCurrentPlayer().getPlayerId()));
+          } else {
+            messages.add(sendClientResponse(
+                MessageSecondary.ASK_STUDENT_ENTRANCE, "Please, play a new assistant",
+                game.getCurrentPlayer().getPlayerId()));
+          }
         }
 
       }
 
     } else {
       ClientResponse error = new ClientResponse(MessageSecondary.ERROR);
-      error.setResponse(
-          "Error! The inserted inputs are not correct or it is not your turn!\n");
+      error.setPlayerId(msg.getPlayerId());
+      error.setResponse("Error! The inserted inputs are not correct or it is not your turn!\n");
       messages.add(error);
     }
     return messages;
@@ -441,7 +454,24 @@ public class MainController {
         }
         beginTurnMessage.setStudentsCloudTiles(clouds);
 
-        //TODO character
+        // Characters
+        if (game.getPurchasableCharacter() != null) {
+          Vector<Integer> charactersIds = new Vector<>();
+          Vector<int[]> studentsCharacters = new Vector<>();
+          int[] charactersCosts = new int[game.getPurchasableCharacter().size()];
+
+          int costIndex = 0;
+          for (CharacterCard character : game.getPurchasableCharacter()) {
+            charactersIds.add(character.getCardEffect().ordinal());
+            charactersCosts[costIndex++] = character.getCost();
+            studentsCharacters.add(character.getStudents());
+          }
+
+          beginTurnMessage.setPurchasableCharacterId(charactersIds);
+          beginTurnMessage.setCharactersStudents(studentsCharacters);
+          beginTurnMessage.setCharactersCosts(charactersCosts);
+        }
+
         returnedVector.add(beginTurnMessage);
       }
     }
