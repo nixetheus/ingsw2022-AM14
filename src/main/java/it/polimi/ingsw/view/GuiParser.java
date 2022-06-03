@@ -36,7 +36,7 @@ public class GuiParser {
 
   public void sendLoginParameters(boolean expertMode, String playersString) {
 
-    int players = 2; // TODO
+    int players = Integer.parseInt(playersString.replace(" Players", ""));
     LoginMessage loginParamsMessage = new LoginMessage(MessageSecondary.GAME_PARAMS);
     loginParamsMessage.setGameExpert(expertMode);
     loginParamsMessage.setNumberOfPlayer(players);

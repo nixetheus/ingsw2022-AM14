@@ -40,8 +40,8 @@ public class LoginController implements Initializable {
   @FXML
   protected void sendLoginParams(MouseEvent event) {
     boolean isGameExpert = expertMode.isSelected();
-    String numberOfPlayersString = "";
-    parser.sendLoginParameters(isGameExpert, "4 Players");
+    String numberOfPlayersString = (String) numberOfPlayers.getSelectionModel().getSelectedItem();
+    parser.sendLoginParameters(isGameExpert, numberOfPlayersString);
   }
 
   @FXML
