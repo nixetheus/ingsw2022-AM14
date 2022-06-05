@@ -34,15 +34,16 @@ public class MoveController {
     switch (msg.getMessageSecondary()) {
       case MOVE_MN:
         //control if no entry tile
+        int nOfIslands = currentGame.getMainBoard().getIslands().size();
         int islandCurrentMN = currentGame.getMainBoard().getMotherNature().getPosition();
+        
         int motherNatureMoves = 0;
         while (true) {
-          if (islandCurrentMN + motherNatureMoves == msg.getIslandNumber())
+          if ((islandCurrentMN + motherNatureMoves) % nOfIslands == msg.getIslandNumber())
             break;
           else
             motherNatureMoves++;
         }
-        int nOfIslands = currentGame.getMainBoard().getIslands().size();
 
         // ONLY CONSENTED N OF MOVES
         if (motherNatureMoves <= currentGame.getCurrentPlayer().getAssistant().getMoves()) {
