@@ -34,6 +34,7 @@ public class Game {
   private final Vector<Player> gameOrder;
   private Vector<CharacterCard> purchasableCharacter;
   private Vector<Team> teams;
+  private Vector<Assistant> playedAssistants;
   private int playerNumber;
   private int playerTowerNumber;
   private int studentAtEntrance;
@@ -49,6 +50,7 @@ public class Game {
     this.gameOrder = new Vector<>();
     this.cloudTiles = new Vector<>();
     this.studentsBag = new StudentsBag();
+    this.playedAssistants = new Vector<>();
     this.mainBoard = new MainBoard(this.studentsBag);
     this.professorControlPlayer = new Player[Constants.getNColors()];
   }
@@ -81,7 +83,7 @@ public class Game {
    * This method calculates the game order based on the speed of each player assistant
    */
   public void orderBasedOnAssistant() {
-    //Collections.sort(this.gameOrder);
+    Collections.sort(this.gameOrder);
   }
 
   /**
@@ -250,6 +252,7 @@ public class Game {
    */
   public Assistant playAssistant(Player activePlayer, int assistantId) {
     activePlayer.playAssistant(assistantId);
+    playedAssistants.add(activePlayer.getAssistant());
     return activePlayer.getAssistant();
   }
 
@@ -328,6 +331,15 @@ public class Game {
 
     createClouds();
     fillClouds();
+  }
+
+  public void AssistantAfterTurn() {
+    for (Team team : teams) {
+      for (Player player : team.getPlayers()) {
+        player.playedAssistantToNull();
+      }
+    }
+    playedAssistants = new Vector<>();
   }
 
   public Player[] getProfessorControlPlayer() {

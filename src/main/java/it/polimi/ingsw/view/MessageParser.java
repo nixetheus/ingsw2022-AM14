@@ -18,11 +18,13 @@ import java.util.Locale;
 public class MessageParser {
 
   private int playerId;
+  private Boolean errorOccur;
 
   /**
    * Constructor method for message parser class
    */
   public MessageParser() {
+    this.errorOccur = false;
   }
 
   /**
@@ -59,14 +61,20 @@ public class MessageParser {
     MessageMain messageMain = findMessageMain(str);
     MessageSecondary messageSecondary = findMessageSecondary(str);
 
+    if (messageSecondary == null) {
+      messageMain = null;
+    }
+
     if (messageMain != null) {
       switch (messageMain) {
         case INFO:
           InfoRequestMessage infoRequestMessage = new InfoRequestMessage(messageSecondary);
           infoRequestMessage.setObjectId(findIndex(str));
+          //TODO print error if -1
           return infoRequestMessage;
 
         case PLAY:
+          //TODO broken if i wrote only "play" does not work
           PlayMessage playMessage = new PlayMessage(messageSecondary);
           String firstCommand = str.split(",")[0];
           playMessage.setAssistantId(findIndex(firstCommand));
@@ -90,15 +98,27 @@ public class MessageParser {
           }
 
           moveMessage.setPlace(findPlace(str));
+
+          //if(moveMessage.getPlace()==-1){
+          // printError();}
+
           return moveMessage;
 
         case LOGIN:
           LoginMessage loginMessage = new LoginMessage(messageSecondary);
           loginMessage.setNickName(str);//ignored if not message secondary==player params
           loginMessage.setNumberOfPlayer(findIndex(str));
+
+          if (loginMessage.getNumberOfPlayer() == -1
+              && messageSecondary == MessageSecondary.GAME_PARAMS) {
+            printError();
+          }
+
           loginMessage.setGameExpert(findMode(str));
           return loginMessage;
       }
+    } else {
+      printError();
     }
 
     return null;
@@ -188,17 +208,17 @@ public class MessageParser {
       if (str.contains("INFO")) {
         return MessageSecondary.INFO_ASSISTANTS;
       }
-      return MessageSecondary.ASK_ASSISTANT;
+      return MessageSecondary.ASSISTANT;
     } else if ((str.contains("MOTHER NATURE"))) {
       if (str.contains("INFO")) {
         return MessageSecondary.INFO_MN;
       }
-      return MessageSecondary.ASK_MN;
+      return MessageSecondary.MOVE_MN;
     } else if ((str.contains("CLOUD TILE"))) {
       if (str.contains("INFO")) {
         return MessageSecondary.INFO_CLOUD_TILE;
       }
-      return MessageSecondary.ASK_CLOUD;
+      return MessageSecondary.CLOUD_TILE;
     } else if (str.contains("PLAYER")) {
       if (str.contains("INFO")) {
         return MessageSecondary.INFO_PLAYER;
@@ -207,11 +227,11 @@ public class MessageParser {
       if (str.contains("INFO")) {
         return MessageSecondary.INFO_ISLAND;
       }
-      return MessageSecondary.ASK_STUDENT_ENTRANCE;
+      return MessageSecondary.ENTRANCE;
     } else if (str.contains("HELP")) {
       return MessageSecondary.INFO_HELP;
     } else if (str.contains("FROM ENTRANCE")) {
-      return MessageSecondary.ASK_STUDENT_ENTRANCE;
+      return MessageSecondary.ENTRANCE;
     } else if (!str.contains(" ")) {
       return MessageSecondary.PLAYER_PARAMS;
     }
@@ -219,7 +239,6 @@ public class MessageParser {
       return MessageSecondary.GAME_PARAMS;
     }
     return null;
-//TODO info respond message
   }
 
   /**
@@ -342,6 +361,25 @@ public class MessageParser {
 
   public void setPlayerId(int playerId) {
     this.playerId = playerId;
+  }
+
+  /**
+   *
+   */
+  private void printError() {
+    System.out.println("Input format wrong please try again");
+    this.errorOccur = true;
+    //TODO do not send message if error occur == true
+  }
+
+  //condition if verified no out.println in client user input
+  public Boolean getErrorOccur() {
+    return errorOccur;
+  }
+
+  //set after out.println in client user input
+  public void setErrorOccur(Boolean errorOccur) {
+    this.errorOccur = errorOccur;
   }
 }
 

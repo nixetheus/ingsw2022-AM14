@@ -67,7 +67,7 @@ public class CliParser {
     if (msg.getPlayerId() == 0 && msg.getMessageSecondary() == MessageSecondary.ASK_GAME_PARAMS) {
       returnString.append("Now you have to choose the game mode and number of players");
     }
-    if(msg.getMessageSecondary()==MessageSecondary.LOBBY){
+    if (msg.getMessageSecondary() == MessageSecondary.LOBBY) {
       returnString.append("welcome into the Eriantys lobby");
     }
     return String.valueOf(returnString);
@@ -84,7 +84,7 @@ public class CliParser {
   private String printPlayMessage(PlayMessageResponse msg) throws FileNotFoundException {
     StringBuilder returnString = new StringBuilder();
     switch (msg.getMessageSecondary()) {
-      case ASSISTANT:
+      case ASK_ASSISTANT:
         Gson gson = new Gson();
         JsonArray list = gson
             .fromJson(new FileReader(
@@ -121,7 +121,7 @@ public class CliParser {
 
     switch (msg.getMessageSecondary()) {
       case MOVE_STUDENT_ENTRANCE:
-        printedString.append("now your entrance contains").append("\n");;
+        printedString.append("now your entrance contains").append("\n");
         for (Color color : Color.values()) {
           printedString.append(msg.getStudentsEntrance()[color.ordinal()]).append(" ")
               .append(color).append(" students;\n");
@@ -140,17 +140,19 @@ public class CliParser {
           }
         }
         break;
-      case MOVE_CLOUD:
-        printedString.append("cloud tile number").append(msg.getCloudTileNumber())
-            .append("successfully taken").append("now your entrance contains").append("\n");
+      case CLOUD_TILE:
+        printedString.append("cloud tile number ").append(msg.getCloudTileNumber()).append("\n")
+            .append("successfully taken").append("\n")
+            .append("These student are added to your entrance :").append("\n");
         for (Color color : Color.values()) {
           printedString.append(msg.getStudentsCloud()[color.ordinal()]).append(" ")
               .append(color).append(" students;\n");
         }
+        printedString.append("\n");
         break;
       case MOVE_MN:
-        printedString.append("now mother nature is on the island number")
-            .append(msg.getIslandNumber()).append("island");
+        printedString.append("now mother nature is on the island number ")
+            .append(msg.getIslandNumber()).append(" island");
         break;
     }
     return String.valueOf(printedString);
@@ -158,20 +160,16 @@ public class CliParser {
 
   private String printInfoMessage(ClientResponse msg) {
     switch (msg.getMessageSecondary()) {
-      case ASSISTANT:
+      case ASK_ASSISTANT://you have to play assistant
         return msg.getResponse();
       case GAME_ORDER:
-        if(msg.getPlayerOrderId().indexOf(this.playerId)==0){
-          return "its your turn to move some students";
-        }
-        else{
-          return "You have to play as " + (msg.getPlayerOrderId().indexOf(this.playerId)+1) + " player";
-        }
-      case MOVE_STUDENT_ENTRANCE:
+        return "You have to play as " + (msg.getPlayerOrderId().indexOf(this.playerId) + 1)
+            + " player";
+      case ASK_STUDENT_ENTRANCE://you have to move students from entrance
         return msg.getResponse();
-      case MOVE_MN:
+      case ASK_MN:
         return msg.getResponse();
-      case MOVE_CLOUD:
+      case ASK_CLOUD:
         return msg.getResponse();
     }
 
@@ -191,35 +189,29 @@ public class CliParser {
         return printUpdate(returnString, msg);
 
       case CHANGE_TURN:
-        //TODO test
+        //TODO check if its his turn
+        returnString.append("now its your turn").append("\n").append("\n");
         returnString.append(printUpdate(returnString, msg));
-        returnString.append("your and opponents entrance are as follows").append("\n");
-        for (StudentsPlayerId diningRoomIdPlayer : msg.getStudentDiningRoom()) {
-          if (diningRoomIdPlayer.getPlayerId() == this.playerId) {
-            returnString.append("your diningRoom is:").append("\n");
-          } else {
-            returnString.append("an opponent diningRoom is").append("\n");
-          }
-          for (Color color : Color.values()) {
-            returnString.append(diningRoomIdPlayer.getStudents()[color.ordinal()]).append(" ")
-                .append(color).append(" students;\n");
-          }
-          returnString.append("\n");
-        }
+
       case INFRA_TURN:
-        return "ciao";//TODO
+        return "another player did something";
     }
     return null;
   }
 
   /**
+   * This method prints the actual state of the game
    *
+   * @param returnString The stringBuilder to build the output
+   * @param msg          The message that contains all the information
+   * @return The value of the string builder
    */
   private String printUpdate(StringBuilder returnString, BeginTurnMessage msg)
       throws FileNotFoundException {
     returnString.append("The game has now started you are the player number ")
         .append(this.playerId).append("\n");
 
+    //islands and mother nature
     returnString.append("The island are as follows").append("\n");
     for (int[] students : msg.getStudentsIsland()) {
       returnString.append("Island number ").append(msg.getStudentsIsland().indexOf(students))
@@ -228,16 +220,34 @@ public class CliParser {
         returnString.append(students[color.ordinal()]).append(" ")
             .append(color).append(" students;\n");
       }
-      if(msg.getMotherNaturePosition()==msg.getStudentsIsland().indexOf(students)){
-        returnString.append("mother nature is here");
+      if (msg.getTowersIsland().contains(msg.getStudentsIsland().indexOf(students))) {
+        returnString
+            .append("this island contains a tower \n");//TODO contains a tower if the array is 0
+        //TODO add who controls the island
       }
-      else{
+      if (msg.getMotherNaturePosition() == msg.getStudentsIsland().indexOf(students)) {
+        returnString.append("mother nature is here");
+      } else {
         returnString.append("mother nature is NOT here");
       }
       returnString.append("\n").append("\n");
     }
 
+    //cloudTiles
+    returnString.append("the cloud tiles are as follows").append("\n");
+    for (int[] studentsCloud : msg.getStudentsCloudTiles()) {
+      returnString.append("Cloud tile number ")
+          .append(msg.getStudentsCloudTiles().indexOf(studentsCloud))
+          .append(": \n");
+      for (Color color : Color.values()) {
+        returnString.append(studentsCloud[color.ordinal()]).append(" ")
+            .append(color).append(" students;\n");
+      }
+      returnString.append("\n");
+    }
+    returnString.append("\n").append("\n");
 
+    //entrances
     returnString.append("your and opponents entrance are as follows").append("\n");
     for (StudentsPlayerId entranceIdPlayer : msg.getStudentEntrance()) {
       if (entranceIdPlayer.getPlayerId() == this.playerId) {
@@ -249,9 +259,41 @@ public class CliParser {
         returnString.append(entranceIdPlayer.getStudents()[color.ordinal()]).append(" ")
             .append(color).append(" students;\n");
       }
+      returnString.append("\n").append("\n");
+    }
+
+    //dining rooms
+    returnString.append("your and opponents dining room are as follows").append("\n");
+
+    for (StudentsPlayerId diningRoomIdPlayer : msg.getStudentDiningRoom()) {
+      if (diningRoomIdPlayer.getPlayerId() == this.playerId) {
+        returnString.append("your diningRoom is:").append("\n");
+      } else {
+        returnString.append("an opponent diningRoom is").append("\n");
+      }
+      for (Color color : Color.values()) {
+        returnString.append(diningRoomIdPlayer.getStudents()[color.ordinal()]).append(" ")
+            .append(color).append(" students;\n");
+      }
       returnString.append("\n");
     }
 
+    //coins
+    returnString.append("You have ").append(msg.getPlayerCoins()[playerId]).append(" coins")
+        .append("\n").append("\n");
+
+    //professors
+    returnString.append("You own the professor:").append("\n");
+    int[] myProfessor = msg.getProfessors().get(this.playerId);
+    for (Color color : Color.values()) {
+      if (myProfessor[color.ordinal()] == 1) {
+        returnString.append(myProfessor[color.ordinal()]).append(" ")
+            .append(color).append(" professor;\n");
+      }
+    }
+    returnString.append("\n");
+
+    //playable assistants
     returnString.append("these are the assistant tou can play :").append("\n");
     Gson gson = new Gson();
     JsonArray list = gson
@@ -266,6 +308,9 @@ public class CliParser {
           .append("max mother nature moves").append(" ").append(moves).append("\n")
           .append("\n");
     }
+
+    //TODO print purchasable character
+
     return returnString.toString();
   }
 }

@@ -70,6 +70,7 @@ public class ClientUserInput extends Thread {
       while (!userInput.equals("quit")) {
 
         //read input from stdin
+
         userInput = stdIn.readLine();
 
         //set the player id
@@ -80,7 +81,11 @@ public class ClientUserInput extends Thread {
         clientInputJson = messageParser.parser(userInput);
 
         //send to server
-        out.println(clientInputJson);
+        if (!messageParser.getErrorOccur()) {
+          out.println(clientInputJson);
+        }
+
+        messageParser.setErrorOccur(false);
 
       }
 

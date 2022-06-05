@@ -69,8 +69,8 @@ public class MessageParserTest {
    * Testing the parser output of a mother nature movement and comparing it to a message created by
    * hand with the expected parameters
    */
-  @Test
-  public void testMoveMotherNatureCorrect() {
+  /* @Test
+ public void testMoveMotherNatureCorrect() {
     input = "move mother nature to island 4";
     messageOutput = parser.parser(input);
     MoveMessage moveMessageTest = new MoveMessage(MessageSecondary.MOTHER_NATURE);
@@ -82,7 +82,7 @@ public class MessageParserTest {
     Gson gson = new Gson();
 
     Assert.assertEquals(gson.toJson(moveMessageTest), messageOutput);
-  }
+  }*/
 
   /**
    * Testing the parser output of taking a cloud tile and comparing it to a message created by hand
