@@ -48,7 +48,7 @@ public class ServerParserGUI {
     mainStage.setScene(login);
 
     System.out.println(
-        Eriantys.class.getResource("src/main/resources/Graphical_Assets/Personaggi/CarteTOT_front.jpg"));
+        ViewMain.class.getResource("src/main/resources/Graphical_Assets/Personaggi/CarteTOT_front.jpg"));
     mainController = gameFxmlLoader.getController();
   }
 

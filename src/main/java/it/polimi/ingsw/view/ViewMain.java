@@ -17,7 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class Eriantys extends Application {
+public class ViewMain extends Application {
 
   static boolean isGUI;
   static Socket socket;
@@ -74,12 +74,12 @@ public class Eriantys extends Application {
 
     stage.setResizable(false);
 
-    FXMLLoader loginFxmlLoader = new FXMLLoader(Eriantys.class.getResource("/login.fxml"));
+    FXMLLoader loginFxmlLoader = new FXMLLoader(ViewMain.class.getResource("/login.fxml"));
     FXMLLoader loginParamsFxmlLoader = new FXMLLoader(
-        Eriantys.class.getResource("/loginParams.fxml"));
+        ViewMain.class.getResource("/loginParams.fxml"));
     FXMLLoader loginLobbyFxmlLoader = new FXMLLoader(
-        Eriantys.class.getResource("/loginLobby.fxml"));
-    FXMLLoader gameFxmlLoader = new FXMLLoader(Eriantys.class.getResource("/game.fxml"));
+        ViewMain.class.getResource("/loginLobby.fxml"));
+    FXMLLoader gameFxmlLoader = new FXMLLoader(ViewMain.class.getResource("/game.fxml"));
 
     Scene login = new Scene(loginFxmlLoader.load());
     Scene loginParams = new Scene(loginParamsFxmlLoader.load());
