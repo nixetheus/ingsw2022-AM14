@@ -333,7 +333,7 @@ public class Game {
     fillClouds();
   }
 
-  public void AssistantAfterTurn() {
+  public void assistantAfterTurn() {
     for (Team team : teams) {
       for (Player player : team.getPlayers()) {
         player.playedAssistantToNull();

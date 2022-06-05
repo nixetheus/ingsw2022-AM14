@@ -293,6 +293,7 @@ public class MainController {
           && turnManager.getCurrentNumberOfUsersPlayedActionPhase() == numberOfPlayers) {
         this.game.fillClouds();
         this.game.reverseOrderEndTurn();
+        this.game.assistantAfterTurn();
       }
 
       turnManager.changeState();

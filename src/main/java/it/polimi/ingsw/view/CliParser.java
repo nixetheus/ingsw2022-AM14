@@ -145,7 +145,7 @@ public class CliParser {
             .append("successfully taken").append("\n")
             .append("These student are added to your entrance :").append("\n");
         for (Color color : Color.values()) {
-          printedString.append(msg.getStudentsCloud()[color.ordinal()]).append(" ")
+          printedString.append(msg.getStudentsCloud()[color.ordinal()])
               .append(color).append(" students;\n");
         }
         printedString.append("\n");
