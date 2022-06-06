@@ -172,6 +172,8 @@ public class CliParser {
         return msg.getResponse();
       case ASK_CLOUD:
         return msg.getResponse();
+      case CLIENT_DISCONNECT:
+        return msg.getResponse();
     }
 
     return null;

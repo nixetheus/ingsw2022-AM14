@@ -81,7 +81,6 @@ public class ClientHandler implements Runnable {
           if (response.getPlayerId() == -1) {
             sendResponseToAllClients(response);
           } else {
-            //TODO check do not send to last client
             sendSocketMessage(toJson(response),
                 new PrintWriter(socketOut.get(response.getPlayerId()).getOutputStream()));
           }
