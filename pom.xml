@@ -9,8 +9,6 @@
   <version>1.0-SNAPSHOT</version>
 
   <name>AM14</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -39,12 +37,12 @@
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>
-      <version>17.0.1</version>
+      <version>18.0.1</version>
     </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-fxml</artifactId>
-      <version>17.0.1</version>
+      <version>18.0.1</version>
     </dependency>
     <dependency>
       <groupId>org.kordamp.bootstrapfx</groupId>
@@ -57,6 +55,28 @@
       <version>5.8.2</version>
       <scope>test</scope>
     </dependency>
+
+    <!-- javaFX for M1
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx</artifactId>
+      <version>18.0.1</version>
+      <type>pom</type>
+    </dependency>
+
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-controls</artifactId>
+      <version>18.0.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-fxml</artifactId>
+      <version>18.0.1</version>
+    </dependency>
+
+     end of javaFX for M1 -->
     <!--
     <dependency>
       <groupId>org.junit.jupiter</groupId>
