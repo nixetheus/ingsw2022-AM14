@@ -33,7 +33,7 @@ public class MainBoard {
       int color = Arrays.stream(new int[]{0, 1, 2, 3, 4})
           .filter(c -> randomStudent[c] > 0).toArray()[0];
 
-      if (islandIndex != motherNature.getPosition() ||
+      if (islandIndex != motherNature.getPosition() &&
           islandIndex != ((motherNature.getPosition()
               + Constants.getInitialNumIslands() / 2)
               % Constants.getInitialNumIslands())) {

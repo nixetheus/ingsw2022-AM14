@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.helpers.Color;
+import it.polimi.ingsw.helpers.Effects;
 import it.polimi.ingsw.helpers.MessageSecondary;
 import it.polimi.ingsw.helpers.StudentsPlayerId;
 import it.polimi.ingsw.messages.BeginTurnMessage;
@@ -278,9 +279,7 @@ public class CliParser {
       returnString.append("\n");
     }
 
-    //coins
-    returnString.append("You have ").append(msg.getPlayerCoins()[playerId]).append(" coins")
-        .append("\n").append("\n");
+
 
     //professors
     returnString.append("You own the professor:").append("\n");
@@ -309,7 +308,28 @@ public class CliParser {
           .append("\n");
     }
 
-    //TODO print purchasable character
+    //purchasable character
+    returnString.append("those are the assistant you can purchase:").append("\n").append("\n");
+    for(int id: msg.getPurchasableCharacterId()){
+      for(Effects effect:Effects.values()){
+        if(id==effect.ordinal()){
+          returnString.append(effect.getStringEffectCard()).append("\n");
+          returnString.append("The cost of this character is ").append(msg.getCharactersCosts()[msg.getPurchasableCharacterId().indexOf(id)]).append("\n");
+          if(effect.getNOfStudents()!=0){
+            returnString.append("it has the following students on it").append("\n");
+            for (Color color : Color.values()) {
+              returnString.append(msg.getCharactersStudents().get(msg.getCharactersCosts()[msg.getPurchasableCharacterId().indexOf(id)])[color.ordinal()]).append(" ")
+                  .append(color).append(" students;\n");
+            }
+          }
+        }
+      }
+      returnString.append("\n");
+    }
+
+    //coins
+    returnString.append("You have ").append(msg.getPlayerCoins()[playerId]).append(" coins")
+        .append("\n").append("\n");
 
     return returnString.toString();
   }
