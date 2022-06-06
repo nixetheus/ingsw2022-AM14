@@ -88,7 +88,7 @@ public class GameController implements Initializable {
   public Vector<IslandController> islandsControllers;
 
   // Other Players boards
-  int numberOfPlayers = 2;
+  int numberOfPlayers = 0;
   int currentBoardIndex = 0;
   @FXML private Parent player0Board;
   @FXML private Parent player1Board;
@@ -183,7 +183,7 @@ public class GameController implements Initializable {
     boards.elementAt(playerId).setVisible(true);
     currentBoardIndex = playerId;
     if (numberOfPlayers == 3) {
-      BoardsControllers.elementAt(playerId).setTowersColor(playerId % 2);
+      BoardsControllers.elementAt(playerId).setTowersColor(playerId);
     } else {
       BoardsControllers.elementAt(playerId).setTowersColor(playerId % 2);
     }
@@ -451,5 +451,9 @@ public class GameController implements Initializable {
 
   public void setPlayerCoins(int numberOfCoins) {
     playerCoins.setText("Coins: " + numberOfCoins);
+  }
+
+  public void setNumberOfPlayers(int numberOfPlayers) {
+    this.numberOfPlayers = numberOfPlayers;
   }
 }

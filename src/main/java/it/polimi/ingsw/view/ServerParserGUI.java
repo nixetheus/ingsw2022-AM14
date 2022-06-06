@@ -19,6 +19,7 @@ import it.polimi.ingsw.messages.LoginMessageResponse;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.MoveMessageResponse;
 import it.polimi.ingsw.messages.PlayMessageResponse;
+import java.util.Arrays;
 import java.util.Vector;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -166,32 +167,38 @@ public class ServerParserGUI {
     // SET ISLANDS
     Platform.runLater(() -> {
       if (phaseMessage.getStudentsIsland() != null) {
-        for (int index = 0; index < phaseMessage.getStudentsIsland().size(); index++) {
+        for (int islandNumber = 0; islandNumber < 12; islandNumber++) {
+          
+          if (Arrays.asList(phaseMessage.getIslandsIds()).contains(islandNumber)) {
+            
+            // STUDENTS
+            int[] students = phaseMessage.getStudentsIsland().elementAt(islandNumber);
+            mainController.islandsControllers.elementAt(islandNumber)
+                .setRedStudents(students[Color.RED.ordinal()]);
+            mainController.islandsControllers.elementAt(islandNumber)
+                .setBlueStudents(students[Color.BLUE.ordinal()]);
+            mainController.islandsControllers.elementAt(islandNumber)
+                .setPinkStudents(students[Color.PURPLE.ordinal()]);
+            mainController.islandsControllers.elementAt(islandNumber)
+                .setGreenStudents(students[Color.GREEN.ordinal()]);
+            mainController.islandsControllers.elementAt(islandNumber)
+                .setYellowStudents(students[Color.YELLOW.ordinal()]);
 
-          // STUDENTS
-          int[] students = phaseMessage.getStudentsIsland().elementAt(index);
-          mainController.islandsControllers.elementAt(index)
-              .setRedStudents(students[Color.RED.ordinal()]);
-          mainController.islandsControllers.elementAt(index)
-              .setBlueStudents(students[Color.BLUE.ordinal()]);
-          mainController.islandsControllers.elementAt(index)
-              .setPinkStudents(students[Color.PURPLE.ordinal()]);
-          mainController.islandsControllers.elementAt(index)
-              .setGreenStudents(students[Color.GREEN.ordinal()]);
-          mainController.islandsControllers.elementAt(index)
-              .setYellowStudents(students[Color.YELLOW.ordinal()]);
+            // TOWERS
+            mainController.islandsControllers.elementAt(islandNumber)
+                .setNumberOfTowers(phaseMessage.getTowersIsland().elementAt(islandNumber));
 
-          // TOWERS
-          mainController.islandsControllers.elementAt(index)
-              .setNumberOfTowers(phaseMessage.getTowersIsland().elementAt(index));
+            // TOWERS COLOR
+            mainController.islandsControllers.elementAt(islandNumber)
+                .setTeamTower(phaseMessage.getTowersColor()[islandNumber]);
 
-          // TOWERS COLOR
-          mainController.islandsControllers.elementAt(index)
-              .setTeamTower(phaseMessage.getTowersColor()[index]);
-
-          // MOTHER NATURE
-          mainController.islandsControllers.elementAt(index).setMotherNature(
-              index == phaseMessage.getMotherNaturePosition());
+            // MOTHER NATURE
+            mainController.islandsControllers.elementAt(islandNumber).setMotherNature(
+                islandNumber == phaseMessage.getMotherNaturePosition());
+          } else {
+            mainController.deleteIsland(islandNumber);
+          }
+          
         }
       }
     });

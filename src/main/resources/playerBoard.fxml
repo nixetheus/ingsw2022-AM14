@@ -413,12 +413,12 @@
             </GridPane>
             <GridPane GridPane.rowIndex="3">
                <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="45.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="45.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="60.0" />
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="15.0" vgrow="SOMETIMES" />
@@ -465,6 +465,11 @@
                   <Circle fx:id="studentEntrance7" fill="#21bbef" onMouseClicked="#onClickStudentEntrance" onMouseEntered="#onHoverStudentEntrance" onMouseExited="#onExitHoverStudentEntrance" radius="12.5" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets left="7.5" />
+                     </GridPane.margin>
+                  </Circle>
+                  <Circle fx:id="studentEntrance8" fill="#21bbef" onMouseClicked="#onClickStudentEntrance" onMouseEntered="#onHoverStudentEntrance" onMouseExited="#onExitHoverStudentEntrance" radius="12.5" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" GridPane.columnIndex="5" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="5.0" />
                      </GridPane.margin>
                   </Circle>
                </children>

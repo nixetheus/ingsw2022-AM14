@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class Island {
 
+  private int islandId;
   private final int[] students;
   private int ownerId;
   private int numberOfTowers;
@@ -98,5 +99,13 @@ public class Island {
 
   public void setNoEntry(boolean noEntry) {
     this.noEntry = noEntry;
+  }
+
+  public int getIslandId() {
+    return islandId;
+  }
+
+  public void setIslandId(int islandId) {
+    this.islandId = islandId;
   }
 }

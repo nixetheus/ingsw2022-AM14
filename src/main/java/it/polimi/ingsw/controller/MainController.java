@@ -429,6 +429,7 @@ public class MainController {
         beginTurnMessage.setPlayerCoins(playersCoins);
 
         int towerIndex = 0;
+        Integer[] islandsIds = new Integer[game.getMainBoard().getIslands().size()];
         int[] towersColors = new int[game.getMainBoard().getIslands().size()];
         Vector<int[]> studentsIslands = new Vector<>();
         Vector<Integer> towersIslands = new Vector<>();
@@ -436,8 +437,10 @@ public class MainController {
           int[] studentIsland = island.getStudents();
           studentsIslands.add(studentIsland);
           towersIslands.add(island.getNumberOfTowers());
+          islandsIds[towerIndex] = island.getIslandId();
           towersColors[towerIndex++] = island.getOwnerId();
         }
+        beginTurnMessage.setIslandsIds(islandsIds);
         beginTurnMessage.setStudentsIsland(studentsIslands);
         beginTurnMessage.setTowersIsland(towersIslands);
         beginTurnMessage.setTowersColor(towersColors);

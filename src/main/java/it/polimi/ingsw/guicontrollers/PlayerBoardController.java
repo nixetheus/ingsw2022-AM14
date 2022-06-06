@@ -43,6 +43,7 @@ public class PlayerBoardController implements Initializable {
   public Circle studentEntrance5;
   public Circle studentEntrance6;
   public Circle studentEntrance7;
+  public Circle studentEntrance8;
   Vector<Circle> studentsEntrance;
 
   // For moving
@@ -69,6 +70,7 @@ public class PlayerBoardController implements Initializable {
     studentsEntrance.add(studentEntrance5);
     studentsEntrance.add(studentEntrance6);
     studentsEntrance.add(studentEntrance7);
+    studentsEntrance.add(studentEntrance8);
   }
 
   @FXML

@@ -12,7 +12,7 @@ public class BeginTurnMessage extends Message {
   Vector<int[]> professors;
   Vector<int[]> studentsIsland;
   Vector<Integer> towersIsland;
-  int[] islandsIds;
+  Integer[] islandsIds;
   int[] towersColor;
   Vector<int[]> studentsCloudTiles;
   Vector<Integer> playableAssistantId;
@@ -133,11 +133,11 @@ public class BeginTurnMessage extends Message {
     this.charactersStudents = charactersStudents;
   }
 
-  public int[] getIslandsIds() {
+  public Integer[] getIslandsIds() {
     return islandsIds;
   }
 
-  public void setIslandsIds(int[] islandsIds) {
+  public void setIslandsIds(Integer[] islandsIds) {
     this.islandsIds = islandsIds;
   }
 }

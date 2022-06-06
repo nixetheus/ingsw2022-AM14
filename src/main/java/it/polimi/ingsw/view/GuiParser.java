@@ -41,6 +41,7 @@ public class GuiParser {
     loginParamsMessage.setGameExpert(expertMode);
     loginParamsMessage.setNumberOfPlayer(players);
     out.println(gson.toJson(loginParamsMessage));
+    mainGuiController.setNumberOfPlayers(players);
   }
 
   // PLAY MESSAGES
