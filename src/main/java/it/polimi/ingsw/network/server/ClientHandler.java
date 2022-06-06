@@ -140,7 +140,7 @@ public class ClientHandler implements Runnable {
    * @param message message
    * @throws IOException exception
    */
-  synchronized private void sendResponseToAllClients(Message message) throws IOException {
+  synchronized protected void sendResponseToAllClients(Message message) throws IOException {
     for (Socket socketOut : socketOut) {
       sendSocketMessage(toJson(message), new PrintWriter(socketOut.getOutputStream()));
     }
@@ -209,7 +209,7 @@ public class ClientHandler implements Runnable {
    */
   private void pingThreadCreation() {
     pingTimer = new Timer();
-    timer = new Thread(new TimerThread(pingTimer));
+    timer = new Thread(new TimerThread(pingTimer, this));
     timer.start();
   }
 
@@ -220,7 +220,7 @@ public class ClientHandler implements Runnable {
   private void restartTimer() {
     pingTimer.cancel();
     pingTimer = new Timer();
-    timer = new Thread(new TimerThread(pingTimer));
+    timer = new Thread(new TimerThread(pingTimer, this));
     timer.start();
   }
 

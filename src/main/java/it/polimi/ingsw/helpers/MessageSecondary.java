@@ -26,6 +26,7 @@ public enum MessageSecondary {
   INFO_RESPONSE_MESSAGE,
 
   PING,
+  CLIENT_DISCONNECT,
 
   GAME_PARAMS,
   PLAYER_PARAMS,

@@ -15,11 +15,9 @@ import java.net.Socket;
 public class Pinger implements Runnable {
 
   private static final int pingTime = 2000;
-  private final Socket socketOut;
-  private PrintWriter out;
+  private final PrintWriter out;
 
   public Pinger(Socket socketOut) throws IOException {
-    this.socketOut = socketOut;
     out = new PrintWriter(socketOut.getOutputStream(), true);
   }
 
@@ -32,7 +30,7 @@ public class Pinger implements Runnable {
       try {
 
         Thread.sleep(pingTime);
-        //out.println(toJson(pingMessage));
+        out.println(toJson(pingMessage));
 
       } catch (InterruptedException e) {
         e.printStackTrace();
