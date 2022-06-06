@@ -128,6 +128,7 @@ public class MainController {
             loginResponse.setPlayerId(0);
             loginResponse.setResponse("Game parameters correctly set!");
             loginResponse.setMessageSecondary(MessageSecondary.LOBBY);
+            loginResponse.setNumberOfPlayers(numberOfPlayers);
 
           } else {
             loginResponse.setResponse("Error! Game parameters are not correct! Retry!");
@@ -171,6 +172,7 @@ public class MainController {
               loginResponse.setResponse("Welcome aboard " + newPlayer.getPlayerNickname() + "!  ");
               loginResponse.setPlayerId(turnManager.getCurrentNumberOfUsers());
               loginResponse.setMessageSecondary(MessageSecondary.LOBBY);
+              loginResponse.setNumberOfPlayers(numberOfPlayers);
 
               // SEND READY MESSAGE TODO: CHANGE SECONDARY
               LoginMessageResponse loginMessageResponse2 = new LoginMessageResponse(
@@ -199,6 +201,7 @@ public class MainController {
               } else {
                 loginResponse.setPlayerId(turnManager.getCurrentNumberOfUsers());
                 loginResponse.setMessageSecondary(MessageSecondary.LOBBY);
+                loginResponse.setNumberOfPlayers(numberOfPlayers);
               }
             }
           } else {

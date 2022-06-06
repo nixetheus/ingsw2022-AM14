@@ -6,6 +6,7 @@ import it.polimi.ingsw.helpers.MessageSecondary;
 public class LoginMessageResponse extends Message {
 
   String response;
+  int numberOfPlayers;
 
   public LoginMessageResponse(MessageSecondary messageSecondary) {
     this.messageMain = MessageMain.LOGIN;
@@ -19,5 +20,13 @@ public class LoginMessageResponse extends Message {
 
   public void setResponse(String response) {
     this.response = response;
+  }
+
+  public int getNumberOfPlayers() {
+    return numberOfPlayers;
+  }
+
+  public void setNumberOfPlayers(int numberOfPlayers) {
+    this.numberOfPlayers = numberOfPlayers;
   }
 }

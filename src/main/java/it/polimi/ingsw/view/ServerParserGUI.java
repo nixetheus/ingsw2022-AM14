@@ -108,6 +108,7 @@ public class ServerParserGUI {
       Platform.runLater(() -> mainStage.setScene(loginParamsScene));
     } else if (loginMessage.getMessageSecondary() == LOBBY) {
       playerId = loginMessage.getPlayerId();
+      mainController.setNumberOfPlayers(loginMessage.getNumberOfPlayers());
       mainController.setPlayerId(playerId);
       Platform.runLater(() -> mainStage.setScene(loginLobbyScene));
     }
