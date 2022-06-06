@@ -128,7 +128,7 @@ public class CliParser {
               .append(color).append(" students;\n");
         }
         if (msg.getPlace() == 0) {
-          printedString.append("now your dining room contains");
+          printedString.append("now your dining room contains\n");
           for (Color color : Color.values()) {
             printedString.append(msg.getStudentsDiningRoom()[color.ordinal()]).append(" ")
                 .append(color).append(" students;\n");
@@ -326,7 +326,7 @@ public class CliParser {
           }
         }
       }
-      returnString.append("\n");
+      returnString.append("to purchase use id ").append(id).append("\n").append("\n");
     }
 
     //coins

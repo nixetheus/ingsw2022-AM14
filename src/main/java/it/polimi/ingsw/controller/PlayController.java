@@ -97,10 +97,7 @@ public class PlayController {
             PlayMessageResponse playResponse = new PlayMessageResponse(MessageSecondary.CHARACTER);
             playResponse.setCharacterId(msg.getCharacterId());
 
-            /*
-            return "Character played correctly!\n"
-                + "You now have " + player.getCoins() + " remaining coins.\n Please wait...";
-            */
+            return playResponse;
           }
         }
       }
