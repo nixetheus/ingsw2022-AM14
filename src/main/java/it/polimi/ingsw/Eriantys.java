@@ -29,6 +29,12 @@ public class Eriantys {
     Scanner choice = new Scanner(System.in);
     String choiceStr = choice.nextLine();  // Read user input
 
+    while (!choiceStr.equals("1") && !choiceStr.equals("2") && !choiceStr.equals("3")) {
+      System.out.println("Please choose a valid option");
+      choice = new Scanner(System.in);
+      choiceStr = choice.nextLine();
+    }
+
     switch (choiceStr) {
       case "1": {
 
@@ -53,6 +59,9 @@ public class Eriantys {
 
         break;
       }
+
     }
   }
 }
+
+
