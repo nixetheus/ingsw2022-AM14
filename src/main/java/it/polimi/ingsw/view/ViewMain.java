@@ -35,10 +35,6 @@ public class ViewMain extends Application {
     Thread pinger = new Thread(new Pinger(socket));
     pinger.start();
 
-    // Thread for ping the server
-    Thread pinger = new Thread(new Pinger(socket));
-    pinger.start();
-
     if (isGUI) {
       launch();
     } else {

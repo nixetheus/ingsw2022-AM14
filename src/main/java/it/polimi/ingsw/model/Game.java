@@ -181,7 +181,7 @@ public class Game {
     Random random = new Random();
     Vector<Effects> cardEffects = new Vector<>();
     while (cardEffects.size() < 3) {
-      Effects effect = Effects.values()[random.nextInt(Effects.values().length)];
+      Effects effect = Effects.values()[random.nextInt(Effects.values().length - 1)];
       if (!cardEffects.contains(effect)) {
         cardEffects.add(effect);
       }
