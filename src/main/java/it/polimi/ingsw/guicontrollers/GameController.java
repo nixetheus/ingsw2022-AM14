@@ -182,10 +182,12 @@ public class GameController implements Initializable {
     boards.elementAt(playerId).setDisable(false);
     boards.elementAt(playerId).setVisible(true);
     currentBoardIndex = playerId;
-    if (numberOfPlayers == 3) {
-      BoardsControllers.elementAt(playerId).setTowersColor(playerId);
-    } else {
-      BoardsControllers.elementAt(playerId).setTowersColor(playerId % 2);
+    for (int boardIndex = 0; boardIndex < BoardsControllers.size(); boardIndex++) {
+      if (numberOfPlayers == 3) {
+        BoardsControllers.elementAt(boardIndex).setTowersColor(boardIndex);
+      } else {
+        BoardsControllers.elementAt(boardIndex).setTowersColor(boardIndex % 2);
+      }
     }
     gameSetup(numberOfPlayers);
   }

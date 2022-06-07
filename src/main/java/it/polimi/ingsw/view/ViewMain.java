@@ -32,6 +32,10 @@ public class ViewMain extends Application {
     isGUI = Integer.parseInt(args[0]) > 0;
     socket = new Socket(hostName, portNumber);
 
+    // Thread for ping the server
+    Thread pinger = new Thread(new Pinger(socket));
+    pinger.start();
+
     if (isGUI) {
       launch();
     } else {
@@ -44,10 +48,6 @@ public class ViewMain extends Application {
           clientServerOutputReader);
       clientUserInput.start();
     }
-
-    // Thread for ping the server
-    Thread pinger = new Thread(new Pinger(socket));
-    pinger.start();
   }
 
   /**

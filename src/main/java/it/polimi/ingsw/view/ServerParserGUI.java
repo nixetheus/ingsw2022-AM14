@@ -12,6 +12,7 @@ import it.polimi.ingsw.guicontrollers.GameController;
 import it.polimi.ingsw.guicontrollers.IslandController;
 import it.polimi.ingsw.guicontrollers.PlayerBoardController;
 import it.polimi.ingsw.helpers.Color;
+import it.polimi.ingsw.helpers.MessageSecondary;
 import it.polimi.ingsw.helpers.StudentsPlayerId;
 import it.polimi.ingsw.messages.BeginTurnMessage;
 import it.polimi.ingsw.messages.ClientResponse;
@@ -48,8 +49,6 @@ public class ServerParserGUI {
     loginParamsScene = params;
     mainStage.setScene(login);
 
-    System.out.println(
-        ViewMain.class.getResource("src/main/resources/Graphical_Assets/Personaggi/CarteTOT_front.jpg"));
     mainController = gameFxmlLoader.getController();
   }
 
@@ -115,48 +114,24 @@ public class ServerParserGUI {
   }
 
   private void elaborateMoveMessage(MoveMessageResponse moveMessage) {
-    if (moveMessage.getMessageSecondary() == MOVE_MN) {
 
-      Platform.runLater(() -> {
-
-        for (IslandController islandController : mainController.islandsControllers)
-          islandController.setMotherNature(false);
-
-        mainController.islandsControllers.elementAt(moveMessage.getIslandNumber())
-            .setMotherNature(true);
-      });
-
-    }
   }
 
   private void elaboratePlayMessage(PlayMessageResponse playMessage) {
-
-    StringBuilder returnString = new StringBuilder();
-
-    switch (playMessage.getMessageSecondary()) {
-
-      case ASK_ASSISTANT: {
-        if (playMessage.getPreviousPlayerId() == playerId) {
-          Platform.runLater(() -> mainController.hideAssistant(playMessage.getAssistantId()));
-        }
+    if (playMessage.getMessageSecondary() == MessageSecondary.ASK_ASSISTANT) {
+      if (playMessage.getPreviousPlayerId() == playerId) {
+        Platform.runLater(() -> mainController.hideAssistant(playMessage.getAssistantId()));
       }
-      break;
-
-      case CHARACTER: {
-        // TODO: CHANGE COST
-        returnString.append("TODO PLAY CHARACTER");
-      }
-      break;
-
     }
-
-    if (playMessage.getResponse() != null)
-      Platform.runLater(() -> mainController.setTextArea(playMessage.getResponse() + " " + returnString));
   }
 
   private void elaborateInfoMessage(ClientResponse infoMessage) {
     if (infoMessage.getResponse() != null)
       Platform.runLater(() ->mainController.setTextArea(infoMessage.getResponse()));
+
+    if (infoMessage.getMessageSecondary() == MessageSecondary.CLIENT_DISCONNECT) {
+      System.exit(0);
+    }
   }
 
   private void elaboratePhaseMessage(BeginTurnMessage phaseMessage) {
