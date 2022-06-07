@@ -344,7 +344,7 @@ public class GameController implements Initializable {
       character.setEffect(glow);
       character.setScaleX(1.2);
       character.setScaleY(1.2);
-      parser.playCharacter(character.getId());
+      // parser.playCharacter(character.getId());
     }
   }
 

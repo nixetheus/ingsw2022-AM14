@@ -54,7 +54,8 @@ public class GuiParser {
     out.println(gson.toJson(playAssistantMessage));
   }
 
-  public void playCharacter(String characterId) {
+  public void playCharacter(String characterId, int studentColor, int islandId,
+      int entranceStudent, int diningRoomStudents) {
 
     int id = Integer.parseInt(characterId.replace("character", ""));
 
