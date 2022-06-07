@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 
 import it.polimi.ingsw.helpers.Color;
+import it.polimi.ingsw.helpers.Constants;
 import it.polimi.ingsw.helpers.Places;
 import it.polimi.ingsw.helpers.Towers;
 import it.polimi.ingsw.model.board.Island;
@@ -27,7 +28,7 @@ public class GameTest {
   Vector<Team> teams;
 
   /**
-   *Set up method that create players, teams, and the current game
+   * Set up method that create players, teams, and the current game
    */
   @Before
   public void setUp() throws Exception {
@@ -94,8 +95,9 @@ public class GameTest {
     int motherNatureInitialPosition;
     int motherNatureFinalPosition;
     motherNatureInitialPosition = expertGame.getMainBoard().getMotherNature().getPosition();
-    activePlayer.moveToPlayerBoard(Places.ENTRANCE,Color.BLUE.ordinal());
-    expertGame.moveStudent(activePlayer,Places.ENTRANCE,Places.DINING_ROOM,Color.BLUE.ordinal(),Optional.empty());
+    activePlayer.moveToPlayerBoard(Places.ENTRANCE, Color.BLUE.ordinal());
+    expertGame.moveStudent(activePlayer, Places.ENTRANCE, Places.DINING_ROOM, Color.BLUE.ordinal(),
+        Optional.empty());
 
     // expertGame.moveNature(5);
     motherNatureFinalPosition = expertGame.getMainBoard().getMotherNature().getPosition();
@@ -180,7 +182,16 @@ public class GameTest {
     activePlayer.getPlayerBoard().getEntrance().addStudent(3);
     expertGame.moveStudent(activePlayer, Places.ENTRANCE, Places.ISLAND, 3, Optional.of(5));
     Island chosenIsland = expertGame.getMainBoard().getIslands().get(5);
-    Assert.assertEquals(Arrays.stream(chosenIsland.getStudents()).sum(), 2);
+
+    if (chosenIsland.getIslandId() != expertGame.getMainBoard().getMotherNature().getPosition() &&
+        chosenIsland.getIslandId() != ((expertGame.getMainBoard().getMotherNature().getPosition()
+            + Constants.getInitialNumIslands() / 2)
+            % Constants.getInitialNumIslands())) {
+      Assert.assertEquals(Arrays.stream(chosenIsland.getStudents()).sum(), 2);
+    } else {
+      Assert.assertEquals(Arrays.stream(chosenIsland.getStudents()).sum(), 1);
+    }
+
     Assert.assertEquals(
         Arrays.stream(activePlayer.getPlayerBoard().getEntrance().getStudents()).sum(),
         expertGame.getStudentAtEntrance());
@@ -249,7 +260,8 @@ public class GameTest {
   }
 
   /**
-   * This method tests if the game order will be correctly filled following the played assistant speed
+   * This method tests if the game order will be correctly filled following the played assistant
+   * speed
    */
   @Test
   public void testOrderBasedOnAssistant() {
@@ -259,7 +271,8 @@ public class GameTest {
   }
 
   /**
-   * This method tests if the game order will be correctly reverted at the beginning of the planning phase
+   * This method tests if the game order will be correctly reverted at the beginning of the planning
+   * phase
    */
   @Test
   public void testReverseOrderEndTurn() {

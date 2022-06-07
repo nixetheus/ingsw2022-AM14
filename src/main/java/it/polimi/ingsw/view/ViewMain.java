@@ -31,6 +31,9 @@ public class ViewMain extends Application {
     setPortNumberFromJson();
     isGUI = Integer.parseInt(args[0]) > 0;
     socket = new Socket(hostName, portNumber);
+    // Thread for ping the server
+    Thread pinger = new Thread(new Pinger(socket));
+    pinger.start();
 
     // Thread for ping the server
     Thread pinger = new Thread(new Pinger(socket));
@@ -70,7 +73,7 @@ public class ViewMain extends Application {
   }
 
   @Override
-  public void start(Stage stage) throws IOException, InterruptedException {
+  public void start(Stage stage) throws IOException {
 
     stage.setResizable(false);
 

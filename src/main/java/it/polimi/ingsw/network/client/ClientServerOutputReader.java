@@ -78,6 +78,11 @@ public class ClientServerOutputReader extends Thread {
         } else {
           view.printGameUpdate(cliParser.fromJson(serverOutput));
         }
+
+        //terminate the client
+        if(serverOutput.contains("GAME OVER")){
+          System.exit(-1);
+        }
       }
 
     } catch (UnknownHostException e) {
