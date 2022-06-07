@@ -7,6 +7,7 @@ import java.util.Vector;
 
 public class BeginTurnMessage extends Message {
 
+  int activePLayerId;
   Vector<StudentsPlayerId> studentDiningRoom;
   Vector<StudentsPlayerId> studentEntrance;
   Vector<int[]> professors;
@@ -139,5 +140,13 @@ public class BeginTurnMessage extends Message {
 
   public void setIslandsIds(Integer[] islandsIds) {
     this.islandsIds = islandsIds;
+  }
+
+  public int getActivePLayerId() {
+    return activePLayerId;
+  }
+
+  public void setActivePLayerId(int activePLayerId) {
+    this.activePLayerId = activePLayerId;
   }
 }

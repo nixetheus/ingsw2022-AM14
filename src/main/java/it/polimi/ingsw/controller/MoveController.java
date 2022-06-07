@@ -3,12 +3,14 @@ package it.polimi.ingsw.controller;
 import static java.lang.Math.abs;
 
 import it.polimi.ingsw.helpers.Color;
+import it.polimi.ingsw.helpers.Constants;
 import it.polimi.ingsw.helpers.MessageSecondary;
 import it.polimi.ingsw.helpers.Places;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.MoveMessage;
 import it.polimi.ingsw.messages.MoveMessageResponse;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.player.Player;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -52,10 +54,13 @@ public class MoveController {
           if (msg.getIslandNumber() == (islandCurrentMN + motherNatureMoves) % nOfIslands) {
 
             currentGame.moveNature(motherNatureMoves);
+            int newMotherNaturePosition=currentGame.getMainBoard().getMotherNature().getPosition();
 
             MoveMessageResponse responseNature = new MoveMessageResponse(MessageSecondary.MOVE_MN);
             responseNature.setPlayerId(currentGame.getCurrentPlayer().getPlayerId());
-            responseNature.setIslandNumber(currentGame.getMainBoard().getMotherNature().getPosition());
+            responseNature.setIslandNumber(newMotherNaturePosition);
+
+            responseNature.setTowersIsland(currentGame.getMainBoard().getIslands().stream().filter(island -> island.getIslandId()==newMotherNaturePosition).findFirst().get().getNumberOfTowers());
             return responseNature;
           }
 
@@ -118,6 +123,19 @@ public class MoveController {
                 currentGame.getCurrentPlayer().getPlayerBoard().getDiningRoom()
                     .getStudents());
 
+            //professors
+            int[] professorPlayerId=new int[Constants.getNColors()];
+            for(Color color:Color.values()){
+              if(currentGame.getProfessorControlPlayer()[color.ordinal()]==null){
+                professorPlayerId[color.ordinal()]=-1;
+              }
+              else{
+              professorPlayerId[color.ordinal()]=currentGame.getProfessorControlPlayer()[color.ordinal()].getPlayerId();}
+            }
+            responseEntrance.setProfessors(professorPlayerId);
+
+            //coins
+            responseEntrance.setPlayerCoins(currentGame.getCurrentPlayer().getCoins());
           } else {
             responseEntrance.setPlace(1);
 
@@ -133,7 +151,8 @@ public class MoveController {
           responseEntrance
               .setStudentsEntrance(currentGame.getCurrentPlayer().getPlayerBoard().getEntrance()
                   .getStudents());
-
+          //TODO towers
+         // responseEntrance.setTowersIsland(currentGame.getMainBoard().getIslands().stream().filter(island -> island.getIslandId()==msg.getIslandNumber()).findFirst().get().getNumberOfTowers());
           return responseEntrance;
         }
         break;

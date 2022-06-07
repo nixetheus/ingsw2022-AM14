@@ -389,6 +389,7 @@ public class MainController {
 
         BeginTurnMessage beginTurnMessage = new BeginTurnMessage(messageSecondary);
         beginTurnMessage.setPlayerId(player.getPlayerId());
+        beginTurnMessage.setActivePLayerId(game.getCurrentPlayer().getPlayerId());
 
         Vector<StudentsPlayerId> studentsAtEntrances = new Vector<>();
         Vector<StudentsPlayerId> studentDiningRooms = new Vector<>();
