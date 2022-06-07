@@ -109,9 +109,9 @@ public class CliParser {
         }
         break;
       case CHARACTER:
-        returnString.append("Character").append(msg.getCharacterId())
-            .append("purchased now you can").append(msg.getEffectString());
-        //TODO
+        returnString.append("Character ").append(msg.getCharacterId())
+            .append(" purchased and correctly used\n");
+
     }
     return String.valueOf(returnString);
   }
@@ -192,12 +192,11 @@ public class CliParser {
         return printUpdate(returnString, msg);
 
       case CHANGE_TURN:
-        //TODO check if its his turn
-        returnString.append("now its your turn").append("\n").append("\n");
+        //TODO add to controller
         returnString.append(printUpdate(returnString, msg));
 
       case INFRA_TURN:
-        return "another player did something";
+        return printUpdate(returnString, msg);
     }
     return null;
   }
@@ -320,7 +319,7 @@ public class CliParser {
           if(effect.getNOfStudents()!=0){
             returnString.append("it has the following students on it").append("\n");
             for (Color color : Color.values()) {
-              returnString.append(msg.getCharactersStudents().get(msg.getCharactersCosts()[msg.getPurchasableCharacterId().indexOf(id)])[color.ordinal()]).append(" ")
+              returnString.append(msg.getCharactersStudents().get(msg.getPurchasableCharacterId().indexOf(id))[color.ordinal()]).append(" ")
                   .append(color).append(" students;\n");
             }
           }
