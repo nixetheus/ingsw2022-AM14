@@ -2,6 +2,7 @@ package it.polimi.ingsw.messages;
 
 import it.polimi.ingsw.helpers.MessageMain;
 import it.polimi.ingsw.helpers.MessageSecondary;
+import java.util.Vector;
 
 public class MoveMessageResponse extends Message{
 
@@ -13,6 +14,9 @@ public class MoveMessageResponse extends Message{
   private int[] studentsDiningRoom;
   private int[] studentsIsland;
   private int[] studentsCloud;
+  private int[] professors;
+  private Integer towersIsland;
+  private int playerCoins;
 
   public MoveMessageResponse(MessageSecondary messageSecondary) {
     this.messageMain = MessageMain.MOVE;
@@ -81,5 +85,29 @@ public class MoveMessageResponse extends Message{
 
   public void setStudentsCloud(int[] studentsCloud) {
     this.studentsCloud = studentsCloud;
+  }
+
+  public int[] getProfessors() {
+    return professors;
+  }
+
+  public void setProfessors(int[] professors) {
+    this.professors = professors;
+  }
+
+  public Integer getTowersIsland() {
+    return towersIsland;
+  }
+
+  public void setTowersIsland(Integer towersIsland) {
+    this.towersIsland = towersIsland;
+  }
+
+  public int getPlayerCoins() {
+    return playerCoins;
+  }
+
+  public void setPlayerCoins(int playerCoins) {
+    this.playerCoins = playerCoins;
   }
 }

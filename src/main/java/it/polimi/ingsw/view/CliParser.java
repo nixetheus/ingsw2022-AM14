@@ -64,12 +64,12 @@ public class CliParser {
       setPlayerId(msg.getPlayerId());
     }
     StringBuilder returnString = new StringBuilder();
-    returnString.append(msg.getResponse());
+    returnString.append(msg.getResponse()).append("\n");
     if (msg.getPlayerId() == 0 && msg.getMessageSecondary() == MessageSecondary.ASK_GAME_PARAMS) {
       returnString.append("Now you have to choose the game mode and number of players");
     }
     if (msg.getMessageSecondary() == MessageSecondary.LOBBY) {
-      returnString.append("welcome into the Eriantys lobby");
+      returnString.append("welcome into the Eriantys lobby\n");
     }
     return String.valueOf(returnString);
   }
@@ -127,18 +127,32 @@ public class CliParser {
           printedString.append(msg.getStudentsEntrance()[color.ordinal()]).append(" ")
               .append(color).append(" students;\n");
         }
+        printedString.append("\n");
+
         if (msg.getPlace() == 0) {
           printedString.append("now your dining room contains\n");
           for (Color color : Color.values()) {
             printedString.append(msg.getStudentsDiningRoom()[color.ordinal()]).append(" ")
                 .append(color).append(" students;\n");
           }
+          printedString.append("\n");
+
+          printedString.append("now you own these professors: \n");
+          for (Color color : Color.values()) {
+            if(msg.getProfessors()[color.ordinal()]==playerId){
+              printedString.append(color).append(" professor;\n");
+            }
+          }
+          printedString.append("\n");
+          printedString.append("now you have ").append(msg.getPlayerCoins()).append(" coins\n");
+
         } else if (msg.getPlace() == 1) {
-          printedString.append("now the island").append(msg.getIslandNumber()).append("contains");
+          printedString.append("now the island ").append(msg.getIslandNumber()).append(" contains\n");
           for (Color color : Color.values()) {
             printedString.append(msg.getStudentsIsland()[color.ordinal()]).append(" ")
                 .append(color).append(" students;\n");
           }
+          printedString.append("this island contains ").append(msg.getTowersIsland()).append( " towers\n");
         }
         break;
       case CLOUD_TILE:
@@ -146,14 +160,15 @@ public class CliParser {
             .append("successfully taken").append("\n")
             .append("These student are added to your entrance :").append("\n");
         for (Color color : Color.values()) {
-          printedString.append(msg.getStudentsCloud()[color.ordinal()])
+          printedString.append(msg.getStudentsCloud()[color.ordinal()]).append(" ")
               .append(color).append(" students;\n");
         }
         printedString.append("\n");
         break;
       case MOVE_MN:
         printedString.append("now mother nature is on the island number ")
-            .append(msg.getIslandNumber()).append(" island");
+            .append(msg.getIslandNumber()).append(" island\n");
+        printedString.append("this island now contains ").append(msg.getTowersIsland()).append( " towers\n");
         break;
     }
     return String.valueOf(printedString);
@@ -189,31 +204,145 @@ public class CliParser {
     StringBuilder returnString = new StringBuilder();
     switch (msg.getMessageSecondary()) {
       case INIT_GAME:
-        return printUpdate(returnString, msg);
-
+        returnString.append(printIslands( msg));
+        returnString.append(printCloudTiles( msg));
+        returnString.append(printEntrance( msg));
+        returnString.append(printDiningRoom( msg));
+        returnString.append(printProfessors( msg));
+        returnString.append(printPlayableAssistants( msg));
+        returnString.append(printPurchasableCharacter( msg));
+        return returnString.toString();
       case CHANGE_TURN:
         //TODO add to controller
-        returnString.append(printUpdate(returnString, msg));
-
+        returnString.append(printIslands( msg));
+        returnString.append(printCloudTiles( msg));
+        returnString.append(printEntrance( msg));
+        returnString.append(printDiningRoom( msg));
+        returnString.append(printProfessors( msg));
+        returnString.append(printPlayableAssistants( msg));
+        returnString.append(printPurchasableCharacter( msg));
+        return returnString.toString();
       case INFRA_TURN:
-        return printUpdate(returnString, msg);
+        if(msg.getActivePLayerId()!=playerId){
+          return "another player did something";
+        }
+        return "";
+      case CLOUD_TILE:
+        returnString.append(printCloudTiles( msg));
+        returnString.append(printEntrance( msg));
+        return returnString.toString();
+      case MOVE_STUDENT_ENTRANCE:
+        returnString.append(printEntrance( msg));
+
+        //TODO add if
+        returnString.append(printDiningRoom(msg));
+        returnString.append(printProfessors(msg));
+
+        returnString.append(printIslands( msg));
+        return returnString.toString();
+      case MOVE_MN:
+        returnString.append(printIslands(msg));
+        return returnString.toString();
     }
     return null;
   }
 
-  /**
-   * This method prints the actual state of the game
-   *
-   * @param returnString The stringBuilder to build the output
-   * @param msg          The message that contains all the information
-   * @return The value of the string builder
+  /** This method print all the players dining rooms
+   * @param msg the message use to obtain printed values
+   * @return the string constructed
    */
-  private String printUpdate(StringBuilder returnString, BeginTurnMessage msg)
-      throws FileNotFoundException {
-    returnString.append("The game has now started you are the player number ")
-        .append(this.playerId).append("\n");
+  private String printDiningRoom( BeginTurnMessage msg) {
+    //dining rooms
+    StringBuilder returnString = new StringBuilder();
+    returnString.append("your and opponents dining room are as follows").append("\n");
 
+    for (StudentsPlayerId diningRoomIdPlayer : msg.getStudentDiningRoom()) {
+      if (diningRoomIdPlayer.getPlayerId() == this.playerId) {
+        returnString.append("your diningRoom is:").append("\n");
+      } else {
+        returnString.append("an opponent diningRoom is").append("\n");
+      }
+      for (Color color : Color.values()) {
+        returnString.append(diningRoomIdPlayer.getStudents()[color.ordinal()]).append(" ")
+            .append(color).append(" students;\n");
+      }
+      returnString.append("\n");
+    }
+    return returnString.toString();
+  }
+
+  /**This method print all the players entrances
+   * @param msg the message use to obtain printed values
+   * @return the string constructed
+   */
+  private String printEntrance( BeginTurnMessage msg) {
+    //entrances
+    StringBuilder returnString = new StringBuilder();
+    returnString.append("your and opponents entrance are as follows").append("\n");
+    for (StudentsPlayerId entranceIdPlayer : msg.getStudentEntrance()) {
+      if (entranceIdPlayer.getPlayerId() == this.playerId) {
+        returnString.append("your entrance is:").append("\n");
+      } else {
+        returnString.append("an opponent entrance is").append("\n");
+      }
+      for (Color color : Color.values()) {
+        returnString.append(entranceIdPlayer.getStudents()[color.ordinal()]).append(" ")
+            .append(color).append(" students;\n");
+      }
+      returnString.append("\n").append("\n");
+    }
+    return returnString.toString();
+  }
+
+  /** This method print the professors if you have them
+   * @param msg the message use to obtain printed values
+   * @return the string constructed
+   */
+  private String printProfessors( BeginTurnMessage msg) {
+    //professors
+    StringBuilder returnString = new StringBuilder();
+    returnString.append("You own the professor:").append("\n");
+    int[] myProfessor = msg.getProfessors().get(this.playerId);
+    for (Color color : Color.values()) {
+      if (myProfessor[color.ordinal()] == 1) {
+        returnString.append(myProfessor[color.ordinal()]).append(" ")
+            .append(color).append(" professor;\n");
+      }
+    }
+    returnString.append("\n");
+    return returnString.toString();
+  }
+
+  /**This method print all the possible cloud tile you can take
+   * @param msg the message use to obtain printed values
+   * @return the string constructed
+   */
+  private String printCloudTiles( BeginTurnMessage msg) {
+
+    //cloudTiles
+    StringBuilder returnString = new StringBuilder();
+    returnString.append("the cloud tiles are as follows").append("\n");
+    for (int[] studentsCloud : msg.getStudentsCloudTiles()) {
+      returnString.append("Cloud tile number ")
+          .append(msg.getStudentsCloudTiles().indexOf(studentsCloud))
+          .append(": \n");
+      for (Color color : Color.values()) {
+        returnString.append(studentsCloud[color.ordinal()]).append(" ")
+            .append(color).append(" students;\n");
+      }
+      returnString.append("\n");
+    }
+    returnString.append("\n").append("\n");
+    return returnString.toString();
+  }
+
+  /**This method print all the islands
+   * @param msg the message use to obtain printed values
+   * @return the string constructed
+   */
+  private String printIslands( BeginTurnMessage msg) {
     //islands and mother nature
+    StringBuilder returnString = new StringBuilder();
     returnString.append("The island are as follows").append("\n");
     for (int[] students : msg.getStudentsIsland()) {
       returnString.append("Island number ").append(msg.getStudentsIsland().indexOf(students))
@@ -234,66 +363,17 @@ public class CliParser {
       }
       returnString.append("\n").append("\n");
     }
+    return returnString.toString();
+  }
 
-    //cloudTiles
-    returnString.append("the cloud tiles are as follows").append("\n");
-    for (int[] studentsCloud : msg.getStudentsCloudTiles()) {
-      returnString.append("Cloud tile number ")
-          .append(msg.getStudentsCloudTiles().indexOf(studentsCloud))
-          .append(": \n");
-      for (Color color : Color.values()) {
-        returnString.append(studentsCloud[color.ordinal()]).append(" ")
-            .append(color).append(" students;\n");
-      }
-      returnString.append("\n");
-    }
-    returnString.append("\n").append("\n");
-
-    //entrances
-    returnString.append("your and opponents entrance are as follows").append("\n");
-    for (StudentsPlayerId entranceIdPlayer : msg.getStudentEntrance()) {
-      if (entranceIdPlayer.getPlayerId() == this.playerId) {
-        returnString.append("your entrance is:").append("\n");
-      } else {
-        returnString.append("an opponent entrance is").append("\n");
-      }
-      for (Color color : Color.values()) {
-        returnString.append(entranceIdPlayer.getStudents()[color.ordinal()]).append(" ")
-            .append(color).append(" students;\n");
-      }
-      returnString.append("\n").append("\n");
-    }
-
-    //dining rooms
-    returnString.append("your and opponents dining room are as follows").append("\n");
-
-    for (StudentsPlayerId diningRoomIdPlayer : msg.getStudentDiningRoom()) {
-      if (diningRoomIdPlayer.getPlayerId() == this.playerId) {
-        returnString.append("your diningRoom is:").append("\n");
-      } else {
-        returnString.append("an opponent diningRoom is").append("\n");
-      }
-      for (Color color : Color.values()) {
-        returnString.append(diningRoomIdPlayer.getStudents()[color.ordinal()]).append(" ")
-            .append(color).append(" students;\n");
-      }
-      returnString.append("\n");
-    }
-
-
-
-    //professors
-    returnString.append("You own the professor:").append("\n");
-    int[] myProfessor = msg.getProfessors().get(this.playerId);
-    for (Color color : Color.values()) {
-      if (myProfessor[color.ordinal()] == 1) {
-        returnString.append(myProfessor[color.ordinal()]).append(" ")
-            .append(color).append(" professor;\n");
-      }
-    }
-    returnString.append("\n");
-
+  /**This method print all your playable assistants
+   * @param msg the message use to obtain printed values
+   * @return the string constructed
+   */
+  private String printPlayableAssistants( BeginTurnMessage msg)
+      throws FileNotFoundException {
     //playable assistants
+    StringBuilder returnString = new StringBuilder();
     returnString.append("these are the assistant tou can play :").append("\n");
     Gson gson = new Gson();
     JsonArray list = gson
@@ -308,18 +388,31 @@ public class CliParser {
           .append("max mother nature moves").append(" ").append(moves).append("\n")
           .append("\n");
     }
+    return returnString.toString();
+  }
 
+  /**This method print all the character you can purchase
+   * @param msg the message use to obtain printed values
+   * @return the string constructed
+   */
+  private String printPurchasableCharacter( BeginTurnMessage msg) {
     //purchasable character
+    StringBuilder returnString = new StringBuilder();
+    if(msg.getPurchasableCharacterId()!=null){
     returnString.append("those are the assistant you can purchase:").append("\n").append("\n");
-    for(int id: msg.getPurchasableCharacterId()){
-      for(Effects effect:Effects.values()){
-        if(id==effect.ordinal()){
+    for (int id : msg.getPurchasableCharacterId()) {
+      for (Effects effect : Effects.values()) {
+        if (id == effect.ordinal()) {
           returnString.append(effect.getStringEffectCard()).append("\n");
-          returnString.append("The cost of this character is ").append(msg.getCharactersCosts()[msg.getPurchasableCharacterId().indexOf(id)]).append("\n");
-          if(effect.getNOfStudents()!=0){
+          returnString.append("The cost of this character is ")
+              .append(msg.getCharactersCosts()[msg.getPurchasableCharacterId().indexOf(id)])
+              .append("\n");
+          if (effect.getNOfStudents() != 0) {
             returnString.append("it has the following students on it").append("\n");
             for (Color color : Color.values()) {
-              returnString.append(msg.getCharactersStudents().get(msg.getPurchasableCharacterId().indexOf(id))[color.ordinal()]).append(" ")
+              returnString.append(
+                  msg.getCharactersStudents().get(msg.getPurchasableCharacterId().indexOf(id))[color
+                      .ordinal()]).append(" ")
                   .append(color).append(" students;\n");
             }
           }
@@ -331,8 +424,9 @@ public class CliParser {
     //coins
     returnString.append("You have ").append(msg.getPlayerCoins()[playerId]).append(" coins")
         .append("\n").append("\n");
-
     return returnString.toString();
   }
+  return "";}
+
 }
 

@@ -236,18 +236,20 @@ public class MainController {
         msg.getMessageSecondary() == MessageSecondary.CHARACTER;
 
     // Set current player
-    if (turnManager.getMainGamePhase() == MessageMain.MOVE)
-    {this.game.setCurrentPlayerIndex(turnManager.getCurrentNumberOfUsersPlayedActionPhase());}
-    else if (turnManager.getSecondaryPhase() == MessageSecondary.ASSISTANT)
-    {this.game.setCurrentPlayerIndex(turnManager.getCurrentNumberOfPlayedAssistants());}
+    if (turnManager.getMainGamePhase() == MessageMain.MOVE) {
+      this.game.setCurrentPlayerIndex(turnManager.getCurrentNumberOfUsersPlayedActionPhase());
+    } else if (turnManager.getSecondaryPhase() == MessageSecondary.ASSISTANT) {
+      this.game.setCurrentPlayerIndex(turnManager.getCurrentNumberOfPlayedAssistants());
+    }
 
     // Check phase is the right one
-    everythingOkay =  (((msg.getMessageMain() == turnManager.getMainGamePhase()) &&
-                      (msg.getMessageSecondary() == turnManager.getSecondaryPhase()))
-                      || isCharacterPlayed);
+    everythingOkay = (((msg.getMessageMain() == turnManager.getMainGamePhase()) &&
+        (msg.getMessageSecondary() == turnManager.getSecondaryPhase()))
+        || isCharacterPlayed);
 
     // Check player is current player
-    everythingOkay = everythingOkay && (msg.getPlayerId() == this.game.getCurrentPlayer().getPlayerId());
+    everythingOkay =
+        everythingOkay && (msg.getPlayerId() == this.game.getCurrentPlayer().getPlayerId());
 
     Message gameResponse = null;
     if (everythingOkay) {
@@ -339,16 +341,21 @@ public class MainController {
           }
         } else if (msg.getMessageSecondary() == MessageSecondary.MOVE_MN) {
           messages.add(sendClientResponse(
-                  MessageSecondary.ASK_CLOUD, "Take one cloud",
-                  game.getCurrentPlayer().getPlayerId()));
+              MessageSecondary.ASK_CLOUD, "Take one cloud",
+              game.getCurrentPlayer().getPlayerId()));
         } else {
-          if (turnManager.getCurrentNumberOfUsersPlayedActionPhase() != numberOfPlayers) {
+          if (turnManager.getCurrentNumberOfUsersPlayedActionPhase() != numberOfPlayers
+              && turnManager.getCurrentNumberOfUsersPlayedActionPhase() != 0) {
+            messages.addAll(changeTurnMessage(MessageSecondary.CHANGE_TURN));
+
             messages.add(sendClientResponse(
                 MessageSecondary.ASK_STUDENT_ENTRANCE, "It's your turn move your students",
                 game.getCurrentPlayer().getPlayerId()));
           } else {
+            messages.addAll(changeTurnMessage(MessageSecondary.CHANGE_TURN));
+
             messages.add(sendClientResponse(
-                MessageSecondary.ASK_STUDENT_ENTRANCE, "Please, play a new assistant",
+                MessageSecondary.ASK_STUDENT_ENTRANCE, "It's a new round play a new assistant",
                 game.getCurrentPlayer().getPlayerId()));
           }
         }
@@ -358,7 +365,8 @@ public class MainController {
     } else {
       ClientResponse error = new ClientResponse(MessageSecondary.ERROR);
       error.setPlayerId(msg.getPlayerId());
-      error.setResponse("Error! The inserted inputs are not correct or it is not your turn!\n");
+      error.setResponse(
+          "Error! The inserted inputs are not correct,the assistant might be already played or it is not your turn!\n");
       messages.add(error);
     }
     return messages;
@@ -389,6 +397,7 @@ public class MainController {
 
         BeginTurnMessage beginTurnMessage = new BeginTurnMessage(messageSecondary);
         beginTurnMessage.setPlayerId(player.getPlayerId());
+        beginTurnMessage.setActivePLayerId(game.getCurrentPlayer().getPlayerId());
 
         Vector<StudentsPlayerId> studentsAtEntrances = new Vector<>();
         Vector<StudentsPlayerId> studentDiningRooms = new Vector<>();
@@ -426,7 +435,8 @@ public class MainController {
         beginTurnMessage.setStudentEntrance(studentsAtEntrances);
         beginTurnMessage.setStudentDiningRoom(studentDiningRooms);
 
-        beginTurnMessage.setMotherNaturePosition(game.getMainBoard().getMotherNature().getPosition());
+        beginTurnMessage
+            .setMotherNaturePosition(game.getMainBoard().getMotherNature().getPosition());
         beginTurnMessage.setProfessors(professors);
 
         beginTurnMessage.setPlayerCoins(playersCoins);
