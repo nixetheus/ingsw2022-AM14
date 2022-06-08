@@ -156,7 +156,8 @@ public class MoveControllerTest {
     MoveMessage moveMessageTest = new MoveMessage(MessageSecondary.ENTRANCE);
 
     int index = 0;
-    while (player1.getPlayerBoard().getEntrance().getStudents()[index++] <= 0);
+    while (testGame.getCurrentPlayer().getPlayerBoard().getEntrance().getStudents()[index] <= 0)
+      index++;
 
     moveMessageTest.setStudentColor(index);
     moveMessageTest.setPlace(1);

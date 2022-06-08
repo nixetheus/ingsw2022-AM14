@@ -148,7 +148,8 @@ public class ServerParserGUI {
           if (Arrays.asList(phaseMessage.getIslandsIds()).contains(islandNumber)) {
             
             // STUDENTS
-            int[] students = phaseMessage.getStudentsIsland().elementAt(islandNumber);
+            int index = Arrays.asList(phaseMessage.getIslandsIds()).indexOf(islandNumber);
+            int[] students = phaseMessage.getStudentsIsland().elementAt(index);
             mainController.islandsControllers.elementAt(islandNumber)
                 .setRedStudents(students[Color.RED.ordinal()]);
             mainController.islandsControllers.elementAt(islandNumber)
