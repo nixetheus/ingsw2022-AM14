@@ -221,7 +221,7 @@ public class CliParser {
         returnString.append(printProfessors( msg));
         returnString.append(printPlayableAssistants( msg));
         returnString.append(printPurchasableCharacter( msg));
-      break;
+        return returnString.toString();
       case INFRA_TURN:
         if(msg.getActivePLayerId()!=playerId){
           return "another player did something";

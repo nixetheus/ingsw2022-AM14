@@ -346,10 +346,14 @@ public class MainController {
         } else {
           if (turnManager.getCurrentNumberOfUsersPlayedActionPhase() != numberOfPlayers
               && turnManager.getCurrentNumberOfUsersPlayedActionPhase() != 0) {
+            messages.addAll(changeTurnMessage(MessageSecondary.CHANGE_TURN));
+
             messages.add(sendClientResponse(
                 MessageSecondary.ASK_STUDENT_ENTRANCE, "It's your turn move your students",
                 game.getCurrentPlayer().getPlayerId()));
           } else {
+            messages.addAll(changeTurnMessage(MessageSecondary.CHANGE_TURN));
+
             messages.add(sendClientResponse(
                 MessageSecondary.ASK_STUDENT_ENTRANCE, "It's a new round play a new assistant",
                 game.getCurrentPlayer().getPlayerId()));
