@@ -16,6 +16,7 @@ import it.polimi.ingsw.messages.PlayMessageResponse;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
+
 public class CliParser {
 
   private int playerId;
@@ -153,6 +154,7 @@ public class CliParser {
                 .append(color).append(" students;\n");
           }
           printedString.append("this island contains ").append(msg.getTowersIsland()).append( " towers\n");
+          //TODO add to who belongs
         }
         break;
       case CLOUD_TILE:
@@ -344,27 +346,36 @@ public class CliParser {
     //islands and mother nature
     StringBuilder returnString = new StringBuilder();
     returnString.append("The island are as follows").append("\n");
-    for (int[] students : msg.getStudentsIsland()) {
-      returnString.append("Island number ").append(msg.getStudentsIsland().indexOf(students))
-          .append(": \n");
-      for (Color color : Color.values()) {
-        returnString.append(students[color.ordinal()]).append(" ")
-            .append(color).append(" students;\n");
+    int countedIsland=0;
+    for(int islandIndex=0;islandIndex<12;islandIndex++){
+      if(msg.getIslandsIds()[countedIsland]==islandIndex){
+        returnString.append("Island number ").append(islandIndex)
+            .append(": \n");
+
+        int[] students=msg.getStudentsIsland().get(countedIsland);
+        for (Color color : Color.values()) {
+          returnString.append(students[color.ordinal()]).append(" ")
+              .append(color).append(" students;\n");}
+
+        if (msg.getTowersIsland().get(countedIsland) !=0) {
+          returnString.append("this island contains ").append(msg.getTowersIsland().get(countedIsland))
+              .append("tower \n");
+          returnString.append("this island belongs to the ").append(msg.getTowersColor()[countedIsland])
+              .append(" team\n");
+        }
+
+        if (msg.getMotherNaturePosition() == msg.getIslandsIds()[countedIsland]) {
+          returnString.append("mother nature is here");
+        } else {
+          returnString.append("mother nature is NOT here");
+        }
+        returnString.append("\n").append("\n");
+        countedIsland++;
       }
-      if (msg.getTowersIsland().contains(msg.getStudentsIsland().indexOf(students))) {
-        returnString
-            .append("this island contains a tower \n");//TODO contains a tower if the array is 0
-        //TODO add who controls the island
+
       }
-      if (msg.getMotherNaturePosition() == msg.getStudentsIsland().indexOf(students)) {
-        returnString.append("mother nature is here");
-      } else {
-        returnString.append("mother nature is NOT here");
-      }
-      returnString.append("\n").append("\n");
-    }
     return returnString.toString();
-  }
+    }
 
   /**This method print all your playable assistants
    * @param msg the message use to obtain printed values

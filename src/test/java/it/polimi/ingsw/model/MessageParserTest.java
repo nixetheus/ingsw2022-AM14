@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model;
+/*package it.polimi.ingsw.model;
 
 import com.google.gson.Gson;
 import it.polimi.ingsw.helpers.Color;
@@ -14,7 +14,7 @@ import org.junit.Test;
 /**
  * Class to test every possible message to check if the parser works
  */
-public class MessageParserTest {
+/*public class MessageParserTest {
 //TODO adding from which player the message arrives
   String input;
   MessageParser parser = new MessageParser();
@@ -25,7 +25,7 @@ public class MessageParserTest {
   /**
    *testing if it return null in case of a completely wrong input
    */
-  @Test
+ /* @Test
   public void wrongInputTest(){
     input="kjasfskb,gs ";
     messageOutput=parser.parser(input);
@@ -36,7 +36,7 @@ public class MessageParserTest {
   /**
    *testing if return null with an empty string
    */
-  @Test
+ /* @Test
   public void emptyInputTest(){
     input="";
     messageOutput=parser.parser(input);
@@ -49,7 +49,7 @@ public class MessageParserTest {
    * Testing the parser output of a move of a student to dining room and comparing it to a message
    * created by hand with the expected parameters
    */
-  @Test
+ /* @Test
   public void testMoveStudentToDiningRoomCorrect() {
     input = "move red student from entrance to dining room";
     messageOutput = parser.parser(input);
@@ -84,11 +84,11 @@ public class MessageParserTest {
     Assert.assertEquals(gson.toJson(moveMessageTest), messageOutput);
   }*/
 
-  /**
+/*/**
    * Testing the parser output of taking a cloud tile and comparing it to a message created by hand
    * with the expected parameters
    */
-  @Test
+/*  @Test
   public void testTakeCloudTileCorrect() {
     input = "take cloud tile 2";
     messageOutput = parser.parser(input);
@@ -108,7 +108,7 @@ public class MessageParserTest {
    * Testing the parser output of putting a student on a certain cloud and comparing it to a message
    * created by hand with the expected parameters
    */
-  @Test
+  /*@Test
   public void testStudentToIslandCorrect() {
     input = "move red student from entrance to island 4";
     messageOutput = parser.parser(input);
@@ -130,7 +130,7 @@ public class MessageParserTest {
    * Testing the login message in case of a new connection sending the nickname and comparing it to
    * a message created by hand with the expected parameters
    */
-  @Test
+/*  @Test
   public void testPlayerParamsCorrect() {
     input = "ale";
     messageOutput = parser.parser(input);
@@ -149,7 +149,7 @@ public class MessageParserTest {
    * Testing the login message in case of the first player sending the game parameters and comparing
    * it to a message created by hand with the expected parameters
    */
-  @Test
+/*  @Test
   public void testGameParamsCorrectNotExpert() {
     input = "not expert mode 4 player";
     messageOutput = parser.parser(input);
@@ -168,7 +168,7 @@ public class MessageParserTest {
    * Testing the login message in case of a new connection sending the nickname and comparing it to
    * a message created by hand with the expected parameters
    */
-  @Test
+ /* @Test
   public void testGameParamsCorrectExpert() {
     input =  "expert mode 3 player";
     messageOutput = parser.parser(input);
@@ -189,7 +189,7 @@ public class MessageParserTest {
    * Testing if the infoMessage in case of a player message info will be correctly filled comparing
    * it with a message created by hand with the expected parameters
    */
-  @Test
+ /* @Test
   public void testInfoPlayerCorrect() {
     input = "info player 4";
     messageOutput = parser.parser(input);
@@ -206,7 +206,7 @@ public class MessageParserTest {
    * Testing if the infoMessage in case of a mother nature message info will be correctly filled
    * comparing it with a message created by hand with the expected parameters
    */
-  @Test
+ /* @Test
   public void testInfoMotherNatureCorrect() {
     input = "info mother nature";
     messageOutput = parser.parser(input);
@@ -223,7 +223,7 @@ public class MessageParserTest {
    * Testing if the infoMessage in case of a island message info will be correctly filled comparing
    * it with a message created by hand with the expected parameters
    */
-  @Test
+ /* @Test
   public void testInfoIslandCorrect() {
     input = "info on island 7";
     messageOutput = parser.parser(input);
@@ -240,7 +240,7 @@ public class MessageParserTest {
    * Testing if the infoMessage in case of a cloud tile message info will be correctly filled
    * comparing it with a message created by hand with the expected parameters
    */
-  @Test
+/*  @Test
   public void testInfoCloudTileCorrect() {
     input = "info on cloud tile 2";
     messageOutput = parser.parser(input);
@@ -258,7 +258,7 @@ public class MessageParserTest {
    * Testing if the infoMessage in case of an assistant message info will be correctly filled
    * comparing it with a message created by hand with the expected parameters
    */
-  @Test
+ /* @Test
   public void testInfoAssistantCorrect() {
     input = "info on my assistants";
     messageOutput = parser.parser(input);
@@ -276,7 +276,7 @@ public class MessageParserTest {
    * Testing if the infoMessage in case of a character message info will be correctly filled
    * comparing it with a message created by hand with the expected parameters
    */
-  @Test
+ /* @Test
   public void testInfoCharacterCorrect() {
     input = "info on 2 character";
     messageOutput = parser.parser(input);
@@ -293,7 +293,7 @@ public class MessageParserTest {
    * Testing if the infoMessage in case of a help message will be correctly filled comparing it with
    * a message created by hand with the expected parameters
    */
-  @Test
+ /* @Test
   public void testInfoHelp() {
     input = "help";
     messageOutput = parser.parser(input);
@@ -312,7 +312,7 @@ public class MessageParserTest {
    * Testing a play message in an assistant case comparing it with a message created by hand with
    * the expected parameters
    */
-  @Test
+/*  @Test
   public void testAssistant() {
     input = "play assistant 3";
     messageOutput = parser.parser(input);
@@ -330,7 +330,7 @@ public class MessageParserTest {
    * Testing a play message in a no entry character case comparing it with a message created by hand
    * with the expected parameters
    */
-  @Test
+ /* @Test
   public void testCharacterNoEntry() {
     input = "purchase 3 character ,place a no entry tile on 5 island";
     messageOutput = parser.parser(input);
@@ -350,7 +350,7 @@ public class MessageParserTest {
    * Testing a play message in a fake mother nature movement character case comparing it with a
    * message created by hand with the expected parameters
    */
-  @Test
+ /* @Test
   public void testCharacterMotherNatureFakeMovement() {
     input = "purchase 3 character , resolve 5 island ";
     messageOutput = parser.parser(input);
@@ -370,7 +370,7 @@ public class MessageParserTest {
    * Testing a play message in a mother nature plus 2 character case comparing it with a message
    * created by hand with the expected parameters
    */
-  @Test
+ /* @Test
   public void testCharacterMoveMotherNaturePlusTwo() {
     input = "purchase 2 character , move mother nature 2 extra ";
     messageOutput = parser.parser(input);
@@ -390,7 +390,7 @@ public class MessageParserTest {
    * Testing a play message in a place one student on a certain island character case comparing it
    * with a message created by hand with the expected parameters
    */
-  @Test
+ /* @Test
   public void testCharacterPlaceOneStudentOnIsland() {
     input = "purchase 2 character , put a red student on island 5 ";
     messageOutput = parser.parser(input);
@@ -410,7 +410,7 @@ public class MessageParserTest {
    * Testing a play message in a place one student into dining room character case comparing it with
    * a message created by hand with the expected parameters
    */
-  @Test
+ /* @Test
   public void testCharacterPlaceOneStudentIntoDiningRoom() {
     input = "purchase 2 character , put 1 red student to dining room ";
     messageOutput = parser.parser(input);
@@ -431,7 +431,7 @@ public class MessageParserTest {
    * Testing a play message in a replace 2 student from entrance to dining room character case
    * comparing it with a message created by hand with the expected parameters
    */
-  @Test
+ /* @Test
   public void testCharacterReplaceTwoStudentEntranceToDiningRoom() {
     input = "purchase 2 character ,take 2 green student from dining room and replace them with 1 red student 1 blue student from entrance";
     messageOutput = parser.parser(input);
@@ -452,7 +452,7 @@ public class MessageParserTest {
    * Testing a play message in a no influence color character case comparing it with a message
    * created by hand with the expected parameters
    */
-  @Test
+ /* @Test
   public void testCharacterColorNoInfluence() {
     input = "purchase 2 character , the red color will add no influence ";
     messageOutput = parser.parser(input);
@@ -472,7 +472,7 @@ public class MessageParserTest {
    * Testing a play message in a return three student from student to bag character case comparing
    * it with a message created by hand with the expected parameters
    */
-  @Test
+ /* @Test
   public void testCharacterReturnThreeFromDiningRoom() {
     input = "purchase 2 character , return 3 red student to student bag ";
     messageOutput = parser.parser(input);
@@ -491,7 +491,7 @@ public class MessageParserTest {
    * Testing a play message in a replace three student from the card to the entrance character case
    * comparing it with a message created by hand with the expected parameters
    */
-  @Test
+ /* @Test
   public void testCharacterReplaceThreeCardToEntrance() {
     input = "purchase 2 character ,take 3 green student from this card and replace them with  1 red student 1 blue student 1 green student from entrance";
     messageOutput = parser.parser(input);
@@ -507,4 +507,4 @@ public class MessageParserTest {
 
     Assert.assertEquals(gson.toJson(playMessage), messageOutput);
   }
-}
+}*/
