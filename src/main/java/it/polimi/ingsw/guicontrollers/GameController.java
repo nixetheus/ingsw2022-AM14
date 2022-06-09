@@ -1,7 +1,10 @@
 package it.polimi.ingsw.guicontrollers;
 
+import it.polimi.ingsw.helpers.MessageSecondary;
+import it.polimi.ingsw.messages.PlayMessage;
 import it.polimi.ingsw.view.GuiParser;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Vector;
@@ -15,6 +18,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Circle;
 
 public class GameController implements Initializable {
 
@@ -109,6 +113,10 @@ public class GameController implements Initializable {
   private String activeCharacterId;
   private Pane activeCharacterPane;
 
+  // CHARACTERS OBJECTS
+  private String characterIslandId;
+  private int characterColor;
+
   public int playerId = 0;
 
   @Override
@@ -169,6 +177,8 @@ public class GameController implements Initializable {
     characterControllers.add(character0Controller);
     characterControllers.add(character1Controller);
     characterControllers.add(character2Controller);
+    for (CharacterController cc : characterControllers)
+      cc.mainController = this;
   }
 
   public void setGuiParser(GuiParser parser) {
@@ -234,34 +244,27 @@ public class GameController implements Initializable {
       textArea.setVisible(true);
     }
 
-    if (event.getX() < 950 || event.getY() < 500 || event.getY() > 600) {
-      BoardsControllers.elementAt(playerId).unClickStudentsEntrance();
+    if (!isCharacterActive) {
+      if (event.getX() < 950 || event.getY() < 500 || event.getY() > 600) {
+        BoardsControllers.elementAt(playerId).unClickStudentsEntrance();
+      }
     }
 
-    Bounds boundsCh0 = character0.localToScene(character0.getBoundsInLocal());
+    /*Bounds boundsCh0 = character0.localToScene(character0.getBoundsInLocal());
     boolean char0NotClicked = event.getX() < boundsCh0.getMinX() || event.getX() > boundsCh0.getMaxX() ||
         event.getY() < boundsCh0.getMinY() || event.getY() > boundsCh0.getMaxY();
-    if (char0NotClicked) {
-      character0Controller.unClickStudentsCharacter();
-    }
 
     Bounds boundsCh1 = character1.localToScene(character1.getBoundsInLocal());
     boolean char1NotClicked = event.getX() < boundsCh1.getMinX() || event.getX() > boundsCh1.getMaxX() ||
         event.getY() < boundsCh1.getMinY() || event.getY() > boundsCh1.getMaxY();
-    if (char1NotClicked) {
-      character1Controller.unClickStudentsCharacter();
-    }
 
     Bounds boundsCh2 = character2.localToScene(character2.getBoundsInLocal());
     boolean char2NotClicked = event.getX() < boundsCh2.getMinX() || event.getX() > boundsCh2.getMaxX() ||
         event.getY() < boundsCh2.getMinY() || event.getY() > boundsCh2.getMaxY();
-    if (char2NotClicked) {
-      character2Controller.unClickStudentsCharacter();
-    }
 
-    if (char0NotClicked && char1NotClicked && char2NotClicked) {
+    if (char0NotClicked || char1NotClicked || char2NotClicked) {
       characterWasUsed();
-    }
+    }*/
   }
 
   @FXML
@@ -283,7 +286,9 @@ public class GameController implements Initializable {
 
     // CHARACTER CARD
     if (isCharacterActive) {
-      // TODO
+      characterIslandId = island.getId();
+      textAreaText.setText("Island selected!");
+      textAreaText.setVisible(true);
     }
     // MOVE STUDENT ENTRANCE TO ISLAND
     else if (studentEntrance != null) {
@@ -306,7 +311,9 @@ public class GameController implements Initializable {
   @FXML
   protected void onEnterHoverCard(MouseEvent event) {
     Pane card = (Pane)event.getSource();
-    if (!Objects.equals(card.getId(), activeCharacterId)) {
+    if (!Objects.equals(card.getId(), character0.getId()) &&
+        !Objects.equals(card.getId(), character1.getId()) &&
+        !Objects.equals(card.getId(), character2.getId())) {
       card.setTranslateY(card.getTranslateY() - 20);
       card.setScaleX(1.2);
       card.setScaleY(1.2);
@@ -316,7 +323,9 @@ public class GameController implements Initializable {
   @FXML
   protected void onExitHoverCard(MouseEvent event) {
     Pane card = (Pane)event.getSource();
-    if (!Objects.equals(card.getId(), activeCharacterId)) {
+    if (!Objects.equals(card.getId(), character0.getId()) &&
+        !Objects.equals(card.getId(), character1.getId()) &&
+        !Objects.equals(card.getId(), character2.getId())) {
       card.setTranslateY(card.getTranslateY() + 20);
       card.setScaleX(1);
       card.setScaleY(1);
@@ -334,31 +343,123 @@ public class GameController implements Initializable {
     Pane character = (Pane)event.getSource();
     if (event.getY() < character0Controller.cardPane.getHeight()) {
 
-      if (character != activeCharacterPane)
-        characterWasUsed();
+      if (character == activeCharacterPane) {
 
-      isCharacterActive = true;
-      activeCharacterId = character.getId();
-      activeCharacterPane = character;
-      Glow glow = new Glow(); glow.setLevel(0.5);
-      character.setEffect(glow);
-      character.setScaleX(1.2);
-      character.setScaleY(1.2);
-      // parser.playCharacter(character.getId());
+        BoardsControllers.elementAt(playerId).isCharActive = false;
+        BoardsControllers.elementAt(playerId).studentEntranceChar0Id = null;
+        BoardsControllers.elementAt(playerId).studentEntranceChar1Id = null;
+        BoardsControllers.elementAt(playerId).studentEntranceChar2Id = null;
+        BoardsControllers.elementAt(playerId).studentDiningRoomChar0Id = null;
+        BoardsControllers.elementAt(playerId).studentDiningRoomChar1Id = null;
+        BoardsControllers.elementAt(playerId).unClickStudentsEntrance();
+
+        characterWasUsed();
+      } else {
+
+        if (isCharacterActive) {
+          characterWasUsed();
+          BoardsControllers.elementAt(playerId).studentEntranceChar0Id = null;
+          BoardsControllers.elementAt(playerId).studentEntranceChar1Id = null;
+          BoardsControllers.elementAt(playerId).studentEntranceChar2Id = null;
+          BoardsControllers.elementAt(playerId).studentDiningRoomChar0Id = null;
+          BoardsControllers.elementAt(playerId).studentDiningRoomChar1Id = null;
+          BoardsControllers.elementAt(playerId).unClickStudentsEntrance();
+        }
+
+        parser.infoCharacter(character.getId());
+        isCharacterActive = true;
+        activeCharacterId = character.getId();
+        activeCharacterPane = character;
+        Glow glow = new Glow();
+        glow.setLevel(0.5);
+        character.setEffect(glow);
+        character.setScaleX(1.2);
+        character.setScaleY(1.2);
+
+        BoardsControllers.elementAt(playerId).isCharActive = true;
+
+        int id = Integer.parseInt(character.getId().replace("character", ""));
+        characterControllers.elementAt(id).playCharBtn.setDisable(false);
+        characterControllers.elementAt(id).playCharBtn.setVisible(true);
+      }
     }
+  }
+
+  @FXML
+  protected void playCharacter() {
+
+    int id = Integer.parseInt(activeCharacterId.replace("character", ""));
+    CharacterController characterController = characterControllers.elementAt(id);
+    PlayerBoardController board = BoardsControllers.elementAt(playerId);
+
+    PlayMessage playCharacterMessage = new PlayMessage(MessageSecondary.CHARACTER);
+
+    // Set all parameters if possible
+
+    playCharacterMessage.setPlayerId(playerId);
+    playCharacterMessage.setCharacterId(id);
+
+    if (characterIslandId != null)
+      playCharacterMessage.setNumIsland(Integer.parseInt(characterIslandId.replace("island", "")));
+
+    // TODO colors
+    //System.out.println(characterControllers.elementAt(id).studentCharacter0Id);
+    //System.out.println(characterControllers.elementAt(id).studentCharacter1Id);
+    //System.out.println(characterControllers.elementAt(id).studentCharacter2Id);
+    //System.out.println(BoardsControllers.elementAt(playerId).studentEntranceChar0Id);
+    //System.out.println(BoardsControllers.elementAt(playerId).studentEntranceChar1Id);
+    //System.out.println(BoardsControllers.elementAt(playerId).studentEntranceChar2Id);
+
+    // DINING ROOM
+    int[] diningRoomStudents = new int[5];
+    Vector<String> colorStrings = new Vector<>();
+    colorStrings.add("yellow");
+    colorStrings.add("blue");
+    colorStrings.add("green");
+    colorStrings.add("red");
+    colorStrings.add("pink");
+    if (board.studentDiningRoomChar0Id != null) {
+      for (int index = 0; index < colorStrings.size(); index++) {
+        try {
+          index = Integer.parseInt(
+              board.studentDiningRoomChar0Id.replace(colorStrings.elementAt(index), ""));
+          diningRoomStudents[index] = diningRoomStudents[index] + 1;
+          break;
+        } catch (Exception ignored) {}
+      }
+    }
+    if (board.studentDiningRoomChar1Id != null) {
+      for (int index = 0; index < colorStrings.size(); index++) {
+        try {
+          index = Integer.parseInt(
+              board.studentDiningRoomChar1Id.replace(colorStrings.elementAt(index), ""));
+          diningRoomStudents[index] = diningRoomStudents[index] + 1;
+          break;
+        } catch (Exception ignored) {}
+      }
+    }
+    System.out.println(Arrays.toString(diningRoomStudents));
+    playCharacterMessage.setStudentsDiningRoom(diningRoomStudents);
+
+    parser.playCharacter(playCharacterMessage);
   }
 
   public void characterWasUsed() {
     if (activeCharacterPane != null) {
+
+      int id = Integer.parseInt(activeCharacterId.replace("character", ""));
+      characterControllers.elementAt(id).playCharBtn.setDisable(true);
+      characterControllers.elementAt(id).playCharBtn.setVisible(false);
+
       isCharacterActive = false;
       activeCharacterId = null;
-      activeCharacterPane.setTranslateY(activeCharacterPane.getTranslateY() + 20);
       activeCharacterPane.setScaleX(1);
       activeCharacterPane.setScaleY(1);
       Glow glow = new Glow();
       glow.setLevel(0);
       activeCharacterPane.setEffect(glow);
       activeCharacterPane = null;
+
     }
   }
 

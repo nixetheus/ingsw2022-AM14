@@ -3,6 +3,7 @@ package it.polimi.ingsw.view;
 import com.google.gson.Gson;
 import it.polimi.ingsw.guicontrollers.GameController;
 import it.polimi.ingsw.helpers.MessageSecondary;
+import it.polimi.ingsw.messages.InfoRequestMessage;
 import it.polimi.ingsw.messages.LoginMessage;
 import it.polimi.ingsw.messages.MoveMessage;
 import it.polimi.ingsw.messages.PlayMessage;
@@ -54,15 +55,19 @@ public class GuiParser {
     out.println(gson.toJson(playAssistantMessage));
   }
 
-  public void playCharacter(String characterId, int studentColor, int islandId,
-      int entranceStudent, int diningRoomStudents) {
+  public void playCharacter(PlayMessage msg) {
+    out.println(gson.toJson(msg));
+  }
+
+  public void infoCharacter(String characterId) {
 
     int id = Integer.parseInt(characterId.replace("character", ""));
 
-    PlayMessage playCharacterMessage = new PlayMessage(MessageSecondary.CHARACTER);
-    playCharacterMessage.setPlayerId(mainGuiController.playerId);
-    playCharacterMessage.setCharacterId(id);
-    // TODO: some things can only be set by the controller and server
+    InfoRequestMessage infoRequestMessage = new InfoRequestMessage(MessageSecondary.INFO_CHARACTER);
+    infoRequestMessage.setObjectId(id);
+    infoRequestMessage.setPlayerId(mainGuiController.playerId);
+
+    out.println(gson.toJson(infoRequestMessage));
   }
 
   // MOVE MESSAGES

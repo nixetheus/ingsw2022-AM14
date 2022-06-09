@@ -194,8 +194,7 @@ public class InfoControllerTest {
 
     Vector<Message> responses = infoController.elaborateMessage(infoRequestMessage, testGame);
     ClientResponse response = (ClientResponse) responses.elementAt(0);
-    Assert.assertEquals(response.getResponse(),
-        "Character number " + characterId + " costs " + infoCard.getCost() + " coins");
+    Assert.assertEquals(response.getResponse(), infoCard.getCardEffect().getStringEffectCard());
 
     // ERROR
     infoRequestMessage.setObjectId(100);

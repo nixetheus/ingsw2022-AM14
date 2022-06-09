@@ -143,7 +143,7 @@ public class InfoController {
   private String infoCharacters(Game game, int characterId) {
     if (characterId < game.getPurchasableCharacter().size()) {
       CharacterCard infoCard = game.getPurchasableCharacter().elementAt(characterId);
-      return "Character number " + characterId + " costs " + infoCard.getCost() + " coins";
+      return infoCard.getCardEffect().getStringEffectCard();
     } else {
       return "Error, the character does not exists";
     }

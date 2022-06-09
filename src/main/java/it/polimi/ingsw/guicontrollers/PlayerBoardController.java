@@ -2,6 +2,7 @@ package it.polimi.ingsw.guicontrollers;
 
 import it.polimi.ingsw.view.GuiParser;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Vector;
 import javafx.css.converter.PaintConverter;
@@ -50,6 +51,27 @@ public class PlayerBoardController implements Initializable {
   public String studentEntranceId;
   public String studentDiningRoomId;
 
+  // For moving (characters)
+  public boolean isCharActive;
+  public String studentEntranceChar0Id;
+  public String studentEntranceChar1Id;
+  public String studentEntranceChar2Id;
+  public String studentDiningRoomChar0Id;
+  public String studentDiningRoomChar1Id;
+
+  // Sub
+  public Circle red0;
+  public Circle red1;
+  public Circle blue0;
+  public Circle blue1;
+  public Circle pink0;
+  public Circle pink1;
+  public Circle green0;
+  public Circle green1;
+  public Circle yellow0;
+  public Circle yellow1;
+
+
   private GuiParser parser;
 
   @Override
@@ -75,13 +97,51 @@ public class PlayerBoardController implements Initializable {
 
   @FXML
   protected void onClickStudentEntrance(MouseEvent event) {
-    unClickStudentsEntrance();
-    Circle student = ((Circle)event.getSource());
-    studentEntranceId = student.getId();
 
-    Glow glow = new Glow(); glow.setLevel(1);
-    student.setEffect(glow);
-    student.setScaleX(1.2); student.setScaleY(1.2);
+    Circle student = ((Circle) event.getSource());
+
+    if (!isCharActive) {
+      unClickStudentsEntrance();
+      studentEntranceId = student.getId();
+
+      Glow glow = new Glow();
+      glow.setLevel(1);
+      student.setEffect(glow);
+      student.setScaleX(1.2);
+      student.setScaleY(1.2);
+    } else {
+
+      if (Objects.equals(student.getId(), studentEntranceChar0Id) ||
+          Objects.equals(student.getId(), studentEntranceChar1Id) ||
+          Objects.equals(student.getId(), studentEntranceChar2Id))
+        unClickStudentsCharacter(student);
+      else {
+
+        if (studentEntranceChar0Id == null) {
+          studentEntranceChar0Id = student.getId();
+          Glow glow = new Glow();
+          glow.setLevel(1);
+          student.setEffect(glow);
+          student.setScaleX(1.2);
+          student.setScaleY(1.2);
+        } else if (studentEntranceChar1Id == null) {
+          studentEntranceChar1Id = student.getId();
+          Glow glow = new Glow();
+          glow.setLevel(1);
+          student.setEffect(glow);
+          student.setScaleX(1.2);
+          student.setScaleY(1.2);
+        } else if (studentEntranceChar2Id == null) {
+          studentEntranceChar2Id = student.getId();
+          Glow glow = new Glow();
+          glow.setLevel(1);
+          student.setEffect(glow);
+          student.setScaleX(1.2);
+          student.setScaleY(1.2);
+        }
+      }
+
+    }
   }
 
   @FXML
@@ -100,12 +160,48 @@ public class PlayerBoardController implements Initializable {
   }
 
   @FXML
+  protected void onClickStudentDiningRoom(MouseEvent event) {
+
+    Circle student = ((Circle) event.getSource());
+
+    if (isCharActive) {
+
+      if (Objects.equals(student.getId(), studentDiningRoomChar0Id) ||
+          Objects.equals(student.getId(), studentDiningRoomChar1Id))
+        unClickStudentsDRCharacter(student);
+      else {
+
+        System.out.println("Hey");
+        if (studentDiningRoomChar0Id == null) {
+          studentDiningRoomChar0Id = student.getId();
+          Glow glow = new Glow();
+          glow.setLevel(1);
+          student.setEffect(glow);
+          student.setScaleX(1.2);
+          student.setScaleY(1.2);
+        } else if (studentDiningRoomChar1Id == null) {
+          studentDiningRoomChar1Id = student.getId();
+          Glow glow = new Glow();
+          glow.setLevel(1);
+          student.setEffect(glow);
+          student.setScaleX(1.2);
+          student.setScaleY(1.2);
+        }
+      }
+
+    }
+  }
+
+
+  @FXML
   protected void onClickStudentsDiningRoom(MouseEvent event) {
     VBox diningRoomStudents = ((VBox)event.getSource());
     studentDiningRoomId = diningRoomStudents.getId();
-    if (studentEntranceId != null) {
-      parser.moveStudentFromEntrance("", true, studentEntranceId);
-      unClickStudentsEntrance();
+    if (!isCharActive) {
+      if (studentEntranceId != null) {
+        parser.moveStudentFromEntrance("", true, studentEntranceId);
+        unClickStudentsEntrance();
+      }
     }
   }
 
@@ -120,6 +216,30 @@ public class PlayerBoardController implements Initializable {
       student.setEffect(glow);
     }
     studentEntranceId = null;
+  }
+
+  public void unClickStudentsCharacter(Circle clickedStudent) {
+    clickedStudent.setScaleX(1); clickedStudent.setScaleY(1);
+    Glow glow = new Glow(); glow.setLevel(0);
+    clickedStudent.setEffect(glow);
+
+    if (Objects.equals(clickedStudent.getId(), studentEntranceChar0Id))
+      studentEntranceChar0Id = null;
+    if (Objects.equals(clickedStudent.getId(), studentEntranceChar1Id))
+      studentEntranceChar1Id = null;
+    if (Objects.equals(clickedStudent.getId(), studentEntranceChar2Id))
+      studentEntranceChar2Id = null;
+  }
+
+  public void unClickStudentsDRCharacter(Circle clickedStudent) {
+    clickedStudent.setScaleX(1); clickedStudent.setScaleY(1);
+    Glow glow = new Glow(); glow.setLevel(0);
+    clickedStudent.setEffect(glow);
+
+    if (Objects.equals(clickedStudent.getId(), studentDiningRoomChar0Id))
+      studentDiningRoomChar0Id = null;
+    if (Objects.equals(clickedStudent.getId(), studentDiningRoomChar1Id))
+      studentDiningRoomChar1Id = null;
   }
 
   public void showStudents(int nStudents, VBox colorBox) {

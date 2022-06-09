@@ -1,10 +1,12 @@
 package it.polimi.ingsw.guicontrollers;
 
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Vector;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
@@ -27,11 +29,17 @@ public class CharacterController implements Initializable {
 
   public Pane cardPane;
 
+  public Button playCharBtn;
+
   public Label cost;
 
   public ImageView characterPic;
 
-  String studentCharacterId;
+  public String studentCharacter0Id;
+  public String studentCharacter1Id;
+  public String studentCharacter2Id;
+
+  public GameController mainController;
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -46,13 +54,38 @@ public class CharacterController implements Initializable {
 
   @FXML
   protected void onClickStudentCharacter(MouseEvent event) {
-    unClickStudentsCharacter();
-    Circle student = ((Circle)event.getSource());
-    studentCharacterId = student.getId();
 
-    Glow glow = new Glow(); glow.setLevel(1);
-    student.setEffect(glow);
-    student.setScaleX(1.2); student.setScaleY(1.2);
+    Circle student = ((Circle) event.getSource());
+
+    if (Objects.equals(student.getId(), studentCharacter0Id) ||
+        Objects.equals(student.getId(), studentCharacter1Id) ||
+        Objects.equals(student.getId(), studentCharacter2Id))
+      unClickStudentsCharacter(student);
+
+    else {
+      if (studentCharacter0Id == null) {
+        studentCharacter0Id = student.getId();
+        Glow glow = new Glow();
+        glow.setLevel(1);
+        student.setEffect(glow);
+        student.setScaleX(1.2);
+        student.setScaleY(1.2);
+      } else if (studentCharacter1Id == null) {
+        studentCharacter1Id = student.getId();
+        Glow glow = new Glow();
+        glow.setLevel(1);
+        student.setEffect(glow);
+        student.setScaleX(1.2);
+        student.setScaleY(1.2);
+      } else if (studentCharacter2Id == null) {
+        studentCharacter2Id = student.getId();
+        Glow glow = new Glow();
+        glow.setLevel(1);
+        student.setEffect(glow);
+        student.setScaleX(1.2);
+        student.setScaleY(1.2);
+      }
+    }
   }
 
   @FXML
@@ -65,13 +98,22 @@ public class CharacterController implements Initializable {
     Circle student = ((Circle)event.getSource());
   }
 
-  public void unClickStudentsCharacter() {
-    for(Circle student : students) {
-      student.setScaleX(1); student.setScaleY(1);
-      Glow glow = new Glow(); glow.setLevel(0);
-      student.setEffect(glow);
-    }
-    studentCharacterId = null;
+  public void unClickStudentsCharacter(Circle clickedStudent) {
+    clickedStudent.setScaleX(1); clickedStudent.setScaleY(1);
+    Glow glow = new Glow(); glow.setLevel(0);
+    clickedStudent.setEffect(glow);
+
+    if (Objects.equals(clickedStudent.getId(), studentCharacter0Id))
+      studentCharacter0Id = null;
+    if (Objects.equals(clickedStudent.getId(), studentCharacter1Id))
+      studentCharacter1Id = null;
+    if (Objects.equals(clickedStudent.getId(), studentCharacter2Id))
+      studentCharacter2Id = null;
+  }
+
+  @FXML
+  protected void playCharacter(MouseEvent event) {
+    mainController.playCharacter();
   }
 
   public void setStudents(int[] colors){

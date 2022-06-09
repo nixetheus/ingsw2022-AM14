@@ -11,8 +11,8 @@ public class PlayMessage extends Message {
 
   // Character parameters
   private Color color;
-  private int numIsland;
-  private int motherNatureMoves;
+  private int numIsland = -1;
+  private int motherNatureMoves = -1;
 
   private int[] studentsCard;
   private int[] studentsEntrance;

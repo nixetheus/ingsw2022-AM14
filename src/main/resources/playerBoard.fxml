@@ -83,12 +83,12 @@
                               <Insets top="7.0" />
                            </VBox.margin>
                         </Circle>
-                        <Circle fill="#6da661" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                        <Circle fx:id="green1" fill="#6da661" onMouseClicked="#onClickStudentDiningRoom" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
                            <VBox.margin>
                               <Insets top="7.0" />
                            </VBox.margin>
                         </Circle>
-                        <Circle fill="#6da661" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                        <Circle fx:id="green0" fill="#6da661" onMouseClicked="#onClickStudentDiningRoom" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
                            <VBox.margin>
                               <Insets top="7.0" />
                            </VBox.margin>
@@ -137,12 +137,12 @@
                               <Insets top="7.0" />
                            </VBox.margin>
                         </Circle>
-                        <Circle fill="#d94d59" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                        <Circle fx:id="red1" fill="#d94d59" onMouseClicked="#onClickStudentDiningRoom" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
                            <VBox.margin>
                               <Insets top="7.0" />
                            </VBox.margin>
                         </Circle>
-                        <Circle fill="#d94d59" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                        <Circle fx:id="red0" fill="#d94d59" onMouseClicked="#onClickStudentDiningRoom" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
                            <VBox.margin>
                               <Insets top="7.0" />
                            </VBox.margin>
@@ -191,12 +191,12 @@
                               <Insets top="7.0" />
                            </VBox.margin>
                         </Circle>
-                        <Circle fill="#fecf35" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                        <Circle fx:id="yellow1" fill="#fecf35" onMouseClicked="#onClickStudentDiningRoom" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
                            <VBox.margin>
                               <Insets top="7.0" />
                            </VBox.margin>
                         </Circle>
-                        <Circle fill="#fecf35" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                        <Circle fx:id="yellow0" fill="#fecf35" onMouseClicked="#onClickStudentDiningRoom" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
                            <VBox.margin>
                               <Insets top="7.0" />
                            </VBox.margin>
@@ -245,12 +245,12 @@
                               <Insets top="7.0" />
                            </VBox.margin>
                         </Circle>
-                        <Circle fill="#ef84b4" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                        <Circle fx:id="pink1" fill="#ef84b4" onMouseClicked="#onClickStudentDiningRoom" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
                            <VBox.margin>
                               <Insets top="7.0" />
                            </VBox.margin>
                         </Circle>
-                        <Circle fill="#ef84b4" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                        <Circle fx:id="pink0" fill="#ef84b4" onMouseClicked="#onClickStudentDiningRoom" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
                            <VBox.margin>
                               <Insets top="7.0" />
                            </VBox.margin>
@@ -299,12 +299,12 @@
                               <Insets top="7.0" />
                            </VBox.margin>
                         </Circle>
-                        <Circle fill="#21bbef" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                        <Circle fx:id="blue1" fill="#21bbef" onMouseClicked="#onClickStudentDiningRoom" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
                            <VBox.margin>
                               <Insets top="7.0" />
                            </VBox.margin>
                         </Circle>
-                        <Circle fill="#21bbef" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
+                        <Circle fx:id="blue0" fill="#21bbef" onMouseClicked="#onClickStudentDiningRoom" radius="10.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0" visible="false">
                            <VBox.margin>
                               <Insets top="7.0" />
                            </VBox.margin>

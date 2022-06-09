@@ -91,7 +91,7 @@
               <fx:include fx:id="island11" onMouseClicked="#onClickIsland" source="island.fxml" GridPane.columnIndex="1" GridPane.rowIndex="1" />
               <fx:include fx:id="island4" onMouseClicked="#onClickIsland" source="island.fxml" GridPane.columnIndex="6" GridPane.rowIndex="1" />
               <fx:include fx:id="island10" onMouseClicked="#onClickIsland" source="island.fxml" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-              <fx:include fx:id="island5" onMouseClicked="#onClickIsland" source="island.fxml" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+              <fx:include fx:id="island5" onMouseClicked="#onClickIsland" source="island.fxml" translateY="8.0" GridPane.columnIndex="6" GridPane.rowIndex="2" />
               <fx:include fx:id="island9" onMouseClicked="#onClickIsland" source="island.fxml" translateX="-10.0" translateY="-30.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
               <fx:include fx:id="island8" onMouseClicked="#onClickIsland" source="island.fxml" GridPane.columnIndex="3" GridPane.rowIndex="3" />
               <fx:include fx:id="island7" onMouseClicked="#onClickIsland" source="island.fxml" GridPane.columnIndex="4" GridPane.rowIndex="3" />

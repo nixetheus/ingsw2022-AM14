@@ -1,6 +1,14 @@
 package it.polimi.ingsw.controller;
 
+import static it.polimi.ingsw.helpers.CharactersFlags.COLOR_FLAG;
+import static it.polimi.ingsw.helpers.CharactersFlags.MOTHER_NATURE_MOVES_FLAG;
+import static it.polimi.ingsw.helpers.CharactersFlags.NUM_ISLAND_FLAG;
+import static it.polimi.ingsw.helpers.CharactersFlags.STUDENTS_CARD_FLAG;
+import static it.polimi.ingsw.helpers.CharactersFlags.STUDENTS_DINING_ROOM_FLAG;
+import static it.polimi.ingsw.helpers.CharactersFlags.STUDENTS_ENTRANCE_FLAG;
+
 import it.polimi.ingsw.helpers.MessageSecondary;
+import it.polimi.ingsw.messages.ClientResponse;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.PlayMessage;
 import it.polimi.ingsw.messages.PlayMessageResponse;
@@ -72,6 +80,13 @@ public class PlayController {
 
     CharacterStruct characterParameters = new CharacterStruct();
     CharacterCard characterCard = game.getPurchasableCharacter().elementAt(msg.getCharacterId());
+
+    // Some objects are missing for the character
+    if (!hasAllCharacterObjects(characterCard, msg)) {
+      ClientResponse missingParams = new ClientResponse(MessageSecondary.INFO_CHARACTER);
+      missingParams.setResponse("This character is missing some objects! Try again!");
+      return missingParams;
+    }
 
     characterParameters.currentGame = game;
     characterParameters.color = msg.getColor();
@@ -147,5 +162,28 @@ public class PlayController {
       }
     }
     return false;
+  }
+
+  /**
+   *
+   * @param character
+   * @param msg
+   * @return
+   */
+  private boolean hasAllCharacterObjects(CharacterCard character, PlayMessage msg) {
+
+    boolean hasObjects = true;
+
+    int flags = character.getCardEffect().getObjectsFlags();
+    if ((flags & (1 << NUM_ISLAND_FLAG.ordinal())) > 0 && (msg.getNumIsland() == -1) ||
+        (flags & (1 << MOTHER_NATURE_MOVES_FLAG.ordinal())) > 0 && (msg.getMotherNatureMoves() == -1) ||
+        (flags & (1 << COLOR_FLAG.ordinal())) > 0 && (msg.getColor() == null) ||
+        (flags & (1 << STUDENTS_CARD_FLAG.ordinal())) > 0 && (msg.getStudentsCard() == null) ||
+        (flags & (1 << STUDENTS_ENTRANCE_FLAG.ordinal())) > 0 && (msg.getStudentsEntrance() == null) ||
+        (flags & (1 << STUDENTS_DINING_ROOM_FLAG.ordinal())) > 0 && (msg.getStudentsDiningRoom() == null))
+    {
+      hasObjects = false;
+    }
+    return hasObjects;
   }
 }

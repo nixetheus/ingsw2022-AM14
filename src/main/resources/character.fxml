@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -72,7 +73,14 @@
                   <Insets left="2.0" />
                </GridPane.margin>
             </Label>
-            <Pane fx:id="cardPane" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" />
+            <Pane fx:id="cardPane" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2">
+               <children>
+                  <Button fx:id="playCharBtn" disable="true" layoutX="25.0" layoutY="30.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#playCharacter" prefHeight="25.0" prefWidth="50.0" style="-fx-background-color: white; -fx-border-radius: 0; -fx-border-color: black; -fx-border-style: solid;" text="PLAY" visible="false">
+                     <font>
+                        <Font name="Agency FB Bold" size="13.0" />
+                     </font>
+                  </Button>
+               </children></Pane>
          </children>
       </GridPane>
    </children>
