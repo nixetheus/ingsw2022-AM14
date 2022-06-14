@@ -14,6 +14,7 @@ public class BeginTurnMessage extends Message {
   Vector<int[]> studentsIsland;
   Vector<Integer> towersIsland;
   Integer[] islandsIds;
+  boolean[] islandsNoEntry;
   int[] towersColor;
   Vector<int[]> studentsCloudTiles;
   Vector<Integer> playableAssistantId;
@@ -148,5 +149,13 @@ public class BeginTurnMessage extends Message {
 
   public void setActivePLayerId(int activePLayerId) {
     this.activePLayerId = activePLayerId;
+  }
+
+  public boolean[] getIslandsNoEntry() {
+    return islandsNoEntry;
+  }
+
+  public void setIslandsNoEntry(boolean[] islandsNoEntry) {
+    this.islandsNoEntry = islandsNoEntry;
   }
 }

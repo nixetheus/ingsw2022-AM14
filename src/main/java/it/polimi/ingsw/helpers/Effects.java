@@ -25,7 +25,8 @@ public enum Effects {
   RETURN_THREE_DINING_ROOM_BAG(3, 0, CardType.PLAYER, 1 << COLOR_FLAG.ordinal(),
       "This character allows to chose a student color and every player must return 3 student of that color from their dining room to the bag"),
 
-  TAKE_STUDENT_PUT_ISLAND(1, 4, CardType.MAINBOARD, 1 << COLOR_FLAG.ordinal(),
+  TAKE_STUDENT_PUT_ISLAND(1, 4, CardType.MAINBOARD,
+      (1 << NUM_ISLAND_FLAG.ordinal()) | (1 << STUDENTS_CARD_FLAG.ordinal()),
       "This character allows to take a student from this card and put it on an island of your choice"),
   FALSE_NATURE_MOVEMENT(3, 0, CardType.MAINBOARD, 1 << NUM_ISLAND_FLAG.ordinal(),
       "This character allows to chose an island and resolving that island as mother nature ends her movement there"),
@@ -35,7 +36,7 @@ public enum Effects {
       "This character blocks towers from adding points in the influence calculation"),
   ADD_TWO_INFLUENCE(2, 0, CardType.MAINBOARD, 0,
       "This character adds 2 more influence to the influence calculation"),
-  NO_INFLUENCE_COLOR(3, 0, CardType.MAINBOARD, 0,
+  NO_INFLUENCE_COLOR(3, 0, CardType.MAINBOARD, 1 << STUDENTS_CARD_FLAG.ordinal(),
       "This character blocks a color from adding influence"),
 
   TAKE_PROFESSOR_EQUAL(2, 0, CardType.GAME, 0,

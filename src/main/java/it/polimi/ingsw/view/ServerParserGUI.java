@@ -146,28 +146,33 @@ public class ServerParserGUI {
             // STUDENTS
             int index = Arrays.asList(phaseMessage.getIslandsIds()).indexOf(islandNumber);
             int[] students = phaseMessage.getStudentsIsland().elementAt(index);
-            mainController.islandsControllers.elementAt(islandNumber)
+            mainController.islandsControllers.elementAt(index)
                 .setRedStudents(students[Color.RED.ordinal()]);
-            mainController.islandsControllers.elementAt(islandNumber)
+            mainController.islandsControllers.elementAt(index)
                 .setBlueStudents(students[Color.BLUE.ordinal()]);
-            mainController.islandsControllers.elementAt(islandNumber)
+            mainController.islandsControllers.elementAt(index)
                 .setPinkStudents(students[Color.PURPLE.ordinal()]);
-            mainController.islandsControllers.elementAt(islandNumber)
+            mainController.islandsControllers.elementAt(index)
                 .setGreenStudents(students[Color.GREEN.ordinal()]);
-            mainController.islandsControllers.elementAt(islandNumber)
+            mainController.islandsControllers.elementAt(index)
                 .setYellowStudents(students[Color.YELLOW.ordinal()]);
 
             // TOWERS
-            mainController.islandsControllers.elementAt(islandNumber)
+            mainController.islandsControllers.elementAt(index)
                 .setNumberOfTowers(phaseMessage.getTowersIsland().elementAt(islandNumber));
 
             // TOWERS COLOR
-            mainController.islandsControllers.elementAt(islandNumber)
+            mainController.islandsControllers.elementAt(index)
                 .setTeamTower(phaseMessage.getTowersColor()[islandNumber]);
 
             // MOTHER NATURE
-            mainController.islandsControllers.elementAt(islandNumber).setMotherNature(
+            mainController.islandsControllers.elementAt(index).setMotherNature(
                 islandNumber == phaseMessage.getMotherNaturePosition());
+
+            // NO ENTRY
+            mainController.islandsControllers.elementAt(index).noEntry.
+                setVisible(phaseMessage.getIslandsNoEntry()[index]);
+
           } else {
             mainController.deleteIsland(islandNumber);
           }

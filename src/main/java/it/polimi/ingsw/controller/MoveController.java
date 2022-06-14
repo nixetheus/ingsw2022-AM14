@@ -51,18 +51,26 @@ public class MoveController {
           // ONLY CLOCKWISE
           if (msg.getIslandNumber() == (islandCurrentMN + motherNatureMoves) % nOfIslands) {
 
-            currentGame.moveNature(motherNatureMoves);
-            int newMotherNaturePosition = currentGame.getMainBoard().getMotherNature()
-                .getPosition();
+            // IF NOT NO ENTRY
+            if (!currentGame.getMainBoard().getIslands().elementAt(msg.getIslandNumber()).isNoEntry()) {
 
-            MoveMessageResponse responseNature = new MoveMessageResponse(MessageSecondary.MOVE_MN);
-            responseNature.setPlayerId(currentGame.getCurrentPlayer().getPlayerId());
-            responseNature.setIslandNumber(newMotherNaturePosition);
+              currentGame.moveNature(motherNatureMoves);
+              int newMotherNaturePosition = currentGame.getMainBoard().getMotherNature()
+                  .getPosition();
 
-            responseNature.setTowersIsland(currentGame.getMainBoard().getIslands().stream()
-                .filter(island -> island.getIslandId() == newMotherNaturePosition).findFirst().get()
-                .getNumberOfTowers());
-            return responseNature;
+              MoveMessageResponse responseNature = new MoveMessageResponse(
+                  MessageSecondary.MOVE_MN);
+              responseNature.setPlayerId(currentGame.getCurrentPlayer().getPlayerId());
+              responseNature.setIslandNumber(newMotherNaturePosition);
+
+              responseNature.setTowersIsland(currentGame.getMainBoard().getIslands().stream()
+                  .filter(island -> island.getIslandId() == newMotherNaturePosition).findFirst()
+                  .get()
+                  .getNumberOfTowers());
+              return responseNature;
+
+            }
+
           }
 
         }

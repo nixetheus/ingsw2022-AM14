@@ -18,6 +18,10 @@ public class PlayMessage extends Message {
   private int[] studentsEntrance;
   private int[] studentsDiningRoom;
 
+  // For gui (it's positions instead of colors)
+  private int[] studentsCardGUI;
+  private int[] studentsEntranceGUI;
+
   public PlayMessage(MessageSecondary messageSecondary) {
     this.messageMain = MessageMain.PLAY;
     this.messageSecondary = messageSecondary;
@@ -85,5 +89,21 @@ public class PlayMessage extends Message {
 
   public void setStudentsDiningRoom(int[] studentsDiningRoom) {
     this.studentsDiningRoom = studentsDiningRoom;
+  }
+
+  public int[] getStudentsCardGUI() {
+    return studentsCardGUI;
+  }
+
+  public void setStudentsCardGUI(int[] studentsCardGUI) {
+    this.studentsCardGUI = studentsCardGUI;
+  }
+
+  public int[] getStudentsEntranceGUI() {
+    return studentsEntranceGUI;
+  }
+
+  public void setStudentsEntranceGUI(int[] studentsEntranceGUI) {
+    this.studentsEntranceGUI = studentsEntranceGUI;
   }
 }

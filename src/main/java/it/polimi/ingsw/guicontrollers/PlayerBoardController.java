@@ -301,7 +301,7 @@ public class PlayerBoardController implements Initializable {
     }
 
     for (;studVisibleIndex < studentsEntrance.size(); studVisibleIndex++)
-      studentsEntrance.elementAt(studVisibleIndex++).setVisible(false);
+      studentsEntrance.elementAt(studVisibleIndex).setVisible(false);
   }
 
 }

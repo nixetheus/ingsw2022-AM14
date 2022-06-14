@@ -402,13 +402,7 @@ public class GameController implements Initializable {
     if (characterIslandId != null)
       playCharacterMessage.setNumIsland(Integer.parseInt(characterIslandId.replace("island", "")));
 
-    // TODO colors
-    //System.out.println(characterControllers.elementAt(id).studentCharacter0Id);
-    //System.out.println(characterControllers.elementAt(id).studentCharacter1Id);
-    //System.out.println(characterControllers.elementAt(id).studentCharacter2Id);
-    //System.out.println(BoardsControllers.elementAt(playerId).studentEntranceChar0Id);
-    //System.out.println(BoardsControllers.elementAt(playerId).studentEntranceChar1Id);
-    //System.out.println(BoardsControllers.elementAt(playerId).studentEntranceChar2Id);
+    // TODO color
 
     // DINING ROOM
     int[] diningRoomStudents = new int[5];
@@ -438,8 +432,45 @@ public class GameController implements Initializable {
         } catch (Exception ignored) {}
       }
     }
-    System.out.println(Arrays.toString(diningRoomStudents));
     playCharacterMessage.setStudentsDiningRoom(diningRoomStudents);
+
+    // CARD STUDENTS
+    int cardStud0 = -1;
+    if (characterControllers.elementAt(id).studentCharacter0Id != null)
+      cardStud0 = Integer.parseInt(
+        characterControllers.elementAt(id).studentCharacter0Id.replace("student", ""));
+
+    int cardStud1 = -1;
+    if (characterControllers.elementAt(id).studentCharacter1Id != null)
+      cardStud1 = Integer.parseInt(
+        characterControllers.elementAt(id).studentCharacter1Id.replace("student", ""));
+
+    int cardStud2 = -1;
+    if (characterControllers.elementAt(id).studentCharacter2Id != null)
+      cardStud2 = Integer.parseInt(
+        characterControllers.elementAt(id).studentCharacter2Id.replace("student", ""));
+
+    int[] cardPositions = {cardStud0, cardStud1, cardStud2};
+    playCharacterMessage.setStudentsCardGUI(cardPositions);
+
+    // ENTRANCE STUDENTS
+    int entranceStud0 = -1;
+    if (BoardsControllers.elementAt(playerId).studentEntranceChar0Id != null)
+      entranceStud0 = Integer.parseInt(
+        BoardsControllers.elementAt(playerId).studentEntranceChar0Id.replace("studentEntrance", ""));
+
+    int entranceStud1 = -1;
+    if (BoardsControllers.elementAt(playerId).studentEntranceChar1Id != null)
+      entranceStud1 = Integer.parseInt(
+        BoardsControllers.elementAt(playerId).studentEntranceChar1Id.replace("studentEntrance", ""));
+
+    int entranceStud2 = -1;
+    if (BoardsControllers.elementAt(playerId).studentEntranceChar2Id != null)
+      entranceStud2 = Integer.parseInt(
+        BoardsControllers.elementAt(playerId).studentEntranceChar2Id.replace("studentEntrance", ""));
+
+    int[] entrancePositions = {entranceStud0, entranceStud1, entranceStud2};
+    playCharacterMessage.setStudentsEntranceGUI(entrancePositions);
 
     parser.playCharacter(playCharacterMessage);
   }

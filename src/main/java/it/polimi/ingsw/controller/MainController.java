@@ -265,7 +265,7 @@ public class MainController {
       }
     }
 
-    if (gameResponse != null) {
+    if (gameResponse != null && msg.getMessageSecondary() != MessageSecondary.CHARACTER) {
 
       messages.add(gameResponse);
 
@@ -293,12 +293,15 @@ public class MainController {
         order.setPlayerOrderId(playerOrderIdVector);
         messages.add(order);
 
-      } else if (msg.getMessageMain() == MessageMain.MOVE
+      }
+      else if (msg.getMessageMain() == MessageMain.MOVE
           && msg.getMessageSecondary() == MessageSecondary.CLOUD_TILE
           && turnManager.getCurrentNumberOfUsersPlayedActionPhase() == numberOfPlayers) {
         this.game.fillClouds();
         this.game.reverseOrderEndTurn();
         this.game.assistantAfterTurn();
+        /*for (CharacterCard card : game.getPurchasableCharacter())
+          card.removeEffect();*/ // TODO
       }
 
       turnManager.changeState();
@@ -318,7 +321,8 @@ public class MainController {
               game.getCurrentPlayer().getPlayerId()));
         }
 
-      } else if (msg.getMessageMain() == MessageMain.MOVE) {
+      }
+      else if (msg.getMessageMain() == MessageMain.MOVE) {
 
         this.game.setCurrentPlayerIndex(turnManager.getCurrentNumberOfUsersPlayedActionPhase());
 
@@ -362,7 +366,11 @@ public class MainController {
 
       }
 
-    } else {
+    }
+    else if (gameResponse != null && msg.getMessageSecondary() == MessageSecondary.CHARACTER) {
+      messages.addAll(changeTurnMessage(MessageSecondary.CHANGE_TURN));
+    }
+    else {
       ClientResponse error = new ClientResponse(MessageSecondary.ERROR);
       error.setPlayerId(msg.getPlayerId());
       error.setResponse(
@@ -444,6 +452,7 @@ public class MainController {
         int towerIndex = 0;
         Integer[] islandsIds = new Integer[game.getMainBoard().getIslands().size()];
         int[] towersColors = new int[game.getMainBoard().getIslands().size()];
+        boolean[] noEntry = new boolean[game.getMainBoard().getIslands().size()];
         Vector<int[]> studentsIslands = new Vector<>();
         Vector<Integer> towersIslands = new Vector<>();
         for (Island island : game.getMainBoard().getIslands()) {
@@ -451,9 +460,11 @@ public class MainController {
           studentsIslands.add(studentIsland);
           towersIslands.add(island.getNumberOfTowers());
           islandsIds[towerIndex] = island.getIslandId();
+          noEntry[towerIndex] = island.isNoEntry();
           towersColors[towerIndex++] = island.getOwnerId();
         }
         beginTurnMessage.setIslandsIds(islandsIds);
+        beginTurnMessage.setIslandsNoEntry(noEntry);
         beginTurnMessage.setStudentsIsland(studentsIslands);
         beginTurnMessage.setTowersIsland(towersIslands);
         beginTurnMessage.setTowersColor(towersColors);

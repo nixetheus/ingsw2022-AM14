@@ -81,6 +81,14 @@ public class PlayController {
     CharacterStruct characterParameters = new CharacterStruct();
     CharacterCard characterCard = game.getPurchasableCharacter().elementAt(msg.getCharacterId());
 
+    // Translate GUI message
+    if (msg.getStudentsCardGUI() != null)
+      msg.setStudentsCard(fromPositionsToColors(msg.getStudentsCardGUI(),
+          characterCard.getStudents()));
+    if (msg.getStudentsEntranceGUI() != null)
+      msg.setStudentsEntrance(fromPositionsToColors(msg.getStudentsEntranceGUI(),
+          game.getCurrentPlayer().getPlayerBoard().getEntrance().getStudents()));
+
     // Some objects are missing for the character
     if (!hasAllCharacterObjects(characterCard, msg)) {
       ClientResponse missingParams = new ClientResponse(MessageSecondary.INFO_CHARACTER);
@@ -185,5 +193,27 @@ public class PlayController {
       hasObjects = false;
     }
     return hasObjects;
+  }
+
+  private int[] fromPositionsToColors(int[] positions, int[] students) {
+
+    int[] colors = new int[5];
+
+    for (int position : positions) {
+      if (position >= 0) {
+
+        int studentIndex = 0;
+        for (int color = 0; color < students.length; color++) {
+          for (int nOfColor = 0; nOfColor < students[color]; nOfColor++) {
+            if (position == studentIndex)
+              colors[color]++;
+            studentIndex++;
+          }
+        }
+
+      }
+    }
+
+    return colors;
   }
 }
