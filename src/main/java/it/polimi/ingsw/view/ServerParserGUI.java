@@ -159,11 +159,11 @@ public class ServerParserGUI {
 
             // TOWERS
             mainController.islandsControllers.elementAt(index)
-                .setNumberOfTowers(phaseMessage.getTowersIsland().elementAt(islandNumber));
+                .setNumberOfTowers(phaseMessage.getTowersIsland().elementAt(index));
 
             // TOWERS COLOR
             mainController.islandsControllers.elementAt(index)
-                .setTeamTower(phaseMessage.getTowersColor()[islandNumber]);
+                .setTeamTower(phaseMessage.getTowersColor()[index]);
 
             // MOTHER NATURE
             mainController.islandsControllers.elementAt(index).setMotherNature(
