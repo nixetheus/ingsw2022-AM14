@@ -119,7 +119,12 @@ public class MainBoard {
    * @param numIsland number of island to place the student
    */
   public void addToIsland(int color, int numIsland) {
-    islands.get(numIsland).addStudent(color);
+    for(Island island:islands){
+      if(island.getIslandId()==numIsland){
+        island.addStudent(color);
+      }
+    }
+   // islands.get(numIsland).addStudent(color);
   }
 
   /**
