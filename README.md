@@ -9,10 +9,10 @@ Project for Software Engineering Course - Polimi
 
 | Functionality    |                       State                        |
 |:-----------------|:--------------------------------------------------:|
-| Basic rules      | 🟡 |
+| Basic rules      | 🟢 |
 | Complete rules   | 🟡 |
-| Socket           | 🟡 |
-| GUI              | 🟡 |
+| Socket           | 🟢 |
+| GUI              | 🟢 |
 | CLI              | 🟡 |
 | 4 Players Mode   | 🟢 |
 | 12 Characters    | 🟡 |
