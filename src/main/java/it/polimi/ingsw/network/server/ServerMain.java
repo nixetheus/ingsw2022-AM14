@@ -5,7 +5,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import it.polimi.ingsw.helpers.Constants;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import org.jetbrains.annotations.NotNull;
 
@@ -47,11 +46,13 @@ public class ServerMain {
    * the file networkSettings.json
    * @throws FileNotFoundException if file not found
    */
-  private static void setPortNumberFromJson() throws FileNotFoundException {
+  private static void setPortNumberFromJson() throws IOException {
 
+    String path =
+        it.polimi.ingsw.network.server.FileReader.getPath("/json/networkSettings.json");
     Gson gson = new Gson();
     JsonArray list = gson
-        .fromJson(new FileReader("src/main/resources/json/networkSettings.json"), JsonArray.class);
+        .fromJson(path, JsonArray.class);
     JsonObject object = list.get(0).getAsJsonObject();
     portNumber = object.get("DEFAULT_PORT_NUMBER").getAsInt();
     hostName = object.get("DEFAULT_HOST").getAsString();

@@ -9,7 +9,6 @@ import it.polimi.ingsw.network.client.ClientServerOutputReader;
 import it.polimi.ingsw.network.client.ClientUserInput;
 import it.polimi.ingsw.network.client.Pinger;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.Socket;
 import javafx.application.Application;
@@ -55,11 +54,13 @@ public class ViewMain extends Application {
    *
    * @throws FileNotFoundException if file not found
    */
-  private static void setPortNumberFromJson() throws FileNotFoundException {
+  private static void setPortNumberFromJson() throws IOException {
 
+    String path =
+        it.polimi.ingsw.network.server.FileReader.getPath("/json/networkSettings.json");
     Gson gson = new Gson();
     JsonArray list = gson
-        .fromJson(new FileReader("src/main/resources/json/networkSettings.json"), JsonArray.class);
+        .fromJson(path, JsonArray.class);
     JsonObject object = list.get(0).getAsJsonObject();
     portNumber = object.get("DEFAULT_PORT_NUMBER").getAsInt();
     hostName = object.get("DEFAULT_HOST").getAsString();
