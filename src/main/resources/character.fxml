@@ -15,11 +15,70 @@
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="152.0" prefWidth="102.0" style="-fx-border-color: black; -fx-border-width: 2;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.guicontrollers.CharacterController">
    <children>
-      <ImageView fx:id="characterPic" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="characterPic0" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@Graphical_Assets/Personaggi/CarteTOT_front.jpg" />
+            <Image url="@Graphical_Assets/Personaggi/Char0.jpg" />
          </image>
       </ImageView>
+      <ImageView fx:id="characterPic1" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Graphical_Assets/Personaggi/Char1.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="characterPic2" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Graphical_Assets/Personaggi/Char2.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="characterPic3" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Graphical_Assets/Personaggi/Char3.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="characterPic4" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Graphical_Assets/Personaggi/Char4.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="characterPic5" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Graphical_Assets/Personaggi/Char5.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="characterPic6" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Graphical_Assets/Personaggi/Char6.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="characterPic7" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Graphical_Assets/Personaggi/Char7.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="characterPic8" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Graphical_Assets/Personaggi/Char8.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="characterPic9" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Graphical_Assets/Personaggi/Char9.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="characterPic10" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Graphical_Assets/Personaggi/Char10.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="characterPic11" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Graphical_Assets/Personaggi/Char11.jpg" />
+         </image>
+      </ImageView>
+
+
+
+
       <GridPane>
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

@@ -4,12 +4,10 @@ package it.polimi.ingsw.view;
 import static it.polimi.ingsw.helpers.MessageSecondary.ASK_GAME_PARAMS;
 import static it.polimi.ingsw.helpers.MessageSecondary.INIT_GAME;
 import static it.polimi.ingsw.helpers.MessageSecondary.LOBBY;
-import static it.polimi.ingsw.helpers.MessageSecondary.MOVE_MN;
 
 import com.google.gson.Gson;
 import it.polimi.ingsw.guicontrollers.CharacterController;
 import it.polimi.ingsw.guicontrollers.GameController;
-import it.polimi.ingsw.guicontrollers.IslandController;
 import it.polimi.ingsw.guicontrollers.PlayerBoardController;
 import it.polimi.ingsw.helpers.Color;
 import it.polimi.ingsw.helpers.MessageSecondary;
@@ -29,19 +27,16 @@ import javafx.stage.Stage;
 
 public class ServerParserGUI {
 
-  private int playerId;
   private final Stage mainStage;
   private final Scene loginParamsScene;
   private final Scene loginLobbyScene;
   private final Scene gameScene;
   private final GameController mainController;
+  private int playerId;
 
-  // Character Files
-  String[] charactersFiles = {
-      ""  // TODO
-  };
 
-  public ServerParserGUI(Stage stage, Scene login, Scene params, Scene lobby, Scene game, FXMLLoader gameFxmlLoader) {
+  public ServerParserGUI(Stage stage, Scene login, Scene params, Scene lobby, Scene game,
+      FXMLLoader gameFxmlLoader) {
 
     gameScene = game;
     mainStage = stage;
@@ -60,11 +55,11 @@ public class ServerParserGUI {
           elaborateLoginMessage((LoginMessageResponse) serverMessage);
         }
         break;
-        case MOVE:  {
+        case MOVE: {
           elaborateMoveMessage((MoveMessageResponse) serverMessage);
         }
         break;
-        case PLAY:  {
+        case PLAY: {
           elaboratePlayMessage((PlayMessageResponse) serverMessage);
         }
         break;
@@ -126,8 +121,9 @@ public class ServerParserGUI {
   }
 
   private void elaborateInfoMessage(ClientResponse infoMessage) {
-    if (infoMessage.getResponse() != null)
-      Platform.runLater(() ->mainController.setTextArea(infoMessage.getResponse()));
+    if (infoMessage.getResponse() != null) {
+      Platform.runLater(() -> mainController.setTextArea(infoMessage.getResponse()));
+    }
 
     if (infoMessage.getMessageSecondary() == MessageSecondary.CLIENT_DISCONNECT) {
       System.exit(0);
@@ -144,9 +140,9 @@ public class ServerParserGUI {
     Platform.runLater(() -> {
       if (phaseMessage.getStudentsIsland() != null) {
         for (int islandNumber = 0; islandNumber < 12; islandNumber++) {
-          
+
           if (Arrays.asList(phaseMessage.getIslandsIds()).contains(islandNumber)) {
-            
+
             // STUDENTS
             int index = Arrays.asList(phaseMessage.getIslandsIds()).indexOf(islandNumber);
             int[] students = phaseMessage.getStudentsIsland().elementAt(index);
@@ -175,7 +171,7 @@ public class ServerParserGUI {
           } else {
             mainController.deleteIsland(islandNumber);
           }
-          
+
         }
       }
     });
@@ -193,19 +189,25 @@ public class ServerParserGUI {
     // DINING ROOMS
     Platform.runLater(() -> {
       for (StudentsPlayerId playerDiningRoom : phaseMessage.getStudentDiningRoom()) {
-        PlayerBoardController board = mainController.BoardsControllers.elementAt(playerDiningRoom.getPlayerId());
+        PlayerBoardController board = mainController.BoardsControllers
+            .elementAt(playerDiningRoom.getPlayerId());
         board.showStudents(playerDiningRoom.getStudents()[Color.RED.ordinal()], board.redStudents);
-        board.showStudents(playerDiningRoom.getStudents()[Color.BLUE.ordinal()], board.blueStudents);
-        board.showStudents(playerDiningRoom.getStudents()[Color.PURPLE.ordinal()], board.pinkStudents);
-        board.showStudents(playerDiningRoom.getStudents()[Color.GREEN.ordinal()], board.greenStudents);
-        board.showStudents(playerDiningRoom.getStudents()[Color.YELLOW.ordinal()], board.yellowStudents);
+        board
+            .showStudents(playerDiningRoom.getStudents()[Color.BLUE.ordinal()], board.blueStudents);
+        board.showStudents(playerDiningRoom.getStudents()[Color.PURPLE.ordinal()],
+            board.pinkStudents);
+        board.showStudents(playerDiningRoom.getStudents()[Color.GREEN.ordinal()],
+            board.greenStudents);
+        board.showStudents(playerDiningRoom.getStudents()[Color.YELLOW.ordinal()],
+            board.yellowStudents);
       }
     });
 
     // ENTRANCES
     Platform.runLater(() -> {
       for (StudentsPlayerId playerEntrance : phaseMessage.getStudentEntrance()) {
-        PlayerBoardController board = mainController.BoardsControllers.elementAt(playerEntrance.getPlayerId());
+        PlayerBoardController board = mainController.BoardsControllers
+            .elementAt(playerEntrance.getPlayerId());
         board.setEntranceStudents(playerEntrance.getStudents());
       }
     });
@@ -216,11 +218,11 @@ public class ServerParserGUI {
 
         PlayerBoardController board = mainController.BoardsControllers.elementAt(indexPlayer);
         int[] professors = phaseMessage.getProfessors().elementAt(indexPlayer);
-        int professorsFlag =  professors[0] << 2 |
-                              professors[1] << 4 |
-                              professors[2]      |
-                              professors[3] << 1 |
-                              professors[4] << 3;
+        int professorsFlag = professors[0] << 2 |
+            professors[1] << 4 |
+            professors[2] |
+            professors[3] << 1 |
+            professors[4] << 3;
 
         board.showProfessors(professorsFlag);
       }
@@ -237,11 +239,12 @@ public class ServerParserGUI {
         Vector<Integer> charactersIds = phaseMessage.getPurchasableCharacterId();
         for (int characterIndex = 0; characterIndex < charactersIds.size(); characterIndex++) {
 
-          CharacterController character = mainController.characterControllers.elementAt(characterIndex);
+          CharacterController character = mainController.characterControllers
+              .elementAt(characterIndex);
           int[] students = phaseMessage.getCharactersStudents().elementAt(characterIndex);
           character.setStudents(students);
           character.setCost(phaseMessage.getCharactersCosts()[characterIndex]);
-          // character.changeCharacterPic(charactersFiles[charactersIds.elementAt(characterIndex)]); TODO
+          character.setCharacter(charactersIds.elementAt(characterIndex));
         }
       } else {
         mainController.hideCharacters();
