@@ -6,6 +6,7 @@ import it.polimi.ingsw.helpers.Towers;
 import it.polimi.ingsw.model.Team;
 import it.polimi.ingsw.model.player.Player;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Vector;
 import org.junit.Assert;
@@ -24,7 +25,7 @@ public class MainBoardTest {
    * @throws FileNotFoundException exception
    */
   @Test
-  public void testCalculateInfluence() throws FileNotFoundException {
+  public void testCalculateInfluence() throws IOException {
     StudentsBag testStudBag = new StudentsBag();
     MainBoard mainBoardTest = new MainBoard(testStudBag);
 
@@ -74,7 +75,7 @@ public class MainBoardTest {
    * @throws FileNotFoundException exception
    */
   @Test
-  public void testCalculateInfluenceDuplicate() throws FileNotFoundException {
+  public void testCalculateInfluenceDuplicate() throws IOException {
     StudentsBag testStudBag = new StudentsBag();
     MainBoard mainBoardTest = new MainBoard(testStudBag);
 

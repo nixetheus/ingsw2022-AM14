@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.player;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -7,6 +8,7 @@ import it.polimi.ingsw.helpers.Constants;
 import it.polimi.ingsw.helpers.Places;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,24 +34,32 @@ public class Player implements Comparable<Player> {
    *                               assistants is not found
    */
 
-  public Player(int playerId, String playerNickname) throws FileNotFoundException {
+  public Player(int playerId, String playerNickname) throws IOException {
     this.coins = Constants.getInitialCoinNumber();
     this.assistant = null;
     this.playerId = playerId;
     this.playerNickname = playerNickname;
     this.playableAssistants = new Vector<>();
-    initializeAssistants("src/main/resources/json/assistants.json");
+    String path =
+        it.polimi.ingsw.network.server.FileReader.getPath("/json/assistants.json");
+    initializeAssistants(path);
   }
 
   /**
    * Initializer for the player's assistants
    *
-   * @param jsonFile File containing the assistants' information
+   * @param path File containing the assistants' information
    * @throws FileNotFoundException Throws FileNotFoundException if file containing all the
    *                               assistants is not found
    */
-  private void initializeAssistants(String jsonFile) throws FileNotFoundException {
-    JsonArray assistants = JsonParser.parseReader(new FileReader(jsonFile)).getAsJsonArray();
+  private void initializeAssistants(String path) {
+
+    Gson gson = new Gson();
+
+    JsonArray assistants = gson.fromJson(path, JsonArray.class);
+
+    //JsonArray assistants = JsonParser.parseReader(new FileReader(jsonFile)).getAsJsonArray();
+
 
     for (Object assistant : assistants) {
       JsonObject object = (JsonObject) assistant;

@@ -211,8 +211,11 @@ public class Game {
   public void initializeGameParameter() throws IOException {
 
     Gson gson = new Gson();
-    JsonArray list = gson
-        .fromJson(new FileReader("src/main/resources/json/gameParameters.json"), JsonArray.class);
+
+    String path =
+        it.polimi.ingsw.network.server.FileReader.getPath("/json/gameParameters.json");
+
+    JsonArray list = gson.fromJson(path, JsonArray.class);
     JsonObject object = list.get(playerNumber - 2).getAsJsonObject();
     this.playerNumber = object.get("PLAYER_NUMBER").getAsInt();
     this.playerTowerNumber = object.get("NUMBER_OF_TOWER_FOR_A_TEAM").getAsInt();

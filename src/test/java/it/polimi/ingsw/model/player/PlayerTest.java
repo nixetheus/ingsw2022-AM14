@@ -4,6 +4,7 @@ import it.polimi.ingsw.helpers.Constants;
 import it.polimi.ingsw.helpers.Places;
 import it.polimi.ingsw.model.board.StudentsBag;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
 import org.junit.Assert;
 import org.junit.Test;
@@ -25,7 +26,7 @@ public class PlayerTest {
    */
 
   @Test
-  public void testPlayAssistant() throws FileNotFoundException {
+  public void testPlayAssistant() throws IOException {
     testPlayer = new Player(1, "ale");
     testPlayer.initializePlayerBoard(studentsBag.pickRandomStudents(2));
     Assistant assistant1 = new Assistant(1, 2, 2);
@@ -41,7 +42,7 @@ public class PlayerTest {
    * the student will be correctly added in the right place
    */
   @Test
-  public void testMoveToPlayerBoardEntranceCase() throws FileNotFoundException {
+  public void testMoveToPlayerBoardEntranceCase() throws IOException {
     testPlayer = new Player(2, "ale");
     testPlayer.initializePlayerBoard(studentsBag.pickRandomStudents(2));
     testPlayer.moveToPlayerBoard(Places.ENTRANCE, 3);
@@ -55,7 +56,7 @@ public class PlayerTest {
    * ensures the student will be correctly added in the right place
    */
   @Test
-  public void testMoveToPlayerBoardDiningCase() throws FileNotFoundException {
+  public void testMoveToPlayerBoardDiningCase() throws IOException {
     testPlayer = new Player(2, "ale");
     testPlayer.initializePlayerBoard(studentsBag.pickRandomStudents(2));
     testDiningRoom = new DiningRoom();
@@ -70,7 +71,7 @@ public class PlayerTest {
    * he/she puts the right student into the dining room
    */
   @Test
-  public void testAddCoinMovingToPlayerBoard() throws FileNotFoundException {
+  public void testAddCoinMovingToPlayerBoard() throws IOException {
     testPlayer = new Player(2, "ale");
     testPlayer.initializePlayerBoard(studentsBag.pickRandomStudents(2));
     testPlayer.moveToPlayerBoard(Places.DINING_ROOM, 2);
@@ -97,7 +98,7 @@ public class PlayerTest {
    * Test for the addCoin method, it ensures that a player will receive a coin in the right way
    */
   @Test
-  public void testAddCoin() throws FileNotFoundException {
+  public void testAddCoin() throws IOException {
     testPlayer = new Player(1, "marco");
     testPlayer.initializePlayerBoard(studentsBag.pickRandomStudents(2));
     testPlayer.addCoin();
@@ -109,7 +110,7 @@ public class PlayerTest {
    * correctly removed from the right place
    */
   @Test
-  public void testRemoveStudentDiningRoomCase() throws FileNotFoundException {
+  public void testRemoveStudentDiningRoomCase() throws IOException {
     testPlayer = new Player(2, "ale");
     testPlayer.initializePlayerBoard(studentsBag.pickRandomStudents(2));
     int[] arrayTest = new int[]{0, 0, 0, 0, 0};
@@ -124,7 +125,7 @@ public class PlayerTest {
    * removed from the right place
    */
   @Test
-  public void testRemoveStudentEntranceCase() throws FileNotFoundException {
+  public void testRemoveStudentEntranceCase() throws IOException {
     testPlayer = new Player(2, "ale");
     testPlayer.initializePlayerBoard(studentsBag.pickRandomStudents(2));
     testPlayer.moveToPlayerBoard(Places.ENTRANCE, 1);

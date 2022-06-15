@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.messages.LoginMessage;
 import it.polimi.ingsw.model.player.Player;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 
 /**
@@ -35,7 +36,7 @@ public class LoginController {
    * @return The created player
    * @throws FileNotFoundException if the json file will not be found
    */
-  public Player createPlayer(LoginMessage msg, int idPlayer) throws FileNotFoundException {
+  public Player createPlayer(LoginMessage msg, int idPlayer) throws IOException {
     return new Player(idPlayer, msg.getNickName());
   }
 

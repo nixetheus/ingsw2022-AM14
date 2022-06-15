@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.Team;
 import it.polimi.ingsw.model.board.StudentsBag;
 import it.polimi.ingsw.model.player.Player;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Vector;
 import org.junit.Assert;
@@ -19,7 +20,7 @@ public class PlayerCharactersTest {
    * This method tests the Character Card that increases the possible moves of currentPlayer by 2
    */
   @Test
-  public void increaseMovementTwoEffectTest() throws FileNotFoundException {
+  public void increaseMovementTwoEffectTest() throws IOException {
 
     StudentsBag studentsBagTest = new StudentsBag();
     CharacterStruct params = new CharacterStruct();
@@ -41,7 +42,7 @@ public class PlayerCharactersTest {
    * from this card
    */
   @Test
-  public void replaceStudentEntranceEffectTest() throws FileNotFoundException {
+  public void replaceStudentEntranceEffectTest() throws IOException {
 
     StudentsBag studentsBagTest = new StudentsBag();
     CharacterStruct params = new CharacterStruct();
@@ -65,7 +66,7 @@ public class PlayerCharactersTest {
    * entrance and dining room
    */
   @Test
-  public void exchangeTwoEntranceDiningEffectTest() throws FileNotFoundException {
+  public void exchangeTwoEntranceDiningEffectTest() throws IOException {
 
     StudentsBag studentsBagTest = new StudentsBag();
     CharacterStruct params = new CharacterStruct();
@@ -100,7 +101,7 @@ public class PlayerCharactersTest {
    * Dining room
    */
   @Test
-  public void putOneDiningRoomEffectTest() throws FileNotFoundException {
+  public void putOneDiningRoomEffectTest() throws IOException {
 
     StudentsBag studentsBagTest = new StudentsBag();
     CharacterStruct params = new CharacterStruct();
@@ -129,7 +130,7 @@ public class PlayerCharactersTest {
    * player's dining room
    */
   @Test
-  public void returnThreeDiningRoomBagTest() throws FileNotFoundException {
+  public void returnThreeDiningRoomBagTest() throws IOException {
 
     StudentsBag studentsBagTest = new StudentsBag();
     CharacterStruct params = new CharacterStruct();

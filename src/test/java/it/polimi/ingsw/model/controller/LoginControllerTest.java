@@ -5,6 +5,7 @@ import it.polimi.ingsw.helpers.MessageSecondary;
 import it.polimi.ingsw.messages.LoginMessage;
 import it.polimi.ingsw.model.player.Player;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +24,7 @@ public class LoginControllerTest {
    * Set up method
    */
   @Before
-  public void setUp() throws FileNotFoundException {
+  public void setUp() throws IOException {
     this.msg = new LoginMessage(MessageSecondary.GAME_PARAMS);
     this.testPlayer = new Player(0, "ale");
 
@@ -45,7 +46,7 @@ public class LoginControllerTest {
    * Method to check if createPlayer works
    */
   @Test
-  public void testCreatePlayer() throws FileNotFoundException {
+  public void testCreatePlayer() throws IOException {
     msg.setNickName("ale");
     msg.setPlayerId(0);
     Assert.assertEquals(loginController.createPlayer(msg,0).getPlayerNickname(),msg.getNickName());

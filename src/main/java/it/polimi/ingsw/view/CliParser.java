@@ -13,8 +13,8 @@ import it.polimi.ingsw.messages.LoginMessageResponse;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.MoveMessageResponse;
 import it.polimi.ingsw.messages.PlayMessageResponse;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+
+import java.io.IOException;
 
 
 public class CliParser {
@@ -24,7 +24,7 @@ public class CliParser {
   public CliParser() {
   }
 
-  public String fromJson(String jsonMessage) throws FileNotFoundException {
+  public String fromJson(String jsonMessage) throws IOException {
     Gson gson = new Gson();
     if (jsonMessage.contains("\"messageMain\":\"LOGIN\"")) {
       return elaborateMessage(gson.fromJson(jsonMessage, LoginMessageResponse.class));
@@ -44,7 +44,7 @@ public class CliParser {
     return null;
   }
 
-  private String elaborateMessage(Message msg) throws FileNotFoundException {
+  private String elaborateMessage(Message msg) throws IOException {
     switch (msg.getMessageMain()) {
       case LOGIN:
         return printLoginMessage((LoginMessageResponse) msg);
@@ -83,15 +83,17 @@ public class CliParser {
     this.playerId = playerId;
   }
 
-  private String printPlayMessage(PlayMessageResponse msg) throws FileNotFoundException {
+  private String printPlayMessage(PlayMessageResponse msg) throws IOException {
     StringBuilder returnString = new StringBuilder();
     switch (msg.getMessageSecondary()) {
       case ASK_ASSISTANT:
         Gson gson = new Gson();
-        JsonArray list = gson
-            .fromJson(new FileReader(
-                    "src/main/resources/json/assistants.json"),
-                JsonArray.class);
+
+        String path =
+            it.polimi.ingsw.network.server.FileReader.getPath("/json/assistants.json");
+
+        JsonArray list = gson.fromJson(path, JsonArray.class);
+
         JsonObject object = list.get(msg.getAssistantId()).getAsJsonObject();
         int moves = object.get("MOVES").getAsInt();
         int speed = object.get("SPEED").getAsInt();
@@ -202,7 +204,7 @@ public class CliParser {
    * @param msg the input message to decode and print
    * @return the string to be printed
    */
-  private String printPhaseMessage(BeginTurnMessage msg) throws FileNotFoundException {
+  private String printPhaseMessage(BeginTurnMessage msg) throws IOException {
     StringBuilder returnString = new StringBuilder();
     switch (msg.getMessageSecondary()) {
       case INIT_GAME:
@@ -382,13 +384,17 @@ public class CliParser {
    * @return the string constructed
    */
   private String printPlayableAssistants( BeginTurnMessage msg)
-      throws FileNotFoundException {
+      throws IOException {
     //playable assistants
     StringBuilder returnString = new StringBuilder();
     returnString.append("these are the assistant tou can play :").append("\n");
     Gson gson = new Gson();
-    JsonArray list = gson
-        .fromJson(new FileReader("src/main/resources/json/assistants.json"), JsonArray.class);
+
+    String path =
+        it.polimi.ingsw.network.server.FileReader.getPath("/json/assistants.json");
+
+    JsonArray list = gson.fromJson(path, JsonArray.class);
+
     for (Integer idAssistant : msg.getPlayableAssistantId()) {
 
       JsonObject object = list.get(idAssistant).getAsJsonObject();
