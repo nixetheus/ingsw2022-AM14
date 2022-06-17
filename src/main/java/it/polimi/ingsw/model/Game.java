@@ -180,6 +180,7 @@ public class Game {
 
     Random random = new Random();
     Vector<Effects> cardEffects = new Vector<>();
+
     while (cardEffects.size() < 3) {
       Effects effect = Effects.values()[random.nextInt(Effects.values().length - 1)];
       if (!cardEffects.contains(effect)) {
@@ -189,6 +190,11 @@ public class Game {
 
     for (Effects effect : cardEffects) {
       int[] cardStudents = studentsBag.pickRandomStudents(effect.getNOfStudents());
+
+      if (effect == Effects.NO_INFLUENCE_COLOR || effect == Effects.RETURN_THREE_DINING_ROOM_BAG) {
+        cardStudents = new int[]{1, 1, 1, 1, 1};
+      }
+
       switch (effect.getType()) {
         case GAME:
           purchasableCharacter.add(new GameCharacters(effect, effect.getCost(), cardStudents));

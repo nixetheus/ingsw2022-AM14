@@ -7,6 +7,7 @@ import static it.polimi.ingsw.helpers.CharactersFlags.STUDENTS_CARD_FLAG;
 import static it.polimi.ingsw.helpers.CharactersFlags.STUDENTS_DINING_ROOM_FLAG;
 import static it.polimi.ingsw.helpers.CharactersFlags.STUDENTS_ENTRANCE_FLAG;
 
+import it.polimi.ingsw.helpers.Color;
 import it.polimi.ingsw.helpers.MessageSecondary;
 import it.polimi.ingsw.messages.ClientResponse;
 import it.polimi.ingsw.messages.Message;
@@ -17,6 +18,7 @@ import it.polimi.ingsw.model.Team;
 import it.polimi.ingsw.model.characters.CharacterCard;
 import it.polimi.ingsw.model.characters.CharacterStruct;
 import it.polimi.ingsw.model.player.Player;
+import java.util.Arrays;
 import java.util.Vector;
 
 /**
@@ -82,12 +84,34 @@ public class PlayController {
     CharacterCard characterCard = game.getPurchasableCharacter().elementAt(msg.getCharacterId());
 
     // Translate GUI message
-    if (msg.getStudentsCardGUI() != null)
+    if (msg.getStudentsCardGUI() != null) {
       msg.setStudentsCard(fromPositionsToColors(msg.getStudentsCardGUI(),
           characterCard.getStudents()));
+      if (Arrays.stream(msg.getStudentsCard()).sum() == 1) {
+        for (Color color : Color.values()) {
+          if (msg.getStudentsCard()[color.ordinal()] == 1)
+            msg.setColor(color);
+        }
+      }
+    }
+
     if (msg.getStudentsEntranceGUI() != null)
       msg.setStudentsEntrance(fromPositionsToColors(msg.getStudentsEntranceGUI(),
           game.getCurrentPlayer().getPlayerBoard().getEntrance().getStudents()));
+
+    if (msg.getMotherNatureMoves() < 0 && msg.getNumIsland() >= 0) {
+      int motherNatureMoves = 0;
+      int nOfIslands = game.getMainBoard().getIslands().size();
+      int islandCurrentMN = game.getMainBoard().getMotherNature().getPosition();
+      while (true) {
+        if ((islandCurrentMN + motherNatureMoves) % nOfIslands == msg.getNumIsland()) {
+          break;
+        } else {
+          motherNatureMoves++;
+        }
+      }
+      msg.setMotherNatureMoves(motherNatureMoves);
+    }
 
     // Some objects are missing for the character
     if (!hasAllCharacterObjects(characterCard, msg)) {
@@ -103,7 +127,6 @@ public class PlayController {
     characterParameters.mainBoard = game.getMainBoard();
     characterParameters.studentsBag = game.getStudentsBag();
     characterParameters.motherNatureMoves = msg.getMotherNatureMoves();
-
     characterParameters.studentsCard = msg.getStudentsCard();
     characterParameters.studentsEntrance = msg.getStudentsEntrance();
     characterParameters.studentsDiningRoom = msg.getStudentsDiningRoom();

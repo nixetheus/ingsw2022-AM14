@@ -413,21 +413,21 @@ public class GameController implements Initializable {
     colorStrings.add("red");
     colorStrings.add("pink");
     if (board.studentDiningRoomChar0Id != null) {
-      for (int index = 0; index < colorStrings.size(); index++) {
+      for (int color = 0; color < colorStrings.size(); color++) {
         try {
-          index = Integer.parseInt(
-              board.studentDiningRoomChar0Id.replace(colorStrings.elementAt(index), ""));
-          diningRoomStudents[index] = diningRoomStudents[index] + 1;
+          int index = Integer.parseInt(
+              board.studentDiningRoomChar0Id.replace(colorStrings.elementAt(color), ""));
+          diningRoomStudents[color] = diningRoomStudents[color] + 1;
           break;
         } catch (Exception ignored) {}
       }
     }
     if (board.studentDiningRoomChar1Id != null) {
-      for (int index = 0; index < colorStrings.size(); index++) {
+      for (int color = 0; color < colorStrings.size(); color++) {
         try {
-          index = Integer.parseInt(
-              board.studentDiningRoomChar1Id.replace(colorStrings.elementAt(index), ""));
-          diningRoomStudents[index] = diningRoomStudents[index] + 1;
+          int index = Integer.parseInt(
+              board.studentDiningRoomChar1Id.replace(colorStrings.elementAt(color), ""));
+          diningRoomStudents[color] = diningRoomStudents[color] + 1;
           break;
         } catch (Exception ignored) {}
       }

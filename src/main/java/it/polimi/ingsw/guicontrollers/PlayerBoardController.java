@@ -243,8 +243,8 @@ public class PlayerBoardController implements Initializable {
   }
 
   public void showStudents(int nStudents, VBox colorBox) {
-    for (int index = 0; index < nStudents; index++) {
-      colorBox.getChildren().get(colorBox.getChildren().size() - (index + 1)).setVisible(true);
+    for (int index = 0; index < colorBox.getChildren().size(); index++) {
+      colorBox.getChildren().get(colorBox.getChildren().size() - (index + 1)).setVisible(index < nStudents);
     }
   }
 
