@@ -116,15 +116,14 @@ public class MainBoard {
    * addToIsland: method to add a student on an island
    *
    * @param color     the color of the student
-   * @param numIsland number of island to place the student
+   * @param numIslandId the id  of island to place the student
    */
-  public void addToIsland(int color, int numIsland) {
-    for(Island island:islands){
-      if(island.getIslandId()==numIsland){
+  public void addToIsland(int color, int numIslandId) {
+    for (Island island : islands) {
+      if (island.getIslandId() == numIslandId) {
         island.addStudent(color);
       }
     }
-   // islands.get(numIsland).addStudent(color);
   }
 
   /**
@@ -132,25 +131,34 @@ public class MainBoard {
    * "numIslandConquered" are equal and if they are, it joins them into a single island, and removes
    * the other from the islands vector
    *
-   * @param numIslandConquered number that identifies the island
+   * @param numIslandConquered number that identifies the islandId
    */
   public void joinIsland(int numIslandConquered) {
 
+    int islandConqueredIndex = -1;
+
+    for (Island island : islands) {
+      if (island.getIslandId() == numIslandConquered) {
+        islandConqueredIndex = islands.indexOf(island);
+      }
+    }
     // Check next island
-    int nextIsland = (numIslandConquered + 1) % islands.size();
-    if (islands.get(numIslandConquered).getOwnerId() == islands.get(nextIsland).getOwnerId() &&
+    int nextIsland = (islandConqueredIndex + 1) % islands.size();
+    if (islands.get(islandConqueredIndex).getOwnerId() == islands.get(nextIsland).getOwnerId() &&
         //checking if not the default one
-        islands.get(numIslandConquered).getOwnerId() != -1) {
-      islands.get(numIslandConquered).addIsland(islands.get(nextIsland));
+        islands.get(islandConqueredIndex).getOwnerId() != -1) {
+      islands.get(islandConqueredIndex).addIsland(islands.get(nextIsland));
       islands.remove(islands.get(nextIsland));
     }
 
     // Check previous island
-    int previousIsland = (numIslandConquered - 1) < 0 ? islands.size() - 1 : numIslandConquered - 1;
-    if (islands.get(numIslandConquered).getOwnerId() == islands.get(previousIsland).getOwnerId() &&
+    int previousIsland =
+        (islandConqueredIndex - 1) < 0 ? islands.size() - 1 : islandConqueredIndex - 1;
+    if (islands.get(islandConqueredIndex).getOwnerId() == islands.get(previousIsland).getOwnerId()
+        &&
         //checking if not the default one
-        islands.get(numIslandConquered).getOwnerId() != -1) {
-      islands.get(numIslandConquered).addIsland(islands.get(previousIsland));
+        islands.get(islandConqueredIndex).getOwnerId() != -1) {
+      islands.get(islandConqueredIndex).addIsland(islands.get(previousIsland));
       islands.remove(islands.get(previousIsland));
     }
   }
@@ -161,7 +169,15 @@ public class MainBoard {
    * @param numMoves number of jumps of mother nature
    */
   public void moveMotherNature(int numMoves) {
-    motherNature.move(numMoves, islands.size());
+    //riporto a id
+    int newMotherNaturePosition = -1;
+    for (Island island : islands) {
+      if (island.getIslandId() == motherNature.getPosition()) {
+        newMotherNaturePosition = islands.get((islands.indexOf(island) + numMoves) % islands.size())
+            .getIslandId();
+      }
+    }
+    motherNature.move(newMotherNaturePosition);
   }
 
   /**

@@ -15,7 +15,6 @@ import it.polimi.ingsw.model.characters.MainBoardCharacters;
 import it.polimi.ingsw.model.characters.PlayerCharacters;
 import it.polimi.ingsw.model.player.Assistant;
 import it.polimi.ingsw.model.player.Player;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Optional;
@@ -23,7 +22,7 @@ import java.util.Random;
 import java.util.Vector;
 
 /**
- * Game class is TODO
+ * Game class is the principal class of the model that contains every aspect of a match
  */
 public class Game {
 
@@ -131,8 +130,15 @@ public class Game {
   public void moveNature(int movement) {
     mainBoard.moveMotherNature(movement);
 
-    Island islandMotherNatureIn = mainBoard.getIslands()
-        .get(mainBoard.getMotherNature().getPosition());
+    Island islandMotherNatureIn = null;
+
+    for (Island island : mainBoard.getIslands()) {
+      if (island.getIslandId() == mainBoard.getMotherNature().getPosition()) {
+        islandMotherNatureIn = island;
+      }
+    }
+
+    assert islandMotherNatureIn != null;
 
     if (islandMotherNatureIn.getOwnerId() == -1) {
 
