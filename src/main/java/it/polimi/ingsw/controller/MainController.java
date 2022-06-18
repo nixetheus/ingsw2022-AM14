@@ -159,6 +159,7 @@ public class MainController {
                 newPlayer.getPlayerNickname().replace(" ", "").equals("") ||
                 alreadyExists) {
               loginResponse.setResponse("Username already exists!");
+              loginResponse.setPlayerId(newPlayer.getPlayerId());
               break;
             }
 
