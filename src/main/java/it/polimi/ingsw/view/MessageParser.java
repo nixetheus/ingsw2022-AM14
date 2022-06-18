@@ -258,9 +258,9 @@ public class MessageParser {
       return Color.RED;
     } else if ((str.contains("PURPLE"))) {
       return Color.PURPLE;
-    } else {
-      return null;
     }
+    return null;
+
   }
 
   /**
@@ -274,9 +274,8 @@ public class MessageParser {
       return 0;
     } else if (str.contains("TO ISLAND")) {
       return 1;
-    } else {
-      return -1;
     }
+    return -1;
   }
 
   /**
@@ -321,9 +320,9 @@ public class MessageParser {
     }
     if (str.contains("0")) {
       return 0;
-    } else {
-      return -1;
     }
+    return -1;
+
 
   }
 

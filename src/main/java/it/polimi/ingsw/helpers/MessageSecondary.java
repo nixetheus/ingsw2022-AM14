@@ -38,6 +38,7 @@ public enum MessageSecondary {
   INIT_GAME,
   INFRA_TURN,
   CHANGE_TURN,
-  GAME_ORDER
+  GAME_ORDER,
+  WINNER
 
 }

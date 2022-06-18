@@ -19,13 +19,10 @@ public class MotherNature {
   }
 
   /**
-   * This method moves MotherNature, it takes the total number of islands to avoid overflow
-   *
-   * @param moves        Number of movements of motherNature
-   * @param numOfIslands Total number of islands
+   * This method moves MotherNature, just setting the new position
    */
-  public void move(int moves, int numOfIslands) {
-    position = (position + moves) % numOfIslands;
+  public void move(int newMotherNaturePosition) {
+    this.position = newMotherNaturePosition;
   }
 
   public int getPosition() {

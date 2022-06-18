@@ -60,6 +60,8 @@ public class MainController {
     playController = new PlayController();
     moveController = new MoveController();
     loginController = new LoginController();
+
+
   }
 
   /**

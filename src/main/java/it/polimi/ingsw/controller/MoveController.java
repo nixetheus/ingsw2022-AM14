@@ -8,6 +8,7 @@ import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.MoveMessage;
 import it.polimi.ingsw.messages.MoveMessageResponse;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.board.Island;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -33,12 +34,25 @@ public class MoveController {
     switch (msg.getMessageSecondary()) {
       case MOVE_MN:
         //control if no entry tile
+        int messageIslandIndex = -1;
+        for (Island island : currentGame.getMainBoard().getIslands()) {
+          if (island.getIslandId() == msg.getIslandNumber()) {
+            messageIslandIndex = currentGame.getMainBoard().getIslands().indexOf(island);
+          }
+        }
         int nOfIslands = currentGame.getMainBoard().getIslands().size();
-        int islandCurrentMN = currentGame.getMainBoard().getMotherNature().getPosition();
+        int islandMotherNatureIndex = -1;
+
+        for (Island island : currentGame.getMainBoard().getIslands()) {
+          if (island.getIslandId() == currentGame.getMainBoard().getMotherNature().getPosition()) {
+            islandMotherNatureIndex = currentGame.getMainBoard().getIslands().indexOf(island);
+          }
+        }
 
         int motherNatureMoves = 0;
+        //mosse in indici
         while (true) {
-          if ((islandCurrentMN + motherNatureMoves) % nOfIslands == msg.getIslandNumber()) {
+          if ((islandMotherNatureIndex + motherNatureMoves) % nOfIslands == messageIslandIndex) {
             break;
           } else {
             motherNatureMoves++;
@@ -49,17 +63,20 @@ public class MoveController {
         if (motherNatureMoves <= currentGame.getCurrentPlayer().getAssistant().getMoves()) {
 
           // ONLY CLOCKWISE
-          if (msg.getIslandNumber() == (islandCurrentMN + motherNatureMoves) % nOfIslands) {
+          if (messageIslandIndex == (islandMotherNatureIndex + motherNatureMoves) % nOfIslands) {
 
             // IF NOT NO ENTRY
-            if (!currentGame.getMainBoard().getIslands().elementAt(msg.getIslandNumber()).isNoEntry()) {
+            if (!currentGame.getMainBoard().getIslands().elementAt(messageIslandIndex)
+                .isNoEntry()) {
 
               currentGame.moveNature(motherNatureMoves);
+
               int newMotherNaturePosition = currentGame.getMainBoard().getMotherNature()
                   .getPosition();
 
               MoveMessageResponse responseNature = new MoveMessageResponse(
                   MessageSecondary.MOVE_MN);
+
               responseNature.setPlayerId(currentGame.getCurrentPlayer().getPlayerId());
               responseNature.setIslandNumber(newMotherNaturePosition);
 
@@ -159,8 +176,14 @@ public class MoveController {
                     msg.getStudentColor(),
                     Optional.of(msg.getIslandNumber()));
 
+            int islandIndex=-1;
+            for(Island island:currentGame.getMainBoard().getIslands()){
+              if(island.getIslandId()==msg.getIslandNumber()){
+                islandIndex=currentGame.getMainBoard().getIslands().indexOf(island);
+              }
+            }
             responseEntrance.setStudentsIsland(
-                currentGame.getMainBoard().getIslands().get(msg.getIslandNumber()).getStudents());
+                currentGame.getMainBoard().getIslands().get(islandIndex).getStudents());
           }
 
           responseEntrance.setIslandNumber(msg.getIslandNumber());
