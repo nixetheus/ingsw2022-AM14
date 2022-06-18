@@ -155,8 +155,9 @@ public class CliParser {
             printedString.append(msg.getStudentsIsland()[color.ordinal()]).append(" ")
                 .append(color).append(" students;\n");
           }
+          if(msg.getTowersIsland()>0){
           printedString.append("this island contains ").append(msg.getTowersIsland()).append( " towers\n");
-          //TODO add to who belongs
+          printedString.append("Belonging to the ").append(msg.getIslandOwnerId()).append("team");}
         }
         break;
       case CLOUD_TILE:
@@ -172,7 +173,9 @@ public class CliParser {
       case MOVE_MN:
         printedString.append("now mother nature is on the island number ")
             .append(msg.getIslandNumber()).append(" island\n");
-        printedString.append("this island now contains ").append(msg.getTowersIsland()).append( " towers\n");
+        if(msg.getTowersIsland()>0){
+          printedString.append("this island contains ").append(msg.getTowersIsland()).append( " towers\n");
+          printedString.append("Belonging to the ").append(msg.getIslandOwnerId()).append("team");}
         break;
     }
     return String.valueOf(printedString);
@@ -180,22 +183,13 @@ public class CliParser {
 
   private String printInfoMessage(ClientResponse msg) {
     switch (msg.getMessageSecondary()) {
-      case ASK_ASSISTANT://you have to play assistant
-        return msg.getResponse();
       case GAME_ORDER:
         return "You have to play as " + (msg.getPlayerOrderId().indexOf(this.playerId) + 1)
             + " player";
-      case ASK_STUDENT_ENTRANCE://you have to move students from entrance
-        return msg.getResponse();
-      case ASK_MN:
-        return msg.getResponse();
-      case ASK_CLOUD:
-        return msg.getResponse();
-      case CLIENT_DISCONNECT:
-        return msg.getResponse();
+        default:
+          return msg.getResponse();
     }
 
-    return null;
   }
 
   /**
@@ -238,7 +232,7 @@ public class CliParser {
       case MOVE_STUDENT_ENTRANCE:
         returnString.append(printEntrance( msg));
 
-        //TODO add if
+
         returnString.append(printDiningRoom(msg));
         returnString.append(printProfessors(msg));
 

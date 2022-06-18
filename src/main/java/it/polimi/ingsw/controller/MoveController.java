@@ -84,6 +84,10 @@ public class MoveController {
                   .filter(island -> island.getIslandId() == newMotherNaturePosition).findFirst()
                   .get()
                   .getNumberOfTowers());
+              responseNature.setIslandOwnerId(currentGame.getMainBoard().getIslands().stream()
+                  .filter(island -> island.getIslandId() == newMotherNaturePosition).findFirst()
+                  .get()
+                  .getOwnerId());
               return responseNature;
 
             }
@@ -184,6 +188,9 @@ public class MoveController {
             }
             responseEntrance.setStudentsIsland(
                 currentGame.getMainBoard().getIslands().get(islandIndex).getStudents());
+
+            responseEntrance.setTowersIsland(currentGame.getMainBoard().getIslands().get(islandIndex).getNumberOfTowers());
+            responseEntrance.setIslandOwnerId(currentGame.getMainBoard().getIslands().get(islandIndex).getOwnerId());
           }
 
           responseEntrance.setIslandNumber(msg.getIslandNumber());
@@ -191,8 +198,7 @@ public class MoveController {
           responseEntrance
               .setStudentsEntrance(currentGame.getCurrentPlayer().getPlayerBoard().getEntrance()
                   .getStudents());
-          //TODO towers
-          // responseEntrance.setTowersIsland(currentGame.getMainBoard().getIslands().stream().filter(island -> island.getIslandId()==msg.getIslandNumber()).findFirst().get().getNumberOfTowers());
+
           return responseEntrance;
         }
         break;

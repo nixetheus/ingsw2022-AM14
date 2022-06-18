@@ -9,6 +9,7 @@ public class MoveMessageResponse extends Message{
   private int place;
   private int studentColor;
   private int islandNumber;
+  private int islandOwnerId;
   private int cloudTileNumber;
   private int[] studentsEntrance;
   private int[] studentsDiningRoom;
@@ -109,5 +110,14 @@ public class MoveMessageResponse extends Message{
 
   public void setPlayerCoins(int playerCoins) {
     this.playerCoins = playerCoins;
+  }
+
+
+  public int getIslandOwnerId() {
+    return islandOwnerId;
+  }
+
+  public void setIslandOwnerId(int islandOwnerId) {
+    this.islandOwnerId = islandOwnerId;
   }
 }
