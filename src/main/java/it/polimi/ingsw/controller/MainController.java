@@ -110,6 +110,7 @@ public class MainController {
     Vector<Message> messages = new Vector<>();
 
     LoginMessageResponse loginResponse = new LoginMessageResponse(msg.getMessageSecondary());
+    messages.add(loginResponse);
 
     // Check if phase is correct
     if (turnManager.getMainGamePhase() == MessageMain.LOGIN &&
@@ -237,7 +238,6 @@ public class MainController {
       }
     }
 
-    messages.add(loginResponse);
     return messages;
   }
 

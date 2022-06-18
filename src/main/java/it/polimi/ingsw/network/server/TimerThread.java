@@ -14,7 +14,7 @@ import java.util.TimerTask;
 public class TimerThread implements Runnable {
 
   private final ClientHandler clientHandler;
-  private final int timeOut = 5000;
+  private final int timeOut = 100005000;
   private final Timer pingTimer;
 
   //This task is run when timer ends
