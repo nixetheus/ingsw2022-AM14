@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.Socket;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -73,6 +74,8 @@ public class ViewMain extends Application {
   public void start(Stage stage) throws IOException {
 
     stage.setResizable(false);
+
+    stage.setOnCloseRequest(event -> {Platform.exit(); System.exit(0);});
 
     FXMLLoader loginFxmlLoader = new FXMLLoader(ViewMain.class.getResource("/login.fxml"));
     FXMLLoader loginParamsFxmlLoader = new FXMLLoader(

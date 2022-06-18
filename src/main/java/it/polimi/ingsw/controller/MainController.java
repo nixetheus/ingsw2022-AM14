@@ -108,7 +108,6 @@ public class MainController {
     Vector<Message> messages = new Vector<>();
 
     LoginMessageResponse loginResponse = new LoginMessageResponse(msg.getMessageSecondary());
-    messages.add(loginResponse);
 
     // Check if phase is correct
     if (turnManager.getMainGamePhase() == MessageMain.LOGIN &&
@@ -143,6 +142,22 @@ public class MainController {
 
           // If player is not null, add it to a team, change state
           if (newPlayer != null) {
+
+            // Check name not empty and not already in use
+            boolean alreadyExists = false;
+            for (Team team : teams) {
+              for (Player player : team.getPlayers()) {
+                alreadyExists = alreadyExists ||
+                    player.getPlayerNickname().equals(newPlayer.getPlayerNickname());
+              }
+            }
+
+            if (newPlayer.getPlayerNickname().isEmpty() ||
+                newPlayer.getPlayerNickname().replace(" ", "").equals("") ||
+                alreadyExists) {
+              loginResponse.setResponse("Username already exists!");
+              break;
+            }
 
             // Where a player goes is based on the number of players for this game
             if (numberOfPlayers == 4) {
@@ -206,6 +221,7 @@ public class MainController {
             }
           } else {
             loginResponse.setResponse("Error while creating new player, please try again!");
+            break;
           }
 
           turnManager.updateCounters();
@@ -218,6 +234,8 @@ public class MainController {
           break;
       }
     }
+
+    messages.add(loginResponse);
     return messages;
   }
 
