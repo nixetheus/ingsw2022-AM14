@@ -56,27 +56,6 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- javaFX for M1
-    <dependency>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx</artifactId>
-      <version>18.0.1</version>
-      <type>pom</type>
-    </dependency>
-
-    <dependency>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx-controls</artifactId>
-      <version>18.0.1</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.openjfx</groupId>
-      <artifactId>javafx-fxml</artifactId>
-      <version>18.0.1</version>
-    </dependency>
-
-     end of javaFX for M1 -->
     <!--
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -99,13 +78,24 @@
               <!-- Default configuration for running with: mvn clean javafx:run -->
               <id>default-cli</id>
               <configuration>
-                <mainClass>it.polimi.ingsw.view.Eriantys</mainClass>
+                <mainClass>it.polimi.ingsw.Eriantys</mainClass>
                 <launcher>app</launcher>
                 <jlinkZipName>app</jlinkZipName>
                 <jlinkImageName>app</jlinkImageName>
                 <noManPages>true</noManPages>
                 <stripDebug>true</stripDebug>
                 <noHeaderFiles>true</noHeaderFiles>
+                <!--
+                <manifestAttributes>
+                  <Specification-Title>${project.name}</Specification-Title>
+                  <Specification-Version>${project.version}</Specification-Version>
+                  <Specification-Vendor>${project.organization.name}</Specification-Vendor>
+                  <Implementation-Title>${project.name}</Implementation-Title>
+                  <Implementation-Version>${project.version}</Implementation-Version>
+                  <Implementation-Vendor-Id>${project.groupId}</Implementation-Vendor-Id>
+                  <Implementation-Vendor>${project.organization.name</Implementation-Vendor>
+                </manifestAttributes>
+                -->
               </configuration>
             </execution>
           </executions>
