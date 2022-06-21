@@ -4,6 +4,9 @@ import it.polimi.ingsw.helpers.Color;
 import it.polimi.ingsw.helpers.MessageMain;
 import it.polimi.ingsw.helpers.MessageSecondary;
 
+/**
+ * PlayMessageResponse class used as a response from server to client
+ */
 public class PlayMessageResponse extends Message {
 
   private int assistantId;
@@ -23,6 +26,10 @@ public class PlayMessageResponse extends Message {
   private int activePlayerId;
   private int previousPlayerId;
 
+  /**
+   * Constructor method for PlayMessageResponse class
+   * @param messageSecondary The messageSecondary to be set
+   */
   public PlayMessageResponse(MessageSecondary messageSecondary) {
     this.messageMain = MessageMain.PLAY;
     this.messageSecondary = messageSecondary;

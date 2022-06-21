@@ -28,7 +28,7 @@ import java.util.Vector;
 public class PlayController {
 
   /**
-   *Constructor method for PlayController class
+   * Constructor method for PlayController class
    */
   public Message elaborateMessage(PlayMessage msg, Game game) {
     switch (msg.getMessageSecondary()) {
@@ -42,7 +42,7 @@ public class PlayController {
   }
 
   /**
-   * @param msg The userInput message
+   * @param msg  The userInput message
    * @param game the current game
    * @return The response message created
    */
@@ -75,7 +75,7 @@ public class PlayController {
   }
 
   /**
-   * @param msg The userInput message
+   * @param msg  The userInput message
    * @param game the current game
    * @return The response message created
    */
@@ -90,15 +90,17 @@ public class PlayController {
           characterCard.getStudents()));
       if (Arrays.stream(msg.getStudentsCard()).sum() == 1) {
         for (Color color : Color.values()) {
-          if (msg.getStudentsCard()[color.ordinal()] == 1)
+          if (msg.getStudentsCard()[color.ordinal()] == 1) {
             msg.setColor(color);
+          }
         }
       }
     }
 
-    if (msg.getStudentsEntranceGUI() != null)
+    if (msg.getStudentsEntranceGUI() != null) {
       msg.setStudentsEntrance(fromPositionsToColors(msg.getStudentsEntranceGUI(),
           game.getCurrentPlayer().getPlayerBoard().getEntrance().getStudents()));
+    }
 
     //TODO broken
     if (msg.getMotherNatureMoves() < 0 && msg.getNumIsland() >= 0) {
@@ -106,14 +108,14 @@ public class PlayController {
       int motherNatureMoves = 0;
       int nOfIslands = game.getMainBoard().getIslands().size();
       int islandCurrentMN = -1;
-      int messageIsland=-1;
+      int messageIsland = -1;
 
-      for(Island island:game.getMainBoard().getIslands()){
-        if(island.getIslandId()==game.getMainBoard().getMotherNature().getPosition()){
-          islandCurrentMN=game.getMainBoard().getIslands().indexOf(island);
+      for (Island island : game.getMainBoard().getIslands()) {
+        if (island.getIslandId() == game.getMainBoard().getMotherNature().getPosition()) {
+          islandCurrentMN = game.getMainBoard().getIslands().indexOf(island);
         }
-        if(island.getIslandId()==msg.getNumIsland()){
-          messageIsland=game.getMainBoard().getIslands().indexOf(island);
+        if (island.getIslandId() == msg.getNumIsland()) {
+          messageIsland = game.getMainBoard().getIslands().indexOf(island);
         }
       }
       while (true) {
@@ -167,9 +169,9 @@ public class PlayController {
   }
 
   /**
-   * @param playerId the player that want to play the assistant
+   * @param playerId    the player that want to play the assistant
    * @param assistantId The assistant that a player want to play
-   * @param teams The teams in witch you will search for the player
+   * @param teams       The teams in witch you will search for the player
    * @return true if the player can play that assistant
    */
   private boolean canPlayAssistant(int playerId, int assistantId, Vector<Team> teams) {
@@ -185,8 +187,9 @@ public class PlayController {
         }
         // HAS IT BEEN ALREADY PLAYED BY ANOTHER PLAYER
         else {
-          if (player.getAssistant() != null)
+          if (player.getAssistant() != null) {
             canPlay = canPlay && (player.getAssistant().getAssistantId() != assistantId);
+          }
         }
       }
     }
@@ -194,9 +197,9 @@ public class PlayController {
   }
 
   /**
-   * @param playerId The player that want to play the Character
+   * @param playerId      The player that want to play the Character
    * @param characterCost The cost of the character
-   * @param teams The teams in witch you will search for the player
+   * @param teams         The teams in witch you will search for the player
    * @return true if the player can purchase the character
    */
   private boolean canPlayCharacter(int playerId, int characterCost, Vector<Team> teams) {
@@ -211,10 +214,11 @@ public class PlayController {
   }
 
   /**
+   * This method control if the client selected everything is needed to play a certain character
    *
-   * @param character
-   * @param msg
-   * @return
+   * @param character The character that the player wants to play
+   * @param msg       The message arrived from the client
+   * @return True if all che parameters are present
    */
   private boolean hasAllCharacterObjects(CharacterCard character, PlayMessage msg) {
 
@@ -222,17 +226,26 @@ public class PlayController {
 
     int flags = character.getCardEffect().getObjectsFlags();
     if ((flags & (1 << NUM_ISLAND_FLAG.ordinal())) > 0 && (msg.getNumIsland() == -1) ||
-        (flags & (1 << MOTHER_NATURE_MOVES_FLAG.ordinal())) > 0 && (msg.getMotherNatureMoves() == -1) ||
+        (flags & (1 << MOTHER_NATURE_MOVES_FLAG.ordinal())) > 0 && (msg.getMotherNatureMoves()
+            == -1) ||
         (flags & (1 << COLOR_FLAG.ordinal())) > 0 && (msg.getColor() == null) ||
         (flags & (1 << STUDENTS_CARD_FLAG.ordinal())) > 0 && (msg.getStudentsCard() == null) ||
-        (flags & (1 << STUDENTS_ENTRANCE_FLAG.ordinal())) > 0 && (msg.getStudentsEntrance() == null) ||
-        (flags & (1 << STUDENTS_DINING_ROOM_FLAG.ordinal())) > 0 && (msg.getStudentsDiningRoom() == null))
-    {
+        (flags & (1 << STUDENTS_ENTRANCE_FLAG.ordinal())) > 0 && (msg.getStudentsEntrance() == null)
+        ||
+        (flags & (1 << STUDENTS_DINING_ROOM_FLAG.ordinal())) > 0 && (msg.getStudentsDiningRoom()
+            == null)) {
       hasObjects = false;
     }
     return hasObjects;
   }
 
+  /**
+   * This method change the position of the students into an array of colors
+   *
+   * @param positions The array of the position
+   * @param students  The color of the students
+   * @return The array with the colors filled
+   */
   private int[] fromPositionsToColors(int[] positions, int[] students) {
 
     int[] colors = new int[5];
@@ -243,8 +256,9 @@ public class PlayController {
         int studentIndex = 0;
         for (int color = 0; color < students.length; color++) {
           for (int nOfColor = 0; nOfColor < students[color]; nOfColor++) {
-            if (position == studentIndex)
+            if (position == studentIndex) {
               colors[color]++;
+            }
             studentIndex++;
           }
         }

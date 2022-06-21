@@ -43,7 +43,7 @@ public class Game {
   private Player activePlayer;
 
   /**
-   * Constructor por Game class
+   * Constructor for Game class
    */
   public Game() {
     this.gameOrder = new Vector<>();
@@ -348,6 +348,9 @@ public class Game {
     fillClouds();
   }
 
+  /**
+   * Method to set the assistant to null at the end of a round
+   */
   public void assistantAfterTurn() {
     for (Team team : teams) {
       for (Player player : team.getPlayers()) {

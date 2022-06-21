@@ -1,5 +1,8 @@
 package it.polimi.ingsw.helpers;
 
+/**
+ * The MessageSecondary enumeration is used to know what a player did
+ */
 public enum MessageSecondary {
 
   CHARACTER,

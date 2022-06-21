@@ -4,12 +4,19 @@ import it.polimi.ingsw.helpers.MessageMain;
 import it.polimi.ingsw.helpers.MessageSecondary;
 import java.util.Vector;
 
+/**
+ * WinnerMessage to send who won
+ */
 public class WinnerMessage extends Message{
 
   private int winnerId;
   private int numberOfPlayers;
   private Vector<String> playersTeam;
 
+  /**
+   * Constructor class for WinnerMessage class
+   * @param messageSecondary The messageSecondary to be set
+   */
   public WinnerMessage(MessageSecondary messageSecondary) {
     this.messageMain = MessageMain.END;
     this.messageSecondary = messageSecondary;

@@ -7,6 +7,9 @@ import it.polimi.ingsw.model.player.Player;
 import java.util.Arrays;
 import java.util.Vector;
 
+/**
+ * MainBoard class used to model everything shared between players
+ */
 public class MainBoard {
 
   // Attributes
@@ -20,6 +23,8 @@ public class MainBoard {
    * Constructor method: it creates Islands array, it places the mother nature on a random island,
    * and it places on the other islands one student with pickRandomStudent method, except the island
    * in front of the mother nature
+   *
+   * @param gameStudentsBag The studentBag where take the students
    */
   public MainBoard(StudentsBag gameStudentsBag) {
 
@@ -115,7 +120,7 @@ public class MainBoard {
   /**
    * addToIsland: method to add a student on an island
    *
-   * @param color     the color of the student
+   * @param color       the color of the student
    * @param numIslandId the id  of island to place the student
    */
   public void addToIsland(int color, int numIslandId) {

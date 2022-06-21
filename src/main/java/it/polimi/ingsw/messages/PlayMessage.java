@@ -4,6 +4,9 @@ import it.polimi.ingsw.helpers.Color;
 import it.polimi.ingsw.helpers.MessageMain;
 import it.polimi.ingsw.helpers.MessageSecondary;
 
+/**
+ * PlayMessage class used from client to server to send a play move
+ */
 public class PlayMessage extends Message {
 
   private int assistantId;
@@ -22,6 +25,10 @@ public class PlayMessage extends Message {
   private int[] studentsCardGUI;
   private int[] studentsEntranceGUI;
 
+  /**
+   * Constructor method for PlayMessage class
+   * @param messageSecondary The messageSecondary to be set
+   */
   public PlayMessage(MessageSecondary messageSecondary) {
     this.messageMain = MessageMain.PLAY;
     this.messageSecondary = messageSecondary;

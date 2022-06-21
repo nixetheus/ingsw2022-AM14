@@ -4,6 +4,9 @@ import it.polimi.ingsw.helpers.MessageMain;
 import it.polimi.ingsw.helpers.MessageSecondary;
 import java.util.Vector;
 
+/**
+ * MoveMessageResponse used used a response from server to client
+ */
 public class MoveMessageResponse extends Message{
 
   private int place;
@@ -19,6 +22,10 @@ public class MoveMessageResponse extends Message{
   private Integer towersIsland;
   private int playerCoins;
 
+  /**
+   * Constructor class for MoveMessageResponse
+   * @param messageSecondary The messageSecondary to be set
+   */
   public MoveMessageResponse(MessageSecondary messageSecondary) {
     this.messageMain = MessageMain.MOVE;
     this.messageSecondary = messageSecondary;

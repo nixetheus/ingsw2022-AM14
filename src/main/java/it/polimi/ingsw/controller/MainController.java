@@ -108,6 +108,7 @@ public class MainController {
    * of each player and those used to set the parameters of the game
    *
    * @param msg The Login message received
+   * @return the vector of messages to be sent to the client
    */
   private Vector<Message> elaborateLoginMessage(LoginMessage msg) throws IOException {
     Vector<Message> messages = new Vector<>();
@@ -290,7 +291,6 @@ public class MainController {
       messages.add(gameResponse);//CHANGED
     }
 
-
     if (gameResponse != null && msg.getMessageSecondary() != MessageSecondary.CHARACTER) {
 
       //messages.add(gameResponse);Changed
@@ -300,8 +300,9 @@ public class MainController {
       if (winner != null) {
 
         Vector<String> winners = new Vector<>();
-        for (Player player : winner.getPlayers())
+        for (Player player : winner.getPlayers()) {
           winners.add(player.getPlayerNickname());
+        }
 
         WinnerMessage winnerMessage = new WinnerMessage(MessageSecondary.WINNER);
         winnerMessage.setWinnerId(winner.getId());
@@ -338,20 +339,22 @@ public class MainController {
         order.setPlayerOrderId(playerOrderIdVector);
         messages.add(order);
 
-      }
-      else if (msg.getMessageMain() == MessageMain.MOVE
+      } else if (msg.getMessageMain() == MessageMain.MOVE
           && msg.getMessageSecondary() == MessageSecondary.CLOUD_TILE
           && turnManager.getCurrentNumberOfUsersPlayedActionPhase() == numberOfPlayers) {
         this.game.fillClouds();
         this.game.reverseOrderEndTurn();
         this.game.assistantAfterTurn();
 
-        CharacterStruct params = new CharacterStruct();
-        params.currentGame = game;
-        params.mainBoard = game.getMainBoard();
-        params.currentPlayer = game.getCurrentPlayer();
-        for (CharacterCard card : game.getPurchasableCharacter())
-          card.removeEffect(params);
+        if (game.getPurchasableCharacter() != null) {
+          CharacterStruct params = new CharacterStruct();
+          params.currentGame = game;
+          params.mainBoard = game.getMainBoard();
+          params.currentPlayer = game.getCurrentPlayer();//??
+          for (CharacterCard card : game.getPurchasableCharacter()) {
+          //  card.removeEffect(params);
+          }
+        }
       }
 
       turnManager.changeState();
@@ -371,8 +374,7 @@ public class MainController {
               game.getCurrentPlayer().getPlayerId()));
         }
 
-      }
-      else if (msg.getMessageMain() == MessageMain.MOVE) {
+      } else if (msg.getMessageMain() == MessageMain.MOVE) {
 
         this.game.setCurrentPlayerIndex(turnManager.getCurrentNumberOfUsersPlayedActionPhase());
 
@@ -416,11 +418,9 @@ public class MainController {
 
       }
 
-    }
-    else if (gameResponse != null && msg.getMessageSecondary() == MessageSecondary.CHARACTER) {
+    } else if (gameResponse != null && msg.getMessageSecondary() == MessageSecondary.CHARACTER) {
       messages.addAll(changeTurnMessage(MessageSecondary.INFRA_TURN));//CHANGED
-    }
-    else {
+    } else {
       messages.remove(gameResponse);
       ClientResponse error = new ClientResponse(MessageSecondary.ERROR);
       error.setPlayerId(msg.getPlayerId());
@@ -562,6 +562,14 @@ public class MainController {
     return returnedVector;
   }
 
+  /**
+   * This method creates a client response with the given input
+   *
+   * @param messageSecondary The message secondary to be set into the new message
+   * @param response         The string to be set into the message
+   * @param id               The id of the player
+   * @return the client response created
+   */
   private Message sendClientResponse(MessageSecondary messageSecondary, String response, int id) {
     ClientResponse clientResponse = new ClientResponse(messageSecondary);
     clientResponse.setResponse(response);
@@ -569,12 +577,18 @@ public class MainController {
     return clientResponse;
   }
 
+  /**
+   * It gets the winner team
+   *
+   * @return the winner team
+   */
   private Team getWinner() {
 
     int[] towersTeam = {0, 0, 0};
     for (Island island : game.getMainBoard().getIslands()) {
-      if (island.getOwnerId() != -1)
+      if (island.getOwnerId() != -1) {
         towersTeam[island.getOwnerId()] += island.getNumberOfTowers();
+      }
     }
 
     int maxTeamId = 0;
@@ -590,6 +604,12 @@ public class MainController {
 
   }
 
+  /**
+   * This method checks if the winning condition are verified
+   *
+   * @param msg the message arrived from the client
+   * @return the winner team
+   */
   private Team checkWinConditions(Message msg) {
 
     Team winner = null;
@@ -598,25 +618,23 @@ public class MainController {
       if (game.getCurrentPlayer().getPlayableAssistant().size() == 0) {
         winner = getWinner();
       }
-    }
-
-    else if (msg.getMessageSecondary() == MessageSecondary.MOVE_MN) {
+    } else if (msg.getMessageSecondary() == MessageSecondary.MOVE_MN) {
 
       for (Team team : game.getTeams()) {
         for (Player player : team.getPlayers()) {
           if (player.getPlayerId() == game.getCurrentPlayer().getPlayerId()) {
-            if (team.getAvailableTowers() == 0)
+            if (team.getAvailableTowers() == 0) {
               winner = team;
+            }
           }
         }
       }
 
-      if (game.getMainBoard().getIslands().size() == 3)
+      if (game.getMainBoard().getIslands().size() == 3) {
         winner = getWinner();
+      }
 
-    }
-
-    else if (Arrays.stream(game.getStudentsBag().getStudents()).sum() == 0
+    } else if (Arrays.stream(game.getStudentsBag().getStudents()).sum() == 0
         && msg.getMessageSecondary() == MessageSecondary.CLOUD_TILE) {
       winner = getWinner();
     }

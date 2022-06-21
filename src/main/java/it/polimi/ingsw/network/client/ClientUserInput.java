@@ -21,6 +21,14 @@ public class ClientUserInput extends Thread {
   private final ClientServerOutputReader clientServerOutputReader;
   private int playerId;
 
+  /**
+   * Constructor method for ClientUserInput class
+   *
+   * @param portNumber               The port number to connect to the server
+   * @param hostName                 The name of the host
+   * @param socket                   The socket for the communication
+   * @param clientServerOutputReader The other part of the client that prints the output
+   */
   public ClientUserInput(int portNumber, String hostName, Socket socket,
       ClientServerOutputReader clientServerOutputReader) {
 

@@ -16,14 +16,24 @@ import it.polimi.ingsw.messages.PlayMessageResponse;
 
 import java.io.IOException;
 
-
+/**
+ * CliParser class used to parse the message from server into printable string
+ */
 public class CliParser {
 
   private int playerId;
 
+  /**
+   * Constructor method for CliParser class
+   */
   public CliParser() {
   }
 
+  /**
+   * This  method is used to invoke different method depending on what kind of message arrives and parse them into the correct objects
+   * @param jsonMessage The message in Json format to decode
+   * @return The printable string
+   */
   public String fromJson(String jsonMessage) throws IOException {
     Gson gson = new Gson();
     if (jsonMessage.contains("\"messageMain\":\"LOGIN\"")) {
@@ -44,6 +54,11 @@ public class CliParser {
     return null;
   }
 
+  /**
+   * Method used to invoke different methods that will build the printable string
+   * @param msg The message arrived from client
+   * @return The printable string
+   */
   private String elaborateMessage(Message msg) throws IOException {
     switch (msg.getMessageMain()) {
       case LOGIN:
@@ -60,6 +75,11 @@ public class CliParser {
     return null;
   }
 
+  /**
+   * This method prints the LoginMessageResponse arrived from server
+   * @param msg The message arrived from client
+   * @return The printable string
+   */
   private String printLoginMessage(LoginMessageResponse msg) {
     if (msg.getMessageSecondary() == MessageSecondary.LOBBY) {
       setPlayerId(msg.getPlayerId());
@@ -83,6 +103,12 @@ public class CliParser {
     this.playerId = playerId;
   }
 
+
+  /**
+   *This method prints the PlayMessageResponse arrived from server
+   * @param msg The message arrived from client
+   * @return The printable string
+   */
   private String printPlayMessage(PlayMessageResponse msg) throws IOException {
     StringBuilder returnString = new StringBuilder();
     switch (msg.getMessageSecondary()) {
@@ -119,6 +145,12 @@ public class CliParser {
     return String.valueOf(returnString);
   }
 
+
+  /**
+   *This method prints the MoveMessageResponse arrived from server
+   * @param msg The message arrived from client
+   * @return The printable string
+   */
   private String printMoveMessage(MoveMessageResponse msg) {
 
     StringBuilder printedString = new StringBuilder();
@@ -181,6 +213,12 @@ public class CliParser {
     return String.valueOf(printedString);
   }
 
+
+  /**
+   * This method prints the ClientResponse arrived from server
+   * @param msg The message arrived from client
+   * @return The printable string
+   */
   private String printInfoMessage(ClientResponse msg) {
     switch (msg.getMessageSecondary()) {
       case GAME_ORDER:

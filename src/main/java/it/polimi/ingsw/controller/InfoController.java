@@ -2,8 +2,8 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.helpers.Color;
 import it.polimi.ingsw.helpers.MessageSecondary;
-import it.polimi.ingsw.messages.InfoRequestMessage;
 import it.polimi.ingsw.messages.ClientResponse;
+import it.polimi.ingsw.messages.InfoRequestMessage;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.model.CloudTile;
 import it.polimi.ingsw.model.Game;
@@ -15,15 +15,22 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerBoard;
 import java.util.Vector;
 
+/**
+ * This class elaborates info messages
+ */
 public class InfoController {
 
   /**
+   * This method elaborates InfoRequestMessages
    *
+   * @param msg  the message to be elaborated
+   * @param game the actual match
+   * @return the message response
    */
   public Vector<Message> elaborateMessage(InfoRequestMessage msg, Game game) {
 
     String response;
-    Vector<Message> messages=new Vector<>();
+    Vector<Message> messages = new Vector<>();
     switch (msg.getMessageSecondary()) {
       case INFO_MN:
         response = infoMotherNature(game);
@@ -67,11 +74,24 @@ public class InfoController {
     return "TODO";  // TODO
   }
 
+  /**
+   * It builds a string with the current mother nature information
+   *
+   * @param game the actual match
+   * @return the created string
+   */
   private String infoMotherNature(Game game) {
     return "Mother Nature is on island number "
         + game.getMainBoard().getMotherNature().getPosition() + "\n";
   }
 
+  /**
+   * It builds a string with the current information about an island
+   *
+   * @param game     game the actual match
+   * @param islandId the id of the island chosen
+   * @return the created string
+   */
   private String infoIsland(Game game, int islandId) {
     if (islandId < game.getMainBoard().getIslands().size()) {
       Island infoIsland = game.getMainBoard().getIslands().elementAt(islandId);
@@ -96,6 +116,13 @@ public class InfoController {
     }
   }
 
+  /**
+   * It builds a string with the current information about a player
+   *
+   * @param game     game the actual match
+   * @param playerId the id of the chosen player
+   * @return the created string
+   */
   private String infoPlayer(Game game, int playerId) {
     Player infoPlayer = null;
 
@@ -141,6 +168,13 @@ public class InfoController {
 
   }
 
+  /**
+   * It builds a string with the current information about a character
+   *
+   * @param game        game the actual match
+   * @param characterId the id of the chosen character
+   * @return the created string
+   */
   private String infoCharacters(Game game, int characterId) {
     if (characterId < game.getPurchasableCharacter().size()) {
       CharacterCard infoCard = game.getPurchasableCharacter().elementAt(characterId);
@@ -150,6 +184,13 @@ public class InfoController {
     }
   }
 
+  /**
+   * It builds a string with the current information about an assistant
+   *
+   * @param game     game the actual match
+   * @param playerId the id of the chosen assistant
+   * @return the created string
+   */
   private String infoAssistants(Game game, int playerId) {
 
     Player infoPlayer = null;
@@ -173,6 +214,13 @@ public class InfoController {
     }
   }
 
+  /**
+   * It builds a string with the current information about a cloud tile
+   *
+   * @param game           game the actual match
+   * @param cloudTileIndex the id of the chosen cloud tile
+   * @return the created string
+   */
   private String infoCloudTile(Game game, int cloudTileIndex) {
     if (cloudTileIndex < game.getCloudTiles().size()) {
       CloudTile infoCT = game.getCloudTiles().elementAt(cloudTileIndex);

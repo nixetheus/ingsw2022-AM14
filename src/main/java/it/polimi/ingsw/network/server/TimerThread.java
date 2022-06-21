@@ -35,11 +35,19 @@ public class TimerThread implements Runnable {
     }
   };
 
+  /**
+   * Constructor class for TimerThread
+   * @param pingTimer The timer for the ping message
+   * @param clientHandler The client handler used to send the ping
+   */
   public TimerThread(Timer pingTimer, ClientHandler clientHandler) {
     this.pingTimer = pingTimer;
     this.clientHandler = clientHandler;
   }
 
+  /**
+   * This method is used to schedule a ping message after a certain delay
+   */
   @Override
   public void run() {
 

@@ -17,10 +17,18 @@ public class Pinger implements Runnable {
   private static final int pingTime = 2000;
   private final PrintWriter out;
 
+  /**
+   * Constructor method for Pinger class
+   *
+   * @param socketOut The socket for the communication
+   */
   public Pinger(Socket socketOut) throws IOException {
     out = new PrintWriter(socketOut.getOutputStream(), true);
   }
 
+  /**
+   * This method send a ping message after a certain period of time
+   */
   @Override
   public void run() {
 

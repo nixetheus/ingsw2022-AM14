@@ -3,6 +3,9 @@ package it.polimi.ingsw.messages;
 import it.polimi.ingsw.helpers.MessageMain;
 import it.polimi.ingsw.helpers.MessageSecondary;
 
+/**
+ * MoveMessage used during a move from client to server
+ */
 public class MoveMessage extends Message {
 
   private int place;
@@ -11,6 +14,10 @@ public class MoveMessage extends Message {
   private int cloudTileNumber;
   private int studentNumber = -1;
 
+  /**
+   * Constructor method for MoveMessage class
+   * @param messageSecondary The messageSecondary to be set
+   */
   public MoveMessage(MessageSecondary messageSecondary) {
     this.messageMain = MessageMain.MOVE;
     this.messageSecondary = messageSecondary;

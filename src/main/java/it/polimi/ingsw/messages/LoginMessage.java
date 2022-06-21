@@ -3,12 +3,19 @@ package it.polimi.ingsw.messages;
 import it.polimi.ingsw.helpers.MessageMain;
 import it.polimi.ingsw.helpers.MessageSecondary;
 
+/**
+ * LoginMessage class used for initial login
+ */
 public class LoginMessage extends Message {
 
   private int numberOfPlayer;
   private boolean gameExpert;
   private String nickName;
 
+  /**
+   * Constructor method for LoginMessage class
+   * @param messageSecondary The messageSecondary to be set
+   */
   public LoginMessage(MessageSecondary messageSecondary) {
     this.messageMain = MessageMain.LOGIN;
     this.messageSecondary = messageSecondary;

@@ -4,6 +4,9 @@ import it.polimi.ingsw.helpers.Color;
 import it.polimi.ingsw.helpers.Effects;
 import it.polimi.ingsw.model.board.MainBoard;
 
+/**
+ * GameCharacter class modelling the character that modifies the state of the gameBoard
+ */
 public class MainBoardCharacters extends CharacterCard {
 
   public MainBoardCharacters(Effects effect, int neededCoins, int[] students) {

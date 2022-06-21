@@ -12,6 +12,13 @@ public class CharacterCard {
   int cost;
   int[] students;
 
+  /**
+   * Constructor method for CharacterCard class
+   *
+   * @param effect       The character effect
+   * @param neededCoins  His cost
+   * @param cardStudents The students that will be placed on the card
+   */
   public CharacterCard(Effects effect, int neededCoins, int[] cardStudents) {
 
     cost = neededCoins;
@@ -19,10 +26,20 @@ public class CharacterCard {
     students = cardStudents;
   }
 
+  /**
+   * Method used to apply the effect of a character
+   *
+   * @param params What the character need to change into the game
+   */
   public void applyEffect(CharacterStruct params) {
     throw new IllegalStateException("Unexpected value: " + cardEffect);
   }
 
+  /**
+   * Method used to remove the effect of a character
+   *
+   * @param params What the character need to change into the game
+   */
   public void removeEffect(CharacterStruct params) {
     throw new IllegalStateException("Unexpected value: " + cardEffect);
   }

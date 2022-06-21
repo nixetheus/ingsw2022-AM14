@@ -5,6 +5,9 @@ import it.polimi.ingsw.helpers.MessageSecondary;
 import it.polimi.ingsw.helpers.StudentsPlayerId;
 import java.util.Vector;
 
+/**
+ * BeginTurnMessage used to send the game state during the match
+ */
 public class BeginTurnMessage extends Message {
 
   int activePLayerId;
@@ -25,6 +28,10 @@ public class BeginTurnMessage extends Message {
   int motherNaturePosition;
   int[] playerCoins;
 
+  /**
+   * Constructor method for BeginTurnMessage
+   * @param messageSecondary The message secondary to be set
+   */
   public BeginTurnMessage(MessageSecondary messageSecondary) {
     this.messageMain = MessageMain.PHASE;
     this.messageSecondary = messageSecondary;

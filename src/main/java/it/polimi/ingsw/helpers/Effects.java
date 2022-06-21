@@ -6,8 +6,10 @@ import static it.polimi.ingsw.helpers.CharactersFlags.STUDENTS_CARD_FLAG;
 import static it.polimi.ingsw.helpers.CharactersFlags.STUDENTS_DINING_ROOM_FLAG;
 import static it.polimi.ingsw.helpers.CharactersFlags.STUDENTS_ENTRANCE_FLAG;
 
-import java.util.Vector;
-
+/**
+ * The effects used for character with their initial cost, number of students, the card type, the
+ * flags he/she needs
+ */
 public enum Effects {
 
 

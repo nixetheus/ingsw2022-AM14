@@ -15,15 +15,14 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 import java.util.Timer;
-import java.util.TimerTask;
 import java.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 
 /**
  * ClientHandler class: It takes care of managing the communication with the associated client with
- * the assigned socket
- * It implements Runnable because each thread handles the communication with its client in parallel
+ * the assigned socket It implements Runnable because each thread handles the communication with its
+ * client in parallel
  */
 public class ClientHandler implements Runnable {
 
@@ -110,11 +109,14 @@ public class ClientHandler implements Runnable {
 
     //read input from client
     String input = inputStream.nextLine();
+    if (!input.contains("PING")) {
+      System.out.println(input);
+    }
     if (input != null) {
 
       Message clientResponse = fromJson(input);
 
-      if(clientResponse.getMessageMain() == MessageMain.INFO &&
+      if (clientResponse.getMessageMain() == MessageMain.INFO &&
           clientResponse.getMessageSecondary() == MessageSecondary.PING) {
 
         restartTimer();
@@ -213,8 +215,7 @@ public class ClientHandler implements Runnable {
   }
 
   /**
-   * This method restarts the timer,
-   * it is invoked when ping message arrived to the server
+   * This method restarts the timer, it is invoked when ping message arrived to the server
    */
   private void restartTimer() {
     pingTimer.cancel();
@@ -225,6 +226,7 @@ public class ClientHandler implements Runnable {
 
   /**
    * Create a default message to return to run()
+   *
    * @return default Vector<Message>
    */
   private Vector<Message> PingResponse() {

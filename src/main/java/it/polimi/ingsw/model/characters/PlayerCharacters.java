@@ -8,6 +8,9 @@ import it.polimi.ingsw.model.board.StudentsBag;
 import it.polimi.ingsw.model.player.Player;
 import java.util.Vector;
 
+/**
+ * GameCharacter class modelling the character that modifies the state of a player
+ */
 public class PlayerCharacters extends CharacterCard {
 
   public PlayerCharacters(Effects effect, int neededCoins, int[] students) {

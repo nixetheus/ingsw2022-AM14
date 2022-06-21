@@ -20,6 +20,8 @@ public class MotherNature {
 
   /**
    * This method moves MotherNature, just setting the new position
+   *
+   * @param newMotherNaturePosition The new motherNature position
    */
   public void move(int newMotherNaturePosition) {
     this.position = newMotherNaturePosition;

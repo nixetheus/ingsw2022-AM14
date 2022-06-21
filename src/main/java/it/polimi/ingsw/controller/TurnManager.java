@@ -38,7 +38,9 @@ public class TurnManager {
     currentNumberOfUsersPlayedActionPhase = 0;
   }
 
-  //TODO update message what to do next
+  /**
+   * This method checks and updates the current game state
+   */
   public void changeState() {
 
     int nextState = currentState;
@@ -83,7 +85,7 @@ public class TurnManager {
   }
 
   /**
-   *
+   * It updates the counters to know when the game state must changed
    */
   public void updateCounters() {
     switch (currentState) {
@@ -112,7 +114,7 @@ public class TurnManager {
   }
 
   /**
-   *
+   * This method sets the tate parameters to know what kind of message is expected from the client
    */
   private void setStateParameters() {
     switch (currentState) {
@@ -158,10 +160,6 @@ public class TurnManager {
     this.numberOfUsers = numberOfUsers;
   }
 
-  public void setNumberStudentsFromEntrance(int numberStudentsFromEntrance) {
-    this.numberStudentsFromEntrance = numberStudentsFromEntrance;
-  }
-
   public MessageMain getMainGamePhase() {
     return mainGamePhase;
   }
@@ -192,6 +190,10 @@ public class TurnManager {
 
   public int getNumberStudentsFromEntrance() {
     return numberStudentsFromEntrance;
+  }
+
+  public void setNumberStudentsFromEntrance(int numberStudentsFromEntrance) {
+    this.numberStudentsFromEntrance = numberStudentsFromEntrance;
   }
 
   public void finishGame() {

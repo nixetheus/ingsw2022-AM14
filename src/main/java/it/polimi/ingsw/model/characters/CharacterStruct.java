@@ -8,6 +8,9 @@ import it.polimi.ingsw.model.board.StudentsBag;
 import it.polimi.ingsw.model.player.Player;
 import java.util.Vector;
 
+/**
+ * The struct used to give to the character what they need to change
+ */
 public class CharacterStruct {
 
   public int numIsland;

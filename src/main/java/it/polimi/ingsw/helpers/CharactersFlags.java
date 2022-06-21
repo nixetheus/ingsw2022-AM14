@@ -1,6 +1,8 @@
 package it.polimi.ingsw.helpers;
 
-
+/**
+ * Character flags enumeration used to know what a character requires
+ */
 public enum CharactersFlags {
 
   NUM_ISLAND_FLAG,

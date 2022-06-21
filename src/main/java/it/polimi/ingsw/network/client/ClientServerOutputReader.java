@@ -27,6 +27,15 @@ public class ClientServerOutputReader extends Thread {
   private final boolean isGUI;
   private int playerId;
 
+  /**
+   * Constructor for ClientServerOutputReader class
+   *
+   * @param portNumber The port number to connect to the server
+   * @param hostName   The name of the host
+   * @param socket     The socket for the communication
+   * @param SPG        The serverParserGui to parse the message from GUI
+   * @param GUI        True if is a gui match
+   */
   public ClientServerOutputReader(int portNumber, String hostName, Socket socket,
       ServerParserGUI SPG, boolean GUI) {
 
@@ -80,7 +89,7 @@ public class ClientServerOutputReader extends Thread {
         }
 
         //terminate the client
-        if(serverOutput.contains("GAME OVER")){
+        if (serverOutput.contains("GAME OVER")) {
           System.exit(-1);
         }
       }

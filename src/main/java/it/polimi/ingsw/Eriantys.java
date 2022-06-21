@@ -7,6 +7,9 @@ import java.util.Scanner;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+/**
+ * Eriantys is the main class of the project everything starts from here
+ */
 public class Eriantys {
 
 
@@ -16,6 +19,9 @@ public class Eriantys {
     choice();
   }
 
+  /**
+   * Method used to print the initial page
+   */
   private static void printEriantys() {
     System.out.println("███████╗██████╗ ██╗ █████╗ ███╗   ██╗████████╗██╗   ██╗███████╗");
     System.out.println("██╔════╝██╔══██╗██║██╔══██╗████╗  ██║╚══██╔══╝╚██╗ ██╔╝██╔════╝");
@@ -29,6 +35,9 @@ public class Eriantys {
         + "3 to run Client GUI");
   }
 
+  /**
+   *Method used to run what the user needs
+   */
   private static void choice() throws IOException, InterruptedException {
     Scanner choice = new Scanner(System.in);
     String choiceStr = choice.nextLine();  // Read user input

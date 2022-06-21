@@ -124,6 +124,11 @@ public class MessageParser {
     return null;
   }
 
+  /**
+   * This method is used to set what the character needs
+   * @param playMessage The play message in which the parameters will be set
+   * @param str The section of the input given by the user with the information
+   */
   private void messageSetterForCharacter(PlayMessage playMessage, String str) {
     String takeFromCard;
     String replaceWith;
@@ -340,6 +345,11 @@ public class MessageParser {
     }
   }
 
+  /**
+   * This method compile the array if more than 1 student will be used for a certain character
+   * @param str A section of the command given by the user
+   * @return The array of colors
+   */
   private int[] findArrays(String str) {
 
     int[] returnedArray = new int[Constants.getNColors()];
@@ -363,7 +373,7 @@ public class MessageParser {
   }
 
   /**
-   *
+   *Method used to show if the input format if a word is wrong
    */
   private void printError() {
     System.out.println("Input format wrong please try again");
