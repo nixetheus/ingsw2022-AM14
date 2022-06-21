@@ -11,6 +11,7 @@ import it.polimi.ingsw.network.client.Pinger;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Scanner;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -57,6 +58,7 @@ public class ViewMain extends Application {
    */
   private static void setPortNumberFromJson() throws IOException {
 
+
     String path =
         it.polimi.ingsw.network.server.FileReader.getPath("/json/networkSettings.json");
     Gson gson = new Gson();
@@ -65,6 +67,20 @@ public class ViewMain extends Application {
     JsonObject object = list.get(0).getAsJsonObject();
     portNumber = object.get("DEFAULT_PORT_NUMBER").getAsInt();
     hostName = object.get("DEFAULT_HOST").getAsString();
+
+    System.out.println("Server IP: " + hostName
+        + "\nDo you want to change it? (yes/no)" );
+    Scanner scanner = new Scanner(System.in);
+    String insertIP = scanner.nextLine();
+
+
+    if(insertIP.equals("yes") || insertIP.equals("YES") || insertIP.equals("Yes")
+        || insertIP.equals("Y") || insertIP.equals("y")) {
+
+      System.out.println("Insert new Server IP address");
+      insertIP = scanner.nextLine();
+      hostName = insertIP;
+    }
 
     System.out.println(hostName + " " + portNumber);
 

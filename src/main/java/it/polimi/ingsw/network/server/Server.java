@@ -3,8 +3,14 @@ package it.polimi.ingsw.network.server;
 import it.polimi.ingsw.controller.MainController;
 import it.polimi.ingsw.model.Game;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.util.Enumeration;
+import java.util.Scanner;
 import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -23,7 +29,6 @@ public class Server {
   private final Game game;
   private final Semaphore sem;
   private final int portNumber;
-  private final String hostName;
   private final Vector<Socket> socketOut;
   private ExecutorService executor;
   private ServerSocket serverSocket;
@@ -34,11 +39,9 @@ public class Server {
    * Constructor Server:
    *
    * @param portNumber portNumber
-   * @param hostName hostName
    */
-  public Server(int portNumber, String hostName) throws InterruptedException {
+  public Server(int portNumber) throws InterruptedException {
     this.game = new Game();
-    this.hostName = hostName;
     this.portNumber = portNumber;
     this.sem = new Semaphore(1);
 
@@ -69,7 +72,7 @@ public class Server {
    * It creates the server with parameters passed from ServerMain
    * It creates a Thread Poll for dynamic assignment of threads and reuse of them
    */
-  private void setUpServer() {
+  private void setUpServer() throws SocketException {
 
     executor = Executors.newCachedThreadPool();
     try {
@@ -80,7 +83,21 @@ public class Server {
       return;
     }
 
-    System.out.println("Server ready");
+    System.out.println("Server ready!\nPort: " + portNumber + "\nIP address: ");
+
+    Enumeration ip = NetworkInterface.getNetworkInterfaces();
+    while(ip.hasMoreElements())
+    {
+      NetworkInterface netInterface = (NetworkInterface) ip.nextElement();
+      Enumeration ipAddress = netInterface.getInetAddresses();
+      while (ipAddress.hasMoreElements())
+      {
+        InetAddress singleIp = (InetAddress) ipAddress.nextElement();
+        String ipToPrint = singleIp.getHostAddress();
+        if(ipToPrint.charAt(0) == '1')
+          System.out.println(ipToPrint);
+      }
+    }
   }
 
   /**

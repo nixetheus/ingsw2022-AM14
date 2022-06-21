@@ -4,12 +4,16 @@ import it.polimi.ingsw.network.server.ServerMain;
 import it.polimi.ingsw.view.ViewMain;
 import java.io.IOException;
 import java.util.Scanner;
+import javafx.application.Application;
+import javafx.stage.Stage;
 
 public class Eriantys {
 
+
+
   public static void main(String[] args) throws IOException, InterruptedException {
     printEriantys();
-    choise();
+    choice();
   }
 
   private static void printEriantys() {
@@ -25,7 +29,7 @@ public class Eriantys {
         + "3 to run Client GUI");
   }
 
-  private static void choise() throws IOException, InterruptedException {
+  private static void choice() throws IOException, InterruptedException {
     Scanner choice = new Scanner(System.in);
     String choiceStr = choice.nextLine();  // Read user input
 
@@ -59,7 +63,6 @@ public class Eriantys {
 
         break;
       }
-
     }
   }
 }

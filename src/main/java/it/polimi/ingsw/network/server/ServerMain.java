@@ -18,7 +18,6 @@ public class ServerMain {
 
   //Attributes
   private static int portNumber;
-  private static String hostName;
 
   /**
    * main:
@@ -35,7 +34,7 @@ public class ServerMain {
     //setUp parameters passed from command line
     setUpParametersCommandLine(args);
 
-    Server server = new Server(portNumber, hostName);
+    Server server = new Server(portNumber);
     server.startServer();
 
   }
@@ -55,9 +54,6 @@ public class ServerMain {
         .fromJson(path, JsonArray.class);
     JsonObject object = list.get(0).getAsJsonObject();
     portNumber = object.get("DEFAULT_PORT_NUMBER").getAsInt();
-    hostName = object.get("DEFAULT_HOST").getAsString();
-
-    System.out.println(hostName + " " +  portNumber);
 
   }
 
@@ -85,11 +81,6 @@ public class ServerMain {
           portNumber = portNumberArg;
         }
 
-      }
-
-      //host name
-      if (arg.equals("--host") || arg.equals("-h")) {
-        hostName = args[argIndex + 1];
       }
 
       argIndex += 2;
