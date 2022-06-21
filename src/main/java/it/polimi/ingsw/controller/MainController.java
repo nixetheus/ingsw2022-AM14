@@ -284,11 +284,13 @@ public class MainController {
         default:
           break;
       }
+      messages.add(gameResponse);//CHANGED
     }
+
 
     if (gameResponse != null && msg.getMessageSecondary() != MessageSecondary.CHARACTER) {
 
-      messages.add(gameResponse);
+      //messages.add(gameResponse);Changed
 
       // Update turn
       turnManager.updateCounters();
@@ -389,9 +391,10 @@ public class MainController {
 
     }
     else if (gameResponse != null && msg.getMessageSecondary() == MessageSecondary.CHARACTER) {
-      messages.addAll(changeTurnMessage(MessageSecondary.CHANGE_TURN));
+      messages.addAll(changeTurnMessage(MessageSecondary.INFRA_TURN));//CHANGED
     }
     else {
+      messages.remove(gameResponse);
       ClientResponse error = new ClientResponse(MessageSecondary.ERROR);
       error.setPlayerId(msg.getPlayerId());
       error.setResponse(

@@ -15,6 +15,7 @@ import it.polimi.ingsw.messages.PlayMessage;
 import it.polimi.ingsw.messages.PlayMessageResponse;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Team;
+import it.polimi.ingsw.model.board.Island;
 import it.polimi.ingsw.model.characters.CharacterCard;
 import it.polimi.ingsw.model.characters.CharacterStruct;
 import it.polimi.ingsw.model.player.Player;
@@ -99,12 +100,24 @@ public class PlayController {
       msg.setStudentsEntrance(fromPositionsToColors(msg.getStudentsEntranceGUI(),
           game.getCurrentPlayer().getPlayerBoard().getEntrance().getStudents()));
 
+    //TODO broken
     if (msg.getMotherNatureMoves() < 0 && msg.getNumIsland() >= 0) {
+
       int motherNatureMoves = 0;
       int nOfIslands = game.getMainBoard().getIslands().size();
-      int islandCurrentMN = game.getMainBoard().getMotherNature().getPosition();
+      int islandCurrentMN = -1;
+      int messageIsland=-1;
+
+      for(Island island:game.getMainBoard().getIslands()){
+        if(island.getIslandId()==game.getMainBoard().getMotherNature().getPosition()){
+          islandCurrentMN=game.getMainBoard().getIslands().indexOf(island);
+        }
+        if(island.getIslandId()==msg.getNumIsland()){
+          messageIsland=game.getMainBoard().getIslands().indexOf(island);
+        }
+      }
       while (true) {
-        if ((islandCurrentMN + motherNatureMoves) % nOfIslands == msg.getNumIsland()) {
+        if ((islandCurrentMN + motherNatureMoves) % nOfIslands == messageIsland) {
           break;
         } else {
           motherNatureMoves++;
@@ -142,6 +155,7 @@ public class PlayController {
 
             PlayMessageResponse playResponse = new PlayMessageResponse(MessageSecondary.CHARACTER);
             playResponse.setCharacterId(msg.getCharacterId());
+            playResponse.setPlayerId(game.getCurrentPlayer().getPlayerId());
 
             return playResponse;
           }

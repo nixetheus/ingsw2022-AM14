@@ -114,7 +114,7 @@ public class CliParser {
       case CHARACTER:
         returnString.append("Character ").append(msg.getCharacterId())
             .append(" purchased and correctly used\n");
-
+        break;
     }
     return String.valueOf(returnString);
   }
@@ -429,7 +429,7 @@ public class CliParser {
           }
         }
       }
-      returnString.append("to purchase use id ").append(id).append("\n").append("\n");
+      returnString.append("to purchase use id ").append(msg.getPurchasableCharacterId().indexOf(id)).append("\n").append("\n");
     }
 
     //coins
