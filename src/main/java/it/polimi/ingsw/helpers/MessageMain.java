@@ -5,5 +5,6 @@ public enum MessageMain {
   MOVE,
   INFO,
   LOGIN,
-  PHASE
+  PHASE,
+  END
 }

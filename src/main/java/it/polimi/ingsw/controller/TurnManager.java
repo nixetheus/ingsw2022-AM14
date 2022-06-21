@@ -193,4 +193,8 @@ public class TurnManager {
   public int getNumberStudentsFromEntrance() {
     return numberStudentsFromEntrance;
   }
+
+  public void finishGame() {
+    secondaryPhase = MessageSecondary.WINNER;
+  }
 }

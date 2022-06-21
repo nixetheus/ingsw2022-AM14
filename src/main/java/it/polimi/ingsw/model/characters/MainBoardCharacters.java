@@ -61,7 +61,6 @@ public class MainBoardCharacters extends CharacterCard {
       case TAKE_STUDENT_PUT_ISLAND:
         break;
       case NO_ENTRY_NATURE:
-        yesEntryNatureEffect(params.mainBoard, params.numIsland);
         break;
       case NO_TOWERS_INFLUENCE:
         yesTowersInfluenceEffect(params.mainBoard);

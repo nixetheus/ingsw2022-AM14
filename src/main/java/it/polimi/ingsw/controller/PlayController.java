@@ -129,6 +129,7 @@ public class PlayController {
     // Some objects are missing for the character
     if (!hasAllCharacterObjects(characterCard, msg)) {
       ClientResponse missingParams = new ClientResponse(MessageSecondary.INFO_CHARACTER);
+      missingParams.setPlayerId(msg.getPlayerId());
       missingParams.setResponse("This character is missing some objects! Try again!");
       return missingParams;
     }

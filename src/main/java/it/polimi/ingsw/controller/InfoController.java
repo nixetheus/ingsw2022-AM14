@@ -54,6 +54,7 @@ public class InfoController {
     if (response != null) {
       ClientResponse responseMessage = new ClientResponse(
           MessageSecondary.INFO_RESPONSE_MESSAGE);
+      responseMessage.setPlayerId(msg.getPlayerId());
       responseMessage.setResponse(response);
       messages.add(responseMessage);
       return messages;

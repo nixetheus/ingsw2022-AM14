@@ -16,6 +16,7 @@ public class BeginTurnMessage extends Message {
   Integer[] islandsIds;
   boolean[] islandsNoEntry;
   int[] towersColor;
+  int[] towersNumber;
   Vector<int[]> studentsCloudTiles;
   Vector<Integer> playableAssistantId;
   Vector<Integer> PurchasableCharacterId;
@@ -109,6 +110,14 @@ public class BeginTurnMessage extends Message {
 
   public void setTowersColor(int[] towersColor) {
     this.towersColor = towersColor;
+  }
+
+  public int[] getTowersNumber() {
+    return towersNumber;
+  }
+
+  public void setTowersNumber(int[] towersNumber) {
+    this.towersNumber = towersNumber;
   }
 
   public int[] getPlayerCoins() {

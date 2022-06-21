@@ -53,8 +53,6 @@ public class MainBoardCharactersTest {
         Effects.NO_ENTRY_NATURE, Effects.NO_ENTRY_NATURE.getCost(), new int[0]);
     noEntryNature.applyEffect(params);
     Assert.assertTrue(params.mainBoard.getIslands().get(params.numIsland).isNoEntry());
-    noEntryNature.removeEffect(params);
-    Assert.assertFalse(params.mainBoard.getIslands().get(params.numIsland).isNoEntry());
   }
 
   /**

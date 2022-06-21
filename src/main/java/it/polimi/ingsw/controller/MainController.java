@@ -12,15 +12,18 @@ import it.polimi.ingsw.messages.LoginMessageResponse;
 import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.MoveMessage;
 import it.polimi.ingsw.messages.PlayMessage;
+import it.polimi.ingsw.messages.WinnerMessage;
 import it.polimi.ingsw.model.CloudTile;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Team;
 import it.polimi.ingsw.model.board.Island;
 import it.polimi.ingsw.model.characters.CharacterCard;
+import it.polimi.ingsw.model.characters.CharacterStruct;
 import it.polimi.ingsw.model.player.Assistant;
 import it.polimi.ingsw.model.player.Player;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Vector;
 import java.util.concurrent.Semaphore;
 
@@ -292,6 +295,25 @@ public class MainController {
 
       //messages.add(gameResponse);Changed
 
+      // Check win conditions
+      Team winner = checkWinConditions(msg);
+      if (winner != null) {
+
+        Vector<String> winners = new Vector<>();
+        for (Player player : winner.getPlayers())
+          winners.add(player.getPlayerNickname());
+
+        WinnerMessage winnerMessage = new WinnerMessage(MessageSecondary.WINNER);
+        winnerMessage.setWinnerId(winner.getId());
+        winnerMessage.setNumberOfPlayers(numberOfPlayers);
+        winnerMessage.setPlayersTeam(winners);
+        messages.add(winnerMessage);
+
+        turnManager.finishGame();
+        return messages;
+
+      }
+
       // Update turn
       turnManager.updateCounters();
 
@@ -301,7 +323,7 @@ public class MainController {
           && turnManager.getCurrentNumberOfPlayedAssistants() == numberOfPlayers) {
 
         //set player order
-        this.game.orderBasedOnAssistant();  // TODO
+        this.game.orderBasedOnAssistant();
 
         //send order message
         ClientResponse order = new ClientResponse(MessageSecondary.GAME_ORDER);
@@ -323,8 +345,13 @@ public class MainController {
         this.game.fillClouds();
         this.game.reverseOrderEndTurn();
         this.game.assistantAfterTurn();
-        /*for (CharacterCard card : game.getPurchasableCharacter())
-          card.removeEffect();*/ // TODO
+
+        CharacterStruct params = new CharacterStruct();
+        params.currentGame = game;
+        params.mainBoard = game.getMainBoard();
+        params.currentPlayer = game.getCurrentPlayer();
+        for (CharacterCard card : game.getPurchasableCharacter())
+          card.removeEffect(params);
       }
 
       turnManager.changeState();
@@ -435,8 +462,12 @@ public class MainController {
         Vector<StudentsPlayerId> studentDiningRooms = new Vector<>();
         Vector<int[]> professors = new Vector<>();
         int[] playersCoins = new int[numberOfPlayers];
+        int[] towerPerTeam = new int[game.getTeams().size()];
 
         for (Team teamStudents : this.game.getTeams()) {
+
+          towerPerTeam[teamStudents.getId()] = teamStudents.getAvailableTowers();
+
           for (Player playerStudents : teamStudents.getPlayers()) {
 
             studentsAtEntrances.add(new StudentsPlayerId(playerStudents.getPlayerId(),
@@ -464,6 +495,7 @@ public class MainController {
           }
         }
 
+        beginTurnMessage.setTowersNumber(towerPerTeam);
         beginTurnMessage.setStudentEntrance(studentsAtEntrances);
         beginTurnMessage.setStudentDiningRoom(studentDiningRooms);
 
@@ -536,4 +568,60 @@ public class MainController {
     clientResponse.setPlayerId(id);
     return clientResponse;
   }
+
+  private Team getWinner() {
+
+    int[] towersTeam = {0, 0, 0};
+    for (Island island : game.getMainBoard().getIslands()) {
+      if (island.getOwnerId() != -1)
+        towersTeam[island.getOwnerId()] += island.getNumberOfTowers();
+    }
+
+    int maxTeamId = 0;
+    int maxTeamTowers = 0;
+    for (int teamId = 0; teamId < towersTeam.length; teamId++) {
+      if (towersTeam[teamId] > maxTeamTowers) {
+        maxTeamTowers = towersTeam[teamId];
+        maxTeamId = teamId;
+      }
+    }
+
+    return game.getTeams().elementAt(maxTeamId);
+
+  }
+
+  private Team checkWinConditions(Message msg) {
+
+    Team winner = null;
+
+    if (msg.getMessageSecondary() == MessageSecondary.ASSISTANT) {
+      if (game.getCurrentPlayer().getPlayableAssistant().size() == 0) {
+        winner = getWinner();
+      }
+    }
+
+    else if (msg.getMessageSecondary() == MessageSecondary.MOVE_MN) {
+
+      for (Team team : game.getTeams()) {
+        for (Player player : team.getPlayers()) {
+          if (player.getPlayerId() == game.getCurrentPlayer().getPlayerId()) {
+            if (team.getAvailableTowers() == 0)
+              winner = team;
+          }
+        }
+      }
+
+      if (game.getMainBoard().getIslands().size() == 3)
+        winner = getWinner();
+
+    }
+
+    else if (Arrays.stream(game.getStudentsBag().getStudents()).sum() == 0
+        && msg.getMessageSecondary() == MessageSecondary.CLOUD_TILE) {
+      winner = getWinner();
+    }
+
+    return winner;
+  }
+
 }
