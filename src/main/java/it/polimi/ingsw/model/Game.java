@@ -143,7 +143,7 @@ public class Game {
     if (islandMotherNatureIn.getOwnerId() == -1) {
 
       int idTeamControlIsland = mainBoard
-          .calculateInfluence(professorControlPlayer, teams, islandMotherNatureIn,activePlayer);
+          .calculateInfluence(professorControlPlayer, teams, islandMotherNatureIn, activePlayer);
       islandMotherNatureIn.setOwner(idTeamControlIsland);
 
       if (idTeamControlIsland >= 0) {
@@ -155,7 +155,8 @@ public class Game {
       teams.get(islandMotherNatureIn.getOwnerId()).addTowers(1);
 
       islandMotherNatureIn.setOwner(
-          mainBoard.calculateInfluence(professorControlPlayer, teams, islandMotherNatureIn,activePlayer));
+          mainBoard.calculateInfluence(professorControlPlayer, teams, islandMotherNatureIn,
+              activePlayer));
 
       teams.get(islandMotherNatureIn.getOwnerId()).removeTowers(1);
     }
@@ -299,7 +300,8 @@ public class Game {
       professorOwnerNumberColorStudent = professorControlPlayer[color].getPlayerBoard()
           .getDiningRoom().getStudents()[color];
 
-      if (activePlayerNumberColorStudents+influenceEqualProfessors > professorOwnerNumberColorStudent) {
+      if (activePlayerNumberColorStudents + influenceEqualProfessors
+          > professorOwnerNumberColorStudent) {
         this.professorControlPlayer[color] = activePlayer;
       }
 

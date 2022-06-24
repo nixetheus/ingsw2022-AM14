@@ -70,7 +70,8 @@ public class MainBoard {
    * @return the integer that represents the team, if it is equal to -1 it is not possible to
    * conquer or control the island, because two or more team have the same influence
    */
-  public int calculateInfluence(Player[] professors, Vector<Team> teams, Island island,Player currentPlayer) {
+  public int calculateInfluence(Player[] professors, Vector<Team> teams, Island island,
+      Player currentPlayer) {
 
     int[] influences = new int[teams.size()];
     for (Color color : Color.values()) {
@@ -83,7 +84,7 @@ public class MainBoard {
         }
 
         if (team.getPlayers().contains(currentPlayer)) {
-          influences[team.getId()] += influencePlus ;
+          influences[team.getId()] += influencePlus;
         }
       }
 
@@ -110,10 +111,10 @@ public class MainBoard {
 
     Arrays.sort(influences);
 
-    if (influences[influences.length - 1] == influences[influences.length - 2]&&island.getOwnerId()==-1) {
+    boolean equalInfluence = influences[influences.length - 1] == influences[influences.length - 2];
+    if (equalInfluence && island.getOwnerId() == -1) {
       return -1;
-    }
-    else if(influences[influences.length - 1] == influences[influences.length - 2]&&island.getOwnerId()!=-1){
+    } else if (equalInfluence && island.getOwnerId() != -1) {
       return island.getOwnerId();
     }
 
@@ -181,13 +182,14 @@ public class MainBoard {
     int newMotherNaturePosition = -1;
     for (Island island : islands) {
       if (island.getIslandId() == motherNature.getPosition()) {
-        if(numMoves<=0){
-          numMoves=islands.size()+numMoves;//TODO try
+        if (numMoves <= 0) {
+          numMoves = islands.size() + numMoves;//TODO try
+        } else {
+          newMotherNaturePosition = islands
+              .get((islands.indexOf(island) + numMoves) % islands.size())
+              .getIslandId();
         }
-        else{
-        newMotherNaturePosition = islands.get((islands.indexOf(island) + numMoves) % islands.size())
-            .getIslandId();
-      }}
+      }
     }
     motherNature.move(newMotherNaturePosition);
   }
