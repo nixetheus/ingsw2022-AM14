@@ -38,6 +38,7 @@ public class MoveController {
         for (Island island : currentGame.getMainBoard().getIslands()) {
           if (island.getIslandId() == msg.getIslandNumber()) {
             messageIslandIndex = currentGame.getMainBoard().getIslands().indexOf(island);
+            break;
           }
         }
         int nOfIslands = currentGame.getMainBoard().getIslands().size();
@@ -46,6 +47,7 @@ public class MoveController {
         for (Island island : currentGame.getMainBoard().getIslands()) {
           if (island.getIslandId() == currentGame.getMainBoard().getMotherNature().getPosition()) {
             islandMotherNatureIndex = currentGame.getMainBoard().getIslands().indexOf(island);
+            break;
           }
         }
 

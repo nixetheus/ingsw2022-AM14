@@ -178,20 +178,21 @@ public class MainBoard {
    * @param numMoves number of jumps of mother nature
    */
   public void moveMotherNature(int numMoves) {
-    //riporto a id
-    int newMotherNaturePosition = -1;
+    // OLD
+    /* int newMotherNaturePosition = -1;
     for (Island island : islands) {
       if (island.getIslandId() == motherNature.getPosition()) {
-        if (numMoves <= 0) {
-          numMoves = islands.size() + numMoves;//TODO try
+        if (numMoves < 0) {
+          numMoves = islands.size() + numMoves;
         } else {
           newMotherNaturePosition = islands
               .get((islands.indexOf(island) + numMoves) % islands.size())
               .getIslandId();
         }
       }
-    }
-    motherNature.move(newMotherNaturePosition);
+    }*/
+    // NEW
+    motherNature.move((motherNature.getPosition() + numMoves) % islands.size());
   }
 
   /**
