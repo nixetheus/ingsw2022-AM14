@@ -68,25 +68,6 @@ public class MainController {
   }
 
   /**
-   * Sets the game as given by the server
-   *
-   * @param newGame the game created by the Server
-   */
-  public void setGame(Game newGame) {
-    this.game = newGame;
-  }
-
-  /**
-   * Gets the server's semaphore for controlling logic
-   *
-   * @param serverSemaphore The server's Semaphore
-   */
-  public void setServerSemaphore(Semaphore serverSemaphore) throws InterruptedException {
-    this.serverSemaphore = serverSemaphore;
-    this.serverSemaphore.acquire();
-  }
-
-  /**
    * This method assigns the message received from a player to the respective sub-controller
    *
    * @param msg The message received from the player
@@ -352,7 +333,7 @@ public class MainController {
           params.mainBoard = game.getMainBoard();
           params.currentPlayer = game.getCurrentPlayer();//??
           for (CharacterCard card : game.getPurchasableCharacter()) {
-          //  card.removeEffect(params);
+            //  card.removeEffect(params);
           }
         }
       }
@@ -642,4 +623,50 @@ public class MainController {
     return winner;
   }
 
+  public Vector<Team> getTeams() {
+    return teams;
+  }
+
+  public Game getGame() {
+    return game;
+  }
+
+  /**
+   * Sets the game as given by the server
+   *
+   * @param newGame the game created by the Server
+   */
+  public void setGame(Game newGame) {
+    this.game = newGame;
+  }
+
+  public int getNumberOfPlayers() {
+    return numberOfPlayers;
+  }
+
+  public void setNumberOfPlayers(int numberOfPlayers) {
+    this.numberOfPlayers = numberOfPlayers;
+  }
+
+  public boolean isGameExpert() {
+    return isGameExpert;
+  }
+
+  public void setGameExpert(boolean gameExpert) {
+    isGameExpert = gameExpert;
+  }
+
+  public Semaphore getServerSemaphore() {
+    return serverSemaphore;
+  }
+
+  /**
+   * Gets the server's semaphore for controlling logic
+   *
+   * @param serverSemaphore The server's Semaphore
+   */
+  public void setServerSemaphore(Semaphore serverSemaphore) throws InterruptedException {
+    this.serverSemaphore = serverSemaphore;
+    this.serverSemaphore.acquire();
+  }
 }

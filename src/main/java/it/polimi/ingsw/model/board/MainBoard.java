@@ -70,7 +70,7 @@ public class MainBoard {
    * @return the integer that represents the team, if it is equal to -1 it is not possible to
    * conquer or control the island, because two or more team have the same influence
    */
-  public int calculateInfluence(Player[] professors, Vector<Team> teams, Island island) {
+  public int calculateInfluence(Player[] professors, Vector<Team> teams, Island island,Player currentPlayer) {
 
     int[] influences = new int[teams.size()];
     for (Color color : Color.values()) {
@@ -81,10 +81,10 @@ public class MainBoard {
         if (team.getPlayers().contains(playerHasProfessor)) {
           teamHasProfessor = team;
         }
-        /* TODO: add BUT NOT HERE
-        if (team.getPlayers().contains(cu)) {
-          influences[team.getId()] += influencePlus + influenceEqualProfessors;
-        }*/
+
+        if (team.getPlayers().contains(currentPlayer)) {
+          influences[team.getId()] += influencePlus ;
+        }
       }
 
       if (teamHasProfessor != null && color != forbiddenColor) {
@@ -110,8 +110,11 @@ public class MainBoard {
 
     Arrays.sort(influences);
 
-    if (influences[influences.length - 1] == influences[influences.length - 2]) {
+    if (influences[influences.length - 1] == influences[influences.length - 2]&&island.getOwnerId()==-1) {
       return -1;
+    }
+    else if(influences[influences.length - 1] == influences[influences.length - 2]&&island.getOwnerId()!=-1){
+      return island.getOwnerId();
     }
 
     return indexTeamMaxInfluence;
@@ -178,9 +181,13 @@ public class MainBoard {
     int newMotherNaturePosition = -1;
     for (Island island : islands) {
       if (island.getIslandId() == motherNature.getPosition()) {
+        if(numMoves<=0){
+          numMoves=islands.size()+numMoves;//TODO try
+        }
+        else{
         newMotherNaturePosition = islands.get((islands.indexOf(island) + numMoves) % islands.size())
             .getIslandId();
-      }
+      }}
     }
     motherNature.move(newMotherNaturePosition);
   }
@@ -234,6 +241,5 @@ public class MainBoard {
   public void setAreTowersCounted(boolean areTowersCounted) {
     this.areTowersCounted = areTowersCounted;
   }
-
 
 }

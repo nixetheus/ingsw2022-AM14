@@ -64,7 +64,7 @@ public class MainBoardTest {
     //player2 controls 3, 4. influence = 3 [+1 (pickRandomStudent mainBoard constructor]
 
     Assert.assertEquals(0, mainBoardTest.calculateInfluence(profTest, teamsTest,
-        mainBoardTest.getIslands().get(3)));
+        mainBoardTest.getIslands().get(3),player1));
 
   }
 

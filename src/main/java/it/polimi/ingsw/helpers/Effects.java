@@ -30,7 +30,7 @@ public enum Effects {
   TAKE_STUDENT_PUT_ISLAND(1, 4, CardType.MAINBOARD,
       (1 << NUM_ISLAND_FLAG.ordinal()) | (1 << COLOR_FLAG.ordinal()),
       "This character allows to take a student from this card and put it on an island of your choice"),
-  FALSE_NATURE_MOVEMENT(3, 0, CardType.MAINBOARD, 1 << NUM_ISLAND_FLAG.ordinal(),
+  FALSE_NATURE_MOVEMENT(3, 0, CardType.GAME, 1 << NUM_ISLAND_FLAG.ordinal(),
       "This character allows to chose an island and resolving that island as mother nature ends her movement there"),
   NO_ENTRY_NATURE(2, 0, CardType.MAINBOARD, 1 << NUM_ISLAND_FLAG.ordinal(),
       "This character allows to put a no entry tile on an island (mother nature cannot ends her movement there"),

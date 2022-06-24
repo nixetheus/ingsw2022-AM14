@@ -3,11 +3,9 @@ package it.polimi.ingsw.model.player;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import it.polimi.ingsw.helpers.Constants;
 import it.polimi.ingsw.helpers.Places;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -49,8 +47,6 @@ public class Player implements Comparable<Player> {
    * Initializer for the player's assistants
    *
    * @param path File containing the assistants' information
-   * @throws FileNotFoundException Throws FileNotFoundException if file containing all the
-   *                               assistants is not found
    */
   private void initializeAssistants(String path) {
 
