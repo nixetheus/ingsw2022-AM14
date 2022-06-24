@@ -327,13 +327,13 @@ public class MainController {
         this.game.reverseOrderEndTurn();
         this.game.assistantAfterTurn();
 
-        if (game.getPurchasableCharacter() != null) {
+        if (!game.getPurchasableCharacter().isEmpty()) {
           CharacterStruct params = new CharacterStruct();
           params.currentGame = game;
           params.mainBoard = game.getMainBoard();
           params.currentPlayer = game.getCurrentPlayer();//??
           for (CharacterCard card : game.getPurchasableCharacter()) {
-            //  card.removeEffect(params);
+            card.removeEffect(params);
           }
         }
       }
