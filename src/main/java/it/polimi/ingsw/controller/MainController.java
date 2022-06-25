@@ -327,7 +327,7 @@ public class MainController {
         this.game.reverseOrderEndTurn();
         this.game.assistantAfterTurn();
 
-        if (!game.getPurchasableCharacter().isEmpty()) {
+        if (game.getPurchasableCharacter() != null) {
           CharacterStruct params = new CharacterStruct();
           params.currentGame = game;
           params.mainBoard = game.getMainBoard();

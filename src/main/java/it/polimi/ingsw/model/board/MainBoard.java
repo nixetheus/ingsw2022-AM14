@@ -178,8 +178,7 @@ public class MainBoard {
    * @param numMoves number of jumps of mother nature
    */
   public void moveMotherNature(int numMoves) {
-    // OLD
-    /* int newMotherNaturePosition = -1;
+     int newMotherNaturePosition = -1;
     for (Island island : islands) {
       if (island.getIslandId() == motherNature.getPosition()) {
         if (numMoves < 0) {
@@ -190,9 +189,8 @@ public class MainBoard {
               .getIslandId();
         }
       }
-    }*/
-    // NEW
-    motherNature.move((motherNature.getPosition() + numMoves) % islands.size());
+    }
+    motherNature.move(newMotherNaturePosition);
   }
 
   /**

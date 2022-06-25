@@ -275,6 +275,7 @@ public class CliParser {
       case INIT_GAME:
         returnString.append(printIslands(msg));
         returnString.append(printCloudTiles(msg));
+        returnString.append(printAvailableTowers(msg));
         returnString.append(printEntrance(msg));
         returnString.append(printDiningRoom(msg));
         returnString.append(printProfessors(msg));
@@ -285,6 +286,7 @@ public class CliParser {
         //TODO add to controller
         returnString.append(printIslands(msg));
         returnString.append(printCloudTiles(msg));
+        returnString.append(printAvailableTowers(msg));
         returnString.append(printEntrance(msg));
         returnString.append(printDiningRoom(msg));
         returnString.append(printProfessors(msg));
@@ -313,6 +315,24 @@ public class CliParser {
         return returnString.toString();
     }
     return null;
+  }
+
+  /**
+   * This method print all the teams available towers
+   *
+   * @param msg the message use to obtain printed values
+   * @return the string constructed
+   */
+  private String printAvailableTowers(BeginTurnMessage msg) {
+    //towers for each team
+    StringBuilder returnString = new StringBuilder();
+    returnString.append("The available towers for each team are:").append("\n");
+    for (int teamId = 0; teamId < msg.getTowersNumber().length; teamId++) {
+      returnString.append(msg.getTowersNumber()[teamId]).append(" belonging to the ").append(teamId)
+          .append(" team").append("\n");
+    }
+    returnString.append("\n");
+    return returnString.toString();
   }
 
   /**
@@ -480,6 +500,7 @@ public class CliParser {
       int speed = object.get("SPEED").getAsInt();
       int moves = object.get("MOVES").getAsInt();
 
+      returnString.append("To play this assistant use id ").append(idAssistant).append("\n");
       returnString.append("assistant speed is").append(" ").append(speed).append("\n")
           .append("max mother nature moves").append(" ").append(moves).append("\n")
           .append("\n");

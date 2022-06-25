@@ -62,7 +62,8 @@ public class MoveController {
         }
 
         // ONLY CONSENTED N OF MOVES
-        if (motherNatureMoves <= currentGame.getCurrentPlayer().getAssistant().getMoves()) {
+        if (motherNatureMoves <= currentGame.getCurrentPlayer().getAssistant().getMoves()
+            && motherNatureMoves > 0) {
 
           // ONLY CLOCKWISE
           if (messageIslandIndex == (islandMotherNatureIndex + motherNatureMoves) % nOfIslands) {
@@ -182,17 +183,19 @@ public class MoveController {
                     msg.getStudentColor(),
                     Optional.of(msg.getIslandNumber()));
 
-            int islandIndex=-1;
-            for(Island island:currentGame.getMainBoard().getIslands()){
-              if(island.getIslandId()==msg.getIslandNumber()){
-                islandIndex=currentGame.getMainBoard().getIslands().indexOf(island);
+            int islandIndex = -1;
+            for (Island island : currentGame.getMainBoard().getIslands()) {
+              if (island.getIslandId() == msg.getIslandNumber()) {
+                islandIndex = currentGame.getMainBoard().getIslands().indexOf(island);
               }
             }
             responseEntrance.setStudentsIsland(
                 currentGame.getMainBoard().getIslands().get(islandIndex).getStudents());
 
-            responseEntrance.setTowersIsland(currentGame.getMainBoard().getIslands().get(islandIndex).getNumberOfTowers());
-            responseEntrance.setIslandOwnerId(currentGame.getMainBoard().getIslands().get(islandIndex).getOwnerId());
+            responseEntrance.setTowersIsland(
+                currentGame.getMainBoard().getIslands().get(islandIndex).getNumberOfTowers());
+            responseEntrance.setIslandOwnerId(
+                currentGame.getMainBoard().getIslands().get(islandIndex).getOwnerId());
           }
 
           responseEntrance.setIslandNumber(msg.getIslandNumber());
