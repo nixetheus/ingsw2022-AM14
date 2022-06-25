@@ -28,7 +28,7 @@ Project for Software Engineering Course - Polimi
 | Controller           |100%      |84%        |77%        |
 | Model                |100%      |90%        |91%        |
 
-![Test Coverage - Image](https://github.com/nixetheus/ingsw-AM14/blob/main/deliverables/coverage.png)
+![Test Coverage - Image](https://github.com/nixetheus/ingsw2022-AM14/blob/main/deliverables/coverage.png)
 
 ### HOW TO RUN THE GAME
 
