@@ -31,7 +31,15 @@ public class ViewMain extends Application {
 
     setPortNumberFromJson();
     isGUI = Integer.parseInt(args[0]) > 0;
-    socket = new Socket(hostName, portNumber);
+
+    //if server is down, print error message and terminate
+    try{
+      socket = new Socket(hostName, portNumber);
+    } catch(Exception e) {
+      System.out.println("Before starting clients, the server must be started!");
+      System.exit(1);
+    }
+
     // Thread for ping the server
     Thread pinger = new Thread(new Pinger(socket));
     pinger.start();
