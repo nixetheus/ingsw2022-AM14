@@ -32,15 +32,15 @@ public class StudentsBag {
    */
   public int[] pickRandomStudents(int numberOfStudents) {
 
-    // Side case
-    if (Arrays.stream(students).sum() <= 0) {
-      return new int[0];
-    }
+
 
     int[] returnStudents = new int[Constants.getNColors()];
 
     for (int student = 0; student < numberOfStudents; student++) {
 
+      if (Arrays.stream(students).sum() <= 0) {
+        return returnStudents;
+      }
       // Get colors whose number of students available is greater than zero
       int[] availableColors = Arrays.stream(new int[]{0, 1, 2, 3, 4})
           .filter(number -> students[number] > 0).toArray();
