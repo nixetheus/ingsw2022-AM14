@@ -1,6 +1,7 @@
 package it.polimi.ingsw.guicontrollers;
 
 import static javafx.scene.paint.Color.BLACK;
+import static javafx.scene.paint.Color.WHITE;
 
 import it.polimi.ingsw.helpers.Towers;
 import java.net.URL;
@@ -84,13 +85,17 @@ public class IslandController implements Initializable {
     teamTower.setVisible(true);
 
     if (towerColor == 0) {
-      teamTower.setFill(Color.WHITE);
+      teamTower.setFill(WHITE);
       numberOfTowers.setTextFill(BLACK);
     }
-    else if (towerColor == 1)
+    else if (towerColor == 1) {
       teamTower.setFill(BLACK);
-    else if (towerColor == 2)
+      numberOfTowers.setTextFill(WHITE);
+    }
+    else if (towerColor == 2) {
       teamTower.setFill(Color.GRAY);
+      numberOfTowers.setTextFill(BLACK);
+    }
     else
       teamTower.setVisible(false);
   }
