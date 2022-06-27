@@ -183,11 +183,10 @@ public class MainBoard {
       if (island.getIslandId() == motherNature.getPosition()) {
         if (numMoves < 0) {
           numMoves = islands.size() + numMoves;
-        } else {
-          newMotherNaturePosition = islands
-              .get((islands.indexOf(island) + numMoves) % islands.size())
-              .getIslandId();
         }
+        newMotherNaturePosition = islands
+            .get((islands.indexOf(island) + numMoves) % islands.size())
+            .getIslandId();
       }
     }
     motherNature.move(newMotherNaturePosition);
