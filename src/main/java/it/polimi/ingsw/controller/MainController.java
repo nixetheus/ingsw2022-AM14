@@ -323,9 +323,7 @@ public class MainController {
       } else if (msg.getMessageMain() == MessageMain.MOVE
           && msg.getMessageSecondary() == MessageSecondary.CLOUD_TILE
           && turnManager.getCurrentNumberOfUsersPlayedActionPhase() == numberOfPlayers) {
-        this.game.fillClouds();
-        this.game.reverseOrderEndTurn();
-        this.game.assistantAfterTurn();
+
 
         if (game.getPurchasableCharacter() != null) {
           CharacterStruct params = new CharacterStruct();
@@ -336,6 +334,10 @@ public class MainController {
             card.removeEffect(params);
           }
         }
+
+        this.game.fillClouds();
+        this.game.reverseOrderEndTurn();
+        this.game.assistantAfterTurn();
       }
 
       turnManager.changeState();

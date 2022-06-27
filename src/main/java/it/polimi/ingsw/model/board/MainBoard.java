@@ -199,7 +199,11 @@ public class MainBoard {
    * @param numIsland The index of the island to set as NoEntry
    */
   public void setIslandsNoEntry(int numIsland) {
-    islands.get(numIsland).setNoEntry(true);
+    for(Island island :islands){
+      if(island.getIslandId()==numIsland){
+        islands.get(numIsland).setNoEntry(true);
+      }
+    }
   }
 
   /**
@@ -208,7 +212,11 @@ public class MainBoard {
    * @param numIsland The index of the island to reset
    */
   public void resetIslandsNoEntry(int numIsland) {
-    islands.get(numIsland).setNoEntry(false);
+    for(Island island :islands){
+      if(island.getIslandId()==numIsland){
+        islands.get(numIsland).setNoEntry(false);
+      }
+    }
   }
 
   public Vector<Island> getIslands() {
