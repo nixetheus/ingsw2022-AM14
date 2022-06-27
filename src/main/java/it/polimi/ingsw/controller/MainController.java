@@ -1,5 +1,7 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.helpers.Color;
+import it.polimi.ingsw.helpers.Constants;
 import it.polimi.ingsw.helpers.MessageMain;
 import it.polimi.ingsw.helpers.MessageSecondary;
 import it.polimi.ingsw.helpers.StudentsPlayerId;
@@ -289,6 +291,7 @@ public class MainController {
         winnerMessage.setWinnerId(winner.getId());
         winnerMessage.setNumberOfPlayers(numberOfPlayers);
         winnerMessage.setPlayersTeam(winners);
+        winnerMessage.setPlayerId(-1);
         messages.add(winnerMessage);
 
         turnManager.finishGame();
@@ -597,7 +600,7 @@ public class MainController {
 
     Team winner = null;
 
-    if (msg.getMessageSecondary() == MessageSecondary.ASSISTANT) {
+    if (msg.getMessageSecondary() == MessageSecondary.CLOUD_TILE) {
       if (game.getCurrentPlayer().getPlayableAssistant().size() == 0) {
         winner = getWinner();
       }
@@ -613,7 +616,7 @@ public class MainController {
         }
       }
 
-      if (game.getMainBoard().getIslands().size() == 3) {
+      if (game.getMainBoard().getIslands().size() <= 3) {
         winner = getWinner();
       }
 
@@ -623,6 +626,30 @@ public class MainController {
     }
 
     return winner;
+  }
+
+  /**
+   * This method checks who will win in case one or more team has the same number of built towers
+   * @return The winner team
+   */
+  public Team checkDraw(){
+    int maxProfessorTeam=0;
+    Team winnerTeam=null;
+
+    for(Team team: game.getTeams()){
+      int teamProfessorNumber=0;
+      for(Player player:team.getPlayers()){
+        for(int color=0;color<Constants.getNColors();color++){
+          if(game.getProfessorControlPlayer()[color].getPlayerId()==player.getPlayerId()){
+            teamProfessorNumber++;
+          }
+        }
+      }
+      if(teamProfessorNumber>maxProfessorTeam){
+        winnerTeam=team;
+      }
+    }
+    return winnerTeam;
   }
 
   public Vector<Team> getTeams() {
