@@ -1,6 +1,5 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.helpers.Color;
 import it.polimi.ingsw.helpers.Constants;
 import it.polimi.ingsw.helpers.MessageMain;
 import it.polimi.ingsw.helpers.MessageSecondary;
@@ -277,6 +276,8 @@ public class MainController {
     if (gameResponse != null && msg.getMessageSecondary() != MessageSecondary.CHARACTER) {
 
       //messages.add(gameResponse);Changed
+      // Update turn
+      turnManager.updateCounters();
 
       // Check win conditions
       Team winner = checkWinConditions(msg);
@@ -300,7 +301,7 @@ public class MainController {
       }
 
       // Update turn
-      turnManager.updateCounters();
+     // turnManager.updateCounters();
 
       // If appropriate change game order in game
       if (msg.getMessageMain() == MessageMain.PLAY
@@ -326,7 +327,6 @@ public class MainController {
       } else if (msg.getMessageMain() == MessageMain.MOVE
           && msg.getMessageSecondary() == MessageSecondary.CLOUD_TILE
           && turnManager.getCurrentNumberOfUsersPlayedActionPhase() == numberOfPlayers) {
-
 
         if (game.getPurchasableCharacter() != null) {
           CharacterStruct params = new CharacterStruct();
@@ -600,10 +600,10 @@ public class MainController {
 
     Team winner = null;
 
-    if (msg.getMessageSecondary() == MessageSecondary.CLOUD_TILE) {
-      if (game.getCurrentPlayer().getPlayableAssistant().size() == 0) {
-        winner = getWinner();
-      }
+    if (msg.getMessageSecondary() == MessageSecondary.CLOUD_TILE
+        && game.getCurrentPlayer().getPlayableAssistant().size() == 0
+        && turnManager.getCurrentNumberOfUsersPlayedActionPhase() == numberOfPlayers) {
+      winner = getWinner();
     } else if (msg.getMessageSecondary() == MessageSecondary.MOVE_MN) {
 
       for (Team team : game.getTeams()) {
@@ -621,7 +621,8 @@ public class MainController {
       }
 
     } else if (Arrays.stream(game.getStudentsBag().getStudents()).sum() == 0
-        && msg.getMessageSecondary() == MessageSecondary.CLOUD_TILE) {
+        && msg.getMessageSecondary() == MessageSecondary.CLOUD_TILE
+        && turnManager.getCurrentNumberOfUsersPlayedActionPhase() == numberOfPlayers) {
       winner = getWinner();
     }
 
@@ -630,23 +631,24 @@ public class MainController {
 
   /**
    * This method checks who will win in case one or more team has the same number of built towers
+   *
    * @return The winner team
    */
-  public Team checkDraw(){
-    int maxProfessorTeam=0;
-    Team winnerTeam=null;
+  public Team checkDraw() {
+    int maxProfessorTeam = 0;
+    Team winnerTeam = null;
 
-    for(Team team: game.getTeams()){
-      int teamProfessorNumber=0;
-      for(Player player:team.getPlayers()){
-        for(int color=0;color<Constants.getNColors();color++){
-          if(game.getProfessorControlPlayer()[color].getPlayerId()==player.getPlayerId()){
+    for (Team team : game.getTeams()) {
+      int teamProfessorNumber = 0;
+      for (Player player : team.getPlayers()) {
+        for (int color = 0; color < Constants.getNColors(); color++) {
+          if (game.getProfessorControlPlayer()[color].getPlayerId() == player.getPlayerId()) {
             teamProfessorNumber++;
           }
         }
       }
-      if(teamProfessorNumber>maxProfessorTeam){
-        winnerTeam=team;
+      if (teamProfessorNumber > maxProfessorTeam) {
+        winnerTeam = team;
       }
     }
     return winnerTeam;
