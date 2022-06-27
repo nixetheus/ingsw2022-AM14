@@ -89,6 +89,8 @@ public class MainBoardCharacters extends CharacterCard {
    */
   private void takeStudentPutIslandEffect(MainBoard mainBoard, int numIsland, Color color) {
     mainBoard.addToIsland(color.ordinal(), numIsland);
+    students[color.ordinal()]--;
+    students[(int) (Math.random() * Color.values().length)]++;
   }
 
   /**

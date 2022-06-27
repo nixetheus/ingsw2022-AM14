@@ -165,6 +165,8 @@ public class PlayerCharacters extends CharacterCard {
    */
   private void putOneDiningRoomEffect(Player currentPlayer, Color color) {
     currentPlayer.moveToPlayerBoard(Places.DINING_ROOM, color.ordinal());
+    students[color.ordinal()]--;
+    students[(int) (Math.random() * Color.values().length)]++;
   }
 
   /**
