@@ -140,27 +140,32 @@ public class Game {
 
     assert islandMotherNatureIn != null;
 
-    if (islandMotherNatureIn.getOwnerId() == -1) {
+    if (!islandMotherNatureIn.isNoEntry()) {
+      if (islandMotherNatureIn.getOwnerId() == -1) {
 
-      int idTeamControlIsland = mainBoard
-          .calculateInfluence(professorControlPlayer, teams, islandMotherNatureIn, activePlayer);
-      islandMotherNatureIn.setOwner(idTeamControlIsland);
+        int idTeamControlIsland = mainBoard
+            .calculateInfluence(professorControlPlayer, teams, islandMotherNatureIn, activePlayer);
+        islandMotherNatureIn.setOwner(idTeamControlIsland);
 
-      if (idTeamControlIsland >= 0) {
-        teams.get(idTeamControlIsland).removeTowers(1);
-        islandMotherNatureIn.addTower(1);
+        if (idTeamControlIsland >= 0) {
+          teams.get(idTeamControlIsland).removeTowers(1);
+          islandMotherNatureIn.addTower(1);
+        }
+
+      } else {
+        teams.get(islandMotherNatureIn.getOwnerId()).addTowers(1);
+
+        islandMotherNatureIn.setOwner(
+            mainBoard.calculateInfluence(professorControlPlayer, teams, islandMotherNatureIn,
+                activePlayer));
+
+        teams.get(islandMotherNatureIn.getOwnerId()).removeTowers(1);
       }
+      mainBoard.joinIsland(mainBoard.getMotherNature().getPosition());
 
     } else {
-      teams.get(islandMotherNatureIn.getOwnerId()).addTowers(1);
-
-      islandMotherNatureIn.setOwner(
-          mainBoard.calculateInfluence(professorControlPlayer, teams, islandMotherNatureIn,
-              activePlayer));
-
-      teams.get(islandMotherNatureIn.getOwnerId()).removeTowers(1);
+      islandMotherNatureIn.setNoEntry(false);
     }
-    mainBoard.joinIsland(mainBoard.getMotherNature().getPosition());
   }
 
   /**

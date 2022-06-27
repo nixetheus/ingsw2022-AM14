@@ -68,9 +68,6 @@ public class MoveController {
           // ONLY CLOCKWISE
           if (messageIslandIndex == (islandMotherNatureIndex + motherNatureMoves) % nOfIslands) {
 
-            // IF NOT NO ENTRY
-            if (!currentGame.getMainBoard().getIslands().elementAt(messageIslandIndex)
-                .isNoEntry()) {
 
               currentGame.moveNature(motherNatureMoves);
 
@@ -93,7 +90,7 @@ public class MoveController {
                   .getOwnerId());
               return responseNature;
 
-            }
+
 
           }
 
