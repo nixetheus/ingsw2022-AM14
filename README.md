@@ -23,10 +23,10 @@ Project for Software Engineering Course - Polimi
 
 ### TEST COVERAGE
 
-| Functionality        |  Class%  |  Method%  |   Line%   |
-|:---------------------|:--------:|:---------:|:---------:|
-| Controller           |100%      |84%        |77%        |
-| Model                |100%      |90%        |91%        |
+| Functionality        |  Class%  |  Method%  | Line% |
+|:---------------------|:--------:|:---------:|:-----:|
+| Controller           |100%      |84%        |  80%  |
+| Model                |100%      |90%        |  91%  |
 
 ![Test Coverage - Image](https://github.com/nixetheus/ingsw2022-AM14/blob/main/deliverables/coverage.png)
 
