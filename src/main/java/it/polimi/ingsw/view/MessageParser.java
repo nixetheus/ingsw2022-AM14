@@ -76,6 +76,7 @@ public class MessageParser {
         case PLAY:
           //TODO broken if i wrote only "play" does not work
           PlayMessage playMessage = new PlayMessage(messageSecondary);
+          playMessage.setPlayerId(playerId);
           String firstCommand = str.split(",")[0];
           playMessage.setAssistantId(findIndex(firstCommand));
           playMessage.setCharacterId(findIndex(firstCommand));
@@ -92,15 +93,18 @@ public class MessageParser {
           MoveMessage moveMessage = new MoveMessage(messageSecondary);
           moveMessage.setCloudTileNumber(findIndex(str));
           moveMessage.setIslandNumber(findIndex(str));
+          moveMessage.setPlayerId(playerId);
 
           if (str.contains("STUDENT")) {
-            moveMessage.setStudentColor(findColor(str).ordinal());
+            if(findColor(str)!=null){
+            moveMessage.setStudentColor(findColor(str).ordinal());}
+            else{
+              printError();
+            }
           }
 
           moveMessage.setPlace(findPlace(str));
 
-          //if(moveMessage.getPlace()==-1){
-          // printError();}
 
           return moveMessage;
 

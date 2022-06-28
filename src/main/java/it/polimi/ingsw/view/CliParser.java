@@ -56,7 +56,7 @@ public class CliParser {
     if (jsonMessage.contains("\"messageMain\":\"END\"")) {
       return elaborateMessage(gson.fromJson(jsonMessage, WinnerMessage.class));
     }
-    return null;
+    return "A error has occurred please check the input";
   }
 
   /**
@@ -80,7 +80,7 @@ public class CliParser {
       case END:
         return printWinMessage((WinnerMessage) msg);
     }
-    return null;
+    return "A error has occurred please check the input";
   }
 
   /**
@@ -297,7 +297,7 @@ public class CliParser {
         if (msg.getActivePLayerId() != playerId) {
           return "another player did something";
         }
-        return "";
+        return " ";
       case CLOUD_TILE:
         returnString.append(printCloudTiles(msg));
         returnString.append(printEntrance(msg));
