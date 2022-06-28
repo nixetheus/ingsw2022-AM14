@@ -27,7 +27,7 @@ public class MoveControllerTest {
     Team team2 = new Team(1, Towers.WHITE);
 
     Player player1 = new Player(0, "test1");
-    player1.playAssistant((int) (Math.random() * 10));
+    player1.playAssistant(9);
     team1.addPlayer(player1);
     Player player2 = new Player(0, "test2"); team1.addPlayer(player2);
     teams.add(team1); teams.add(team2);
@@ -39,7 +39,7 @@ public class MoveControllerTest {
     MoveController moveControllerTest = new MoveController();
     MoveMessage moveMessageTest = new MoveMessage(MessageSecondary.MOVE_MN);
 
-    int moves = (int) (Math.random() *  player1.getAssistant().getMoves());
+    int moves = 4;
     int islandId = (testGame.getMainBoard().getMotherNature().getPosition()
         + moves) % testGame.getMainBoard().getIslands().size();
     moveMessageTest.setIslandNumber(islandId);
@@ -128,9 +128,12 @@ public class MoveControllerTest {
     MoveMessage moveMessageTest = new MoveMessage(MessageSecondary.ENTRANCE);
 
     int index = 0;
-    while (player1.getPlayerBoard().getEntrance().getStudents()[index++] <= 0);
+    while (testGame.getCurrentPlayer().getPlayerBoard().getEntrance().getStudents()[index] <= 0)
+      index++;
 
     moveMessageTest.setStudentColor(index);
+    moveMessageTest.setPlace(0);
+    moveMessageTest.setPlayerId(0);
 
     MoveMessageResponse response =
         (MoveMessageResponse) moveControllerTest.elaborateMessage(moveMessageTest, testGame);

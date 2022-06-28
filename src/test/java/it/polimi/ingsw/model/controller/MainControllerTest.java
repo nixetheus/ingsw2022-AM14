@@ -204,10 +204,12 @@ public class MainControllerTest {
               .getStudents())
               .sum());
     }
+    else{
     Assert.assertEquals(2,
         Arrays.stream(
             mainController.getGame().getMainBoard().getIslands().get(selectedIsland).getStudents())
             .sum());
+    }
     mainController.elaborateMessage(student5);
     Assert.assertEquals(1,
         Arrays.stream(mainController.getGame().getCurrentPlayer().getPlayerBoard().getDiningRoom()

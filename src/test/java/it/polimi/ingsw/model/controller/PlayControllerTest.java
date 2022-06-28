@@ -101,17 +101,17 @@ public class PlayControllerTest {
     playMessageTest.setStudentsEntrance(player1.getPlayerBoard().getEntrance().getStudents());
     playMessageTest.setStudentsDiningRoom(player1.getPlayerBoard().getDiningRoom().getStudents());
 
-    /*PlayMessageResponse response =
+    PlayMessageResponse response =
         (PlayMessageResponse) playControllerTest.elaborateMessage(playMessageTest, testGame);
     Assert.assertEquals(response.getMessageSecondary(), MessageSecondary.CHARACTER);
     Assert.assertEquals(response.getCharacterId(), characterId);
 
-    // CANNOT PLAY
+     //CANNOT PLAY
     while (testGame.getCurrentPlayer().getCoins()
         >= testGame.getPurchasableCharacter().elementAt(characterId).getCost())
-      testGame.getCurrentPlayer().removeCoins(1);*/
+      testGame.getCurrentPlayer().removeCoins(1);
 
-    ///response = (PlayMessageResponse) playControllerTest.elaborateMessage(playMessageTest, testGame);
-    Assert.assertNull(null);
-  }
+    response = (PlayMessageResponse) playControllerTest.elaborateMessage(playMessageTest, testGame);
+    Assert.assertNull(response);
+ }
 }

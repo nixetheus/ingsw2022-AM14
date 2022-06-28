@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.board;
 
 import it.polimi.ingsw.helpers.Constants;
 import java.util.Arrays;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -49,13 +50,11 @@ public class StudentsBagTest {
   public void testTooManyStudents() {
 
     StudentsBag bag = new StudentsBag();
-    try {
+
       bag.pickRandomStudents(Constants.getStudentsForColor() * Constants.getNColors() + 1);
-    } catch (Exception e) {
-      assert (true);
-      return;
-    }
-    assert (false);
+      int[]returnedArray=bag.pickRandomStudents(1);
+      int[]comparisonArray=new int[Constants.getNColors()];
+    Assert.assertArrayEquals(returnedArray,comparisonArray);
   }
 
 }
