@@ -1,6 +1,6 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.helpers.Constants;
+import it.polimi.ingsw.helpers.Color;
 import it.polimi.ingsw.helpers.MessageMain;
 import it.polimi.ingsw.helpers.MessageSecondary;
 import it.polimi.ingsw.helpers.StudentsPlayerId;
@@ -301,7 +301,7 @@ public class MainController {
       }
 
       // Update turn
-     // turnManager.updateCounters();
+      // turnManager.updateCounters();
 
       // If appropriate change game order in game
       if (msg.getMessageMain() == MessageMain.PLAY
@@ -585,6 +585,11 @@ public class MainController {
         maxTeamId = teamId;
       }
     }
+    Arrays.sort(towersTeam);
+
+    if (towersTeam[towersTeam.length - 1] == towersTeam[towersTeam.length - 2]) {
+      maxTeamId = checkDraw().getId();
+    }
 
     return game.getTeams().elementAt(maxTeamId);
 
@@ -641,14 +646,18 @@ public class MainController {
     for (Team team : game.getTeams()) {
       int teamProfessorNumber = 0;
       for (Player player : team.getPlayers()) {
-        for (int color = 0; color < Constants.getNColors(); color++) {
-          if (game.getProfessorControlPlayer()[color].getPlayerId() == player.getPlayerId()) {
-            teamProfessorNumber++;
+        for (Color color : Color.values()) {
+          if (game.getProfessorControlPlayer()[color.ordinal()] != null) {
+            if (game.getProfessorControlPlayer()[color.ordinal()].getPlayerId() == player
+                .getPlayerId()) {
+              teamProfessorNumber++;
+            }
           }
         }
       }
       if (teamProfessorNumber > maxProfessorTeam) {
         winnerTeam = team;
+        maxProfessorTeam = teamProfessorNumber;
       }
     }
     return winnerTeam;

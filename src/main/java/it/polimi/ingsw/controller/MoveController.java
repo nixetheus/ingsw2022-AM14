@@ -221,8 +221,8 @@ public class MoveController {
    */
   private boolean checkCloudTileValid(MoveMessage msg, Game currentGame) {
     return currentGame.getCloudTiles().size() >= msg.getCloudTileNumber()
-        && Arrays.stream(currentGame.getCloudTiles().get(msg.getCloudTileNumber()).getStudents())
-        .sum() != 0;
+        && (Arrays.stream(currentGame.getCloudTiles().get(msg.getCloudTileNumber()).getStudents())
+        .sum() != 0|| Arrays.stream(currentGame.getStudentsBag().getStudents()).sum()==0);
   }
 
 
