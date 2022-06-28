@@ -41,7 +41,7 @@ public class PlayControllerTest {
     PlayMessage playMessageTest = new PlayMessage(MessageSecondary.ASSISTANT);
 
     // CAN PLAY
-    int assistantTestId = (int) (Math.random() * 10);
+    int assistantTestId = 9;
     playMessageTest.setPlayerId(player1.getPlayerId());
     playMessageTest.setAssistantId(assistantTestId);
 
@@ -95,8 +95,8 @@ public class PlayControllerTest {
     playMessageTest.setPlayerId(player1.getPlayerId());
 
     playMessageTest.setColor(Color.RED);
-    playMessageTest.setNumIsland(0);
-    playMessageTest.setMotherNatureMoves(2);
+    playMessageTest.setNumIsland(5);
+    playMessageTest.setMotherNatureMoves(-1);
     playMessageTest.setStudentsCard(characterCard.getStudents());
     playMessageTest.setStudentsEntrance(player1.getPlayerBoard().getEntrance().getStudents());
     playMessageTest.setStudentsDiningRoom(player1.getPlayerBoard().getDiningRoom().getStudents());
