@@ -450,6 +450,11 @@ public class MainController {
         int[] playersCoins = new int[numberOfPlayers];
         int[] towerPerTeam = new int[game.getTeams().size()];
 
+        for(int playerIndex=0;playerIndex<game.getPlayerNumber();playerIndex++){
+          int[] playerProfessors = new int[5];
+          professors.add(playerProfessors);
+        }
+
         for (Team teamStudents : this.game.getTeams()) {
 
           towerPerTeam[teamStudents.getId()] = teamStudents.getAvailableTowers();
@@ -465,8 +470,6 @@ public class MainController {
             beginTurnMessage.setStudentDiningRoom(studentDiningRooms);
 
             // Professors
-            int[] playerProfessors = new int[5];
-            professors.add(playerProfessors);
             for (int profIndex = 0; profIndex < 5; profIndex++) {
               if (game.getProfessorControlPlayer()[profIndex] != null) {
                 if (game.getProfessorControlPlayer()[profIndex].getPlayerId()
