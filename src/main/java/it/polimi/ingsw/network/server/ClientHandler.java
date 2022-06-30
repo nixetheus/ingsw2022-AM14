@@ -109,9 +109,6 @@ public class ClientHandler implements Runnable {
 
     //read input from client
     String input = inputStream.nextLine();
-    if (!input.contains("PING")) {
-      System.out.println(input);
-    }
     if (input != null) {
 
       Message clientResponse = fromJson(input);
