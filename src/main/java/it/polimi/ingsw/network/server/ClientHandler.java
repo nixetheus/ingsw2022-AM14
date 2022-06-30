@@ -224,7 +224,7 @@ public class ClientHandler implements Runnable {
   /**
    * Create a default message to return to run()
    *
-   * @return default Vector<Message>
+   * @return default vector of messages
    */
   private Vector<Message> PingResponse() {
     Vector<Message> messages = new Vector<>();
