@@ -4,16 +4,18 @@ import it.polimi.ingsw.network.server.ServerMain;
 import it.polimi.ingsw.view.ViewMain;
 import java.io.IOException;
 import java.util.Scanner;
-import javafx.application.Application;
-import javafx.stage.Stage;
 
 /**
  * Eriantys is the main class of the project everything starts from here
  */
 public class Eriantys {
 
-
-
+  /**
+   * Main method of Eriantys App
+   * @param args args passed from command line
+   * @throws IOException exception
+   * @throws InterruptedException exception
+   */
   public static void main(String[] args) throws IOException, InterruptedException {
     printEriantys();
     choice();
@@ -36,7 +38,10 @@ public class Eriantys {
   }
 
   /**
-   *Method used to run what the user needs
+   * Method used to run what the user needs
+   * 1) Server App
+   * 2) Cli App
+   * 3) Gui App
    */
   private static void choice() throws IOException, InterruptedException {
     Scanner choice = new Scanner(System.in);

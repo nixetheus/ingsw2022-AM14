@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.server;
 
+import it.polimi.ingsw.helpers.Constants;
 import it.polimi.ingsw.helpers.MessageSecondary;
 import it.polimi.ingsw.messages.ClientResponse;
 import java.io.IOException;
@@ -13,8 +14,8 @@ import java.util.TimerTask;
  */
 public class TimerThread implements Runnable {
 
+  //Attributes
   private final ClientHandler clientHandler;
-  private final int timeOut = 5000;
   private final Timer pingTimer;
 
   //This task is run when timer ends
@@ -50,9 +51,7 @@ public class TimerThread implements Runnable {
    */
   @Override
   public void run() {
-
-    pingTimer.schedule(endGameTask, timeOut);
-
+    pingTimer.schedule(endGameTask, Constants.getTimeOut());
   }
 
 }

@@ -12,7 +12,6 @@ import java.io.InputStreamReader;
 public class FileReader {
 
   /**
-   *
    * @param filename path of file
    * @return absolute path that works with jar
    * @throws IOException file not found
@@ -35,6 +34,12 @@ public class FileReader {
     return sb.toString();
   }
 
+  /**
+   * This method returns path file
+   * @param path path
+   * @return String path
+   * @throws IOException File not found
+   */
   public static String getPath(String path) throws IOException {
     return readFromJARFile(path);
   }

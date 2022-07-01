@@ -21,6 +21,8 @@ public class Constants {
   private static final int INITIAL_COIN_NUMBER = 1;
   private static final int MAX_PORT = 65535;
   private static final int MIN_PORT = 1024;
+  private static final int PING_TIME = 2000;
+  private static final int TIME_OUT = 5000;
 
   private Constants() {
   }
@@ -84,5 +86,9 @@ public class Constants {
   public static int getMinPort() {
     return MIN_PORT;
   }
+
+  public static int getPingTime() { return PING_TIME; }
+
+  public static int getTimeOut() { return TIME_OUT; }
 
 }

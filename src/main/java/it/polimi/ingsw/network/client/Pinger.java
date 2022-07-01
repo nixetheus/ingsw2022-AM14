@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.client;
 
 
 import com.google.gson.Gson;
+import it.polimi.ingsw.helpers.Constants;
 import it.polimi.ingsw.helpers.MessageSecondary;
 import it.polimi.ingsw.messages.ClientResponse;
 import it.polimi.ingsw.messages.Message;
@@ -14,7 +15,6 @@ import java.net.Socket;
  */
 public class Pinger implements Runnable {
 
-  private static final int pingTime = 2000;
   private final PrintWriter out;
 
   /**
@@ -27,13 +27,13 @@ public class Pinger implements Runnable {
   }
 
   /**
-   * This method send a ping message after a certain period of time
+   * This method send a ping message after a PING_TIME period of time
    */
   @Override
   public void run() {
 
     Message pingMessage = new ClientResponse(MessageSecondary.PING);
-
+    int pingTime = Constants.getPingTime();
     while (true) {
       try {
 
