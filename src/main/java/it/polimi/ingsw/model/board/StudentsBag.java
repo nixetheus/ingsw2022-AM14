@@ -32,8 +32,6 @@ public class StudentsBag {
    */
   public int[] pickRandomStudents(int numberOfStudents) {
 
-
-
     int[] returnStudents = new int[Constants.getNColors()];
 
     for (int student = 0; student < numberOfStudents; student++) {

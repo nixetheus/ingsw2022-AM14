@@ -3,11 +3,7 @@ package it.polimi.ingsw.guicontrollers;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Vector;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -42,19 +38,19 @@ public class CloudController implements Initializable {
         students.elementAt(studVisibleIndex).setDisable(false);
         switch (index) {
           case 3:  // RED
-              students.elementAt(studVisibleIndex).setFill(Color.rgb(217, 77, 89));
+            students.elementAt(studVisibleIndex).setFill(Color.rgb(217, 77, 89));
             break;
           case 2:  // GREEN
-              students.elementAt(studVisibleIndex).setFill(Color.rgb(109, 166, 97));
+            students.elementAt(studVisibleIndex).setFill(Color.rgb(109, 166, 97));
             break;
           case 0:  // YELLOW
-              students.elementAt(studVisibleIndex).setFill(Color.rgb(254, 207, 53));
+            students.elementAt(studVisibleIndex).setFill(Color.rgb(254, 207, 53));
             break;
           case 4:  // PINK
-              students.elementAt(studVisibleIndex).setFill(Color.rgb(239, 132, 180));
+            students.elementAt(studVisibleIndex).setFill(Color.rgb(239, 132, 180));
             break;
           case 1:  // BLUE
-              students.elementAt(studVisibleIndex).setFill(Color.rgb(33, 187, 239));
+            students.elementAt(studVisibleIndex).setFill(Color.rgb(33, 187, 239));
             break;
         }
         studVisibleIndex++;

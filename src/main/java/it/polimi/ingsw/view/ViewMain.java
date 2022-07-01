@@ -33,9 +33,9 @@ public class ViewMain extends Application {
     isGUI = Integer.parseInt(args[0]) > 0;
 
     //if server is down, print error message and terminate
-    try{
+    try {
       socket = new Socket(hostName, portNumber);
-    } catch(Exception e) {
+    } catch (Exception e) {
       System.out.println("Before starting clients, the server must be started!");
       System.exit(1);
     }
@@ -66,7 +66,6 @@ public class ViewMain extends Application {
    */
   private static void setPortNumberFromJson() throws IOException {
 
-
     String path =
         it.polimi.ingsw.network.server.FileReader.getPath("/json/networkSettings.json");
     Gson gson = new Gson();
@@ -77,12 +76,11 @@ public class ViewMain extends Application {
     hostName = object.get("DEFAULT_HOST").getAsString();
 
     System.out.println("Server IP: " + hostName
-        + "\nDo you want to change it? (yes/no)" );
+        + "\nDo you want to change it? (yes/no)");
     Scanner scanner = new Scanner(System.in);
     String insertIP = scanner.nextLine();
 
-
-    if(insertIP.equals("yes") || insertIP.equals("YES") || insertIP.equals("Yes")
+    if (insertIP.equals("yes") || insertIP.equals("YES") || insertIP.equals("Yes")
         || insertIP.equals("Y") || insertIP.equals("y")) {
 
       System.out.println("Insert new Server IP address");
@@ -99,7 +97,10 @@ public class ViewMain extends Application {
 
     stage.setResizable(false);
 
-    stage.setOnCloseRequest(event -> {Platform.exit(); System.exit(0);});
+    stage.setOnCloseRequest(event -> {
+      Platform.exit();
+      System.exit(0);
+    });
 
     FXMLLoader loginFxmlLoader = new FXMLLoader(ViewMain.class.getResource("/login.fxml"));
     FXMLLoader loginParamsFxmlLoader = new FXMLLoader(

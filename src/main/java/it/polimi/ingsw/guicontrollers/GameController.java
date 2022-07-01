@@ -4,13 +4,11 @@ import it.polimi.ingsw.helpers.MessageSecondary;
 import it.polimi.ingsw.messages.PlayMessage;
 import it.polimi.ingsw.view.GuiParser;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Vector;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Bounds;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.effect.Glow;
@@ -18,17 +16,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Circle;
 
 public class GameController implements Initializable {
 
   public GridPane scene;
-  private GuiParser parser;
-
   public GridPane textArea;
   public Label textAreaText;
-  private Vector<String> textAreaStrings;
-
   // Cloud Tiles
   public StackPane cloud0;
   public StackPane cloud1;
@@ -39,8 +32,6 @@ public class GameController implements Initializable {
   public CloudController cloud2Controller;
   public CloudController cloud3Controller;
   public Vector<CloudController> cloudControllers;
-
-
   // Assistants
   public Pane assistant0;
   public Pane assistant1;
@@ -52,7 +43,6 @@ public class GameController implements Initializable {
   public Pane assistant7;
   public Pane assistant8;
   public Pane assistant9;
-
   // Characters
   public Pane character0;
   public Pane character1;
@@ -61,7 +51,6 @@ public class GameController implements Initializable {
   public CharacterController character1Controller;
   public CharacterController character2Controller;
   public Vector<CharacterController> characterControllers;
-
   // Islands
   public StackPane island0;
   public StackPane island1;
@@ -90,34 +79,39 @@ public class GameController implements Initializable {
   public IslandController island10Controller;
   public IslandController island11Controller;
   public Vector<IslandController> islandsControllers;
-
+  public Vector<PlayerBoardController> BoardsControllers = new Vector<>();
+  // Coins
+  public Label playerCoins;
+  public int playerId = 0;
   // Other Players boards
   int numberOfPlayers = 0;
   int currentBoardIndex = 0;
-  @FXML private Parent player0Board;
-  @FXML private Parent player1Board;
-  @FXML private Parent player2Board;
-  @FXML private Parent player3Board;  // PlayerBoard
-  @FXML private PlayerBoardController player0BoardController;
-  @FXML private PlayerBoardController player1BoardController;
-  @FXML private PlayerBoardController player2BoardController;
-  @FXML private PlayerBoardController player3BoardController;
   Vector<Parent> boards = new Vector<>();
-  public Vector<PlayerBoardController> BoardsControllers = new Vector<>();
-
-  // Coins
-  public Label playerCoins;
-
+  private GuiParser parser;
+  private Vector<String> textAreaStrings;
+  @FXML
+  private Parent player0Board;
+  @FXML
+  private Parent player1Board;
+  @FXML
+  private Parent player2Board;
+  @FXML
+  private Parent player3Board;  // PlayerBoard
+  @FXML
+  private PlayerBoardController player0BoardController;
+  @FXML
+  private PlayerBoardController player1BoardController;
+  @FXML
+  private PlayerBoardController player2BoardController;
+  @FXML
+  private PlayerBoardController player3BoardController;
   // Active character
   private boolean isCharacterActive;
   private String activeCharacterId;
   private Pane activeCharacterPane;
-
   // CHARACTERS OBJECTS
   private String characterIslandId;
   private int characterColor;
-
-  public int playerId = 0;
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -132,7 +126,7 @@ public class GameController implements Initializable {
     BoardsControllers.add(player2BoardController);
     BoardsControllers.add(player3BoardController);
 
-    for(Parent board : boards) {
+    for (Parent board : boards) {
       board.setDisable(true);
       board.setVisible(false);
     }
@@ -177,14 +171,16 @@ public class GameController implements Initializable {
     characterControllers.add(character0Controller);
     characterControllers.add(character1Controller);
     characterControllers.add(character2Controller);
-    for (CharacterController cc : characterControllers)
+    for (CharacterController cc : characterControllers) {
       cc.mainController = this;
+    }
   }
 
   public void setGuiParser(GuiParser parser) {
     this.parser = parser;
-    for (PlayerBoardController boardController : BoardsControllers)
+    for (PlayerBoardController boardController : BoardsControllers) {
       boardController.setParser(parser);
+    }
   }
 
   public void setPlayerId(int playerId) {
@@ -207,28 +203,30 @@ public class GameController implements Initializable {
     currentBoardIndex++;
     currentBoardIndex %= numberOfPlayers;
 
-    for(Parent board : boards) {
+    for (Parent board : boards) {
       board.setDisable(true);
       board.setVisible(false);
     }
 
-    if (currentBoardIndex == playerId)
+    if (currentBoardIndex == playerId) {
       boards.elementAt(currentBoardIndex).setDisable(false);
+    }
     boards.elementAt(currentBoardIndex).setVisible(true);
   }
 
   @FXML
   protected void onChangeBoardDown(MouseEvent event) {
     currentBoardIndex--;
-    currentBoardIndex = (currentBoardIndex < 0)? numberOfPlayers - 1 : currentBoardIndex;
+    currentBoardIndex = (currentBoardIndex < 0) ? numberOfPlayers - 1 : currentBoardIndex;
 
-    for(Parent board : boards) {
+    for (Parent board : boards) {
       board.setDisable(true);
       board.setVisible(false);
     }
 
-    if (currentBoardIndex == playerId)
+    if (currentBoardIndex == playerId) {
       boards.elementAt(currentBoardIndex).setDisable(false);
+    }
     boards.elementAt(currentBoardIndex).setVisible(true);
   }
 
@@ -249,22 +247,6 @@ public class GameController implements Initializable {
         BoardsControllers.elementAt(playerId).unClickStudentsEntrance();
       }
     }
-
-    /*Bounds boundsCh0 = character0.localToScene(character0.getBoundsInLocal());
-    boolean char0NotClicked = event.getX() < boundsCh0.getMinX() || event.getX() > boundsCh0.getMaxX() ||
-        event.getY() < boundsCh0.getMinY() || event.getY() > boundsCh0.getMaxY();
-
-    Bounds boundsCh1 = character1.localToScene(character1.getBoundsInLocal());
-    boolean char1NotClicked = event.getX() < boundsCh1.getMinX() || event.getX() > boundsCh1.getMaxX() ||
-        event.getY() < boundsCh1.getMinY() || event.getY() > boundsCh1.getMaxY();
-
-    Bounds boundsCh2 = character2.localToScene(character2.getBoundsInLocal());
-    boolean char2NotClicked = event.getX() < boundsCh2.getMinX() || event.getX() > boundsCh2.getMaxX() ||
-        event.getY() < boundsCh2.getMinY() || event.getY() > boundsCh2.getMaxY();
-
-    if (char0NotClicked || char1NotClicked || char2NotClicked) {
-      characterWasUsed();
-    }*/
   }
 
   @FXML
@@ -281,7 +263,7 @@ public class GameController implements Initializable {
 
   @FXML
   protected void onClickIsland(MouseEvent event) {
-    StackPane island = (StackPane)event.getSource();
+    StackPane island = (StackPane) event.getSource();
     String studentEntrance = BoardsControllers.elementAt(playerId).studentEntranceId;
 
     // CHARACTER CARD
@@ -304,13 +286,13 @@ public class GameController implements Initializable {
 
   @FXML
   protected void onClickCloudTile(MouseEvent event) {
-    StackPane cloudTile = (StackPane)event.getSource();
+    StackPane cloudTile = (StackPane) event.getSource();
     parser.moveStudentsFromCloud(cloudTile.getId());
   }
 
   @FXML
   protected void onEnterHoverCard(MouseEvent event) {
-    Pane card = (Pane)event.getSource();
+    Pane card = (Pane) event.getSource();
     if (!Objects.equals(card.getId(), character0.getId()) &&
         !Objects.equals(card.getId(), character1.getId()) &&
         !Objects.equals(card.getId(), character2.getId())) {
@@ -322,7 +304,7 @@ public class GameController implements Initializable {
 
   @FXML
   protected void onExitHoverCard(MouseEvent event) {
-    Pane card = (Pane)event.getSource();
+    Pane card = (Pane) event.getSource();
     if (!Objects.equals(card.getId(), character0.getId()) &&
         !Objects.equals(card.getId(), character1.getId()) &&
         !Objects.equals(card.getId(), character2.getId())) {
@@ -334,13 +316,13 @@ public class GameController implements Initializable {
 
   @FXML
   protected void onClickAssistant(MouseEvent event) {
-    Pane assistant = (Pane)event.getSource();
+    Pane assistant = (Pane) event.getSource();
     parser.playAssistant(assistant.getId());
   }
 
   @FXML
   protected void onClickCharacter(MouseEvent event) {
-    Pane character = (Pane)event.getSource();
+    Pane character = (Pane) event.getSource();
     if (event.getY() < character0Controller.cardPane.getHeight()) {
 
       if (character == activeCharacterPane) {
@@ -399,10 +381,9 @@ public class GameController implements Initializable {
     playCharacterMessage.setPlayerId(playerId);
     playCharacterMessage.setCharacterId(id);
 
-    if (characterIslandId != null)
+    if (characterIslandId != null) {
       playCharacterMessage.setNumIsland(Integer.parseInt(characterIslandId.replace("island", "")));
-
-    // TODO color
+    }
 
     // DINING ROOM
     int[] diningRoomStudents = new int[5];
@@ -419,7 +400,8 @@ public class GameController implements Initializable {
               board.studentDiningRoomChar0Id.replace(colorStrings.elementAt(color), ""));
           diningRoomStudents[color] = diningRoomStudents[color] + 1;
           break;
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
       }
     }
     if (board.studentDiningRoomChar1Id != null) {
@@ -429,45 +411,55 @@ public class GameController implements Initializable {
               board.studentDiningRoomChar1Id.replace(colorStrings.elementAt(color), ""));
           diningRoomStudents[color] = diningRoomStudents[color] + 1;
           break;
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
       }
     }
     playCharacterMessage.setStudentsDiningRoom(diningRoomStudents);
 
     // CARD STUDENTS
     int cardStud0 = -1;
-    if (characterControllers.elementAt(id).studentCharacter0Id != null)
+    if (characterControllers.elementAt(id).studentCharacter0Id != null) {
       cardStud0 = Integer.parseInt(
-        characterControllers.elementAt(id).studentCharacter0Id.replace("student", ""));
+          characterControllers.elementAt(id).studentCharacter0Id.replace("student", ""));
+    }
 
     int cardStud1 = -1;
-    if (characterControllers.elementAt(id).studentCharacter1Id != null)
+    if (characterControllers.elementAt(id).studentCharacter1Id != null) {
       cardStud1 = Integer.parseInt(
-        characterControllers.elementAt(id).studentCharacter1Id.replace("student", ""));
+          characterControllers.elementAt(id).studentCharacter1Id.replace("student", ""));
+    }
 
     int cardStud2 = -1;
-    if (characterControllers.elementAt(id).studentCharacter2Id != null)
+    if (characterControllers.elementAt(id).studentCharacter2Id != null) {
       cardStud2 = Integer.parseInt(
-        characterControllers.elementAt(id).studentCharacter2Id.replace("student", ""));
+          characterControllers.elementAt(id).studentCharacter2Id.replace("student", ""));
+    }
 
     int[] cardPositions = {cardStud0, cardStud1, cardStud2};
     playCharacterMessage.setStudentsCardGUI(cardPositions);
 
     // ENTRANCE STUDENTS
     int entranceStud0 = -1;
-    if (BoardsControllers.elementAt(playerId).studentEntranceChar0Id != null)
+    if (BoardsControllers.elementAt(playerId).studentEntranceChar0Id != null) {
       entranceStud0 = Integer.parseInt(
-        BoardsControllers.elementAt(playerId).studentEntranceChar0Id.replace("studentEntrance", ""));
+          BoardsControllers.elementAt(playerId).studentEntranceChar0Id.replace("studentEntrance",
+              ""));
+    }
 
     int entranceStud1 = -1;
-    if (BoardsControllers.elementAt(playerId).studentEntranceChar1Id != null)
+    if (BoardsControllers.elementAt(playerId).studentEntranceChar1Id != null) {
       entranceStud1 = Integer.parseInt(
-        BoardsControllers.elementAt(playerId).studentEntranceChar1Id.replace("studentEntrance", ""));
+          BoardsControllers.elementAt(playerId).studentEntranceChar1Id.replace("studentEntrance",
+              ""));
+    }
 
     int entranceStud2 = -1;
-    if (BoardsControllers.elementAt(playerId).studentEntranceChar2Id != null)
+    if (BoardsControllers.elementAt(playerId).studentEntranceChar2Id != null) {
       entranceStud2 = Integer.parseInt(
-        BoardsControllers.elementAt(playerId).studentEntranceChar2Id.replace("studentEntrance", ""));
+          BoardsControllers.elementAt(playerId).studentEntranceChar2Id.replace("studentEntrance",
+              ""));
+    }
 
     int[] entrancePositions = {entranceStud0, entranceStud1, entranceStud2};
     playCharacterMessage.setStudentsEntranceGUI(entrancePositions);

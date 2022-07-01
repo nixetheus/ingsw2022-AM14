@@ -12,8 +12,9 @@ public class Eriantys {
 
   /**
    * Main method of Eriantys App
+   *
    * @param args args passed from command line
-   * @throws IOException exception
+   * @throws IOException          exception
    * @throws InterruptedException exception
    */
   public static void main(String[] args) throws IOException, InterruptedException {
@@ -38,10 +39,7 @@ public class Eriantys {
   }
 
   /**
-   * Method used to run what the user needs
-   * 1) Server App
-   * 2) Cli App
-   * 3) Gui App
+   * Method used to run what the user needs 1) Server App 2) Cli App 3) Gui App
    */
   private static void choice() throws IOException, InterruptedException {
     Scanner choice = new Scanner(System.in);

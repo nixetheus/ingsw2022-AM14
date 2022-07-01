@@ -9,8 +9,8 @@ import org.jetbrains.annotations.NotNull;
  */
 public class Island {
 
-  private int islandId;
   private final int[] students;
+  private int islandId;
   private int ownerId;
   private int numberOfTowers;
   private boolean noEntry;

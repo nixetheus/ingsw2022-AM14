@@ -56,7 +56,6 @@ public class Player implements Comparable<Player> {
 
     //JsonArray assistants = JsonParser.parseReader(new FileReader(jsonFile)).getAsJsonArray();
 
-
     for (Object assistant : assistants) {
       JsonObject object = (JsonObject) assistant;
       int moves = object.get("MOVES").getAsInt();

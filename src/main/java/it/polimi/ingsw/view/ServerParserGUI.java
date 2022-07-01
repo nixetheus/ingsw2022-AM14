@@ -19,7 +19,6 @@ import it.polimi.ingsw.messages.Message;
 import it.polimi.ingsw.messages.MoveMessageResponse;
 import it.polimi.ingsw.messages.PlayMessageResponse;
 import it.polimi.ingsw.messages.WinnerMessage;
-import it.polimi.ingsw.model.player.Player;
 import java.util.Arrays;
 import java.util.Vector;
 import javafx.application.Platform;
@@ -142,12 +141,13 @@ public class ServerParserGUI {
   private void elaborateEndMessage(WinnerMessage winnerMessage) {
     if (winnerMessage.getMessageSecondary() == MessageSecondary.WINNER) {
       String winText = "";
-      if (winnerMessage.getNumberOfPlayers() == 4)
+      if (winnerMessage.getNumberOfPlayers() == 4) {
         winText = winnerMessage.getPlayersTeam().elementAt(0) + " and " +
             winnerMessage.getPlayersTeam().elementAt(1) +
-                  " are the winners! Congratulations!";
-      else
-       winText = winnerMessage.getPlayersTeam().elementAt(0) + " is the winner! Congratulations!";
+            " are the winners! Congratulations!";
+      } else {
+        winText = winnerMessage.getPlayersTeam().elementAt(0) + " is the winner! Congratulations!";
+      }
 
       String finalWinText = winText;
       Platform.runLater(() -> mainController.setTextArea(finalWinText));
@@ -222,9 +222,10 @@ public class ServerParserGUI {
             .elementAt(teamId);
         board.showTowers(phaseMessage.getTowersNumber()[teamId]);
 
-        if (phaseMessage.getStudentDiningRoom().size() == 4)
+        if (phaseMessage.getStudentDiningRoom().size() == 4) {
           mainController.BoardsControllers
               .elementAt(teamId + 2).showTowers(phaseMessage.getTowersNumber()[teamId]);
+        }
       }
     });
 

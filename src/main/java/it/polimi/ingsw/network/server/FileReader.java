@@ -6,8 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
- * FileReader Class is created to allow the jar
- * to correctly read the files into the resources
+ * FileReader Class is created to allow the jar to correctly read the files into the resources
  */
 public class FileReader {
 
@@ -17,15 +16,13 @@ public class FileReader {
    * @throws IOException file not found
    */
   private static String readFromJARFile(String filename)
-      throws IOException
-  {
+      throws IOException {
     InputStream is = FileReader.class.getResourceAsStream(filename);
     InputStreamReader isr = new InputStreamReader(is);
     BufferedReader br = new BufferedReader(isr);
     StringBuffer sb = new StringBuffer();
     String line;
-    while ((line = br.readLine()) != null)
-    {
+    while ((line = br.readLine()) != null) {
       sb.append(line);
     }
     br.close();
@@ -36,6 +33,7 @@ public class FileReader {
 
   /**
    * This method returns path file
+   *
    * @param path path
    * @return String path
    * @throws IOException File not found

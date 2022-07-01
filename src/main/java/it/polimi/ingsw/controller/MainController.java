@@ -450,7 +450,7 @@ public class MainController {
         int[] playersCoins = new int[numberOfPlayers];
         int[] towerPerTeam = new int[game.getTeams().size()];
 
-        for(int playerIndex=0;playerIndex<game.getPlayerNumber();playerIndex++){
+        for (int playerIndex = 0; playerIndex < game.getPlayerNumber(); playerIndex++) {
           int[] playerProfessors = new int[5];
           professors.add(playerProfessors);
         }

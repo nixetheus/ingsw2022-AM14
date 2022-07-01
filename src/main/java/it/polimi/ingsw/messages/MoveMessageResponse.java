@@ -6,7 +6,7 @@ import it.polimi.ingsw.helpers.MessageSecondary;
 /**
  * MoveMessageResponse used used a response from server to client
  */
-public class MoveMessageResponse extends Message{
+public class MoveMessageResponse extends Message {
 
   private int place;
   private int islandNumber;
@@ -22,6 +22,7 @@ public class MoveMessageResponse extends Message{
 
   /**
    * Constructor class for MoveMessageResponse
+   *
    * @param messageSecondary The messageSecondary to be set
    */
   public MoveMessageResponse(MessageSecondary messageSecondary) {
@@ -33,52 +34,52 @@ public class MoveMessageResponse extends Message{
     return place;
   }
 
-  public int getIslandNumber() {
-    return islandNumber;
-  }
-
-  public int getCloudTileNumber() {
-    return cloudTileNumber;
-  }
-
-  public int[] getStudentsEntrance() {
-    return studentsEntrance;
-  }
-
-  public int[] getStudentsDiningRoom() {
-    return studentsDiningRoom;
-  }
-
-  public int[] getStudentsIsland() {
-    return studentsIsland;
-  }
-
-  public int[] getStudentsCloud() {
-    return studentsCloud;
-  }
-
   public void setPlace(int place) {
     this.place = place;
+  }
+
+  public int getIslandNumber() {
+    return islandNumber;
   }
 
   public void setIslandNumber(int islandNumber) {
     this.islandNumber = islandNumber;
   }
 
+  public int getCloudTileNumber() {
+    return cloudTileNumber;
+  }
+
   public void setCloudTileNumber(int cloudTileNumber) {
     this.cloudTileNumber = cloudTileNumber;
+  }
+
+  public int[] getStudentsEntrance() {
+    return studentsEntrance;
   }
 
   public void setStudentsEntrance(int[] studentsEntrance) {
     this.studentsEntrance = studentsEntrance;
   }
 
+  public int[] getStudentsDiningRoom() {
+    return studentsDiningRoom;
+  }
+
   public void setStudentsDiningRoom(int[] studentsDiningRoom) {
     this.studentsDiningRoom = studentsDiningRoom;
   }
 
+  public int[] getStudentsIsland() {
+    return studentsIsland;
+  }
+
   public void setStudentsIsland(int[] studentsIsland) {
     this.studentsIsland = studentsIsland;
+  }
+
+  public int[] getStudentsCloud() {
+    return studentsCloud;
   }
 
   public void setStudentsCloud(int[] studentsCloud) {

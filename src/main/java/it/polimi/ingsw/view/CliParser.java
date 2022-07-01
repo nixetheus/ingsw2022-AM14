@@ -553,9 +553,9 @@ public class CliParser {
 
               for (Color color : Color.values()) {
                 returnString.append(
-                    msg.getCharactersStudents()
-                        .get(msg.getPurchasableCharacterId().indexOf(id))[color
-                        .ordinal()]).append(" ")
+                        msg.getCharactersStudents()
+                            .get(msg.getPurchasableCharacterId().indexOf(id))[color
+                            .ordinal()]).append(" ")
                     .append(color).append(" students;\n");
               }
             }

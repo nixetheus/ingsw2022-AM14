@@ -14,16 +14,16 @@ import javafx.scene.input.MouseEvent;
 
 public class LoginController implements Initializable {
 
-  private GuiParser parser;
   public TextField username;
   public TextField hostname;
   public TextField portNumber;
   public CheckBox expertMode;
   public ChoiceBox numberOfPlayers;
+  private GuiParser parser;
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
-    //textArea.setVisible(false);
+
   }
 
   public void setParser(GuiParser parser) {
@@ -33,8 +33,9 @@ public class LoginController implements Initializable {
   @FXML
   protected void sendLoginMessage(MouseEvent event) {
     String usernameString = username.getText();
-    if (usernameString != null)
+    if (usernameString != null) {
       parser.sendLoginMessage(usernameString);
+    }
   }
 
   @FXML
@@ -46,16 +47,17 @@ public class LoginController implements Initializable {
 
   @FXML
   protected void onPressEnterLogin(KeyEvent key) {
-    if(key.getCode() == KeyCode.ENTER) {
+    if (key.getCode() == KeyCode.ENTER) {
       String usernameString = username.getText();
-      if (usernameString != null)
+      if (usernameString != null) {
         parser.sendLoginMessage(usernameString);
+      }
     }
   }
 
   @FXML
   protected void onPressEnterParams(KeyEvent key) {
-    if(key.getCode() == KeyCode.ENTER) {
+    if (key.getCode() == KeyCode.ENTER) {
       boolean isGameExpert = expertMode.isSelected();
       String numberOfPlayersString = "";
       parser.sendLoginParameters(isGameExpert, "4 Players");

@@ -3,10 +3,8 @@ package it.polimi.ingsw.guicontrollers;
 import static javafx.scene.paint.Color.BLACK;
 import static javafx.scene.paint.Color.WHITE;
 
-import it.polimi.ingsw.helpers.Towers;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Stack;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -14,9 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Polygon;
 
 public class IslandController implements Initializable {
 
@@ -57,7 +53,7 @@ public class IslandController implements Initializable {
 
   @FXML
   protected void onStudentDropOnIsland(MouseEvent event) {
-    StackPane island = ((StackPane)event.getSource());
+    StackPane island = ((StackPane) event.getSource());
   }
 
   public void setRedStudents(int nStudents) {
@@ -87,17 +83,15 @@ public class IslandController implements Initializable {
     if (towerColor == 0) {
       teamTower.setFill(WHITE);
       numberOfTowers.setTextFill(BLACK);
-    }
-    else if (towerColor == 1) {
+    } else if (towerColor == 1) {
       teamTower.setFill(BLACK);
       numberOfTowers.setTextFill(WHITE);
-    }
-    else if (towerColor == 2) {
+    } else if (towerColor == 2) {
       teamTower.setFill(Color.GRAY);
       numberOfTowers.setTextFill(BLACK);
-    }
-    else
+    } else {
       teamTower.setVisible(false);
+    }
   }
 
   public void setNumberOfTowers(int nTowers) {
@@ -116,7 +110,7 @@ public class IslandController implements Initializable {
   }
 
   public void setNoEntry(boolean isNoEntry) {
-   noEntry.setVisible(isNoEntry);
+    noEntry.setVisible(isNoEntry);
   }
 
 }

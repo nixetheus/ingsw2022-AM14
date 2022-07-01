@@ -10,7 +10,6 @@ import it.polimi.ingsw.messages.PlayMessage;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
-import javafx.fxml.FXMLLoader;
 
 public class GuiParser {
 
@@ -18,7 +17,7 @@ public class GuiParser {
   Gson gson = new Gson();
   GameController mainGuiController;
 
-  public GuiParser (int portNumber, String hostName, Socket socket, GameController main) {
+  public GuiParser(int portNumber, String hostName, Socket socket, GameController main) {
     mainGuiController = main;
     try {
       out = new PrintWriter(socket.getOutputStream(), true);

@@ -1,14 +1,14 @@
 package it.polimi.ingsw.messages;
 
-import java.util.Vector;
 import it.polimi.ingsw.helpers.MessageMain;
 import it.polimi.ingsw.helpers.MessageSecondary;
+import java.util.Vector;
 
 
 /**
  * WinnerMessage to send who won
  */
-public class WinnerMessage extends Message{
+public class WinnerMessage extends Message {
 
   private int winnerId;
   private int numberOfPlayers;
@@ -16,6 +16,7 @@ public class WinnerMessage extends Message{
 
   /**
    * Constructor class for WinnerMessage class
+   *
    * @param messageSecondary The messageSecondary to be set
    */
   public WinnerMessage(MessageSecondary messageSecondary) {

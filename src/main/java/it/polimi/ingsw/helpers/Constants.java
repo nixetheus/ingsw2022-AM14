@@ -87,8 +87,12 @@ public class Constants {
     return MIN_PORT;
   }
 
-  public static int getPingTime() { return PING_TIME; }
+  public static int getPingTime() {
+    return PING_TIME;
+  }
 
-  public static int getTimeOut() { return TIME_OUT; }
+  public static int getTimeOut() {
+    return TIME_OUT;
+  }
 
 }

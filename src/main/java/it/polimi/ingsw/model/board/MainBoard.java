@@ -178,7 +178,7 @@ public class MainBoard {
    * @param numMoves number of jumps of mother nature
    */
   public void moveMotherNature(int numMoves) {
-     int newMotherNaturePosition = -1;
+    int newMotherNaturePosition = -1;
     for (Island island : islands) {
       if (island.getIslandId() == motherNature.getPosition()) {
         if (numMoves < 0) {
@@ -198,8 +198,8 @@ public class MainBoard {
    * @param numIsland The index of the island to set as NoEntry
    */
   public void setIslandsNoEntry(int numIsland) {
-    for(Island island :islands){
-      if(island.getIslandId()==numIsland){
+    for (Island island : islands) {
+      if (island.getIslandId() == numIsland) {
         islands.get(numIsland).setNoEntry(true);
       }
     }
@@ -211,8 +211,8 @@ public class MainBoard {
    * @param numIsland The index of the island to reset
    */
   public void resetIslandsNoEntry(int numIsland) {
-    for(Island island :islands){
-      if(island.getIslandId()==numIsland){
+    for (Island island : islands) {
+      if (island.getIslandId() == numIsland) {
         islands.get(numIsland).setNoEntry(false);
       }
     }

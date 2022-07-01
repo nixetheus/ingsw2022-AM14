@@ -8,20 +8,16 @@ import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.util.Enumeration;
-import java.util.Scanner;
 import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 
 /**
- * Server Class:
- * Once the server has been created with the parameters passed by the main server,
- * it listens at the port and accepts every client connection.
- * For each of them create a clientHandler class (executed by a thread)
- * and a socket that will take care of the client-server communication
+ * Server Class: Once the server has been created with the parameters passed by the main server, it
+ * listens at the port and accepts every client connection. For each of them create a clientHandler
+ * class (executed by a thread) and a socket that will take care of the client-server communication
  */
 public class Server {
 
@@ -30,10 +26,10 @@ public class Server {
   private final Semaphore sem;
   private final int portNumber;
   private final Vector<Socket> socketOut;
-  private ExecutorService executor;
-  private ServerSocket serverSocket;
   private final MainController mainController;
   private final Vector<ClientHandler> clientsHandler;
+  private ExecutorService executor;
+  private ServerSocket serverSocket;
 
   /**
    * Constructor Server:
@@ -54,10 +50,8 @@ public class Server {
   }
 
   /**
-   * startServer Method:
-   * This method creates the server,
-   * accept clients and creates thread and clientHandler
-   * In the end, it close the Server connection
+   * startServer Method: This method creates the server, accept clients and creates thread and
+   * clientHandler In the end, it close the Server connection
    */
   public void startServer() throws IOException, InterruptedException {
 
@@ -68,9 +62,8 @@ public class Server {
   }
 
   /**
-   * setUpServer method:
-   * It creates the server with parameters passed from ServerMain
-   * It creates a Thread Poll for dynamic assignment of threads and reuse of them
+   * setUpServer method: It creates the server with parameters passed from ServerMain It creates a
+   * Thread Poll for dynamic assignment of threads and reuse of them
    */
   private void setUpServer() throws SocketException {
 
@@ -86,26 +79,23 @@ public class Server {
     System.out.println("Server ready!\nPort: " + portNumber + "\nIP address: ");
 
     Enumeration ip = NetworkInterface.getNetworkInterfaces();
-    while(ip.hasMoreElements())
-    {
+    while (ip.hasMoreElements()) {
       NetworkInterface netInterface = (NetworkInterface) ip.nextElement();
       Enumeration ipAddress = netInterface.getInetAddresses();
-      while (ipAddress.hasMoreElements())
-      {
+      while (ipAddress.hasMoreElements()) {
         InetAddress singleIp = (InetAddress) ipAddress.nextElement();
         String ipToPrint = singleIp.getHostAddress();
-        if(ipToPrint.charAt(0) == '1')
+        if (ipToPrint.charAt(0) == '1') {
           System.out.println(ipToPrint);
+        }
       }
     }
   }
 
   /**
-   * acceptClientsConnections method:
-   * This method accepts every client connection,
-   * create a socket and add it to socket out Vector,
-   * create a ClientHandler class (Runnable class runs by the thread) and add it to
-   * clientsHandler Vector
+   * acceptClientsConnections method: This method accepts every client connection, create a socket
+   * and add it to socket out Vector, create a ClientHandler class (Runnable class runs by the
+   * thread) and add it to clientsHandler Vector
    */
   private void acceptClientsConnections() throws IOException, InterruptedException {
 
@@ -115,7 +105,8 @@ public class Server {
     System.out.println("accepted first client");
 
     socketOut.add(firstClientSocket);
-    ClientHandler firstClientHandler = new ClientHandler(firstClientSocket, mainController, socketOut);
+    ClientHandler firstClientHandler = new ClientHandler(firstClientSocket, mainController,
+        socketOut);
     executor.submit(firstClientHandler);
     clientsHandler.add(firstClientHandler);
 
@@ -128,7 +119,8 @@ public class Server {
         socketOut.add(newClientSocket);
         System.out.println("accepted");
 
-        ClientHandler newClientHandler = new ClientHandler(newClientSocket, mainController, socketOut);
+        ClientHandler newClientHandler = new ClientHandler(newClientSocket, mainController,
+            socketOut);
         executor.submit(newClientHandler);
 
         clientsHandler.add(newClientHandler);
@@ -143,8 +135,7 @@ public class Server {
   }
 
   /**
-   * closeServer method:
-   * close the executor and server connection
+   * closeServer method: close the executor and server connection
    */
   private void closeServer() {
     System.out.println("Server closed");

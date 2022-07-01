@@ -9,10 +9,9 @@ import java.io.IOException;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * ServerMain Class:
- * This class setup the parameters passed from command line
- * and creates the Server, if nothing is passed it takes the port number
- * and the host address from json file (networkSettings.json)
+ * ServerMain Class: This class setup the parameters passed from command line and creates the
+ * Server, if nothing is passed it takes the port number and the host address from json file
+ * (networkSettings.json)
  */
 public class ServerMain {
 
@@ -20,10 +19,9 @@ public class ServerMain {
   private static int portNumber;
 
   /**
-   * main:
-   * set up port number and host from json file
-   * if any parameters are passed from command line it overwrites port number and/or hostname
-   * In the end creates the server and runs it
+   * main: set up port number and host from json file if any parameters are passed from command line
+   * it overwrites port number and/or hostname In the end creates the server and runs it
+   *
    * @param args arguments passed from command line
    */
   public static void main(String[] args) throws IOException, InterruptedException {
@@ -40,9 +38,9 @@ public class ServerMain {
   }
 
   /**
-   * setPortNumberFromJson method:
-   * Initialize port number and host name with the default value contents in
-   * the file networkSettings.json
+   * setPortNumberFromJson method: Initialize port number and host name with the default value
+   * contents in the file networkSettings.json
+   *
    * @throws FileNotFoundException if file not found
    */
   private static void setPortNumberFromJson() throws IOException {
@@ -58,10 +56,9 @@ public class ServerMain {
   }
 
   /**
-   * setUpParametersCommandLine method:
-   * If any parameters are passed from command line it overwrites port number and/or hostname
-   * port number --port || -p
-   * hostname --host || -h
+   * setUpParametersCommandLine method: If any parameters are passed from command line it overwrites
+   * port number and/or hostname port number --port || -p hostname --host || -h
+   *
    * @param args arguments passed from command line
    */
   private static void setUpParametersCommandLine(String @NotNull [] args) {

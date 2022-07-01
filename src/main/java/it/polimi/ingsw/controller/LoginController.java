@@ -30,7 +30,7 @@ public class LoginController {
   /**
    * This method creates a player
    *
-   * @param msg The message in which i can find the nickname
+   * @param msg      The message in which i can find the nickname
    * @param idPlayer Is the id that the new player must have
    * @return The created player
    */

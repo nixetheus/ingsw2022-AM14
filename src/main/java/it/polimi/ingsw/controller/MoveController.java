@@ -68,28 +68,26 @@ public class MoveController {
           // ONLY CLOCKWISE
           if (messageIslandIndex == (islandMotherNatureIndex + motherNatureMoves) % nOfIslands) {
 
+            currentGame.moveNature(motherNatureMoves);
 
-              currentGame.moveNature(motherNatureMoves);
+            int newMotherNaturePosition = currentGame.getMainBoard().getMotherNature()
+                .getPosition();
 
-              int newMotherNaturePosition = currentGame.getMainBoard().getMotherNature()
-                  .getPosition();
+            MoveMessageResponse responseNature = new MoveMessageResponse(
+                MessageSecondary.MOVE_MN);
 
-              MoveMessageResponse responseNature = new MoveMessageResponse(
-                  MessageSecondary.MOVE_MN);
+            responseNature.setPlayerId(currentGame.getCurrentPlayer().getPlayerId());
+            responseNature.setIslandNumber(newMotherNaturePosition);
 
-              responseNature.setPlayerId(currentGame.getCurrentPlayer().getPlayerId());
-              responseNature.setIslandNumber(newMotherNaturePosition);
-
-              responseNature.setTowersIsland(currentGame.getMainBoard().getIslands().stream()
-                  .filter(island -> island.getIslandId() == newMotherNaturePosition).findFirst()
-                  .get()
-                  .getNumberOfTowers());
-              responseNature.setIslandOwnerId(currentGame.getMainBoard().getIslands().stream()
-                  .filter(island -> island.getIslandId() == newMotherNaturePosition).findFirst()
-                  .get()
-                  .getOwnerId());
-              return responseNature;
-
+            responseNature.setTowersIsland(currentGame.getMainBoard().getIslands().stream()
+                .filter(island -> island.getIslandId() == newMotherNaturePosition).findFirst()
+                .get()
+                .getNumberOfTowers());
+            responseNature.setIslandOwnerId(currentGame.getMainBoard().getIslands().stream()
+                .filter(island -> island.getIslandId() == newMotherNaturePosition).findFirst()
+                .get()
+                .getOwnerId());
+            return responseNature;
 
 
           }
@@ -222,7 +220,7 @@ public class MoveController {
   private boolean checkCloudTileValid(MoveMessage msg, Game currentGame) {
     return currentGame.getCloudTiles().size() >= msg.getCloudTileNumber()
         && (Arrays.stream(currentGame.getCloudTiles().get(msg.getCloudTileNumber()).getStudents())
-        .sum() != 0|| Arrays.stream(currentGame.getStudentsBag().getStudents()).sum()==0);
+        .sum() != 0 || Arrays.stream(currentGame.getStudentsBag().getStudents()).sum() == 0);
   }
 
 

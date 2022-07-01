@@ -383,7 +383,7 @@ public class MessageParser {
     System.out.println("Input format wrong please try again");
     this.errorOccur = true;
   }
-  
+
   public int getPlayerId() {
     return playerId;
   }
