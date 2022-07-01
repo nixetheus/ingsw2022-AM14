@@ -5,31 +5,34 @@ import it.polimi.ingsw.helpers.MessageSecondary;
 import it.polimi.ingsw.helpers.StudentsPlayerId;
 import java.util.Vector;
 
+
 /**
  * BeginTurnMessage used to send the game state during the match
  */
 public class BeginTurnMessage extends Message {
 
+  int[] playerCoins;
+  int[] towersColor;
   int activePLayerId;
-  Vector<StudentsPlayerId> studentDiningRoom;
-  Vector<StudentsPlayerId> studentEntrance;
+  int[] towersNumber;
+  Integer[] islandsIds;
+  int[] charactersCosts;
+  int motherNaturePosition;
   Vector<int[]> professors;
+  boolean[] islandsNoEntry;
   Vector<int[]> studentsIsland;
   Vector<Integer> towersIsland;
-  Integer[] islandsIds;
-  boolean[] islandsNoEntry;
-  int[] towersColor;
-  int[] towersNumber;
+  Vector<int[]> charactersStudents;
   Vector<int[]> studentsCloudTiles;
   Vector<Integer> playableAssistantId;
   Vector<Integer> PurchasableCharacterId;
-  int[] charactersCosts;
-  Vector<int[]> charactersStudents;
-  int motherNaturePosition;
-  int[] playerCoins;
+  Vector<StudentsPlayerId> studentEntrance;
+  Vector<StudentsPlayerId> studentDiningRoom;
+
 
   /**
    * Constructor method for BeginTurnMessage
+   *
    * @param messageSecondary The message secondary to be set
    */
   public BeginTurnMessage(MessageSecondary messageSecondary) {
@@ -37,22 +40,60 @@ public class BeginTurnMessage extends Message {
     this.messageSecondary = messageSecondary;
   }
 
-  public Vector<StudentsPlayerId> getStudentDiningRoom() {
-    return studentDiningRoom;
+  public int[] getPlayerCoins() {
+    return playerCoins;
   }
 
-  public void setStudentDiningRoom(
-      Vector<StudentsPlayerId> studentDiningRoom) {
-    this.studentDiningRoom = studentDiningRoom;
+  public void setPlayerCoins(int[] playerCoins) {
+    this.playerCoins = playerCoins;
   }
 
-  public Vector<StudentsPlayerId> getStudentEntrance() {
-    return studentEntrance;
+  public int[] getTowersColor() {
+    return towersColor;
   }
 
-  public void setStudentEntrance(
-      Vector<StudentsPlayerId> studentEntrance) {
-    this.studentEntrance = studentEntrance;
+  public void setTowersColor(int[] towersColor) {
+    this.towersColor = towersColor;
+  }
+
+  public int getActivePLayerId() {
+    return activePLayerId;
+  }
+
+  public void setActivePLayerId(int activePLayerId) {
+    this.activePLayerId = activePLayerId;
+  }
+
+  public int[] getTowersNumber() {
+    return towersNumber;
+  }
+
+  public void setTowersNumber(int[] towersNumber) {
+    this.towersNumber = towersNumber;
+  }
+
+  public Integer[] getIslandsIds() {
+    return islandsIds;
+  }
+
+  public void setIslandsIds(Integer[] islandsIds) {
+    this.islandsIds = islandsIds;
+  }
+
+  public int[] getCharactersCosts() {
+    return charactersCosts;
+  }
+
+  public void setCharactersCosts(int[] charactersCosts) {
+    this.charactersCosts = charactersCosts;
+  }
+
+  public int getMotherNaturePosition() {
+    return motherNaturePosition;
+  }
+
+  public void setMotherNaturePosition(int motherNaturePosition) {
+    this.motherNaturePosition = motherNaturePosition;
   }
 
   public Vector<int[]> getProfessors() {
@@ -63,12 +104,36 @@ public class BeginTurnMessage extends Message {
     this.professors = professors;
   }
 
+  public boolean[] getIslandsNoEntry() {
+    return islandsNoEntry;
+  }
+
+  public void setIslandsNoEntry(boolean[] islandsNoEntry) {
+    this.islandsNoEntry = islandsNoEntry;
+  }
+
   public Vector<int[]> getStudentsIsland() {
     return studentsIsland;
   }
 
   public void setStudentsIsland(Vector<int[]> studentsIsland) {
     this.studentsIsland = studentsIsland;
+  }
+
+  public Vector<Integer> getTowersIsland() {
+    return towersIsland;
+  }
+
+  public void setTowersIsland(Vector<Integer> towersIsland) {
+    this.towersIsland = towersIsland;
+  }
+
+  public Vector<int[]> getCharactersStudents() {
+    return charactersStudents;
+  }
+
+  public void setCharactersStudents(Vector<int[]> charactersStudents) {
+    this.charactersStudents = charactersStudents;
   }
 
   public Vector<int[]> getStudentsCloudTiles() {
@@ -95,83 +160,21 @@ public class BeginTurnMessage extends Message {
     PurchasableCharacterId = purchasableCharacterId;
   }
 
-  public int getMotherNaturePosition() {
-    return motherNaturePosition;
+  public Vector<StudentsPlayerId> getStudentEntrance() {
+    return studentEntrance;
   }
 
-  public void setMotherNaturePosition(int motherNaturePosition) {
-    this.motherNaturePosition = motherNaturePosition;
+  public void setStudentEntrance(
+      Vector<StudentsPlayerId> studentEntrance) {
+    this.studentEntrance = studentEntrance;
   }
 
-  public Vector<Integer> getTowersIsland() {
-    return towersIsland;
+  public Vector<StudentsPlayerId> getStudentDiningRoom() {
+    return studentDiningRoom;
   }
 
-  public void setTowersIsland(Vector<Integer> towersIsland) {
-    this.towersIsland = towersIsland;
-  }
-
-  public int[] getTowersColor() {
-    return towersColor;
-  }
-
-  public void setTowersColor(int[] towersColor) {
-    this.towersColor = towersColor;
-  }
-
-  public int[] getTowersNumber() {
-    return towersNumber;
-  }
-
-  public void setTowersNumber(int[] towersNumber) {
-    this.towersNumber = towersNumber;
-  }
-
-  public int[] getPlayerCoins() {
-    return playerCoins;
-  }
-
-  public void setPlayerCoins(int[] playerCoins) {
-    this.playerCoins = playerCoins;
-  }
-
-  public int[] getCharactersCosts() {
-    return charactersCosts;
-  }
-
-  public void setCharactersCosts(int[] charactersCosts) {
-    this.charactersCosts = charactersCosts;
-  }
-
-  public Vector<int[]> getCharactersStudents() {
-    return charactersStudents;
-  }
-
-  public void setCharactersStudents(Vector<int[]> charactersStudents) {
-    this.charactersStudents = charactersStudents;
-  }
-
-  public Integer[] getIslandsIds() {
-    return islandsIds;
-  }
-
-  public void setIslandsIds(Integer[] islandsIds) {
-    this.islandsIds = islandsIds;
-  }
-
-  public int getActivePLayerId() {
-    return activePLayerId;
-  }
-
-  public void setActivePLayerId(int activePLayerId) {
-    this.activePLayerId = activePLayerId;
-  }
-
-  public boolean[] getIslandsNoEntry() {
-    return islandsNoEntry;
-  }
-
-  public void setIslandsNoEntry(boolean[] islandsNoEntry) {
-    this.islandsNoEntry = islandsNoEntry;
+  public void setStudentDiningRoom(
+      Vector<StudentsPlayerId> studentDiningRoom) {
+    this.studentDiningRoom = studentDiningRoom;
   }
 }

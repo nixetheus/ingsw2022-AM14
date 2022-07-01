@@ -2,7 +2,6 @@ package it.polimi.ingsw.messages;
 
 import it.polimi.ingsw.helpers.MessageMain;
 import it.polimi.ingsw.helpers.MessageSecondary;
-import java.util.Vector;
 
 /**
  * MoveMessageResponse used used a response from server to client
@@ -10,7 +9,6 @@ import java.util.Vector;
 public class MoveMessageResponse extends Message{
 
   private int place;
-  private int studentColor;
   private int islandNumber;
   private int islandOwnerId;
   private int cloudTileNumber;
@@ -33,10 +31,6 @@ public class MoveMessageResponse extends Message{
 
   public int getPlace() {
     return place;
-  }
-
-  public int getStudentColor() {
-    return studentColor;
   }
 
   public int getIslandNumber() {
@@ -65,10 +59,6 @@ public class MoveMessageResponse extends Message{
 
   public void setPlace(int place) {
     this.place = place;
-  }
-
-  public void setStudentColor(int studentColor) {
-    this.studentColor = studentColor;
   }
 
   public void setIslandNumber(int islandNumber) {

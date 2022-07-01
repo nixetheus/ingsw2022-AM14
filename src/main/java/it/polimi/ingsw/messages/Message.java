@@ -4,6 +4,7 @@ import it.polimi.ingsw.helpers.MessageMain;
 import it.polimi.ingsw.helpers.MessageSecondary;
 import java.io.Serializable;
 
+
 public abstract class Message implements Serializable {
 
   protected int playerId;

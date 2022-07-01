@@ -16,6 +16,7 @@ public class MoveMessage extends Message {
 
   /**
    * Constructor method for MoveMessage class
+   *
    * @param messageSecondary The messageSecondary to be set
    */
   public MoveMessage(MessageSecondary messageSecondary) {

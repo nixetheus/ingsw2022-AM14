@@ -8,17 +8,27 @@ import it.polimi.ingsw.helpers.MessageSecondary;
  */
 public class LoginMessage extends Message {
 
+  private String nickName;
   private int numberOfPlayer;
   private boolean gameExpert;
-  private String nickName;
+
 
   /**
    * Constructor method for LoginMessage class
+   *
    * @param messageSecondary The messageSecondary to be set
    */
   public LoginMessage(MessageSecondary messageSecondary) {
     this.messageMain = MessageMain.LOGIN;
     this.messageSecondary = messageSecondary;
+  }
+
+  public String getNickName() {
+    return nickName;
+  }
+
+  public void setNickName(String nickName) {
+    this.nickName = nickName;
   }
 
   public int getNumberOfPlayer() {
@@ -35,15 +45,6 @@ public class LoginMessage extends Message {
 
   public void setGameExpert(boolean gameMode) {
     this.gameExpert = gameMode;
-  }
-
-
-  public String getNickName() {
-    return nickName;
-  }
-
-  public void setNickName(String nickName) {
-    this.nickName = nickName;
   }
 
 

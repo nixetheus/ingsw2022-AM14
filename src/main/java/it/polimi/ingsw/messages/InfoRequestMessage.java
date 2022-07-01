@@ -12,6 +12,7 @@ public class InfoRequestMessage extends Message {
 
   /**
    * Constructor method for InfoRequestMessage
+   *
    * @param messageSecondary The messageSecondary to be set
    */
   public InfoRequestMessage(MessageSecondary messageSecondary) {

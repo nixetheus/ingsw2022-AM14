@@ -13,6 +13,7 @@ public class LoginMessageResponse extends Message {
 
   /**
    * Constructor method for LoginMessageResponse class
+   *
    * @param messageSecondary The messageSecondary to be set
    */
   public LoginMessageResponse(MessageSecondary messageSecondary) {

@@ -147,6 +147,7 @@ public class CliParser {
               .append("\n");
         }
         break;
+
       case CHARACTER:
         returnString.append("Character ").append(msg.getCharacterId())
             .append(" purchased and correctly used\n");
@@ -176,36 +177,13 @@ public class CliParser {
         printedString.append("\n");
 
         if (msg.getPlace() == 0) {
-          printedString.append("now your dining room contains\n");
-          for (Color color : Color.values()) {
-            printedString.append(msg.getStudentsDiningRoom()[color.ordinal()]).append(" ")
-                .append(color).append(" students;\n");
-          }
-          printedString.append("\n");
-
-          printedString.append("now you own these professors: \n");
-          for (Color color : Color.values()) {
-            if (msg.getProfessors()[color.ordinal()] == playerId) {
-              printedString.append(color).append(" professor;\n");
-            }
-          }
-          printedString.append("\n");
-          printedString.append("now you have ").append(msg.getPlayerCoins()).append(" coins\n");
+          printedString.append(printMoveMessageDiningRoomCase(msg));
 
         } else if (msg.getPlace() == 1) {
-          printedString.append("now the island ").append(msg.getIslandNumber())
-              .append(" contains\n");
-          for (Color color : Color.values()) {
-            printedString.append(msg.getStudentsIsland()[color.ordinal()]).append(" ")
-                .append(color).append(" students;\n");
-          }
-          if (msg.getTowersIsland() > 0) {
-            printedString.append("this island contains ").append(msg.getTowersIsland())
-                .append(" towers\n");
-            printedString.append("Belonging to the ").append(msg.getIslandOwnerId()).append("team");
-          }
+          printedString.append(printMoveMessageIslandCase(msg));
         }
         break;
+
       case CLOUD_TILE:
         printedString.append("cloud tile number ").append(msg.getCloudTileNumber()).append("\n")
             .append("successfully taken").append("\n")
@@ -216,6 +194,7 @@ public class CliParser {
         }
         printedString.append("\n");
         break;
+
       case MOVE_MN:
         printedString.append("now mother nature is on the island number ")
             .append(msg.getIslandNumber()).append(" island\n");
@@ -229,6 +208,54 @@ public class CliParser {
     return String.valueOf(printedString);
   }
 
+  /**
+   * This method builds a string in case of a MoveMessageResponse to an island
+   *
+   * @param msg The message arrived from client
+   * @return The printable string
+   */
+  private String printMoveMessageIslandCase(MoveMessageResponse msg) {
+    StringBuilder printedString = new StringBuilder();
+    printedString.append("now the island ").append(msg.getIslandNumber())
+        .append(" contains\n");
+    for (Color color : Color.values()) {
+      printedString.append(msg.getStudentsIsland()[color.ordinal()]).append(" ")
+          .append(color).append(" students;\n");
+    }
+    if (msg.getTowersIsland() > 0) {
+      printedString.append("this island contains ").append(msg.getTowersIsland())
+          .append(" towers\n");
+      printedString.append("Belonging to the ").append(msg.getIslandOwnerId()).append("team");
+    }
+    return printedString.toString();
+  }
+
+  /**
+   * This method builds a string in case of a MoveMessageResponse to the dining room
+   *
+   * @param msg The message arrived from client
+   * @return The printable string
+   */
+  private String printMoveMessageDiningRoomCase(MoveMessageResponse msg) {
+    StringBuilder printedString = new StringBuilder();
+    printedString.append("now your dining room contains\n");
+    for (Color color : Color.values()) {
+      printedString.append(msg.getStudentsDiningRoom()[color.ordinal()]).append(" ")
+          .append(color).append(" students;\n");
+    }
+    printedString.append("\n");
+
+    printedString.append("now you own these professors: \n");
+    for (Color color : Color.values()) {
+      if (msg.getProfessors()[color.ordinal()] == playerId) {
+        printedString.append(color).append(" professor;\n");
+      }
+    }
+    printedString.append("\n");
+    printedString.append("now you have ").append(msg.getPlayerCoins()).append(" coins\n");
+
+    return printedString.toString();
+  }
 
   /**
    * This method prints the ClientResponse arrived from server
@@ -272,36 +299,17 @@ public class CliParser {
   private String printPhaseMessage(BeginTurnMessage msg) throws IOException {
     StringBuilder returnString = new StringBuilder();
     switch (msg.getMessageSecondary()) {
-      case INIT_GAME:
-        returnString.append(printIslands(msg));
-        returnString.append(printCloudTiles(msg));
-        returnString.append(printAvailableTowers(msg));
-        returnString.append(printEntrance(msg));
-        returnString.append(printDiningRoom(msg));
-        returnString.append(printProfessors(msg));
-        returnString.append(printPlayableAssistants(msg));
-        returnString.append(printPurchasableCharacter(msg));
-        return returnString.toString();
-      case CHANGE_TURN:
-        //TODO add to controller
-        returnString.append(printIslands(msg));
-        returnString.append(printCloudTiles(msg));
-        returnString.append(printAvailableTowers(msg));
-        returnString.append(printEntrance(msg));
-        returnString.append(printDiningRoom(msg));
-        returnString.append(printProfessors(msg));
-        returnString.append(printPlayableAssistants(msg));
-        returnString.append(printPurchasableCharacter(msg));
-        return returnString.toString();
       case INFRA_TURN:
         if (msg.getActivePLayerId() != playerId) {
           return "another player did something";
         }
         return " ";
+
       case CLOUD_TILE:
         returnString.append(printCloudTiles(msg));
         returnString.append(printEntrance(msg));
         return returnString.toString();
+
       case MOVE_STUDENT_ENTRANCE:
         returnString.append(printEntrance(msg));
 
@@ -310,11 +318,22 @@ public class CliParser {
 
         returnString.append(printIslands(msg));
         return returnString.toString();
+
       case MOVE_MN:
         returnString.append(printIslands(msg));
         return returnString.toString();
+
+      default:
+        returnString.append(printIslands(msg));
+        returnString.append(printCloudTiles(msg));
+        returnString.append(printAvailableTowers(msg));
+        returnString.append(printEntrance(msg));
+        returnString.append(printDiningRoom(msg));
+        returnString.append(printProfessors(msg));
+        returnString.append(printPlayableAssistants(msg));
+        returnString.append(printPurchasableCharacter(msg));
+        return returnString.toString();
     }
-    return null;
   }
 
   /**
@@ -519,15 +538,19 @@ public class CliParser {
     StringBuilder returnString = new StringBuilder();
     if (msg.getPurchasableCharacterId() != null) {
       returnString.append("those are the assistant you can purchase:").append("\n").append("\n");
+
       for (int id : msg.getPurchasableCharacterId()) {
         for (Effects effect : Effects.values()) {
+
           if (id == effect.ordinal()) {
             returnString.append(effect.getStringEffectCard()).append("\n");
             returnString.append("The cost of this character is ")
                 .append(msg.getCharactersCosts()[msg.getPurchasableCharacterId().indexOf(id)])
                 .append("\n");
+
             if (effect.getNOfStudents() != 0) {
               returnString.append("it has the following students on it").append("\n");
+
               for (Color color : Color.values()) {
                 returnString.append(
                     msg.getCharactersStudents()

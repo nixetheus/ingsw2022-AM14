@@ -27,6 +27,7 @@ public class PlayMessage extends Message {
 
   /**
    * Constructor method for PlayMessage class
+   *
    * @param messageSecondary The messageSecondary to be set
    */
   public PlayMessage(MessageSecondary messageSecondary) {

@@ -70,11 +70,10 @@ public class MessageParser {
         case INFO:
           InfoRequestMessage infoRequestMessage = new InfoRequestMessage(messageSecondary);
           infoRequestMessage.setObjectId(findIndex(str));
-          //TODO print error if -1
+
           return infoRequestMessage;
 
         case PLAY:
-          //TODO broken if i wrote only "play" does not work
           PlayMessage playMessage = new PlayMessage(messageSecondary);
           playMessage.setPlayerId(playerId);
           String firstCommand = str.split(",")[0];
@@ -96,15 +95,14 @@ public class MessageParser {
           moveMessage.setPlayerId(playerId);
 
           if (str.contains("STUDENT")) {
-            if(findColor(str)!=null){
-            moveMessage.setStudentColor(findColor(str).ordinal());}
-            else{
+            if (findColor(str) != null) {
+              moveMessage.setStudentColor(findColor(str).ordinal());
+            } else {
               printError();
             }
           }
 
           moveMessage.setPlace(findPlace(str));
-
 
           return moveMessage;
 
@@ -130,8 +128,9 @@ public class MessageParser {
 
   /**
    * This method is used to set what the character needs
+   *
    * @param playMessage The play message in which the parameters will be set
-   * @param str The section of the input given by the user with the information
+   * @param str         The section of the input given by the user with the information
    */
   private void messageSetterForCharacter(PlayMessage playMessage, String str) {
     String takeFromCard;
@@ -213,21 +212,25 @@ public class MessageParser {
         return MessageSecondary.INFO_CHARACTER;
       }
       return MessageSecondary.CHARACTER;
+
     } else if ((str.contains("ASSISTANT"))) {
       if (str.contains("INFO")) {
         return MessageSecondary.INFO_ASSISTANTS;
       }
       return MessageSecondary.ASSISTANT;
+
     } else if ((str.contains("MOTHER NATURE"))) {
       if (str.contains("INFO")) {
         return MessageSecondary.INFO_MN;
       }
       return MessageSecondary.MOVE_MN;
+
     } else if ((str.contains("CLOUD TILE"))) {
       if (str.contains("INFO")) {
         return MessageSecondary.INFO_CLOUD_TILE;
       }
       return MessageSecondary.CLOUD_TILE;
+
     } else if (str.contains("PLAYER")) {
       if (str.contains("INFO")) {
         return MessageSecondary.INFO_PLAYER;
@@ -237,10 +240,13 @@ public class MessageParser {
         return MessageSecondary.INFO_ISLAND;
       }
       return MessageSecondary.ENTRANCE;
+
     } else if (str.contains("HELP")) {
       return MessageSecondary.INFO_HELP;
+
     } else if (str.contains("FROM ENTRANCE")) {
       return MessageSecondary.ENTRANCE;
+
     } else if (!str.contains(" ")) {
       return MessageSecondary.PLAYER_PARAMS;
     }
@@ -351,6 +357,7 @@ public class MessageParser {
 
   /**
    * This method compile the array if more than 1 student will be used for a certain character
+   *
    * @param str A section of the command given by the user
    * @return The array of colors
    */
@@ -368,6 +375,15 @@ public class MessageParser {
     return returnedArray;
   }
 
+
+  /**
+   * Method used to show if the input format if a word is wrong
+   */
+  private void printError() {
+    System.out.println("Input format wrong please try again");
+    this.errorOccur = true;
+  }
+  
   public int getPlayerId() {
     return playerId;
   }
@@ -376,16 +392,7 @@ public class MessageParser {
     this.playerId = playerId;
   }
 
-  /**
-   *Method used to show if the input format if a word is wrong
-   */
-  private void printError() {
-    System.out.println("Input format wrong please try again");
-    this.errorOccur = true;
-    //TODO do not send message if error occur == true
-  }
 
-  //condition if verified no out.println in client user input
   public Boolean getErrorOccur() {
     return errorOccur;
   }

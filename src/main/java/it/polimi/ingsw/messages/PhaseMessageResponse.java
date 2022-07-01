@@ -6,13 +6,14 @@ import it.polimi.ingsw.helpers.MessageSecondary;
 /**
  * PhaseMessageResponse class used as response about what to do next
  */
-public class PhaseMessageResponse extends Message{
+public class PhaseMessageResponse extends Message {
 
   private String whatTodo;
 
   /**
    * Constructor method for PhaseMessageResponse class
-   * @param messageSecondary  The messageSecondary to be set
+   *
+   * @param messageSecondary The messageSecondary to be set
    */
   public PhaseMessageResponse(MessageSecondary messageSecondary) {
     this.messageMain = MessageMain.PHASE;

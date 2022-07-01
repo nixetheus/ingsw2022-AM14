@@ -1,8 +1,9 @@
 package it.polimi.ingsw.messages;
 
+import java.util.Vector;
 import it.polimi.ingsw.helpers.MessageMain;
 import it.polimi.ingsw.helpers.MessageSecondary;
-import java.util.Vector;
+
 
 /**
  * WinnerMessage to send who won

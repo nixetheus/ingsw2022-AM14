@@ -4,6 +4,7 @@ import it.polimi.ingsw.helpers.MessageMain;
 import it.polimi.ingsw.helpers.MessageSecondary;
 import java.util.Vector;
 
+
 /**
  * ClientResponse class used for generic message
  */
@@ -14,6 +15,7 @@ public class ClientResponse extends Message {
 
   /**
    * Constructor method for  ClientResponse class
+   *
    * @param messageSecondary The messageSecondary to be set
    */
   public ClientResponse(MessageSecondary messageSecondary) {
