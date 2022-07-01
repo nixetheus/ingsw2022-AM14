@@ -41,3 +41,6 @@ You can't have more clients login at the same time.</p>
 - <p align="justify">To play a character card from a GUI client select the desired card by clicking on its image, you can then press all the objects on the game screen to connect them to the character card you want to play. When all is set simply click on the PLAY button to play the card. While a character card is selected you cannot do any other move. To unselect a character card, simply click on it again and it should unselect.</p>
 
 - <p align="justify">Two players cannot have the same username. The GUI promprt for a username will not move forward until a different username is given.</p>
+
+- <p align="justify">You can find an example of some CLI inputs into the CliInputExamples.txt
+- <p align="justify">A well formed nickname <b>MUST</b> be composed of one word with no spaces.

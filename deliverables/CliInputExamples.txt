@@ -1,0 +1,48 @@
+expert mode 3 player
+
+play assistant 1
+
+move a yellow student from entrance to dining room
+
+move a blue student from entrance to dining room
+
+move a red student from entrance to dining room
+
+move a purple student from entrance to dining room
+
+move a green student from entrance to dining room
+
+move green student from entrance to island 8
+
+move mother nature to island 3
+
+take cloud tile 1
+
+CHARACTER 
+
+This character allows to put a no entry tile on an island (mother nature cannot ends her movement there)
+purchase 1 character ,place a no entry tile on 1 island
+
+This character allows to chose an island and resolving that island as mother nature ends her movement there
+purchase 0 character , resolve 4 island
+
+This character allows to take a student from this card and put it on an island of your choice
+purchase 0 character , put a green student on island 5
+
+This character allows to chose a student on this card and put it in your dining room
+purchase 1 character , put 1 green student to dining room
+
+This character allows to exchange up to 2 student from your dining room and your entrance
+purchase 1 character ,take 2 yellow student from dining room and replace them with 2 red from entrance
+
+This character blocks a color from adding influence
+purchase 0 character , the yellow color will add no influence
+
+This character allows to chose a student color and every player must return 3 student of that color from their dining room to the bag
+purchase 0 character , return 3 green student to student bag
+
+This character allows to replace up to 3 student from this card to your entrance
+purchase 2 character ,take 2 red student 1 green student from this card and replace them with  3 red student from entrance
+
+for others
+purchase 2 character
